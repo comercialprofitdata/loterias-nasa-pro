@@ -567,37 +567,17 @@ function createSimplifiedHome() {
           </div>
         </div>
 
-        <!-- Seletor Segmentado de Modo de Experiência no Hero Card (Mobile-First, Confortável e sem Sobreposição) -->
-        <div class="nasa-hero-modo-bar" id="home-modo-segmented-bar" role="tablist" aria-label="Escolha seu estilo de jogo">
-          <button type="button" id="home-modo-btn-rapido" onclick="selecionarModoExperiencia('rapido')" class="nasa-hero-modo-pill" title="Modo Rápido: 1 clique, gera palpite express com filtros">
-            <span class="nasa-hero-modo-icon">⚡</span>
-            <span class="nasa-hero-modo-text">Rápido</span>
-          </button>
-          <button type="button" id="home-modo-btn-estrategista" onclick="selecionarModoExperiencia('estrategista')" class="nasa-hero-modo-pill" title="Modo Volante: Volante interativo e matriz 4x4">
-            <span class="nasa-hero-modo-icon">🎯</span>
-            <span class="nasa-hero-modo-text">Volante</span>
-          </button>
-          <button type="button" id="home-modo-btn-cientifico" onclick="selecionarModoExperiencia('cientifico')" class="nasa-hero-modo-pill" title="Modo Científico: Auditoria matemática e 6 testes NASA">
-            <span class="nasa-hero-modo-icon">🔬</span>
-            <span class="nasa-hero-modo-text">Científico</span>
-          </button>
-        </div>
-
         <!-- Botão Principal: Adaptativo por Modo de Experiência -->
-        <button type="button" class="nasa-primary-cta" id="home-btn-hero-primary" onclick="executarAcaoPrincipalPorModo()">
+        <button type="button" class="nasa-primary-cta" id="home-btn-hero-primary" onclick="iniciarJogo()">
           <span class="text-xl" id="home-hero-btn-icon">🚀</span>
           <span id="home-hero-btn-label">GERAR JOGO</span>
         </button>
 
         <!-- Botões Secundários: Caminho A ("Já tenho meus números") + Volante Manual -->
         <div class="nasa-secondary-cta-row">
-          <button type="button" class="nasa-sec-btn" onclick="abrirModalAnalisarNumeros(); tocarBeep('click');">
-            <span>🔬</span>
-            <span>Testar Meu Jogo</span>
-          </button>
           <button type="button" class="nasa-sec-btn" onclick="irParaVolanteManual()">
             <span>🎯</span>
-            <span>Marcar no Volante</span>
+            <span>Já tenho meus números</span>
           </button>
         </div>
       </div>
@@ -708,7 +688,7 @@ function createSimplifiedHome() {
           </button>
         </div>
         <div id="home-apostas-ativas-conteudo" class="text-xs text-slate-400">
-          <span class="text-[11px]">Nenhuma aposta ativa registrada ainda. Gere seu jogo e toque em <b>✅ JOGUEI ESTE JOGO!</b></span>
+          <span class="text-[11px]">Nenhuma aposta ativa registrada ainda. Gere seu jogo e toque em <b>Salvar este jogo</b></span>
         </div>
       </div>
 
@@ -763,6 +743,12 @@ async function atualizarUltimoResultadoHome() {
   }
 
   if (!ultimo || !Array.isArray(ultimo.dezenas) || ultimo.dezenas.length === 0) {
+    const baseLocal = (typeof modalidadeAtual !== 'undefined' && modalidadeAtual === 'lotofacil') ? baseConcursosLoto : baseConcursosMega;
+    if (baseLocal?.[0]) {
+      if (subEl) subEl.innerText = `Concurso #${baseLocal[0].concurso} • ${baseLocal[0].data}`;
+      dezenasEl.innerHTML = baseLocal[0].dezenas.map((d) => `<span class="fluxo-bola">${String(d).padStart(2, '0')}</span>`).join('');
+      return;
+    }
     if (subEl) subEl.innerText = 'Toque em Atualizar para buscar na Caixa';
     dezenasEl.innerHTML = `<span class="text-xs text-slate-400">Toque em <b>🔄 Atualizar</b> para carregar as dezenas sorteadas.</span>`;
     return;
@@ -827,6 +813,7 @@ function alternarSubAbaGerar(modo) {
 }
 
 function aplicarVisibilidadeSubAbaGerar() {
+  subAbaGerarAtiva = 'todos';
   ['rapido', 'volante', 'testes', 'todos'].forEach((m) => {
     const btn = document.getElementById(`seg-gerar-${m}`);
     if (btn) btn.classList.toggle('active', m === subAbaGerarAtiva);
@@ -1562,7 +1549,7 @@ function atualizarProvaDosFatosRedesign() {
           </div>
         `;
       } else {
-        apostasAtivasEl.innerHTML = `<span class="text-[11px] text-slate-400">Nenhuma aposta ativa registrada ainda. Gere seu jogo e toque em <b>✅ JOGUEI ESTE JOGO!</b></span>`;
+        apostasAtivasEl.innerHTML = `<span class="text-[11px] text-slate-400">Nenhuma aposta ativa registrada ainda. Gere seu jogo e toque em <b>Salvar este jogo</b></span>`;
       }
     }
   }
@@ -1697,7 +1684,7 @@ const PERFIS_CONFIG = {
     icon: '⚡',
     tag: '1 CLIQUE',
     cor: 'amber',
-    btnLabel: 'GERAR NOVO PALPITE EXPRESS',
+    btnLabel: 'GERAR JOGO',
     btnIcon: '⚡',
     acaoSubAba: 'rapido'
   },
@@ -1708,7 +1695,7 @@ const PERFIS_CONFIG = {
     icon: '🎯',
     tag: 'VOLANTE VIVO',
     cor: 'emerald',
-    btnLabel: 'ABRIR VOLANTE & MATRIZ 4x4',
+    btnLabel: 'GERAR JOGO',
     btnIcon: '🎯',
     acaoSubAba: 'volante'
   },
@@ -1719,7 +1706,7 @@ const PERFIS_CONFIG = {
     icon: '🔬',
     tag: 'NASA TELEMETRIA',
     cor: 'cyan',
-    btnLabel: 'AUDITORIA & 6 TESTES NASA',
+    btnLabel: 'GERAR JOGO',
     btnIcon: '🔬',
     acaoSubAba: 'todos'
   }

@@ -385,7 +385,7 @@
 
       // Registrar Service Worker com Verificação Imediata de Atualizações
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js?v=20261101.3', { scope: './' })
+        navigator.serviceWorker.register('./sw.js?v=20261101.6', { scope: './' })
           .then((reg) => {
             console.log('[NASA Pro] Service Worker registrado. Verificando atualizações...');
             reg.update(); // força verificação no servidor imediatamente
@@ -528,9 +528,7 @@
           : 'bg-slate-900 text-slate-300 border-slate-700 hover:border-slate-500';
         return `
           <button type="button" onclick="selecionarJogoDoLoteTela1(${idx})" class="px-2.5 py-1.5 rounded-xl border text-xs whitespace-nowrap transition flex items-center gap-1.5 ${estilo}">
-            <span>🎯 Jogo #${aposta.id}</span>
-            <span class="text-[10px] px-1.5 py-0.5 rounded ${ativo ? 'bg-slate-950/20 text-slate-950 font-black' : 'bg-slate-950 text-cyan-300 font-bold'}">Score: ${score}</span>
-            <span class="text-[9px] opacity-80">(${aprovados}/6)</span>
+            <span>Jogo ${aposta.id}</span>
           </button>
         `;
       }).join('');
@@ -986,14 +984,7 @@
       const jogosCarteira = (carteiraJogos || []).filter(b => (b.modalidade || 'megasena') === modAtual);
 
       if (jogosCarteira.length === 0) {
-        container.innerHTML = `
-          <div class="p-2 rounded-xl bg-emerald-950/30 border border-emerald-800/40 text-emerald-300 text-[11px] flex items-center justify-between gap-2 font-mono">
-            <div class="flex items-center gap-1.5">
-              <span class="text-xs">✨</span>
-              <span>Jogo Inédito • Primeira aposta do seu portfólio.</span>
-            </div>
-          </div>
-        `;
+        container.innerHTML = ``;
         container.classList.remove('hidden');
         return;
       }

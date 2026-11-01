@@ -36,7 +36,9 @@ function rodandoComoAppDaLoja() {
   }
 }
 
-const MODO_LOJA = rodandoComoAppDaLoja();
+// Venda também suspensa na web: o backend de pagamento ainda não está no ar.
+const VENDA_SUSPENSA = true;
+const MODO_LOJA = VENDA_SUSPENSA || rodandoComoAppDaLoja();
 
 /**
  * Remove da interface tudo que leve a pagamento externo. O plano gratuito e
