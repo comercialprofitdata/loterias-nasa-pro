@@ -126,6 +126,9 @@ async function aguardarConfirmacaoPagamento({ tentativas = 6, intervaloMs = 5000
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  // No app da loja não há venda: a assinatura não pode rebaixar o acesso liberado.
+  if (window.contextoLoja?.ativo()) return;
+
   setTimeout(() => sincronizarAssinatura({ silencioso: true }), 1200);
 
   // Voltando do checkout do Asaas em outra aba/janela.

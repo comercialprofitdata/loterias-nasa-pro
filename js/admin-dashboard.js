@@ -52,7 +52,7 @@ function isUserAdmin() {
   // const decoded = jwtDecode(token);
   // return decoded.user_metadata?.role === 'admin';
 
-  return user.role === 'admin' || adminParam === 'true';
+  return false;
 }
 
 /**

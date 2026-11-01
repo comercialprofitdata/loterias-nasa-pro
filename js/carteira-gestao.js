@@ -345,7 +345,10 @@
         const cliente = typeof obterClienteSupabase === 'function' ? obterClienteSupabase() : null;
         if (cliente) {
           const idsArr = Array.from(idsRemover);
-          cliente.from('carteira_apostas').delete().in('bilhete_id', idsArr).then();
+          cliente.auth.getSession().then(({ data }) => {
+            const uid = data?.session?.user?.id;
+            if (uid) cliente.from('carteira_apostas').delete().eq('user_id', uid).in('bilhete_id', idsArr).then();
+          });
         }
       } catch (e) {
         console.warn('Erro ao deletar da nuvem:', e);

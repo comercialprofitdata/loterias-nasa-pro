@@ -385,7 +385,7 @@
 
       // Registrar Service Worker com Verificação Imediata de Atualizações
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js?v=20261030.3', { scope: './' })
+        navigator.serviceWorker.register('./sw.js?v=20261101.1', { scope: './' })
           .then((reg) => {
             console.log('[NASA Pro] Service Worker registrado. Verificando atualizações...');
             reg.update(); // força verificação no servidor imediatamente
@@ -3016,7 +3016,10 @@ function gerarPalpiteInteligente() {
       try {
         const cliente = typeof obterClienteSupabase === 'function' ? obterClienteSupabase() : null;
         if (cliente) {
-          cliente.from('carteira_apostas').delete().eq('bilhete_id', String(id)).then();
+          cliente.auth.getSession().then(({ data }) => {
+            const uid = data?.session?.user?.id;
+            if (uid) cliente.from('carteira_apostas').delete().eq('user_id', uid).eq('bilhete_id', String(id)).then();
+          });
         }
       } catch (e) {}
     }
@@ -3064,15 +3067,10 @@ function gerarPalpiteInteligente() {
         } catch (_) {}
       }
 
-      // Fallback para usuários autenticados via Código VIP, Master Founder ou Identidade NASA
-      if (!accountId && typeof usuarioSessao !== 'undefined' && usuarioSessao) {
-        accountId = usuarioSessao.email || (usuarioSessao.cupomAtivo ? `vip_${usuarioSessao.cupomAtivo}` : null);
-      }
-
       // Se for apenas visitante sem nenhuma conta ou VIP definido, mantém local
       if (!accountId) {
         if (notificar && typeof toast === 'function') {
-          toast('Identifique-se com sua conta ou código VIP para sincronizar no banco.', '🔒');
+          toast('Entre na sua conta para sincronizar seus jogos.', '🔒');
         }
         return;
       }
@@ -4705,60 +4703,14 @@ function abrirModalDialog(msg, callback) {
       return clienteSupabase;
     }
 
-    // Dicionário seguro de cupons VIP autorizados (Mapeamento Hash -> Nome/Config)
-    // Evita expor os códigos em texto puro no frontend público
-    function calcularHashCupom(str) {
-      let hash = 5381;
-      const s = String(str || '').toUpperCase().trim();
-      for (let i = 0; i < s.length; i++) {
-        hash = ((hash << 5) + hash) + s.charCodeAt(i);
-        hash = hash & hash;
-      }
-      return 'H_' + Math.abs(hash).toString(36);
-    }
-
-    const CUPONS_HASH_MAP = {
-      [calcularHashCupom('BENEDITOVIP')]: { nome: 'Benedito Dalcin (Co-Fundador)', email: 'benedito.dalcin@vip.loteriasnasa.pro', tipo: 'master_founder', plano: 'pro' },
-      [calcularHashCupom('BENEDITODALCIN')]: { nome: 'Benedito Dalcin (Co-Fundador)', email: 'benedito.dalcin@vip.loteriasnasa.pro', tipo: 'master_founder', plano: 'pro' },
-      [calcularHashCupom('DALCINVIP')]: { nome: 'Benedito Dalcin (Co-Fundador)', email: 'benedito.dalcin@vip.loteriasnasa.pro', tipo: 'master_founder', plano: 'pro' },
-      [calcularHashCupom('VIPDALCIN')]: { nome: 'Benedito Dalcin (Co-Fundador)', email: 'benedito.dalcin@vip.loteriasnasa.pro', tipo: 'master_founder', plano: 'pro' },
-      [calcularHashCupom('EVANDROSERVAT')]: { nome: 'Evandro Servat (Testador VIP de Elite)', email: 'evandro.servat@vip.loteriasnasa.pro', tipo: 'vip_convidado', plano: 'pro' },
-      [calcularHashCupom('SERVATVIP')]: { nome: 'Evandro Servat (Testador VIP de Elite)', email: 'evandro.servat@vip.loteriasnasa.pro', tipo: 'vip_convidado', plano: 'pro' },
-      [calcularHashCupom('VICENTENETO')]: { nome: 'Vicente Neto (Testador VIP de Elite)', email: 'vicente.neto@vip.loteriasnasa.pro', tipo: 'vip_convidado', plano: 'pro' },
-      [calcularHashCupom('VICENTEVIP')]: { nome: 'Vicente Neto (Testador VIP de Elite)', email: 'vicente.neto@vip.loteriasnasa.pro', tipo: 'vip_convidado', plano: 'pro' },
-      [calcularHashCupom('VIPVITORIO')]: { nome: 'Vitório Bérgamo (Master Founder)', email: 'vitorio.bergamo@gmail.com', tipo: 'master_founder', plano: 'pro' },
-      [calcularHashCupom('MASTER2026')]: { nome: 'Vitório Bérgamo (Master Founder)', email: 'vitorio.bergamo@gmail.com', tipo: 'master_founder', plano: 'pro' },
-      [calcularHashCupom('FUNDADOR2026')]: { nome: 'Membro Fundador VIP', email: 'vip@loteriasnasa.pro', tipo: 'vip_convidado', plano: 'pro' }
-    };
+    // Códigos VIP validados no navegador foram desativados: qualquer pessoa os
+    // lia no código público. O resgate volta quando existir validação no servidor.
+    const CUPONS_HASH_MAP = {};
+    function calcularHashCupom() { return ''; }
 
     function obterConfiguracaoCupom(codigo) {
       const cod = String(codigo || '').toUpperCase().trim();
       if (!cod) return null;
-
-      // 1. Dicionário estático
-      const h = calcularHashCupom(cod);
-      if (CUPONS_HASH_MAP[h]) {
-        return { ...CUPONS_HASH_MAP[h], codigo: cod };
-      }
-
-      // 2. Consulta à base de usuários admin (cupons criados dinamicamente)
-      try {
-        const adminUsers = JSON.parse(localStorage.getItem('loterias_nasa_admin_users') || '[]');
-        const match = adminUsers.find(u => {
-          const cupomUser = (u.codigoVip || u.cupom || '').toUpperCase().trim();
-          return cupomUser && cupomUser === cod;
-        });
-        if (match) {
-          return {
-            nome: match.nome,
-            email: match.email || `${match.nome.toLowerCase().replace(/\s+/g, '.')}@vip.loteriasnasa.pro`,
-            telefone: match.telefone || '',
-            tipo: match.plano === 'master' ? 'master_founder' : 'vip_convidado',
-            plano: match.plano || 'pro',
-            codigo: cod
-          };
-        }
-      } catch (_) {}
 
       return null;
     }
@@ -4799,15 +4751,10 @@ function abrirModalDialog(msg, callback) {
       }
     }
 
-    function ativarSessaoVipPermanente(nome = 'Convidado VIP', codigo = 'BENEDITOVIP', email = '', tipo = 'vip_convidado', telefone = '') {
+    function ativarSessaoVipPermanente(nome = 'Convidado VIP', codigo = '', email = '', tipo = 'vip_convidado', telefone = '') {
       localStorage.setItem('loterias_nasa_vip_cupom', codigo);
       planoUsuario = 'pro';
-      const isMaster = tipo === 'master_founder' ||
-                       codigo.toUpperCase().includes('VITORIO') ||
-                       codigo.toUpperCase().includes('MASTER') ||
-                       codigo.toUpperCase().includes('BENEDITO') ||
-                       codigo.toUpperCase().includes('DALCIN') ||
-                       (email && email.toLowerCase().includes('vitorio.bergamo'));
+      const isMaster = false;
       usuarioSessao = {
         nome: nome,
         email: email || 'convidado.vip@loteriasnasa.pro',
@@ -4853,50 +4800,17 @@ function abrirModalDialog(msg, callback) {
     function carregarUsuarioSalvo() {
       try {
         verificarParametrosVipUrl();
-        const cupomSalvo = (localStorage.getItem('loterias_nasa_vip_cupom') || '').toUpperCase().trim();
         const salvo = localStorage.getItem('loterias_nasa_user');
-
-        if (cupomSalvo) {
-          const h = calcularHashCupom(cupomSalvo);
-          if (CUPONS_HASH_MAP[h]) {
-            const cfg = CUPONS_HASH_MAP[h];
-            planoUsuario = 'pro';
-            const isMaster = cfg.tipo === 'master_founder' ||
-                             cupomSalvo.includes('VITORIO') ||
-                             cupomSalvo.includes('MASTER') ||
-                             (cfg.email && cfg.email.toLowerCase().includes('vitorio.bergamo'));
-            usuarioSessao = {
-              nome: cfg.nome,
-              email: cfg.email,
-              avatar: '👑',
-              tipo: isMaster ? 'master_founder' : 'vip_convidado',
-              plano: 'pro',
-              cupomAtivo: cupomSalvo
-            };
-            atualizarVisualPlano();
-            atualizarPerfilUsuarioUI();
-            if (typeof sincronizarHeaderStatusUsuario === 'function') sincronizarHeaderStatusUsuario();
-            return;
-          }
-        }
 
         if (salvo) {
           const usuarioLocal = JSON.parse(salvo);
           const emailLower = (usuarioLocal?.email || '').toLowerCase();
           
-          // Acesso master_founder para o proprietário autorizado
-          if (usuarioLocal?.tipo === 'master_founder') {
-            if (emailLower.includes('vitorio') || emailLower.includes('dalcin')) {
-              usuarioSessao = usuarioLocal;
-              planoUsuario = 'pro';
-            } else {
-              // Bloqueia escalada indevida
-              usuarioSessao = { ...usuarioLocal, tipo: 'visitante', plano: 'free' };
-              planoUsuario = 'free';
-            }
-          } else if (usuarioLocal?.tipo === 'vip_convidado') {
-            usuarioSessao = usuarioLocal;
-            planoUsuario = 'pro';
+          // Papel e plano salvos no aparelho não valem: só o servidor os concede.
+          if (usuarioLocal?.tipo === 'master_founder' || usuarioLocal?.tipo === 'vip_convidado') {
+            localStorage.removeItem('loterias_nasa_vip_cupom');
+            usuarioSessao = { ...usuarioLocal, tipo: 'visitante', plano: 'free' };
+            planoUsuario = 'free';
           } else {
             usuarioSessao = usuarioLocal;
           }
@@ -4943,8 +4857,8 @@ function abrirModalDialog(msg, callback) {
         nome: perfil?.display_name || usuario.user_metadata?.full_name || usuario.email?.split('@')[0] || 'Usuário',
         email: usuario.email || '',
         avatar: 'U',
-        tipo: (perfil?.role === 'owner' || usuario.email?.toLowerCase() === 'vitorio.bergamo@gmail.com' || usuario.email?.toLowerCase().includes('dalcin')) ? 'master_founder' : 'supabase',
-        plano: (assinatura || usuario.email?.toLowerCase() === 'vitorio.bergamo@gmail.com' || usuario.email?.toLowerCase().includes('dalcin')) ? 'pro' : 'free',
+        tipo: perfil?.role === 'owner' ? 'master_founder' : 'supabase',
+        plano: assinatura ? 'pro' : 'free',
         // Créditos de análise grátis (3 por cadastro, sem prazo — ver
         // js/creditos-gratis.js). O default 3 vem da coluna no Supabase;
         // se a linha de profiles ainda não existir por algum motivo,
@@ -5091,16 +5005,6 @@ function abrirModalDialog(msg, callback) {
 
       if (!email) {
         toast('Preencha o seu e-mail.', '⚠️');
-        return;
-      }
-
-      // Bypass de emergência Master Founder para o proprietário Vitório Bérgamo
-      const emailLower = email.toLowerCase();
-      if (emailLower === 'vitorio.bergamo@gmail.com' || emailLower.startsWith('vitorio.bergamo') || emailLower.startsWith('vitorio.neto')) {
-        ativarSessaoVipPermanente('Vitório Bérgamo (Master Founder)', 'VIPVITORIO', email, 'master_founder');
-        fecharModalAuth();
-        tocarSomNasa('sucesso');
-        toast('👑 Acesso Master Founder Autenticado! Bem-vindo, Vitório!', '🚀');
         return;
       }
 
@@ -5357,71 +5261,8 @@ function abrirModalDialog(msg, callback) {
       }
     }
 
-    // Base de Clientes Oficial - Dados 100% Reais com Semente dos Testadores VIP
     function gerarSementeTestadoresIniciais() {
-      const hoje = new Date().toISOString().split('T')[0];
-      return [
-        {
-          id: 'usr-vitorio',
-          nome: 'Vitório Bérgamo (Master Founder)',
-          email: 'vitorio.bergamo@gmail.com',
-          telefone: '(11) 99999-9999',
-          avatar: '👑',
-          plano: 'master',
-          planoNome: 'Master Founder Vitalício',
-          codigoVip: 'VIPVITORIO',
-          dataCadastro: '2026-01-01',
-          dataExpiracao: 'Vitalício',
-          status: 'ativo',
-          valorPago: 0,
-          obs: 'Proprietário & Desenvolvedor Chefe'
-        },
-        {
-          id: 'usr-benedito',
-          nome: 'Benedito Dalcin (Tio / Co-Fundador)',
-          email: 'benedito.dalcin@vip.loteriasnasa.pro',
-          telefone: '',
-          avatar: '👑',
-          plano: 'master',
-          planoNome: 'Co-Fundador VIP Vitalício',
-          codigoVip: 'BENEDITODALCIN',
-          dataCadastro: hoje,
-          dataExpiracao: 'Vitalício',
-          status: 'ativo',
-          valorPago: 0,
-          obs: 'Co-fundador de honra e testador prioritário'
-        },
-        {
-          id: 'usr-evandro',
-          nome: 'Evandro Servat (Testador VIP de Elite)',
-          email: 'evandro.servat@vip.loteriasnasa.pro',
-          telefone: '',
-          avatar: '💎',
-          plano: 'anual',
-          planoNome: 'VIP Anual Apollo Elite (Testador)',
-          codigoVip: 'EVANDROSERVAT',
-          dataCadastro: hoje,
-          dataExpiracao: '2027-12-31',
-          status: 'ativo',
-          valorPago: 197.00,
-          obs: 'Primeiro grupo de testadores pioneiros'
-        },
-        {
-          id: 'usr-vicente',
-          nome: 'Vicente Neto (Testador VIP de Elite)',
-          email: 'vicente.neto@vip.loteriasnasa.pro',
-          telefone: '',
-          avatar: '💎',
-          plano: 'anual',
-          planoNome: 'VIP Anual Apollo Elite (Testador)',
-          codigoVip: 'VICENTENETO',
-          dataCadastro: hoje,
-          dataExpiracao: '2027-12-31',
-          status: 'ativo',
-          valorPago: 197.00,
-          obs: 'Primeiro grupo de testadores pioneiros'
-        }
-      ];
+      return [];
     }
 
     function carregarBaseUsuariosAdmin() {

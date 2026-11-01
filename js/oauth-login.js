@@ -27,21 +27,18 @@ function iniciaisDoNome(nome) {
 
 function concluirLoginOAuth(dados) {
   const emailLower = (dados.email || '').toLowerCase().trim();
-  const isMaster = emailLower === 'vitorio.bergamo@gmail.com' || emailLower.startsWith('vitorio.bergamo') || emailLower.startsWith('vitorio.neto');
-  const isTestadorVip = emailLower.includes('benedito') || emailLower.includes('evandro') || emailLower.includes('vicente') || emailLower.endsWith('@vip.loteriasnasa.pro');
-
-  const tipoFinal = isMaster ? 'master_founder' : (isTestadorVip ? 'vip' : 'google_oauth');
-  const planoFinal = (isMaster || isTestadorVip) ? 'pro' : 'free';
-  const nomeFinal = isMaster ? 'Vitório Bérgamo (Master Founder)' : (dados.nome || emailLower.split('@')[0] || 'Usuário');
+  const tipoFinal = 'google_oauth';
+  const planoFinal = 'free';
+  const nomeFinal = dados.nome || emailLower.split('@')[0] || 'Usuário';
 
   usuarioSessao = {
     nome: nomeFinal,
     email: dados.email,
-    avatar: isMaster ? '👑' : iniciaisDoNome(nomeFinal),
+    avatar: iniciaisDoNome(nomeFinal),
     fotoUrl: dados.fotoUrl || '',
     tipo: tipoFinal,
     plano: planoFinal,
-    cupomAtivo: isMaster ? 'VIPVITORIO' : (isTestadorVip ? 'VIPTESTADOR' : null),
+    cupomAtivo: null,
     provedorId: dados.provedorId || 'google',
     dataConexao: new Date().toISOString()
   };
@@ -59,7 +56,7 @@ function concluirLoginOAuth(dados) {
   if (typeof atualizarVisualPlano === 'function') atualizarVisualPlano();
   fecharModalAuth();
   tocarSomNasa('sucesso');
-  toast(`Bem-vindo, ${usuarioSessao.nome}! ${isMaster ? '👑 (Acesso Master Ativo)' : '🚀'}`, '🚀');
+  toast(`Bem-vindo, ${usuarioSessao.nome}! 🚀`, '🚀');
 }
 
 // Fallback direto e instantâneo por e-mail Google sem travas de popup/origem

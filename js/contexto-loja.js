@@ -16,11 +16,16 @@
  */
 function rodandoComoAppDaLoja() {
   try {
-    if (document.referrer.startsWith('android-app://')) return true;
+    // Grava na sessão: o referrer se perde ao voltar do login ou recarregar.
+    if (document.referrer.startsWith('android-app://')) {
+      sessionStorage.setItem('nasa_modo_loja', '1');
+      return true;
+    }
 
-    // Permite forçar o modo em testes: ?loja=1 fica gravado na sessão.
+    // Só em ambiente local: em produção, ?loja=1 liberaria o Pro de graça.
     const parametros = new URLSearchParams(window.location.search);
-    if (parametros.get('loja') === '1') {
+    const ambienteLocal = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+    if (ambienteLocal && parametros.get('loja') === '1') {
       sessionStorage.setItem('nasa_modo_loja', '1');
       return true;
     }

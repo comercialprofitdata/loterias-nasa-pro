@@ -35,11 +35,27 @@ jobs:
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
+      # Lista fechada: documentos internos, SQL e scripts não vão para o site.
+      - name: Build site folder
+        run: |
+          mkdir -p dist/supabase
+          cp -r index.html privacidade.html excluir-conta.html manifest.json sw.js CNAME icon-192.png icon-512.png css js .well-known dist/
+          cp supabase/config.js dist/supabase/
+          touch dist/.nojekyll
+
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: dist
+          include-hidden-files: true
 
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Check published URLs
+        run: |
+          sleep 30
+          curl -fsS -o /dev/null https://loterias.pd.dev.br/.well-known/assetlinks.json
+          curl -fsS -o /dev/null https://loterias.pd.dev.br/privacidade.html
+          test "$(curl -s -o /dev/null -w '%{http_code}' https://loterias.pd.dev.br/BACKEND_SETUP.md)" = "404"

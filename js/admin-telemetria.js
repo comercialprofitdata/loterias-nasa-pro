@@ -14,61 +14,7 @@
       if (data) return JSON.parse(data);
     } catch (_) {}
 
-    // Semente inicial realista dos primeiros testadores para visualização imediata
-    return [
-      {
-        id: 'log-1',
-        userId: 'vitorio.bergamo@gmail.com',
-        nome: 'Vitório Bérgamo (Master Founder)',
-        acao: 'aposta_salva',
-        modalidade: 'megasena',
-        dezenas: [5, 10, 23, 34, 45, 59],
-        concursoAlvo: '#3079',
-        score: 99,
-        testesOk: 6,
-        data: new Date(Date.now() - 1000 * 60 * 35).toISOString(),
-        dispositivo: 'Samsung Galaxy / Android 14'
-      },
-      {
-        id: 'log-2',
-        userId: 'benedito.dalcin@vip.loteriasnasa.pro',
-        nome: 'Benedito Dalcin (Co-Fundador)',
-        acao: 'jogo_gerado',
-        modalidade: 'lotofacil',
-        dezenas: [1, 2, 3, 5, 7, 8, 10, 12, 14, 16, 18, 20, 21, 23, 25],
-        concursoAlvo: '#3818',
-        score: 98,
-        testesOk: 6,
-        data: new Date(Date.now() - 1000 * 60 * 90).toISOString(),
-        dispositivo: 'Motorola / Android'
-      },
-      {
-        id: 'log-3',
-        userId: 'evandro.servat@vip.loteriasnasa.pro',
-        nome: 'Evandro Servat (Testador VIP)',
-        acao: 'fechamento_executado',
-        modalidade: 'megasena',
-        dezenas: [4, 11, 18, 25, 39, 48],
-        concursoAlvo: '#3079',
-        score: 97,
-        testesOk: 6,
-        data: new Date(Date.now() - 1000 * 60 * 180).toISOString(),
-        dispositivo: 'iPhone / iOS 18'
-      },
-      {
-        id: 'log-4',
-        userId: 'vicente.neto@vip.loteriasnasa.pro',
-        nome: 'Vicente Neto (Testador VIP)',
-        acao: 'aposta_salva',
-        modalidade: 'megasena',
-        dezenas: [7, 14, 21, 28, 35, 42],
-        concursoAlvo: '#3079',
-        score: 95,
-        testesOk: 5,
-        data: new Date(Date.now() - 1000 * 60 * 240).toISOString(),
-        dispositivo: 'Xiaomi / Android 14'
-      }
-    ];
+    return [];
   };
 
   // Salva logs localmente com limite de 300 eventos mais recentes
@@ -135,30 +81,6 @@
       const logs = window.obterLogsTelemetriaLocal();
       logs.unshift(novoLog);
       window.salvarLogsTelemetriaLocal(logs);
-
-      // Tenta gravar na nuvem no Supabase em segundo plano
-      if (typeof obterClienteSupabase === 'function') {
-        const cliente = obterClienteSupabase();
-        if (cliente) {
-          cliente.from('user_telemetria_logs').insert([{
-            user_id: novoLog.userId,
-            user_nome: novoLog.nome,
-            user_email: sessao.email || '',
-            tipo_usuario: novoLog.tipo,
-            acao: novoLog.acao,
-            modalidade: novoLog.modalidade,
-            dezenas: novoLog.dezenas,
-            score: novoLog.score,
-            testes_ok: novoLog.testesOk,
-            detalhes: novoLog.detalhes,
-            dispositivo: novoLog.dispositivo
-          }]).then(function (res) {
-            if (res && res.error) {
-              console.warn('[Telemetria] Supabase retorno:', res.error.message);
-            }
-          }).catch(function () {});
-        }
-      }
     } catch (e) {
       console.warn('[Telemetria] Falha ao registrar log:', e);
     }

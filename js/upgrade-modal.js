@@ -146,25 +146,6 @@ function generateUpgradeModalHTML() {
         </div>
       </div>
 
-      <!-- Caixa de Resgate de Cupom VIP (Benedito Dalcin & Convidados Especiais) -->
-      <div style="margin-top: 12px; padding: 12px 14px; border-radius: 16px; background: rgba(15, 23, 42, 0.95); border: 1px dashed rgba(245, 158, 11, 0.4); text-align: left;">
-        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
-          <span style="font-size: 11px; font-weight: 800; color: #fbbf24; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 5px;">
-            <span>🎟️</span> Possui Código ou Cupom VIP?
-          </span>
-          <span style="font-size: 9px; color: #94a3b8; font-family: monospace;">Acesso Vitalício</span>
-        </div>
-        <p style="font-size: 11px; color: #cbd5e1; margin-bottom: 8px; line-height: 1.4;">
-          Convidados VIPs ou assinantes autorizados ou assinantes autorizados podem resgatar o acesso completo aqui:
-        </p>
-        <div style="display: flex; gap: 6px;">
-          <input type="text" id="input-cupom-vip-upgrade" placeholder="Digite seu código ou convite VIP" style="flex: 1; min-width: 0; padding: 8px 12px; border-radius: 10px; background: #020617; border: 1px solid #334155; color: #fff; font-size: 11px; font-weight: bold; text-transform: uppercase;" />
-          <button type="button" onclick="if (typeof resgatarCupomVip === 'function') { resgatarCupomVip(document.getElementById('input-cupom-vip-upgrade')?.value); } else { toast('Função de cupom carregando...', '⏳'); }" style="padding: 8px 14px; border-radius: 10px; background: linear-gradient(135deg, #f59e0b, #d97706); color: #020617; font-weight: 900; font-size: 11px; border: none; cursor: pointer; white-space: nowrap;">
-            ATIVAR VIP
-          </button>
-        </div>
-      </div>
-
       <!-- Footer Trust Signals -->
       <div class="modal-upgrade-footer">
         <div class="modal-upgrade-trust">
