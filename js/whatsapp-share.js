@@ -279,9 +279,9 @@ function compartilharJogoGeradoWhatsapp() {
     }).join('\n\n');
 
     const textoLote = 
-`🚀 *${totalJogos} JOGOS CALIBRADOS • ${nomeMod.toUpperCase()}*
+`🚀 *${totalJogos} JOGOS GERADOS • ${nomeMod.toUpperCase()}*
 🎯 *Concurso Alvo:* ${infoSorteio.concurso} (${infoSorteio.data})
-📊 *Validação:* Bateria Orbital NASA (6 de 6 Testes OK)
+Sorteios são aleatórios: nenhum jogo tem mais chance que outro.
 
 ${linhasJogos}
 
@@ -308,7 +308,7 @@ ${linhasJogos}
   const dezenasFormatadas = jogo.map(n => String(n).padStart(2, '0')).join(' - ');
 
   const textoUnico = 
-`🚀 *JOGO CALIBRADO • ${nomeMod.toUpperCase()}*
+`🚀 *JOGO GERADO • ${nomeMod.toUpperCase()}*
 🎯 *Concurso Alvo:* ${infoSorteio.concurso} (${infoSorteio.data})
 📊 *Nota de Equilíbrio:* ${score}/100 (6 de 6 Testes OK)
 

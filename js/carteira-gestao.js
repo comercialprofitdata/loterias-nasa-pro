@@ -516,7 +516,7 @@
             <div class="space-y-1">
               <h4 class="text-sm font-black text-white">Sua carteira está pronta</h4>
               <p class="text-xs text-slate-400 max-w-xs mx-auto leading-relaxed">
-                Você ainda não tem apostas registradas. Gere jogos calibrados pelo motor orbital ou cole palpites de grupos.
+                Você ainda não tem apostas registradas. Gere um jogo ou cole suas apostas para começar.
               </p>
             </div>
             <div class="flex flex-wrap justify-center gap-2 pt-2">

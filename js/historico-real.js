@@ -15,41 +15,9 @@ const HISTORICO_CONFIG = {
   validadeCacheMs: 4 * 60 * 60 * 1000 // 4 horas para invalidar rápido após sorteios
 };
 
-// Sementes reais e auditadas da Caixa (garantem dados imediatos sem esperar rede)
-const SEED_INICIAL_MEGASENA = [
-  { concurso: 3079, data: '30/10/2026', dezenas: [5, 9, 16, 40, 41, 59], acumulado: true, proximoConcurso: 3080, dataProximo: '01/11/2026', premioProximo: 42000000, rateio: [{ acertos: 6, premio: 0 }, { acertos: 5, premio: 50000 }, { acertos: 4, premio: 1200 }] },
-  { concurso: 3078, data: '29/10/2026', dezenas: [5, 7, 12, 29, 34, 36], acumulado: false, proximoConcurso: 3079, dataProximo: '30/10/2026', premioProximo: 6000000, rateio: [{ acertos: 6, premio: 0 }, { acertos: 5, premio: 45000 }, { acertos: 4, premio: 1100 }] },
-  { concurso: 3077, data: '28/10/2026', dezenas: [2, 14, 18, 31, 35, 40], acumulado: false, proximoConcurso: 3078, dataProximo: '29/10/2026', premioProximo: 2500000, rateio: [{ acertos: 6, premio: 0 }, { acertos: 5, premio: 45000 }, { acertos: 4, premio: 1100 }] },
-  { concurso: 3076, data: '27/10/2026', dezenas: [6, 30, 32, 38, 49, 57], acumulado: true, proximoConcurso: 3077, dataProximo: '28/10/2026', premioProximo: 320000000 },
-  { concurso: 3075, data: '26/10/2026', dezenas: [7, 10, 14, 27, 36, 55], acumulado: true },
-  { concurso: 3074, data: '24/10/2026', dezenas: [2, 3, 20, 25, 39, 57], acumulado: true },
-  { concurso: 3073, data: '22/10/2026', dezenas: [4, 13, 23, 28, 41, 58], acumulado: false },
-  { concurso: 3072, data: '20/10/2026', dezenas: [1, 9, 15, 23, 34, 48], acumulado: true },
-  { concurso: 3071, data: '17/10/2026', dezenas: [8, 10, 23, 34, 36, 50], acumulado: true },
-  { concurso: 3070, data: '15/10/2026', dezenas: [3, 16, 33, 43, 44, 56], acumulado: true },
-  { concurso: 3069, data: '13/10/2026', dezenas: [4, 12, 18, 21, 35, 59], acumulado: false },
-  { concurso: 3068, data: '10/10/2026', dezenas: [5, 15, 22, 34, 47, 53], acumulado: true },
-  { concurso: 3067, data: '08/10/2026', dezenas: [7, 18, 20, 26, 38, 51], acumulado: true },
-  { concurso: 3066, data: '06/10/2026', dezenas: [3, 9, 14, 20, 28, 52], acumulado: false },
-  { concurso: 3065, data: '03/10/2026', dezenas: [11, 17, 24, 31, 45, 59], acumulado: true }
-];
-
-const SEED_INICIAL_LOTOFACIL = [
-  { concurso: 3818, data: '30/10/2026', dezenas: [2, 3, 4, 5, 6, 12, 14, 15, 16, 17, 19, 20, 22, 23, 24], acumulado: false, proximoConcurso: 3819, dataProximo: '01/11/2026', premioProximo: 2000000 },
-  { concurso: 3817, data: '29/10/2026', dezenas: [2, 6, 8, 10, 11, 12, 13, 15, 16, 18, 19, 22, 23, 24, 25], acumulado: false, proximoConcurso: 3818, dataProximo: '30/10/2026', premioProximo: 2000000 },
-  { concurso: 3816, data: '28/10/2026', dezenas: [1, 2, 4, 5, 8, 9, 11, 13, 14, 16, 17, 20, 21, 22, 25], acumulado: false, proximoConcurso: 3817, dataProximo: '29/10/2026', premioProximo: 5000000 },
-  { concurso: 3815, data: '27/10/2026', dezenas: [1, 3, 4, 6, 7, 8, 10, 12, 14, 15, 18, 19, 21, 23, 24], acumulado: false },
-  { concurso: 3814, data: '26/10/2026', dezenas: [2, 3, 5, 6, 9, 10, 11, 13, 15, 17, 18, 20, 22, 23, 25], acumulado: false },
-  { concurso: 3813, data: '25/10/2026', dezenas: [1, 4, 5, 7, 8, 11, 12, 14, 16, 17, 19, 20, 22, 24, 25], acumulado: false },
-  { concurso: 3812, data: '24/10/2026', dezenas: [2, 3, 4, 6, 8, 9, 12, 13, 15, 16, 18, 21, 22, 23, 24], acumulado: false },
-  { concurso: 3811, data: '23/10/2026', dezenas: [1, 3, 5, 7, 8, 10, 11, 13, 14, 17, 18, 19, 20, 22, 25], acumulado: false },
-  { concurso: 3810, data: '22/10/2026', dezenas: [2, 4, 5, 6, 7, 9, 11, 12, 14, 15, 16, 18, 21, 23, 24], acumulado: false },
-  { concurso: 3809, data: '21/10/2026', dezenas: [1, 2, 3, 6, 8, 10, 12, 13, 15, 17, 19, 20, 22, 24, 25], acumulado: false },
-  { concurso: 3808, data: '20/10/2026', dezenas: [3, 4, 5, 7, 8, 9, 11, 13, 14, 16, 18, 20, 21, 23, 25], acumulado: false },
-  { concurso: 3807, data: '19/10/2026', dezenas: [1, 2, 4, 6, 7, 10, 11, 12, 15, 16, 17, 19, 21, 22, 24], acumulado: false },
-  { concurso: 3806, data: '18/10/2026', dezenas: [2, 3, 5, 6, 8, 9, 10, 13, 14, 17, 18, 20, 22, 23, 25], acumulado: false },
-  { concurso: 3805, data: '17/10/2026', dezenas: [1, 3, 4, 7, 8, 11, 12, 13, 15, 16, 18, 19, 21, 24, 25], acumulado: false }
-];
+// Base publicada com o site, gerada direto da API da Caixa.
+const SEED_INICIAL_MEGASENA = window.HISTORICO_OFICIAL?.megasena || [];
+const SEED_INICIAL_LOTOFACIL = window.HISTORICO_OFICIAL?.lotofacil || [];
 
 // Inicialização imediata com os últimos sorteios reais
 if (typeof baseConcursosMega === 'undefined' || !baseConcursosMega || baseConcursosMega.length < 10) {

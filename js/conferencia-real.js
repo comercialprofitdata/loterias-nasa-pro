@@ -91,6 +91,23 @@ function premioDaFaixa(resultado, acertos) {
   return faixa ? Number(faixa.premio) || 0 : 0;
 }
 
+function combinacoes(n, k) {
+  if (k < 0 || k > n) return 0;
+  let total = 1;
+  for (let i = 1; i <= k; i++) total = (total * (n - k + i)) / i;
+  return Math.round(total);
+}
+
+/** Jogo com mais dezenas equivale a várias apostas simples: soma todas as faixas. */
+function premioTotalDoBilhete(bilhete, resultado, acertos, faixas) {
+  const dezenasPorAposta = bilhete.modalidade === 'lotofacil' ? 15 : 6;
+  const n = (bilhete.dezenas || []).length;
+  return faixas.reduce((total, f) => {
+    const apostas = combinacoes(acertos, f.acertos) * combinacoes(n - acertos, dezenasPorAposta - f.acertos);
+    return total + apostas * premioDaFaixa(resultado, f.acertos);
+  }, 0);
+}
+
 function avaliarBilhete(bilhete, resultado) {
   const sorteadas = (resultado.dezenas || []).map(Number);
   const acertos = sorteadas.filter((d) => (bilhete.dezenas || []).map(Number).includes(d)).length;
@@ -101,7 +118,7 @@ function avaliarBilhete(bilhete, resultado) {
     acertos,
     dezenasSorteadas: sorteadas,
     concursoConferido: resultado.concurso,
-    premioGanho: faixa ? premioDaFaixa(resultado, acertos) : 0,
+    premioGanho: faixa ? premioTotalDoBilhete(bilhete, resultado, acertos, faixas) : 0,
     status: faixa ? faixa.rotulo : `${acertos} acertos (Não premiado)`,
     premiado: Boolean(faixa)
   };
@@ -220,8 +237,22 @@ function montarRegistroConcurso(resultado) {
   return registro;
 }
 
+// Bilhetes conferidos antes da correção da base podem ter status errado.
+function reabrirConferenciasAntigas() {
+  const chave = 'nasa_reconferencia_20261101';
+  if (localStorage.getItem(chave) || !Array.isArray(carteiraJogos)) return;
+  carteiraJogos.forEach((b) => {
+    b.conferido = false;
+    b.premioGanho = 0;
+    b.status = 'Aguardando conferência';
+  });
+  if (typeof salvarCarteiraStorage === 'function') salvarCarteiraStorage();
+  localStorage.setItem(chave, '1');
+}
+
 let conferindoAutomatico = false;
 async function conferirSorteiosPassadosAutomatico() {
+  reabrirConferenciasAntigas();
   if (conferindoAutomatico || !Array.isArray(carteiraJogos) || carteiraJogos.length === 0) return;
   const pendentes = carteiraJogos.filter(b => {
     if (b.conferido) return false;

@@ -14,8 +14,8 @@ const UPGRADE_CONFIG = {
       color: 'emerald',
       cta: 'Liberar 1 Jogo',
       features: [
-        '3 apostas calibradas com verificação cruzada',
-        'Bateria orbital completa (6 de 6 testes)',
+        '3 apostas geradas',
+        'Todos os indicadores do jogo',
         'Score de eficiência e raio-x detalhado'
       ]
     },
@@ -24,7 +24,7 @@ const UPGRADE_CONFIG = {
       name: 'Astronauta PRO',
       price: 'R$ 29,90',
       period: '/mês · recorrente',
-      badge: 'MAIS ESCOLHIDO',
+      badge: '',
       icon: '🚀',
       color: 'cyan',
       featured: true,
@@ -44,11 +44,11 @@ const UPGRADE_CONFIG = {
       badge: 'ECONOMIZE 45%',
       icon: '👑',
       color: 'amber',
-      cta: 'Garantir Anual VIP',
+      cta: 'Assinar anual',
       features: [
         'Todos os recursos do plano PRO liberados',
         'Economia direta de 45% (R$ 16,41/mês)',
-        'Canal VIP prioritário e atualizações antecipadas'
+        'Carteira e bolões sem limite'
       ]
     }
   ]
@@ -99,9 +99,9 @@ function generateUpgradeModalHTML() {
 
       <!-- Header -->
       <div class="modal-upgrade-header">
-        <h2 class="modal-upgrade-title">Diagnóstico Completo & Gestão Orbital</h2>
+        <h2 class="modal-upgrade-title">Organize seus jogos sem limite</h2>
         <p class="modal-upgrade-subtitle">
-          Desbloqueie os 6 Testes Orbitais, Matriz 4x4 e Fechamentos Matemáticos
+          Mais jogos, carteira e bolões. Isso não aumenta suas chances.
         </p>
       </div>
 
@@ -141,7 +141,7 @@ function generateUpgradeModalHTML() {
           <span class="free-gift-icon">🎁</span>
           <div>
             <strong>Plano Gratuito Ativo</strong>
-            <p>Cadastre-se para ganhar 3 diagnósticos orbitais completos de cortesia.</p>
+            <p>Cadastre-se para ganhar 3 análises completas de cortesia.</p>
           </div>
         </div>
       </div>

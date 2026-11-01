@@ -24,7 +24,7 @@ function abrirModalAnalisarNumeros() {
       <div class="text-left space-y-1">
         <h2 class="text-base font-black text-white">Já Tenho Meus Números</h2>
         <p class="text-xs text-slate-300 leading-relaxed">
-          Cole ou digite suas dezenas para rodar a telemetria orbital NASA instantânea.
+          Cole ou digite suas dezenas para ver os indicadores do jogo.
         </p>
       </div>
 

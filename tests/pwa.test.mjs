@@ -50,7 +50,7 @@ test('PWA: index.html é válido e carrega arquivos essenciais', () => {
   assert.ok(html.includes('manifest.json'), 'Deve linkar manifest.json');
   assert.ok(html.includes('css/app.css'), 'Deve linkar css/app.css');
   assert.ok(html.includes('js/app.js'), 'Deve carregar js/app.js');
-  assert.ok(html.includes('js/cockpit-inicio.js'), 'Deve carregar cockpit-inicio.js');
+  assert.ok(html.includes('js/historico-oficial.js'), 'Deve carregar a base oficial');
   assert.ok(html.includes('js/whatsapp-share.js'), 'Deve carregar whatsapp-share.js');
 });
 

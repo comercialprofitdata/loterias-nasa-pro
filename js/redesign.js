@@ -121,7 +121,7 @@ function criarSidebarDesktop() {
       <div class="sidebar-brand-icon">🚀</div>
       <div class="sidebar-brand-text">
         <span class="sidebar-brand-title">NASA PRO</span>
-        <span class="sidebar-brand-sub">COCKPIT ORBITAL</span>
+        <span class="sidebar-brand-sub">SEUS JOGOS EM ORDEM</span>
       </div>
       <span class="sidebar-version-badge">v3.2</span>
     </div>
@@ -208,7 +208,7 @@ function criarSidebarDesktop() {
         <span id="sidebar-lottery-name" class="font-bold text-[11px] text-emerald-400">MEGA-SENA</span>
         <span class="text-[9px] text-slate-400 font-mono ml-auto" id="sidebar-lottery-time">20h</span>
       </div>
-      <div class="sidebar-lottery-prize js-mega-premio" id="sidebar-lottery-prize">R$ 300M</div>
+      <div class="sidebar-lottery-prize js-mega-premio" id="sidebar-lottery-prize">—</div>
       <div class="sidebar-lottery-footer">
         <span class="text-[9px] text-slate-400">⏱️ <span class="js-megasena-countdown">Sincronizando...</span></span>
         <span class="text-[9px] text-cyan-400 font-mono">🔄 Caixa</span>
@@ -586,7 +586,7 @@ function createSimplifiedHome() {
         <!-- Botão Principal: Adaptativo por Modo de Experiência -->
         <button type="button" class="nasa-primary-cta" id="home-btn-hero-primary" onclick="executarAcaoPrincipalPorModo()">
           <span class="text-xl" id="home-hero-btn-icon">🚀</span>
-          <span id="home-hero-btn-label">GERAR JOGO CALIBRADO AGORA</span>
+          <span id="home-hero-btn-label">GERAR JOGO</span>
         </button>
 
         <!-- Botões Secundários: Caminho A ("Já tenho meus números") + Volante Manual -->
@@ -608,12 +608,12 @@ function createSimplifiedHome() {
           <div class="flex items-center gap-1.5">
             <span class="text-base">⚡</span>
             <div>
-              <h3 class="text-xs font-black text-white uppercase tracking-wide">Palpite de Ouro do Dia (IA NASA)</h3>
-              <span class="text-[10px] text-amber-300/90 font-mono">100% Calibrado na Matriz 4x4 • 6 Testes OK</span>
+              <h3 class="text-xs font-black text-white uppercase tracking-wide">Jogo rápido</h3>
+              <span class="text-[10px] text-amber-300/90 font-mono">Combinação gerada ao acaso. Não aumenta a chance.</span>
             </div>
           </div>
           <span id="home-rapido-score-badge" class="px-2 py-0.5 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[10px] font-mono font-black">
-            NOTA 99/100
+            
           </span>
         </div>
 
@@ -661,7 +661,7 @@ function createSimplifiedHome() {
             <span class="text-[10px] font-mono font-bold text-cyan-400">C(n,k)</span>
           </div>
           <div class="nasa-tool-title">Fechamentos</div>
-          <div class="nasa-tool-desc">Cerque 10 a 20 dezenas com economia de até 98%</div>
+          <div class="nasa-tool-desc">Combine de 10 a 20 dezenas em menos apostas. Cobre menos combinações.</div>
         </button>
 
         <button type="button" class="nasa-tool-tile" onclick="activateTab('analise'); tocarBeep('click');">
@@ -712,44 +712,9 @@ function createSimplifiedHome() {
         </div>
       </div>
 
-      <!-- SEÇÃO AUDITORIA: PROVA DOS FATOS NOS ÚLTIMOS 10 SORTEIOS CAIXA -->
-      <div id="home-secao-auditoria-caixa" class="bg-slate-900/95 border border-slate-800 rounded-2xl p-3.5 space-y-2.5">
-        <div class="flex items-center justify-between border-b border-slate-800/80 pb-2">
-          <div>
-            <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-cyan-950 border border-cyan-800 text-[9px] font-mono font-black text-cyan-300 uppercase">
-              <span>🔬</span> PROVA DOS FATOS
-            </div>
-            <h3 class="text-xs font-black text-white mt-0.5">Auditoria dos Últimos 10 Sorteios Oficiais</h3>
-          </div>
-          <span id="badge-pct-aprovados-home" class="px-2 py-0.5 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[10px] font-mono font-bold">
-            100% APROVADO
-          </span>
-        </div>
+      
 
-        <p class="text-[11px] text-slate-300 leading-relaxed" id="home-prova-fatos-resumo">
-          Toque em qualquer sorteio abaixo para carregá-lo no Volante e auditar seu comportamento nos 6 testes estatísticos:
-        </p>
-
-        <div id="home-lista-ultimos-sorteios-avaliados" class="space-y-1.5 max-h-[280px] overflow-y-auto pr-1 no-scrollbar">
-          <div class="text-center py-2 text-xs text-slate-400">Carregando auditoria dos concursos...</div>
-        </div>
-      </div>
-
-      <!-- 4. CARD COMPACTO DE CONTA / PLANO PRO -->
-      <div id="home-promo-pro-card" class="bg-gradient-to-r from-amber-950/50 via-slate-900 to-amber-950/40 border border-amber-500/50 rounded-2xl p-3.5 flex items-center justify-between gap-3">
-        <div class="space-y-0.5">
-          <div class="text-xs font-black text-amber-300 flex items-center gap-1.5">
-            <span>🔬</span>
-            <span>6 Testes Orbitais + Jogos Ilimitados</span>
-          </div>
-          <p class="text-[11px] text-slate-300 leading-snug">
-            Desbloqueie Entropia de Shannon, Qui-Quadrado, Curva de Gauss e Fechamentos completos.
-          </p>
-        </div>
-        <button type="button" onclick="abrirModalPaywall('home'); tocarBeep('click');" class="px-3 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 font-black text-xs whitespace-nowrap shadow active:scale-95 transition">
-          Ver Planos
-        </button>
-      </div>
+      
 
     </div>
   `;
@@ -877,7 +842,7 @@ function aplicarVisibilidadeSubAbaGerar() {
 
   const mostrar = (el, visivel) => {
     if (!el) return;
-    el.style.display = visivel ? '' : 'none';
+    el.style.display = visivel && !el.hidden ? '' : 'none';
   };
 
   // No desktop widescreen (>= 1024px), cockpit completo: exibe ambas as colunas sem esconder nada
@@ -1242,7 +1207,7 @@ function criarDrawerPerfilConfig() {
           <div class="flex items-center gap-2">
             <span>💬</span>
             <div>
-              <div class="text-emerald-400 font-black text-xs">Assistente Concierge no WhatsApp</div>
+              <div class="text-emerald-400 font-black text-xs">Envie seus números pelo WhatsApp</div>
               <div class="text-[10px] text-slate-400 font-sans font-normal">Envie seus números ou fotos de bilhetes</div>
             </div>
           </div>
@@ -1254,13 +1219,7 @@ function criarDrawerPerfilConfig() {
       <div class="space-y-1.5 pt-3 mt-3 border-t border-slate-800">
         <span class="text-[10px] font-mono uppercase tracking-wider text-slate-400 font-bold block">Conhecimento & Legal</span>
         
-        <button type="button" onclick="fecharDrawerPerfil(); abrirModalMestresLoteria();" class="w-full p-2.5 rounded-xl bg-slate-950 hover:bg-slate-900 border border-slate-800 text-xs font-bold text-white flex items-center justify-between text-left transition">
-          <div class="flex items-center gap-2">
-            <span>🏛️</span>
-            <span>Mestres da Loteria & Ciência</span>
-          </div>
-          <span class="text-slate-500 text-[10px]">Ver →</span>
-        </button>
+        
 
         <button type="button" onclick="fecharDrawerPerfil(); abrirModalTermosLGPD('termos');" class="w-full p-2.5 rounded-xl bg-slate-950 hover:bg-slate-900 border border-slate-800 text-xs font-bold text-slate-300 flex items-center justify-between text-left transition">
           <div class="flex items-center gap-2">
@@ -1612,14 +1571,14 @@ function atualizarProvaDosFatosRedesign() {
 
   const ultimos10 = base.slice(0, 10);
   if (ultimos10.length === 0) {
-    containerLista.innerHTML = `<div class="text-center py-2 text-xs text-slate-400">Sincronizando concursos oficiais com a Caixa...</div>`;
+    if (containerLista) containerLista.innerHTML = `<div class="text-center py-2 text-xs text-slate-400">Sincronizando concursos oficiais com a Caixa...</div>`;
     return;
   }
 
   let aprovadosCount = 0;
   const cardsHtml = ultimos10.map((c) => {
     const ordenado = [...c.dezenas].sort((a,b) => a - b);
-    const avaliacao = typeof avaliarJogo === 'function' ? avaliarJogo(ordenado, mod) : { score: 95, aprovadosCount: 6 };
+    const avaliacao = typeof avaliarJogo === 'function' ? avaliarJogo(ordenado, mod) : { score: null, aprovadosCount: 0 };
     if (avaliacao.aprovadosCount >= 5) aprovadosCount++;
 
     const bolinhasHtml = ordenado.map(d => `
@@ -1655,11 +1614,11 @@ function atualizarProvaDosFatosRedesign() {
   }).join('');
 
   const pct = Math.round((aprovadosCount / ultimos10.length) * 100);
-  if (badgePct) badgePct.innerText = `${pct}% APROVADO`;
+  if (badgePct) badgePct.innerText = '';
   if (resumoEl) {
     resumoEl.innerText = `${pct}% dos últimos 10 sorteios oficiais da Caixa atenderam aos 6 filtros orbitais de calibração estatística (toque em qualquer um para auditar no Volante):`;
   }
-  containerLista.innerHTML = cardsHtml;
+  if (containerLista) containerLista.innerHTML = cardsHtml;
 }
 
 /**
@@ -1895,7 +1854,7 @@ function abrirModalSeletorPerfil({ onboarding = false } = {}) {
             <span class="text-[9px] font-mono font-bold px-2 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-800">1 CLIQUE</span>
           </div>
           <p class="text-[11px] text-slate-400 leading-snug">
-            Palpites de ouro gerados pela IA na Home, já calibrados na Matriz 4x4. Sem fórmulas nem poluição. Perfeito para jogar em 5 segundos.
+            Jogos gerados automaticamente na Início, sem fórmulas. Perfeito para jogar em 5 segundos.
           </p>
         </div>
 
@@ -1909,7 +1868,7 @@ function abrirModalSeletorPerfil({ onboarding = false } = {}) {
             <span class="text-[9px] font-mono font-bold px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800">VOLANTE VIVO</span>
           </div>
           <p class="text-[11px] text-slate-400 leading-snug">
-            Volante manual no topo, Matriz 4x4 reagindo em tempo real a cada toque (linhas, colunas, área) e calibrador com score de telemetria.
+            Volante manual no topo, Matriz 4x4 reagindo em tempo real a cada toque (linhas, colunas, área) e resumo dos indicadores.
           </p>
         </div>
 
@@ -1923,7 +1882,7 @@ function abrirModalSeletorPerfil({ onboarding = false } = {}) {
             <span class="text-[9px] font-mono font-bold px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-800">TELEMETRIA TOTAL</span>
           </div>
           <p class="text-[11px] text-slate-400 leading-snug">
-            Auditoria completa dos últimos 10 sorteios da Caixa, a bateria dos 6 testes estatísticos aberta e detalhada, e simulador retrospectivo.
+            Últimos sorteios da Caixa e os 6 indicadores do jogo abertos e detalhados.
           </p>
         </div>
       </div>
@@ -1975,7 +1934,7 @@ function gerarPalpiteExpressHome({ silencioso = false } = {}) {
       : [1, 3, 4, 6, 8, 9, 11, 13, 15, 17, 18, 20, 22, 23, 25];
     jogoObj = {
       dezenas: dezenasPadrao,
-      analise: { score: 99, aprovadosCount: 6 }
+      analise: null
     };
   }
 

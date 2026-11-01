@@ -285,3 +285,17 @@ test('WhatsApp & Sincronização: Compactação e descompactação de carteira e
   assert.equal(recuperados[0].registradoComoJogado, true, 'Status jogado deve ser preservado');
   assert.equal(recuperados[1].modalidade, 'lotofacil', 'Modalidade deve ser preservada');
 });
+
+test('Base oficial: concursos completos, sem dezena repetida e em ordem', async () => {
+  const fs = await import('node:fs');
+  const texto = fs.readFileSync('js/historico-oficial.js', 'utf8');
+  const dados = JSON.parse(texto.slice(texto.indexOf('{'), texto.lastIndexOf('}') + 1));
+  for (const [mod, k, faixas] of [['megasena', 6, 3], ['lotofacil', 15, 5]]) {
+    assert.equal(dados[mod].length, 500);
+    dados[mod].forEach((c, i) => {
+      assert.equal(new Set(c.dezenas).size, k);
+      assert.equal(c.rateio.length, faixas);
+      if (i) assert.equal(dados[mod][i - 1].concurso, c.concurso + 1);
+    });
+  }
+});

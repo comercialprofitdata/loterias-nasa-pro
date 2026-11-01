@@ -74,14 +74,14 @@
       totalNumeros: 60,
       minDezenas: 6,
       maxDezenas: 20,
-      precoBase: 5.00,
+      precoBase: 6.00,
       totalCombinacoes: combinacao(60, 6),
       primos: [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59],
       fechamentos: [
           { id: 'mega_equilibrio_16', nome: 'Matriz de Equilíbrio (4x4 = 16 nºs)', n: 16, k: 6, jogos: 6 },
-        { id: 'mega_10_4', nome: '10 Dezenas (Cobertura de Quadra se 4 no grupo)', n: 10, k: 6, jogos: 3 },
-        { id: 'mega_12_4', nome: '12 Dezenas (Cobertura de Quadra se 4 no grupo)', n: 12, k: 6, jogos: 6 },
-        { id: 'mega_15_4', nome: '15 Dezenas (Cobertura de Quadra se 5 no grupo)', n: 15, k: 6, jogos: 14 }
+        { id: 'mega_10_4', nome: '10 Dezenas (combinações reduzidas, sem garantia)', n: 10, k: 6, jogos: 3 },
+        { id: 'mega_12_4', nome: '12 Dezenas (combinações reduzidas, sem garantia)', n: 12, k: 6, jogos: 6 },
+        { id: 'mega_15_4', nome: '15 Dezenas (combinações reduzidas, sem garantia)', n: 15, k: 6, jogos: 14 }
       ]
     };
 
@@ -90,14 +90,14 @@
       totalNumeros: 25,
       minDezenas: 15,
       maxDezenas: 20,
-      precoBase: 3.00,
+      precoBase: 3.50,
       totalCombinacoes: combinacao(25, 15),
       moldura: [1, 2, 3, 4, 5, 6, 10, 11, 15, 16, 20, 21, 22, 23, 24, 25],
       miolo: [7, 8, 9, 12, 13, 14, 17, 18, 19],
       primos: [2, 3, 5, 7, 11, 13, 17, 19, 23],
       fechamentos: [
-        { id: 'loto_18_14', nome: '18 Dezenas (Cobertura de 14 se 15 no grupo)', n: 18, k: 15, jogos: 8 },
-        { id: 'loto_20_13', nome: '20 Dezenas (Cobertura de 13 se 15 no grupo)', n: 20, k: 15, jogos: 12 }
+        { id: 'loto_18_14', nome: '18 Dezenas (combinações reduzidas, sem garantia)', n: 18, k: 15, jogos: 8 },
+        { id: 'loto_20_13', nome: '20 Dezenas (combinações reduzidas, sem garantia)', n: 20, k: 15, jogos: 12 }
       ]
     };
 
@@ -301,8 +301,8 @@
         multi_jogos: 'A geração simultânea de 2, 3 ou 5 apostas com verificação cruzada é exclusiva do Plano PRO.',
         carteira_limite: 'Você atingiu o limite de 2 bilhetes salvos no Plano Grátis. Faça upgrade para salvar bilhetes ilimitados.',
         lote_salvar: 'O salvamento e exportação em lote de todas as apostas requer o Plano PRO.',
-        bateria_testes: 'Este teste faz parte da Bateria Orbital completa, exclusiva do Plano PRO. O Plano Grátis mostra 2 dos 6 testes.',
-        score_telemetria: 'O Score de Eficiência é calculado a partir dos 6 Testes Orbitais completos — disponível apenas no Plano PRO.'
+        bateria_testes: 'Este indicador faz parte do plano Pro. O Plano Grátis mostra 2 dos 6 testes.',
+        score_telemetria: 'O resumo dos 6 indicadores está disponível no plano Pro.'
       };
 
       if (origem !== 'header' && origem !== 'home' && origem !== 'drawer' && origem !== 'banner_volante' && motivos[origem]) { toast(motivos[origem], '🔒'); }
@@ -385,7 +385,7 @@
 
       // Registrar Service Worker com Verificação Imediata de Atualizações
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js?v=20261101.1', { scope: './' })
+        navigator.serviceWorker.register('./sw.js?v=20261101.3', { scope: './' })
           .then((reg) => {
             console.log('[NASA Pro] Service Worker registrado. Verificando atualizações...');
             reg.update(); // força verificação no servidor imediatamente
@@ -530,7 +530,7 @@
           <button type="button" onclick="selecionarJogoDoLoteTela1(${idx})" class="px-2.5 py-1.5 rounded-xl border text-xs whitespace-nowrap transition flex items-center gap-1.5 ${estilo}">
             <span>🎯 Jogo #${aposta.id}</span>
             <span class="text-[10px] px-1.5 py-0.5 rounded ${ativo ? 'bg-slate-950/20 text-slate-950 font-black' : 'bg-slate-950 text-cyan-300 font-bold'}">Score: ${score}</span>
-            <span class="text-[9px] opacity-80">(${aprovados}/6 OK)</span>
+            <span class="text-[9px] opacity-80">(${aprovados}/6)</span>
           </button>
         `;
       }).join('');
@@ -1199,7 +1199,7 @@ function gerarApostaNasaComMatriz4x4() {
       gerarMultiplasApostas(qtdApostasDesejada, true);
       renderizarAbasJogosGeradosTela1();
       
-      toast(`${qtdApostasDesejada} aposta${qtdApostasDesejada > 1 ? 's' : ''} NASA calibrada${qtdApostasDesejada > 1 ? 's' : ''} na Matriz 4x4 gerada${qtdApostasDesejada > 1 ? 's' : ''}!`, "🚀");
+      toast(`${qtdApostasDesejada} aposta${qtdApostasDesejada > 1 ? 's' : ''} gerada${qtdApostasDesejada > 1 ? 's' : ''}!`, "🚀");
     }
 
 function gerarPalpiteInteligente() {
@@ -1272,7 +1272,7 @@ function gerarPalpiteInteligente() {
             elVazios.innerText = 'Nenhum (cobre os 4 quadrantes)';
             elVazios.className = 'text-emerald-400 text-xs font-bold';
           } else if (vazios.length === 1) {
-            elVazios.innerText = `${vazios[0]} livre (Zona de Escape NASA)`;
+            elVazios.innerText = `${vazios[0]} sem dezenas`;
             elVazios.className = 'text-cyan-400 text-xs font-bold';
           } else {
             elVazios.innerText = `⚠️ ${vazios.join(', ')} vazios (Aglomeração)`;
@@ -1286,10 +1286,10 @@ function gerarPalpiteInteligente() {
 
         if (elBadge) {
           if (dentroPadrao79) {
-            elBadge.innerText = '✅ 79.4% Calibrado';
+            elBadge.innerText = '✅ Dezenas espalhadas';
             elBadge.className = 'text-[9px] px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-700 font-bold ml-1';
           } else if (aglomerado) {
-            elBadge.innerText = '⚠️ Fora dos 79.4% (Aglomeração)';
+            elBadge.innerText = '⚠️ Dezenas concentradas';
             elBadge.className = 'text-[9px] px-2 py-0.5 rounded bg-rose-950 text-rose-300 border border-rose-800 font-bold ml-1';
           } else {
             elBadge.innerText = '⚖️ Dispersão Atípica';
@@ -1299,7 +1299,7 @@ function gerarPalpiteInteligente() {
 
         if (elStatus) {
           if (dentroPadrao79) {
-            elStatus.innerHTML = `<span class="text-emerald-300 font-bold">🎯 Calibrado no envelope ideal (${r}L x ${c}C)</span>`;
+            elStatus.innerHTML = `<span class="text-emerald-300 font-bold">Distribuição: ${r} linhas e ${c} colunas</span>`;
           } else if (aglomerado) {
             elStatus.innerHTML = `<span class="text-rose-400 font-bold">⚠️ Risco: Aglomeração em poucas linhas/colunas</span>`;
           } else {
@@ -1375,7 +1375,7 @@ function gerarPalpiteInteligente() {
         score += 10;
       }
 
-      let t1_status = 'Aprovado', t2_status = 'Aprovado', t3_status = 'Aprovado', t4_status = 'Aprovado', t5_status = 'Aprovado', t6_status = 'Aprovado';
+      let t1_status = 'Na faixa comum', t2_status = 'Na faixa comum', t3_status = 'Na faixa comum', t4_status = 'Na faixa comum', t5_status = 'Na faixa comum', t6_status = 'Na faixa comum';
       let t1_val = '', t2_val = '', t3_val = '', t4_val = '', t5_val = '', t6_val = '';
       let qCount = { Q1: 0, Q2: 0, Q3: 0, Q4: 0 };
       let zscore = 0, maxSeq = 1, maxRepFinal = 1, finaisCount = {};
@@ -1474,11 +1474,12 @@ function gerarPalpiteInteligente() {
       } else {
         const molduraCount = jogo.filter(x => LOTO_CONFIG.moldura.includes(x)).length;
         const mioloCount = n - molduraCount;
-        t1_val = `Distribuição em 5 Linhas: OK`;
-        t2_val = `Entropia: ${(molduraCount/n).toFixed(2)}`;
-        t3_val = `Aderência Matriz 5x5: OK`;
+        t1_status = t2_status = t3_status = t4_status = t5_status = t6_status = 'Informativo';
+        t1_val = `${n} dezenas`;
+        t2_val = `${molduraCount} na moldura`;
+        t3_val = `${mioloCount} no miolo`;
         t4_val = `${pares}P / ${impares}I (${jogo.filter(x => LOTO_CONFIG.primos.includes(x)).length} Primos)`;
-        t5_val = `Soma: ${soma} (Ideal: 180-220)`;
+        t5_val = `Soma: ${soma}`;
         t6_val = `${molduraCount} Moldura / ${mioloCount} Miolo`;
         score += 25;
       }
@@ -1488,7 +1489,7 @@ function gerarPalpiteInteligente() {
         { v: t1_val, s: t1_status }, { v: t2_val, s: t2_status }, { v: t3_val, s: t3_status },
         { v: t4_val, s: t4_status }, { v: t5_val, s: t5_status }, { v: t6_val, s: t6_status }
       ];
-      const aprovadosCount = testes.filter(t => t.s === 'Aprovado').length;
+      const aprovadosCount = testes.filter(t => t.s !== 'Alerta').length;
 
       return {
         score,
@@ -1505,6 +1506,12 @@ function gerarPalpiteInteligente() {
         aprovadosCount
       };
     }
+
+    function rotuloIndicadores(analise) {
+      if (analise?.testes?.[0]?.s === 'Informativo') return 'indicadores descritivos';
+      return `${analise?.aprovadosCount ?? 0}/6 na faixa comum`;
+    }
+    window.rotuloIndicadores = rotuloIndicadores;
 
     // SIMULADOR DE DESEMPENHO HISTÓRICO (RETRO-TESTE)
     function simularDesempenhoHistorico(jogo, mod) {
@@ -1746,14 +1753,14 @@ function gerarPalpiteInteligente() {
         const badge = document.getElementById(`badge-status-t${idx+1}`);
         if (badge) {
           badge.innerText = t.s;
-          badge.className = t.s === 'Aprovado' 
+          badge.className = t.s !== 'Alerta' 
             ? 'text-[9px] px-1.5 py-0.5 rounded font-mono font-bold bg-emerald-950 text-emerald-400 border border-emerald-800' 
             : 'text-[9px] px-1.5 py-0.5 rounded font-mono font-bold bg-rose-950 text-rose-400 border border-rose-800 animate-pulse';
         }
       });
 
       if (badgeTotal) {
-        badgeTotal.innerText = `${analise.aprovadosCount} de 6 Aprovados`;
+        badgeTotal.innerText = rotuloIndicadores(analise);
         badgeTotal.className = analise.aprovadosCount === 6 
           ? 'text-[10px] px-2 py-0.5 rounded font-mono font-bold bg-emerald-950 text-emerald-300 border border-emerald-800' 
           : 'text-[10px] px-2 py-0.5 rounded font-mono font-bold bg-amber-950 text-amber-300 border border-amber-800';
@@ -1762,7 +1769,7 @@ function gerarPalpiteInteligente() {
       if (elScoreNum) elScoreNum.innerText = analise.score;
       if (elScoreBarra) elScoreBarra.style.width = `${analise.score}%`;
       if (elScoreDiag) {
-        elScoreDiag.innerHTML = `Score de Telemetria: <strong class="text-cyan-300 font-bold">${analise.score}/100</strong> • Conformidade: <strong class="text-emerald-400 font-bold">${analise.aprovadosCount} de 6 Testes Orbitais Aprovados</strong>.`;
+        elScoreDiag.innerHTML = 'Indicadores descritivos: não alteram a chance de nenhuma combinação.';
       }
 
       if (modalidadeAtual === 'megasena') {
@@ -1854,7 +1861,7 @@ function gerarPalpiteInteligente() {
           id: i + 1,
           dezenas: jogoObj.dezenas,
           analise: jogoObj.analise,
-          tipo: usarVitorio ? 'Matriz 4x4' : 'NASA IA'
+          tipo: usarVitorio ? 'Matriz 4x4' : 'Gerador'
         });
       }
 
@@ -1926,7 +1933,7 @@ function gerarPalpiteInteligente() {
                   <span class="font-black text-white text-xs">#${aposta.id}</span>
                   ${estaNoVolante ? '<span class="px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800 text-[9px] font-bold">🎯 No Volante</span>' : ''}
                   <span class="text-[10px] text-cyan-300 font-bold bg-cyan-950/80 px-2 py-0.5 rounded border border-cyan-800">
-                    Score: ${aposta.analise.score}/100 (${aposta.analise.aprovadosCount}/6 OK)
+                    ${rotuloIndicadores(aposta.analise)}
                   </span>
                   <span class="text-[9px] text-slate-500 font-mono">[${aposta.tipo}]</span>
                 </div>
@@ -1957,7 +1964,7 @@ function gerarPalpiteInteligente() {
                   <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800 space-y-0.5">
                     <div class="flex justify-between items-center">
                       <span class="text-slate-400 font-bold">${nomesTestes[tIdx]}</span>
-                      <span class="${t.s === 'Aprovado' ? 'text-emerald-400 font-bold' : 'text-rose-400 font-bold'}">${t.s}</span>
+                      <span class="${t.s !== 'Alerta' ? 'text-emerald-400 font-bold' : 'text-rose-400 font-bold'}">${t.s}</span>
                     </div>
                     <div class="text-white text-[9px] truncate">${t.v}</div>
                   </div>
@@ -2176,7 +2183,7 @@ function gerarPalpiteInteligente() {
             <div class="flex items-center gap-3">
               <span class="w-8 h-8 rounded-xl bg-emerald-950 border border-emerald-500 text-emerald-400 flex items-center justify-center text-base shadow">🚀</span>
               <div>
-                <strong class="text-emerald-400 text-xs block font-mono uppercase tracking-wider">TELEMETRIA NOMINAL • 6 DE 6 APROVADOS</strong>
+                <strong class="text-emerald-400 text-xs block font-mono uppercase tracking-wider">6 DE 6 NA FAIXA COMUM</strong>
                 <span class="text-[11px] text-slate-300 font-sans block">Esta aposta passou com êxito em todos os 6 testes estatísticos aeroespaciais.</span>
               </div>
             </div>
@@ -2434,7 +2441,7 @@ function gerarPalpiteInteligente() {
         elBadge.className = 'text-xs px-2 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-800 font-bold';
         elDiag.innerHTML = `⚠️ <strong>Diagnóstico de Portfólio:</strong> Seus ${jogosMod.length} bilhetes têm alta concentração e deixaram o <strong>${gaps.join(', ') || 'algumas faixas'}</strong> sem nenhuma cobertura. Clique abaixo para gerar o próximo jogo compensatório.`;
       } else {
-        elBadge.innerText = 'Portfólio Calibrado';
+        elBadge.innerText = 'Jogos variados';
         elBadge.className = 'text-xs px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800 font-bold';
         elDiag.innerHTML = `✅ <strong>Excelente Cobertura:</strong> Suas apostas estão cobrindo ${dezenasUnicas} números sem desperdício de redundância.`;
       }
@@ -2472,7 +2479,7 @@ function gerarPalpiteInteligente() {
       executarAnaliseDinamicaDoJogo();
       executarAnaliseVitorio();
       mudarAba('volante');
-      toast("Próximo jogo calibrado e compensado gerado com sucesso!", "🎯");
+      toast("Próximo jogo gerado.", "🎯");
     }
 
     function sugerirDezenasFaltantes(dezenasAtuais, modalidade = 'megasena', qtdFaltam = 1, freqHistorica = null) {
@@ -2705,7 +2712,7 @@ function gerarPalpiteInteligente() {
       carteiraJogos.unshift({
         id: Date.now(),
         modalidade: modalidade,
-        nome: `${modalidade === 'lotofacil' ? 'Lotofácil' : 'Mega-Sena'} • Aposta Calibrada por IA (${sugestao.jogoCompleto.length} dez)`,
+        nome: `${modalidade === 'lotofacil' ? 'Lotofácil' : 'Mega-Sena'} • Aposta gerada (${sugestao.jogoCompleto.length} dez)`,
         dezenas: sugestao.jogoCompleto,
         data: data,
         concursoAlvo: concursoAlvo,
@@ -2932,7 +2939,7 @@ function gerarPalpiteInteligente() {
                   <span class="px-1.5 py-0.5 rounded font-black text-[9px] ${b.modalidade === 'megasena' ? 'bg-emerald-950 text-emerald-400 border border-emerald-800' : 'bg-purple-950 text-purple-400 border border-purple-800'}">${b.modalidade.toUpperCase()}</span>
                   <span class="text-cyan-300 text-[10px] font-bold bg-slate-900 px-1.5 py-0.5 rounded border border-slate-800">📅 ${b.data}</span>
                   <span class="text-[9px] px-1.5 py-0.5 rounded font-bold ${analise.aprovadosCount === 6 ? 'bg-emerald-950 text-emerald-300 border border-emerald-800' : 'bg-amber-950 text-amber-300 border border-amber-800'}">
-                    Score: ${analise.score}/100 (${analise.aprovadosCount}/6 OK)
+                    ${rotuloIndicadores(analise)}
                   </span>
                   ${b.conferido ? `<span class="text-[9px] font-bold ${b.premioGanho > 0 ? 'text-emerald-400 font-black' : 'text-slate-400'}">${b.status}</span>` : (ehPassado ? '<span class="text-[9px] text-amber-300 font-bold bg-amber-950/60 px-1.5 py-0.5 rounded border border-amber-800">Sorteio Realizado</span>' : '<span class="text-[9px] text-slate-400 font-bold bg-slate-900 px-1.5 py-0.5 rounded border border-slate-800">Aguardando Sorteio</span>')}
                 </div>
@@ -2966,7 +2973,7 @@ function gerarPalpiteInteligente() {
                     <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800 space-y-0.5">
                       <div class="flex justify-between items-center">
                         <span class="text-slate-400 font-bold truncate">${nomesTestes[tIdx]}:</span>
-                        <span class="font-bold ${t.s === 'Aprovado' ? 'text-emerald-400' : 'text-rose-400'}">${t.s}</span>
+                        <span class="font-bold ${t.s !== 'Alerta' ? 'text-emerald-400' : 'text-rose-400'}">${t.s}</span>
                       </div>
                       <div class="text-slate-300 font-mono text-[9px] truncate">${t.v}</div>
                     </div>
@@ -3184,7 +3191,7 @@ function gerarPalpiteInteligente() {
           setQtdJogosParaGerar(3);
           mudarAba('volante');
           gerarApostaNasaComMatriz4x4();
-          toast(`🎯 Orçamento R$ 15: 3 apostas simples calibradas geradas!`, '💰');
+          toast(`🎯 3 apostas simples geradas.`, '💰');
         } else if (valor <= 30) {
           mudarAba('fechamentos');
           const select = document.getElementById('select-tipo-fechamento');
@@ -3192,12 +3199,12 @@ function gerarPalpiteInteligente() {
             select.value = 'mega-12-quadra';
             atualizarResumoFechamento();
           }
-          toast(`🎯 Orçamento R$ 30: Fechamento 12 Dezenas (Quadra) ativado!`, '💰');
+          toast(`🎯 Fechamento 12 Dezenas (Quadra) ativado!`, '💰');
         } else if (valor <= 50) {
           setQtdJogosParaGerar(5);
           mudarAba('volante');
           gerarApostaNasaComMatriz4x4();
-          toast(`🎯 Orçamento R$ 50: 5 apostas equilibradas geradas!`, '💰');
+          toast(`🎯 5 apostas equilibradas geradas!`, '💰');
         } else {
           mudarAba('fechamentos');
           const select = document.getElementById('select-tipo-fechamento');
@@ -3212,7 +3219,7 @@ function gerarPalpiteInteligente() {
           setQtdJogosParaGerar(5);
           mudarAba('volante');
           gerarApostaNasaComMatriz4x4();
-          toast(`🎯 Orçamento R$ 15: 5 apostas Lotofácil geradas!`, '💰');
+          toast(`🎯 5 apostas Lotofácil geradas!`, '💰');
         } else if (valor <= 24) {
           mudarAba('fechamentos');
           const select = document.getElementById('select-tipo-fechamento');
@@ -3220,7 +3227,7 @@ function gerarPalpiteInteligente() {
             select.value = 'loto-17-14';
             atualizarResumoFechamento();
           }
-          toast(`🎯 Orçamento R$ 24: Fechamento 17 Dezenas (14 Pontos) ativado!`, '💰');
+          toast(`🎯 Fechamento 17 Dezenas (14 Pontos) ativado!`, '💰');
         } else if (valor <= 48) {
           mudarAba('fechamentos');
           const select = document.getElementById('select-tipo-fechamento');
@@ -3228,7 +3235,7 @@ function gerarPalpiteInteligente() {
             select.value = 'loto-16-total';
             atualizarResumoFechamento();
           }
-          toast(`🎯 Orçamento R$ 48: Fechamento Total 16 Dezenas ativado!`, '💰');
+          toast(`🎯 Fechamento Total 16 Dezenas ativado!`, '💰');
         } else {
           mudarAba('fechamentos');
           const select = document.getElementById('select-tipo-fechamento');
@@ -3236,7 +3243,7 @@ function gerarPalpiteInteligente() {
             select.value = 'loto-18-14';
             atualizarResumoFechamento();
           }
-          toast(`🎯 Orçamento R$ 72: Fechamento 18 Dezenas (14 Pontos) ativado!`, '💰');
+          toast(`🎯 Fechamento 18 Dezenas (14 Pontos) ativado!`, '💰');
         }
       }
     }
@@ -3825,7 +3832,7 @@ function executarDesdobramento() {
 
       const badgeScoreEl = document.getElementById('badge-score-auditoria');
       if (badgeScoreEl) {
-        badgeScoreEl.innerText = `Score: ${analise.score}/100 (${analise.aprovadosCount}/6 OK)`;
+        badgeScoreEl.innerText = `${rotuloIndicadores(analise)}`;
         badgeScoreEl.className = analise.aprovadosCount === 6 
           ? 'text-[10px] px-2 py-0.5 rounded font-bold bg-emerald-950 text-emerald-300 border border-emerald-800' 
           : 'text-[10px] px-2 py-0.5 rounded font-bold bg-amber-950 text-amber-300 border border-amber-800';
@@ -3845,7 +3852,7 @@ function executarDesdobramento() {
         if (valEl) valEl.innerText = t.v;
         if (badgeEl) {
           badgeEl.innerText = t.s;
-          badgeEl.className = t.s === 'Aprovado'
+          badgeEl.className = t.s !== 'Alerta'
             ? 'text-[9px] px-1.5 py-0.5 rounded font-bold bg-emerald-950 text-emerald-400 border border-emerald-800'
             : 'text-[9px] px-1.5 py-0.5 rounded font-bold bg-rose-950 text-rose-400 border border-rose-800';
         }
@@ -3871,7 +3878,7 @@ function executarDesdobramento() {
                 <div class="flex items-center gap-2">
                   <span class="text-xs font-black text-white">${j.titulo}</span>
                   <span class="text-[9px] px-1.5 py-0.5 rounded font-bold ${analiseItem.aprovadosCount === 6 ? 'bg-emerald-950 text-emerald-400 border border-emerald-800' : 'bg-amber-950 text-amber-400 border border-amber-800'}">
-                    Score: ${analiseItem.score}/100 (${analiseItem.aprovadosCount}/6 OK)
+                    ${rotuloIndicadores(analiseItem)}
                   </span>
                   ${ativo ? '<span class="text-[9px] px-1.5 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-800 font-bold">● Auditando</span>' : ''}
                 </div>
@@ -3894,7 +3901,7 @@ function executarDesdobramento() {
                   <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800 space-y-0.5 text-[9px]">
                     <div class="flex justify-between items-center">
                       <span class="text-slate-400 font-bold">${nomesTestes[tIdx]}</span>
-                      <span class="font-bold ${t.s === 'Aprovado' ? 'text-emerald-400' : 'text-rose-400'}">${t.s}</span>
+                      <span class="font-bold ${t.s !== 'Alerta' ? 'text-emerald-400' : 'text-rose-400'}">${t.s}</span>
                     </div>
                     <div class="text-white text-[9px] truncate">${t.v}</div>
                   </div>
@@ -4094,12 +4101,12 @@ function abrirModalDialog(msg, callback) {
       megasena: [
         {
           id: 'mega-10-quadra',
-          nome: '10 Dezenas • Cobertura de Quadra (10-6-4-4)',
+          nome: '10 Dezenas • Combinações reduzidas (3 jogos)',
           n: 10,
           k: 6,
           jogos: 3,
-          garantia: 'Quadra condicional (apenas se 4 sorteadas estiverem no grupo)',
-          economia: 'Economia de 98.5% (R$ 15 vs R$ 1.050)',
+          garantia: 'Cobertura parcial: não garante prêmio',
+          economia: 'Menos combinações que o jogo completo, com cobertura menor',
           // Matriz clássica 10-6-4-4
           linhas: [
             [0, 1, 2, 3, 4, 5],
@@ -4109,12 +4116,12 @@ function abrirModalDialog(msg, callback) {
         },
         {
           id: 'mega-12-quadra',
-          nome: '12 Dezenas • Cobertura de Quadra (12-6-4-4)',
+          nome: '12 Dezenas • Combinações reduzidas (6 jogos)',
           n: 12,
           k: 6,
           jogos: 6,
-          garantia: 'Quadra condicional (apenas se 4 sorteadas estiverem no grupo)',
-          economia: 'Economia de 99.3% (R$ 30 vs R$ 4.620)',
+          garantia: 'Cobertura parcial: não garante prêmio',
+          economia: 'Menos combinações que o jogo completo, com cobertura menor',
           // Matriz clássica 12-6-4-4
           linhas: [
             [0, 1, 2, 3, 4, 5],
@@ -4127,12 +4134,12 @@ function abrirModalDialog(msg, callback) {
         },
         {
           id: 'mega-10-quina',
-          nome: '10 Dezenas • Cobertura de Quina (10-6-5-5)',
+          nome: '10 Dezenas • Combinações reduzidas',
           n: 10,
           k: 6,
           jogos: 14,
-          garantia: 'Quina condicional (apenas se 5 sorteadas estiverem no grupo)',
-          economia: 'Economia de 93.3% (R$ 70 vs R$ 1.050)',
+          garantia: 'Cobertura parcial: não garante prêmio',
+          economia: 'Menos combinações que o jogo completo, com cobertura menor',
           linhas: [
             [0, 1, 2, 3, 4, 5], [0, 1, 2, 3, 6, 7], [0, 1, 4, 5, 6, 7],
             [2, 3, 4, 5, 6, 7], [0, 1, 2, 8, 9, 3], [0, 1, 4, 8, 9, 5],
@@ -4160,12 +4167,12 @@ function abrirModalDialog(msg, callback) {
         },
         {
           id: 'loto-17-14',
-          nome: '17 Dezenas • Cobertura de 14 Pontos (17-15-14-14)',
+          nome: '17 Dezenas • Combinações reduzidas',
           n: 17,
           k: 15,
           jogos: 8,
-          garantia: '14 Pontos condicionais (apenas se 14 sorteadas estiverem no grupo)',
-          economia: 'Economia de 94.1% (R$ 24 vs R$ 408)',
+          garantia: 'Cobertura parcial: não garante prêmio',
+          economia: 'Menos combinações que o jogo completo, com cobertura menor',
           linhas: [
             [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
             [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16],
@@ -4179,14 +4186,14 @@ function abrirModalDialog(msg, callback) {
         },
         {
           id: 'loto-18-14',
-          nome: '18 Dezenas • Cobertura de 14 Pontos (18-15-14-15)',
+          nome: '18 Dezenas • Combinações reduzidas',
           n: 18,
           k: 15,
           jogos: 24,
-          garantia: '14 Pontos condicionais (apenas se 15 sorteadas estiverem no grupo)',
-          economia: 'Economia de 97.1% (R$ 72 vs R$ 2.448)',
+          garantia: 'Cobertura parcial: não garante prêmio',
+          economia: 'Menos combinações que o jogo completo, com cobertura menor',
           // Amostragem combinatória otimizada 18-15-14-15
-          linhas: Array.from({length: 24}, (_, i) => {
+          linhas: Array.from({length: 6}, (_, i) => {
             const linha = [];
             const excluidas = [(i * 3) % 18, (i * 3 + 1) % 18, (i * 3 + 2) % 18];
             for (let j = 0; j < 18; j++) {
@@ -4197,11 +4204,11 @@ function abrirModalDialog(msg, callback) {
         },
         {
           id: 'loto-20-13',
-          nome: '20 Dezenas • Cobertura de 13 Pontos (20-15-13-15)',
+          nome: '20 Dezenas • Combinações reduzidas',
           n: 20,
           k: 15,
           jogos: 4,
-          garantia: '13 Pontos condicionais (apenas se 15 sorteadas estiverem no grupo)',
+          garantia: 'Cobertura parcial: não garante prêmio',
           economia: 'Apenas 4 jogos para cercar 80% do volante',
           linhas: [
             [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
@@ -4360,7 +4367,7 @@ function abrirModalDialog(msg, callback) {
     // AUTO-CALIBRAÇÃO DE JOGO COM IA (1-CLIQUE PARA ALCANÇAR SCORE 100)
     // =========================================================================
     function autoCalibrarJogoComIA() {
-      if (!verificarAcessoRecursoVip('Auto-Calibração com Inteligência Artificial')) return;
+      if (!verificarAcessoRecursoVip('Ajuste automático do jogo')) return;
       tocarSomNasa('ignicao');
       vibrarHaptico(30);
       const config = getConfigAtual();
@@ -4374,7 +4381,7 @@ function abrirModalDialog(msg, callback) {
       
       if (analiseAtual.aprovadosCount === 6) {
         tocarSomNasa('sucesso');
-        toast('⚡ O jogo já possui Score 100! Todos os 6 Testes Orbitais estão aprovados.', '🌟');
+        toast('Todos os 6 indicadores já estão na faixa comum.', '🌟');
         return;
       }
 
@@ -4410,7 +4417,7 @@ function abrirModalDialog(msg, callback) {
       executarAnaliseVitorio();
 
       tocarSomNasa('sucesso');
-      toast(`⚡ Trajetória Orbital Calibrada pela IA! Score: ${analiseAtual.aprovadosCount * 16.6 | 0}/100 (${analiseAtual.aprovadosCount}/6 Aprovados)`, '🚀');
+      toast('Jogo ajustado aos indicadores. Isso não aumenta a chance de acerto.', '✅');
     }
 
 
@@ -4457,7 +4464,7 @@ function abrirModalDialog(msg, callback) {
       container.classList.remove('hidden');
 
       const aprovadas = apostasAuditadasScanner.filter(a => a.analise.aprovadosCount >= 5).length;
-      resumo.innerText = `${apostasAuditadasScanner.length} Jogos Escaneados (${aprovadas} Aprovados para Jogar)`;
+      resumo.innerText = `${apostasAuditadasScanner.length} jogos lidos (${aprovadas} com 5 ou mais indicadores na faixa comum)`;
 
       lista.innerHTML = apostasAuditadasScanner.map(item => {
         const score = Math.round(item.analise.aprovadosCount * 16.6);
@@ -4465,7 +4472,7 @@ function abrirModalDialog(msg, callback) {
         let statusTexto = '🔴 Desperdício / Viciado';
         if (item.analise.aprovadosCount === 6) {
           badgeCor = 'bg-emerald-950 text-emerald-300 border-emerald-800';
-          statusTexto = '🟢 Ótimo (100% Calibrado)';
+          statusTexto = '🟢 6 de 6 na faixa comum';
         } else if (item.analise.aprovadosCount >= 4) {
           badgeCor = 'bg-amber-950 text-amber-300 border-amber-800';
           statusTexto = '🟡 Atenção / Leve Risco';
@@ -4509,7 +4516,7 @@ function abrirModalDialog(msg, callback) {
     function salvarAprovadasScannerNaCarteira() {
       const aprovadas = apostasAuditadasScanner.filter(a => a.analise.aprovadosCount >= 5);
       if (aprovadas.length === 0) {
-        toast('Nenhum jogo aprovado para salvar.', '⚠️');
+        toast('Nenhum jogo para salvar.', '⚠️');
         return;
       }
       const config = getConfigAtual();
@@ -4527,7 +4534,7 @@ function abrirModalDialog(msg, callback) {
       salvarCarteiraStorage();
       atualizarPainelCarteira();
       tocarSomNasa('sucesso');
-      toast(`${aprovadas.length} jogos aprovados salvos na carteira!`, '💾');
+      toast(`${aprovadas.length} jogos salvos na carteira.`, '💾');
     }
 
     function salvarApostasNaCarteiraAPartirDeTexto(texto) {
@@ -5835,7 +5842,7 @@ function abrirModalDialog(msg, callback) {
         salvarBaseUsuariosAdmin(base);
         tocarSomNasa('sucesso');
         fecharModalSimularWebhook();
-        toast(`💰 WEBHOOK APROVADO: Pagamento via ${gateway.toUpperCase()} confirmado para ${u.nome}! Plano ativado.`, '⚡');
+        toast(`Pagamento via ${gateway.toUpperCase()} confirmado para ${u.nome}! Plano ativado.`, '⚡');
       } else {
         u.status = 'bloqueado';
         salvarBaseUsuariosAdmin(base);

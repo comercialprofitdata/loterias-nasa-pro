@@ -105,7 +105,7 @@ function aplicarGateCientificoNasa() {
   }
 
   if (badgeTotal) {
-    badgeTotal.innerText = (pro || liberadoCortesia) ? '6 de 6 Aprovados' : '2 de 6 visíveis';
+    badgeTotal.innerText = (pro || liberadoCortesia) ? '6 indicadores' : '2 de 6 visíveis';
   }
 }
 

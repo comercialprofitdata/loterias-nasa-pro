@@ -9,7 +9,7 @@
       if ('caches' in window) {
         caches.keys().then(function(names) {
           names.forEach(function(name) {
-            if (!name.includes('v20261101.1')) {
+            if (!name.includes('v20261101.3')) {
               caches.delete(name);
             }
           });
@@ -17,64 +17,65 @@
       }
     } catch (_) {}
   </script>
-  <script src="./js/error-trap.js?v=20261101.1"></script>
+  <script src="./js/error-trap.js?v=20261101.3"></script>
   <link rel="manifest" href="./manifest.json" />
-  <script src="./supabase/config.js?v=20261101.1"></script>
+  <script src="./supabase/config.js?v=20261101.3"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <!-- Google Identity Services (Google Sign-In) -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <!-- Redesign NASA Pro (Resizable Desktop Sidebar + Clear Typography) -->
-  <link rel="stylesheet" href="./css/redesign.css?v=20261101.1" />
-  <script src="./js/redesign.js?v=20261101.1" defer></script>
+  <link rel="stylesheet" href="./css/redesign.css?v=20261101.3" />
+  <script src="./js/redesign.js?v=20261101.3" defer></script>
   <!-- Upgrade Modal (Elegant Checkout) -->
-  <link rel="stylesheet" href="./css/upgrade-modal.css?v=20261101.1" />
-  <script src="./js/upgrade-modal.js?v=20261101.1" defer></script>
+  <link rel="stylesheet" href="./css/upgrade-modal.css?v=20261101.3" />
+  <script src="./js/upgrade-modal.js?v=20261101.3" defer></script>
   <!-- Gerar Simplificada (Mobile-first, accessibility) -->
-  <link rel="stylesheet" href="./css/gerar-simplificado.css?v=20261101.1" />
+  <link rel="stylesheet" href="./css/gerar-simplificado.css?v=20261101.3" />
   <!-- Admin Dashboard (Professional Management) -->
-  <link rel="stylesheet" href="./css/admin-dashboard.css?v=20261101.1" />
-  <script src="./js/admin-dashboard.js?v=20261101.1" defer></script>
-  <script src="./js/admin-charts.js?v=20261101.1" defer></script>
+  <link rel="stylesheet" href="./css/admin-dashboard.css?v=20261101.3" />
+  <script src="./js/admin-dashboard.js?v=20261101.3" defer></script>
+  <script src="./js/admin-charts.js?v=20261101.3" defer></script>
   <!-- Micro-interactions (Sounds, Haptic, Animations) -->
-  <script src="./js/micro-interactions.js?v=20261101.1" defer></script>
+  <script src="./js/micro-interactions.js?v=20261101.3" defer></script>
   <!-- Science Gate (enforcement real do paywall + teaser dos 6 testes) -->
   <!-- Créditos de análise grátis (3 por cadastro, sem prazo) -->
-  <script src="./js/creditos-gratis.js?v=20261101.1" defer></script>
-  <script src="./js/science-gate.js?v=20261101.1" defer></script>
+  <script src="./js/creditos-gratis.js?v=20261101.3" defer></script>
+  <script src="./js/science-gate.js?v=20261101.3" defer></script>
   <!-- Caminho A: "Já tenho meus números" -->
-  <script src="./js/analisar-numeros.js?v=20261101.1" defer></script>
+  <script src="./js/analisar-numeros.js?v=20261101.3" defer></script>
   <!-- OAuth Login (Google + Meta) -->
-  <script src="./js/oauth-login.js?v=20261101.1" defer></script>
+  <script src="./js/oauth-login.js?v=20261101.3" defer></script>
   <!-- Testadores VIP & Feedbacks Periódicos -->
-  <script src="./js/feedback-testadores.js?v=20261101.1" defer></script>
+  <script src="./js/feedback-testadores.js?v=20261101.3" defer></script>
   <!-- Lead Capture (Email/WhatsApp on Home) -->
-  <script src="./js/lead-capture.js?v=20261101.1" defer></script>
+  <script src="./js/lead-capture.js?v=20261101.3" defer></script>
   <!-- Menu Fix (ensure bottom tab bar always visible) -->
-  <script src="./js/menu-fix.js?v=20261101.1" defer></script>
+  <script src="./js/menu-fix.js?v=20261101.3" defer></script>
   <!-- Acesso direto ao portal da Caixa (carrega antes de quem consome) -->
-  <script src="./js/caixa-api.js?v=20261101.1" defer></script>
+  <script src="./js/caixa-api.js?v=20261101.3" defer></script>
   <!-- Sorteios Reais (Real lottery data via APIs) -->
-  <script src="./js/sorteios-reais.js?v=20261101.1" defer></script>
+  <script src="./js/sorteios-reais.js?v=20261101.3" defer></script>
   <!-- Conferência de bilhetes contra o resultado oficial da Caixa -->
-  <script src="./js/conferencia-real.js?v=20261101.1" defer></script>
+  <script src="./js/conferencia-real.js?v=20261101.3" defer></script>
   <!-- Histórico oficial de concursos (base das análises estatísticas) -->
-  <script src="./js/historico-real.js?v=20261101.1" defer></script>
+  <script src="./js/historico-oficial.js?v=20261101.3" defer></script>
+  <script src="./js/historico-real.js?v=20261101.3" defer></script>
   <!-- Assinatura: o servidor decide quem é PRO -->
-  <script src="./js/assinatura.js?v=20261101.1" defer></script>
+  <script src="./js/assinatura.js?v=20261101.3" defer></script>
   <!-- Checkout real via Asaas (PIX e cartão) -->
-  <script src="./js/checkout-asaas.js?v=20261101.1" defer></script>
+  <script src="./js/checkout-asaas.js?v=20261101.3" defer></script>
   <!-- Contexto: remove a venda externa quando roda como app da Play Store -->
-  <script src="./js/contexto-loja.js?v=20261101.1" defer></script>
+  <script src="./js/contexto-loja.js?v=20261101.3" defer></script>
   <!-- Simulador Retrospectivo ("E se eu tivesse jogado?") -->
-  <script src="./js/simulador-retrospectivo.js?v=20261101.1" defer></script>
+  <script src="./js/simulador-retrospectivo.js?v=20261101.3" defer></script>
   <!-- Espelho de Volantes para Impressão A4 e PDF -->
-  <script src="./js/volante-impressao.js?v=20261101.1" defer></script>
+  <script src="./js/volante-impressao.js?v=20261101.3" defer></script>
   <!-- Programa dos 20 Testadores VIP Google Play -->
-  <script src="./js/testadores-vip.js?v=20261101.1" defer></script>
+  <script src="./js/testadores-vip.js?v=20261101.3" defer></script>
   <!-- Gestão de Carteira em Lotes (High-Capacity UX) -->
-  <script src="./js/carteira-gestao.js?v=20261101.1" defer></script>
+  <script src="./js/carteira-gestao.js?v=20261101.3" defer></script>
   <!-- Telemetria & Calibração Global de Jogos dos Usuários -->
-  <script src="./js/admin-telemetria.js?v=20261101.1" defer></script>
+  <script src="./js/admin-telemetria.js?v=20261101.3" defer></script>
   <link rel="apple-touch-icon" href="./icon-192.png" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
@@ -464,11 +465,11 @@
     <!-- Nível 1: Telemetria & Flight Ops -->
     <div class="px-3 sm:px-4 py-1.5 bg-slate-950 border-b border-cyan-950/60 flex items-center justify-between text-[9px] font-mono text-cyan-400 max-w-lg lg:max-w-6xl xl:max-w-7xl mx-auto">
       <div class="flex items-center gap-1.5 sm:gap-2">
-        <span class="text-base animate-rocket" title="NASA Artemis Orbital Vehicle">🚀</span>
+        <span class="text-base animate-rocket" >🚀</span>
         <div class="flex items-center gap-1.5">
           <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
           <span class="font-black tracking-wider text-white">LOTERIAS NASA</span>
-          <span class="text-cyan-500 font-bold hidden md:inline">// COCKPIT DE TELEMETRIA</span>
+          <span class="text-cyan-500 font-bold hidden md:inline"></span>
         </div>
       </div>
       <div class="flex items-center gap-1.5 sm:gap-2">
@@ -711,7 +712,7 @@
               <span id="qtd-selecionadas">6</span> / <span id="max-selecao-label">20</span> dezenas
             </span>
             <span id="badge-custo-inline" class="px-2.5 py-0.5 rounded-lg bg-cyan-500/15 border border-cyan-500/35 text-cyan-300 font-bold text-xs">
-              R$ 5,00
+              R$ 6,00
             </span>
           </div>
         </div>
@@ -763,7 +764,7 @@
         <div class="pt-1">
           <button type="button" onclick="gerarApostaNasaComMatriz4x4()" class="w-full py-3.5 px-4 btn-rocket-launch text-slate-950 font-black text-sm rounded-2xl active:scale-95 transition flex items-center justify-center gap-2 font-sans tracking-wide cursor-pointer">
             <span class="text-lg">🚀</span>
-            <span id="txt-btn-gerar-principal" class="tracking-wide">GERAR JOGO CALIBRADO</span>
+            <span id="txt-btn-gerar-principal" class="tracking-wide">GERAR JOGO</span>
           </button>
         </div>
 
@@ -780,7 +781,7 @@
         <div class="space-y-1.5 pt-1">
           <div class="flex justify-between items-center text-[11px]">
             <span id="label-titulo-jogo-ativo" class="text-slate-400 font-bold">Toque numa bola para fixar (📌):</span>
-            <span id="custo-jogo-selecionado" class="text-emerald-400 font-black font-mono">R$ 5,00 (1 aposta)</span>
+            <span id="custo-jogo-selecionado" class="text-emerald-400 font-black font-mono">R$ 6,00 (1 aposta)</span>
           </div>
           
 <div id="display-meu-jogo" class="flex flex-wrap gap-2 min-h-[54px] p-3 rounded-2xl bg-slate-950 border border-slate-800 items-center justify-center"></div>
@@ -804,7 +805,7 @@
               <button type="button" onclick="salvarJogoAtivoNaCarteira(); if(typeof tocarSomNasa === 'function') tocarSomNasa('sucesso');" class="py-2 px-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-cyan-300 font-bold border border-slate-700 active:scale-95 transition flex items-center justify-center gap-1">
                 <span>💼</span> Salvar
               </button>
-              <button type="button" onclick="abrirSimuladorRetrospectivo()" class="py-2 px-2 rounded-xl bg-cyan-950 hover:bg-cyan-900 border border-cyan-800 text-cyan-300 font-bold active:scale-95 transition flex items-center justify-center gap-1" title="Simular acertos nos últimos concursos da Caixa">
+              <button hidden type="button" onclick="abrirSimuladorRetrospectivo()" class="py-2 px-2 rounded-xl bg-cyan-950 hover:bg-cyan-900 border border-cyan-800 text-cyan-300 font-bold active:scale-95 transition flex items-center justify-center gap-1" title="Simular acertos nos últimos concursos da Caixa">
                 <span>🔬</span> Simular
               </button>
               <button type="button" onclick="imprimirJogosVolante()" class="py-2 px-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-amber-300 font-bold active:scale-95 transition flex items-center justify-center gap-1" title="Imprimir volante em A4 ou salvar como PDF">
@@ -864,7 +865,7 @@
           <div class="flex items-center gap-1.5 flex-wrap">
             <span class="text-base">📐</span>
             <h3 class="text-xs font-black text-white font-sans uppercase">Distribuição no Volante (Sem Aglomeração)</h3>
-            <span id="vit-badge-matriz" class="text-[9px] px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-800 font-bold ml-1">79.4% dos Concursos</span>
+            <span id="vit-badge-matriz" class="text-[9px] px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-800 font-bold ml-1">Distribuição</span>
           </div>
           <div class="flex items-center gap-1 text-cyan-400 text-xs font-bold">
             <span class="text-[10px] text-slate-400 font-sans hidden sm:inline">Expandir/Recolher</span>
@@ -889,14 +890,14 @@
           </div>
 
           <div class="flex justify-between items-center text-xs pt-1 border-t border-slate-800/80">
-            <span class="text-slate-400 font-sans text-[11px]">Área Vazia Proposital (Técnica NASA):</span>
+            <span class="text-slate-400 font-sans text-[11px]">Quadrante sem dezenas:</span>
             <strong id="vit-quad-vazios" class="text-emerald-400 text-xs">-</strong>
           </div>
 
           <div class="flex items-center justify-between text-xs pt-1.5 border-t border-slate-800/80">
             <span class="text-slate-400 font-sans text-[11px]">Calibração da Matriz:</span>
             <span id="vit-status-calibracao" class="px-2 py-0.5 rounded-md bg-emerald-950/80 text-emerald-300 border border-emerald-800/80 font-mono text-[10px] font-bold">
-              ✅ Calibrado no Padrão
+              Distribuição do jogo
             </span>
           </div>
         </div>
@@ -906,16 +907,16 @@
       <div id="painel-score-telemetria" class="bg-gradient-to-br from-slate-900 via-slate-900 to-cyan-950/50 border border-cyan-800/60 rounded-3xl p-4 shadow-xl font-mono relative">
         <div class="flex justify-between items-center">
           <div>
-            <span class="text-[9px] uppercase tracking-widest font-black text-cyan-400 block mb-0.5">TELEMETRIA NASA</span>
-            <h2 class="text-sm font-black text-white font-sans">Nota de Equilíbrio do Jogo</h2>
+            <span class="text-[9px] uppercase tracking-widest font-black text-cyan-400 block mb-0.5">RESUMO</span>
+            <h2 class="text-sm font-black text-white font-sans">Indicadores do jogo</h2>
           </div>
-          <div class="px-3 py-1.5 rounded-xl bg-slate-950 border border-cyan-400 flex items-baseline gap-1 shadow-lg shadow-cyan-500/20">
+          <div hidden class="px-3 py-1.5 rounded-xl bg-slate-950 border border-cyan-400 items-baseline gap-1 shadow-lg shadow-cyan-500/20">
             <span id="score-numero" class="text-xl font-black text-cyan-300 leading-none">--</span>
             <span class="text-[10px] text-slate-400 font-bold">/100</span>
           </div>
         </div>
 
-        <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden mt-3">
+        <div hidden class="w-full bg-slate-800 h-2 rounded-full overflow-hidden mt-3">
           <div id="score-barra" class="bg-gradient-to-r from-teal-500 via-cyan-400 to-emerald-400 h-full rounded-full transition-all duration-700" style="width: 0%"></div>
         </div>
         <p id="score-diagnostico-texto" class="text-[11px] text-slate-300 mt-2 leading-relaxed font-sans">
@@ -937,7 +938,7 @@
           </div>
           <div class="flex items-center gap-2">
             <span id="badge-total-testes-ok" class="text-[10px] px-2 py-0.5 rounded font-bold bg-emerald-950 text-emerald-300 border border-emerald-800">
-              6 de 6 Aprovados
+              6 indicadores
             </span>
             <span id="seta-bateria-testes" class="text-cyan-400 text-sm font-bold">⯆</span>
           </div>
@@ -947,28 +948,28 @@
           <!-- 1º TESTE (Livre no Plano Grátis) -->
           <div id="teste-card-1" class="p-2.5 bg-slate-950 rounded-xl border border-slate-800 space-y-1 relative">
             <div class="flex justify-between items-center">
-              <span class="text-[10px] font-bold text-slate-400 uppercase">1º Sem Sequências Viciadas (95%)</span>
-              <span id="badge-status-t1" class="text-[9px] px-1.5 py-0.5 rounded font-bold bg-emerald-950 text-emerald-400 border border-emerald-800">Aprovado</span>
+              <span class="text-[10px] font-bold text-slate-400 uppercase">1º Sem Sequências Viciadas</span>
+              <span id="badge-status-t1" class="text-[9px] px-1.5 py-0.5 rounded font-bold bg-emerald-950 text-emerald-400 border border-emerald-800">Na faixa comum</span>
             </div>
             <strong id="val-t1" class="text-white text-xs font-bold block truncate">-</strong>
-            <p class="text-[10px] text-slate-400 leading-tight font-sans">Evita números colados (ex: 1, 2, 3) ou linhas inteiras que quase nunca saem.</p>
+            <p class="text-[10px] text-slate-400 leading-tight font-sans">Mostra se o jogo tem números em sequência. Isso não muda a chance de sair.</p>
           </div>
 
           <!-- 2º TESTE (PRO) -->
           <div id="teste-card-2" class="p-2.5 bg-slate-950 rounded-xl border border-slate-800 space-y-1 relative">
             <div class="flex justify-between items-center">
-              <span class="text-[10px] font-bold text-slate-400 uppercase">2º Espalhamento no Bilhete (93%)</span>
-              <span id="badge-status-t2" class="text-[9px] px-1.5 py-0.5 rounded font-bold bg-emerald-950 text-emerald-400 border border-emerald-800">Aprovado</span>
+              <span class="text-[10px] font-bold text-slate-400 uppercase">2º Espalhamento no Bilhete</span>
+              <span id="badge-status-t2" class="text-[9px] px-1.5 py-0.5 rounded font-bold bg-emerald-950 text-emerald-400 border border-emerald-800">Na faixa comum</span>
             </div>
             <strong id="val-t2" class="text-white text-xs font-bold block">0.000 bits</strong>
-            <p class="text-[10px] text-slate-400 leading-tight font-sans">Garante que os números estejam espalhados por todo o cartão.</p>
+            <p class="text-[10px] text-slate-400 leading-tight font-sans">Mostra como os números se espalham pelo cartão.</p>
           </div>
 
           <!-- 3º TESTE (PRO) -->
           <div id="teste-card-3" class="p-2.5 bg-slate-950 rounded-xl border border-slate-800 space-y-1 relative">
             <div class="flex justify-between items-center">
-              <span class="text-[10px] font-bold text-slate-400 uppercase">3º Equilíbrio Espacial (87%)</span>
-              <span id="badge-status-t3" class="text-[9px] px-1.5 py-0.5 rounded font-bold bg-emerald-950 text-emerald-400 border border-emerald-800">Aprovado</span>
+              <span class="text-[10px] font-bold text-slate-400 uppercase">3º Equilíbrio Espacial</span>
+              <span id="badge-status-t3" class="text-[9px] px-1.5 py-0.5 rounded font-bold bg-emerald-950 text-emerald-400 border border-emerald-800">Na faixa comum</span>
             </div>
             <strong id="val-t3" class="text-white text-xs font-bold block">χ² = 0.00</strong>
             <p class="text-[10px] text-slate-400 leading-tight font-sans">Impede que todos os números fiquem amontoados em um único canto.</p>
@@ -977,28 +978,28 @@
           <!-- 4º TESTE (Livre no Plano Grátis) -->
           <div id="teste-card-4" class="p-2.5 bg-slate-950 rounded-xl border border-slate-800 space-y-1 relative">
             <div class="flex justify-between items-center">
-              <span class="text-[10px] font-bold text-slate-400 uppercase">4º Pares, Ímpares e Primos (84%)</span>
-              <span id="badge-status-t4" class="text-[9px] px-1.5 py-0.5 rounded font-bold bg-emerald-950 text-emerald-400 border border-emerald-800">Aprovado</span>
+              <span class="text-[10px] font-bold text-slate-400 uppercase">4º Pares, Ímpares e Primos</span>
+              <span id="badge-status-t4" class="text-[9px] px-1.5 py-0.5 rounded font-bold bg-emerald-950 text-emerald-400 border border-emerald-800">Na faixa comum</span>
             </div>
             <strong id="val-t4" class="text-white text-xs font-bold block">-</strong>
-            <p class="text-[10px] text-slate-400 leading-tight font-sans">Mantém a proporção que mais sai na história dos sorteios.</p>
+            <p class="text-[10px] text-slate-400 leading-tight font-sans">Mostra quantos números pares, ímpares e primos o jogo tem.</p>
           </div>
 
           <!-- 5º TESTE (PRO) -->
           <div id="teste-card-5" class="p-2.5 bg-slate-950 rounded-xl border border-slate-800 space-y-1 relative">
             <div class="flex justify-between items-center">
-              <span class="text-[10px] font-bold text-slate-400 uppercase">5º Soma Equilibrada (82%)</span>
-              <span id="badge-status-t5" class="text-[9px] px-1.5 py-0.5 rounded font-bold bg-emerald-950 text-emerald-400 border border-emerald-800">Aprovado</span>
+              <span class="text-[10px] font-bold text-slate-400 uppercase">5º Soma Equilibrada</span>
+              <span id="badge-status-t5" class="text-[9px] px-1.5 py-0.5 rounded font-bold bg-emerald-950 text-emerald-400 border border-emerald-800">Na faixa comum</span>
             </div>
             <strong id="val-t5" class="text-white text-xs font-bold block">Soma: 0</strong>
-            <p class="text-[10px] text-slate-400 leading-tight font-sans">A soma dos números fica na faixa onde ocorrem mais de 80% dos prêmios.</p>
+            <p class="text-[10px] text-slate-400 leading-tight font-sans">Mostra a soma das dezenas em comparação com sorteios anteriores.</p>
           </div>
 
           <!-- 6º TESTE (PRO) -->
           <div id="teste-card-6" class="p-2.5 bg-slate-950 rounded-xl border border-slate-800 space-y-1 relative">
             <div class="flex justify-between items-center">
-              <span class="text-[10px] font-bold text-slate-400 uppercase">6º Balanço por Quadrantes (81%)</span>
-              <span id="badge-status-t6" class="text-[9px] px-1.5 py-0.5 rounded font-bold bg-emerald-950 text-emerald-400 border border-emerald-800">Aprovado</span>
+              <span class="text-[10px] font-bold text-slate-400 uppercase">6º Balanço por Quadrantes</span>
+              <span id="badge-status-t6" class="text-[9px] px-1.5 py-0.5 rounded font-bold bg-emerald-950 text-emerald-400 border border-emerald-800">Na faixa comum</span>
             </div>
             <strong id="val-t6" class="text-white text-xs font-bold block truncate">-</strong>
             <p class="text-[10px] text-slate-400 leading-tight font-sans">Distribui as dezenas proporcionalmente nos 4 cantos do volante.</p>
@@ -1016,7 +1017,7 @@
             </h3>
           </div>
           <div class="flex items-center gap-2">
-            <span class="text-[9px] text-amber-300 bg-amber-950 px-2 py-0.5 rounded border border-amber-800 font-bold">NASA IA</span>
+            <span class="text-[9px] text-amber-300 bg-amber-950 px-2 py-0.5 rounded border border-amber-800 font-bold">Gerador</span>
             <span id="seta-sugestao-troca" class="text-amber-400 text-sm font-bold">⯆</span>
           </div>
         </div>
@@ -1024,7 +1025,7 @@
       </div>
 
       <!-- SIMULADOR DE DESEMPENHO HISTÓRICO INSTANTÂNEO (RETRO-TESTE) -->
-      <div id="card-simulador-historico" class="bg-gradient-to-br from-slate-900 via-slate-900 to-indigo-950/40 border border-indigo-800/50 rounded-3xl p-4 space-y-3 font-mono shadow-xl">
+      <div id="card-simulador-historico" hidden class="bg-gradient-to-br from-slate-900 via-slate-900 to-indigo-950/40 border border-indigo-800/50 rounded-3xl p-4 space-y-3 font-mono shadow-xl">
         <div class="flex justify-between items-center cursor-pointer select-none" onclick="alternarCard('conteudo-simulador-historico', 'seta-simulador-historico')" title="Clique para abrir ou fechar a retro-conferência">
           <div class="flex items-center gap-1.5">
             <span class="text-base">⏳</span>
@@ -1103,7 +1104,7 @@
         <div class="space-y-0.5">
           <div class="flex items-center gap-2">
             <span class="w-6 h-6 rounded-lg bg-emerald-500/20 border border-emerald-500/50 text-emerald-400 flex items-center justify-center text-xs">💬</span>
-            <span class="text-xs font-black text-white">Assistente NASA Concierge no WhatsApp</span>
+            <span class="text-xs font-black text-white">Envie seus números pelo WhatsApp</span>
             <span class="px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-300 text-[9px] font-mono font-bold">Oficial</span>
           </div>
           <p class="text-[11px] text-slate-300 leading-snug">
@@ -1238,7 +1239,7 @@
           <div class="flex justify-between items-center text-xs">
             <span id="scanner-resumo-info" class="text-white font-bold">-</span>
             <button type="button" onclick="salvarAprovadasScannerNaCarteira()" class="text-emerald-400 text-[11px] font-bold underline">
-              💾 Salvar Aprovadas na Carteira
+              💾 Salvar na Carteira
             </button>
           </div>
           <div id="scanner-lista-auditoria" class="space-y-1.5 max-h-60 overflow-y-auto pr-1 no-scrollbar"></div>
@@ -1273,7 +1274,7 @@
         <p id="calibracao-diagnostico-txt" class="text-[11px] text-slate-300 leading-relaxed font-sans"></p>
 
         <button onclick="gerarProximoJogoCalibrado()" class="w-full py-2.5 bg-gradient-to-r from-cyan-600 via-teal-500 to-emerald-500 hover:from-cyan-500 hover:to-emerald-400 text-slate-950 font-black text-xs rounded-xl shadow transition active:scale-95 flex items-center justify-center gap-1.5 font-sans">
-          <span>⚡</span> GERAR PRÓXIMO JOGO CALIBRADO (COMPLEMENTAR GAPS)
+          <span>⚡</span> GERAR PRÓXIMO JOGO
         </button>
       </div>
 
@@ -1322,7 +1323,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
           <div>
             <label class="text-[10px] font-bold text-slate-400 uppercase block mb-1">Nome do Bolão</label>
-            <input id="bolao-nome" type="text" value="Bolão Oficial NASA" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-bold focus:outline-none focus:border-teal-500" />
+            <input id="bolao-nome" type="text" value="" placeholder="Ex: Bolão da família" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-bold focus:outline-none focus:border-teal-500" />
           </div>
           <div>
             <label class="text-[10px] font-bold text-slate-400 uppercase block mb-1">Número de Cotas (Participantes)</label>
@@ -1400,7 +1401,7 @@
           <p class="text-[11px] text-slate-400 font-sans">
             Escolha quanto deseja investir nesta rodada para calibrar o fechamento ideal:
           </p>
-          <div class="grid grid-cols-5 gap-1.5 font-mono text-xs">
+          <div hidden class="grid grid-cols-5 gap-1.5 font-mono text-xs">
             <button type="button" onclick="aplicarOrcamentoInteligente(15)" class="py-2 px-1 rounded-xl bg-slate-900 hover:bg-emerald-600 hover:text-slate-950 border border-slate-800 text-slate-200 font-bold transition active:scale-95 text-center">R$ 15</button>
             <button type="button" onclick="aplicarOrcamentoInteligente(24)" class="py-2 px-1 rounded-xl bg-slate-900 hover:bg-emerald-600 hover:text-slate-950 border border-slate-800 text-slate-200 font-bold transition active:scale-95 text-center">R$ 24</button>
             <button type="button" onclick="aplicarOrcamentoInteligente(30)" class="py-2 px-1 rounded-xl bg-slate-900 hover:bg-emerald-600 hover:text-slate-950 border border-slate-800 text-slate-200 font-bold transition active:scale-95 text-center">R$ 30</button>
@@ -1468,7 +1469,7 @@
             <button type="button" onclick="compartilharFechamentoWhatsapp()" class="px-2.5 py-1.5 bg-emerald-700 hover:bg-emerald-600 text-white font-bold text-[11px] rounded-xl flex items-center gap-1 active:scale-95 transition">
               📱 WhatsApp
             </button>
-            <button type="button" onclick="abrirSimuladorRetrospectivo()" class="px-2.5 py-1.5 bg-cyan-800 hover:bg-cyan-700 text-cyan-200 font-bold text-[11px] rounded-xl flex items-center gap-1 active:scale-95 transition" title="Simular acertos deste fechamento contra últimos concursos">
+            <button hidden type="button" onclick="abrirSimuladorRetrospectivo()" class="px-2.5 py-1.5 bg-cyan-800 hover:bg-cyan-700 text-cyan-200 font-bold text-[11px] rounded-xl flex items-center gap-1 active:scale-95 transition" title="Simular acertos deste fechamento contra últimos concursos">
               🔬 E se jogasse?
             </button>
             <button type="button" onclick="imprimirJogosVolante()" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-600/40 font-bold text-[11px] rounded-xl flex items-center gap-1 active:scale-95 transition" title="Imprimir volantes ou salvar como PDF">
@@ -2268,81 +2269,11 @@
     </div>
 
   
-    <!-- MODAL DE MESTRES & ESTRATEGISTAS DA LOTERIA -->
-    <div id="modal-mestres-loteria" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center p-4">
-      <div class="bg-slate-900 border-2 border-slate-700 rounded-3xl max-w-2xl w-full max-h-[85vh] flex flex-col p-5 sm:p-6 shadow-2xl relative font-sans">
-        <button onclick="fecharModalMestresLoteria()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg font-bold">✕</button>
-
-        <div class="flex items-center gap-2 border-b border-slate-800 pb-3">
-          <span class="text-2xl">🏛️</span>
-          <div>
-            <h3 class="text-sm sm:text-base font-black text-white uppercase">Mestres & Estrategistas da Loteria</h3>
-            <p class="text-[11px] text-cyan-400 font-mono">Ciência matemática e combinatória que fundamenta a ferramenta</p>
-          </div>
-        </div>
-
-        <div class="overflow-y-auto py-4 space-y-3 text-xs text-slate-300 leading-relaxed pr-1 font-sans flex-1">
-          <div class="p-3 rounded-2xl bg-slate-950 border border-slate-800 space-y-1">
-            <div class="flex items-center justify-between">
-              <strong class="text-white text-xs flex items-center gap-1.5">
-                <span class="text-cyan-400 font-bold">📐</span> Stefan Mandel
-              </strong>
-              <span class="text-[9px] text-cyan-300 font-mono bg-cyan-950/80 px-2 py-0.5 rounded border border-cyan-800">14x Ganhador</span>
-            </div>
-            <p class="text-[11px] text-slate-400 leading-snug">
-              Matemático que eliminava o impossível através de cobertura combinatória. O algoritmo da NASA replica essa lógica com filtros orbitais de eliminação de combinações atípicas.
-            </p>
-          </div>
-
-          <div class="p-3 rounded-2xl bg-slate-950 border border-slate-800 space-y-1">
-            <div class="flex items-center justify-between">
-              <strong class="text-white text-xs flex items-center gap-1.5">
-                <span class="text-emerald-400 font-bold">📊</span> Jerry & Marge Selbee
-              </strong>
-              <span class="text-[9px] text-emerald-300 font-mono bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-800">Lucro em Rolldown</span>
-            </div>
-            <p class="text-[11px] text-slate-400 leading-snug">
-              Comprovaram que a disciplina matemática vence a emoção quando a expectativa matemática se torna positiva em concursos acumulados e prêmios secundários.
-            </p>
-          </div>
-
-          <div class="p-3 rounded-2xl bg-slate-950 border border-slate-800 space-y-1">
-            <div class="flex items-center justify-between">
-              <strong class="text-white text-xs flex items-center gap-1.5">
-                <span class="text-purple-400 font-bold">🎓</span> Joan Ginther
-              </strong>
-              <span class="text-[9px] text-purple-300 font-mono bg-purple-950/80 px-2 py-0.5 rounded border border-purple-800">Ph.D Stanford (4x Ganhadora)</span>
-            </div>
-            <p class="text-[11px] text-slate-400 leading-snug">
-              Defendia a dispersão homogênea no volante para evitar a aglomeração de dezenas em datas comemorativas (1 a 31), maximizando o valor do prêmio sem dividi-lo com milhares de apostas populares.
-            </p>
-          </div>
-
-          <div class="p-3 rounded-2xl bg-slate-950 border border-slate-800 space-y-1">
-            <div class="flex items-center justify-between">
-              <strong class="text-white text-xs flex items-center gap-1.5">
-                <span class="text-amber-400 font-bold">👥</span> Bolão de Salvador
-              </strong>
-              <span class="text-[9px] text-amber-300 font-mono bg-amber-950/80 px-2 py-0.5 rounded border border-amber-800">Mega da Virada (R$ 711M)</span>
-            </div>
-            <p class="text-[11px] text-slate-400 leading-snug">
-              Provou o poder do fechamento em grupo: jogar dezenas múltiplas com rateio de cotas garante sustentabilidade financeira e captura recorrente de prêmios secundários (Quadras e Quinas).
-            </p>
-          </div>
-        </div>
-
-        <div class="border-t border-slate-800 pt-3 flex justify-end">
-          <button onclick="fecharModalMestresLoteria()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl text-xs transition">
-            Fechar
-          </button>
-        </div>
-      </div>
-    </div>
+    
 
   </main>
 
-  <script src="./js/app.js?v=20261101.1"></script>
-  <script src="js/whatsapp-share.js?v=20261101.1"></script>
-  <script src="js/cockpit-inicio.js?v=20261101.1"></script>
+  <script src="./js/app.js?v=20261101.3"></script>
+  <script src="js/whatsapp-share.js?v=20261101.3"></script>
 </body>
 </html>

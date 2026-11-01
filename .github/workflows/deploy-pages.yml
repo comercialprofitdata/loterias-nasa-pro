@@ -4,6 +4,8 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    - cron: '30 1,4 * * *'
 
 permissions:
   contents: read
@@ -35,6 +37,13 @@ jobs:
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
+      # Falha aqui não derruba a publicação: fica a base já versionada.
+      - name: Update official results
+        continue-on-error: true
+        run: |
+          node scripts/atualizar-historico.mjs
+          sed -i "s/historico-oficial.js?v=[0-9.]*/historico-oficial.js?v=$(date +%Y%m%d%H)/" index.html
+
       # Lista fechada: documentos internos, SQL e scripts não vão para o site.
       - name: Build site folder
         run: |
@@ -47,7 +56,6 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: dist
-          include-hidden-files: true
 
       - name: Deploy to GitHub Pages
         id: deployment
