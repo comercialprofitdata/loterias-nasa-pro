@@ -1,4 +1,4 @@
-name: Deploy Loterias NASA to GitHub Pages
+name: Deploy Meu Volante PRO to GitHub Pages
 
 on:
   push:
@@ -48,7 +48,7 @@ jobs:
       - name: Build site folder
         run: |
           mkdir -p dist/supabase
-          cp -r index.html privacidade.html excluir-conta.html manifest.json sw.js CNAME icon-192.png icon-512.png css js .well-known dist/
+          cp -r index.html privacidade.html excluir-conta.html manifest.json sw.js CNAME icon-192.png icon-512.png icon-maskable-512.png css js .well-known dist/
           cp supabase/config.js dist/supabase/
           touch dist/.nojekyll
 

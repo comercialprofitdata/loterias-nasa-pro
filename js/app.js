@@ -127,7 +127,7 @@
     let carteiraJogos = [];
     let modalCallback = null;
 
-    // Sintetizador de Áudio Web Audio API (NASA Sound Engine)
+    // Sintetizador de Áudio Web Audio API
     let audioCtx = null;
     function tocarBeep(tipo = 'click') {
       if (!audioAtivo) return;
@@ -264,7 +264,7 @@
         document.documentElement.classList.remove('dark');
         localStorage.setItem('nasa_theme', 'light');
         sincronizarIconesTemaUI('light');
-        toast("Modo Claro (Apollo White) ativado!", "☀️");
+        toast("Modo Claro ativado!", "☀️");
       } else {
         document.documentElement.classList.add('dark');
         localStorage.setItem('nasa_theme', 'dark');
@@ -324,7 +324,7 @@
           btnStatus.className = 'cursor-pointer text-[9px] px-2 py-0.5 rounded font-black border transition active:scale-95 flex items-center gap-1 bg-emerald-950/80 border-emerald-500 text-emerald-300 shadow-[0_0_10px_rgba(16,185,129,0.3)]';
         }
         if (iconeTopo) iconeTopo.innerText = '👑';
-        if (labelTopo) labelTopo.innerText = 'NASA VIP PRO';
+        if (labelTopo) labelTopo.innerText = 'PLANO PRO';
         if (bannerCta) bannerCta.classList.add('hidden');
       } else {
         if (btnStatus) {
@@ -385,16 +385,16 @@
 
       // Registrar Service Worker com Verificação Imediata de Atualizações
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js?v=20261101.6', { scope: './' })
+        navigator.serviceWorker.register('./sw.js?v=20261101.8', { scope: './' })
           .then((reg) => {
-            console.log('[NASA Pro] Service Worker registrado. Verificando atualizações...');
+            console.log('[Meu Volante PRO] Service Worker registrado. Verificando atualizações...');
             reg.update(); // força verificação no servidor imediatamente
             reg.onupdatefound = () => {
               const newWorker = reg.installing;
               if (newWorker) {
                 newWorker.onstatechange = () => {
                   if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                    console.log('[NASA Pro] Nova versão instalada pelo navegador.');
+                    console.log('[Meu Volante PRO] Nova versão instalada pelo navegador.');
                     if (typeof toast === 'function') toast('Nova versão instalada! Recarregando...', '🔄');
                     setTimeout(() => window.location.reload(), 800);
                   }
@@ -403,7 +403,7 @@
             };
           })
           .catch((err) => {
-            console.warn('[NASA Pro] Falha ao registrar Service Worker:', err);
+            console.warn('[Meu Volante PRO] Falha ao registrar Service Worker:', err);
           });
       }
     });
@@ -499,8 +499,8 @@
       const txtBtn = document.getElementById('txt-btn-gerar-principal');
       if (txtBtn) {
         txtBtn.innerText = qtd === 1 
-          ? 'GERAR APOSTA NASA (MATRIZ 4x4 + 6 TESTES)' 
-          : `GERAR ${qtd} APOSTAS NASA (MATRIZ 4x4 + 6 TESTES)`;
+          ? 'GERAR APOSTA (MATRIZ 4x4 + 6 TESTES)' 
+          : `GERAR ${qtd} APOSTAS (MATRIZ 4x4 + 6 TESTES)`;
       }
       toast(`Configurado para gerar ${qtd} jogo${qtd > 1 ? 's' : ''}!`, "🎯");
     }
@@ -1106,7 +1106,7 @@
 
       const txtBtnMultiplas = document.getElementById('txt-btn-gerar-multiplas');
       if (txtBtnMultiplas) {
-        txtBtnMultiplas.innerText = `Gerar ${qtdApostasDesejada} Aposta${qtdApostasDesejada > 1 ? 's' : ''} NASA`;
+        txtBtnMultiplas.innerText = `Gerar ${qtdApostasDesejada} Aposta${qtdApostasDesejada > 1 ? 's' : ''}`;
       }
 
       const txtBtnVit = document.getElementById('txt-btn-gerar-vitorio');
@@ -1116,7 +1116,7 @@
     }
 
     
-    // SINTETIZADOR DE ÁUDIO WEB AUDIO API NASA (EFEITOS DE CABINE E FOGUETE)
+    // SINTETIZADOR DE ÁUDIO WEB AUDIO API (EFEITOS DE CABINE E FOGUETE)
     function getAudioContext() {
       if (!audioCtx) {
         const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -1161,7 +1161,7 @@
           osc.start();
           osc.stop(ctx.currentTime + 0.14);
         } else if (tipo === 'sucesso') {
-          // Bip duplo harmônico Apollo
+          // Bip duplo harmônico
           [523.25, 659.25, 783.99].forEach((freq, idx) => {
             const osc = ctx.createOscillator();
             const gain = ctx.createGain();
@@ -1190,7 +1190,7 @@ function gerarApostaNasaComMatriz4x4() {
       gerarMultiplasApostas(qtdApostasDesejada, true);
       renderizarAbasJogosGeradosTela1();
       
-      toast(`${qtdApostasDesejada} aposta${qtdApostasDesejada > 1 ? 's' : ''} gerada${qtdApostasDesejada > 1 ? 's' : ''}!`, "🚀");
+      toast(`${qtdApostasDesejada} aposta${qtdApostasDesejada > 1 ? 's' : ''} gerada${qtdApostasDesejada > 1 ? 's' : ''}!`, "🎯");
     }
 
 function gerarPalpiteInteligente() {
@@ -1322,7 +1322,7 @@ function gerarPalpiteInteligente() {
       }
     }
 
-    // Avaliador Central e Rigoroso dos 6 Testes Estatísticos NASA
+    // Avaliador Central e Rigoroso dos 6 Testes Estatísticos
     function avaliarJogo(jogo, modalidade) {
       const config = modalidade === 'megasena' ? MEGA_CONFIG : LOTO_CONFIG;
       const n = jogo.length;
@@ -1604,7 +1604,7 @@ function gerarPalpiteInteligente() {
             </div>
             <div class="flex justify-between items-center text-xs pt-0.5">
               <span class="font-bold ${saldoFinanceiro >= 0 ? 'text-emerald-400' : 'text-amber-400'}">
-                ${saldoFinanceiro >= 0 ? '🚀 Saldo Líquido Positivo:' : '⚖️ Balanço Estimado:'}
+                ${saldoFinanceiro >= 0 ? '🎯 Saldo Líquido Positivo:' : '⚖️ Balanço Estimado:'}
               </span>
               <span class="font-mono font-black text-xs px-2 py-0.5 rounded ${saldoFinanceiro >= 0 ? 'bg-emerald-950 text-emerald-300 border border-emerald-700' : 'bg-slate-900 text-slate-300 border border-slate-800'}">
                 ${saldoFinanceiro >= 0 ? '+' : ''}${formatarReais(saldoFinanceiro)} ${saldoFinanceiro > 0 ? `(+${roi}% ROI)` : ''}
@@ -1670,7 +1670,7 @@ function gerarPalpiteInteligente() {
             </div>
             <div class="flex justify-between items-center text-xs pt-0.5">
               <span class="font-bold ${saldoFinanceiro >= 0 ? 'text-emerald-400' : 'text-amber-400'}">
-                ${saldoFinanceiro >= 0 ? '🚀 Saldo Líquido Positivo:' : '⚖️ Balanço Estimado:'}
+                ${saldoFinanceiro >= 0 ? '🎯 Saldo Líquido Positivo:' : '⚖️ Balanço Estimado:'}
               </span>
               <span class="font-mono font-black text-xs px-2 py-0.5 rounded ${saldoFinanceiro >= 0 ? 'bg-emerald-950 text-emerald-300 border border-emerald-700' : 'bg-slate-900 text-slate-300 border border-slate-800'}">
                 ${saldoFinanceiro >= 0 ? '+' : ''}${formatarReais(saldoFinanceiro)} ${saldoFinanceiro > 0 ? `(+${roi}% ROI)` : ''}
@@ -1687,7 +1687,7 @@ function gerarPalpiteInteligente() {
     }
 
     // Bateria dos 6 Testes Estatísticos em Tempo Real no Volante
-    // Bateria dos 6 Testes Estatísticos em Tempo Real no Volante com Telemetria NASA
+    // Bateria dos 6 Testes Estatísticos em Tempo Real no Volante com Indicadores
     function executarAnaliseDinamicaDoJogo() {
       const jogo = getJogoAtual();
       const config = getConfigAtual();
@@ -1890,7 +1890,7 @@ function gerarPalpiteInteligente() {
       renderizarBarraJogosTesteRapido();
       if (abaAtual === 'auditoria') renderizarTelaAuditoria();
 
-      toast(`${qtd} aposta${qtd > 1 ? 's' : ''} de ${k} números gerada${qtd > 1 ? 's' : ''}!`, "🚀");
+      toast(`${qtd} aposta${qtd > 1 ? 's' : ''} de ${k} números gerada${qtd > 1 ? 's' : ''}!`, "🎯");
     }
 
     function renderizarLoteApostas() {
@@ -2154,7 +2154,7 @@ function gerarPalpiteInteligente() {
           <div class="p-3.5 bg-slate-950 rounded-2xl border border-amber-500/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3 font-mono shadow-lg shadow-amber-950/30">
             <div>
               <div class="flex items-center gap-2 text-xs font-bold text-white flex-wrap">
-                <span class="text-amber-400 font-black flex items-center gap-1">⚡ AJUSTE NASA:</span>
+                <span class="text-amber-400 font-black flex items-center gap-1">⚡ AJUSTE:</span>
                 <span class="text-[10px] px-1.5 py-0.5 rounded bg-rose-950 text-rose-300 border border-rose-800 font-mono font-bold">${testeAfetado}</span>
                 <span>Substituir</span>
                 <span class="w-6 h-6 rounded-lg bg-rose-600 text-white font-black flex items-center justify-center shadow">${String(sai).padStart(2,'0')}</span>
@@ -2164,7 +2164,7 @@ function gerarPalpiteInteligente() {
               <p class="text-[11px] text-slate-300 mt-1 font-sans leading-snug">${motivo}</p>
             </div>
             <button onclick="aplicarSubstituicao(${sai}, ${entra})" class="px-3.5 py-2 bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 active:scale-95 text-slate-950 font-black text-xs rounded-xl shadow-lg shadow-emerald-500/20 whitespace-nowrap transition flex items-center gap-1.5 self-start sm:self-center">
-              <span>🚀</span> Substituir Agora
+              <span>🎯</span> Substituir Agora
             </button>
           </div>
         `;
@@ -2172,7 +2172,7 @@ function gerarPalpiteInteligente() {
         container.innerHTML = `
           <div class="p-3.5 bg-slate-950 rounded-2xl border border-emerald-500/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 font-mono shadow-lg shadow-emerald-500/10">
             <div class="flex items-center gap-3">
-              <span class="w-8 h-8 rounded-xl bg-emerald-950 border border-emerald-500 text-emerald-400 flex items-center justify-center text-base shadow">🚀</span>
+              <span class="w-8 h-8 rounded-xl bg-emerald-950 border border-emerald-500 text-emerald-400 flex items-center justify-center text-base shadow">🎯</span>
               <div>
                 <strong class="text-emerald-400 text-xs block font-mono uppercase tracking-wider">6 DE 6 NA FAIXA COMUM</strong>
                 <span class="text-[11px] text-slate-300 font-sans block">Esta aposta passou com êxito em todos os 6 testes estatísticos aeroespaciais.</span>
@@ -2280,7 +2280,7 @@ function gerarPalpiteInteligente() {
       });
 
       txt += `\n━━━━━━━━━━━━━━━━━━━━\n`;
-      txt += `⚡ *Gerado e auditado via Loterias NASA Pro*\n`;
+      txt += `⚡ *Gerado e auditado via Meu Volante PRO*\n`;
       txt += `🔗 *Audite seu jogo grátis:* https://vitoriobergamobrazil.github.io/loterias-nasa-pro/\n`;
 
       window.abrirWhatsApp({ texto: txt });
@@ -2371,7 +2371,7 @@ function gerarPalpiteInteligente() {
       }
 
       tocarBeep('success');
-      toast(`Bilhete de ${b.data} carregado no Volante & Telemetria NASA!`, "🎯");
+      toast(`Bilhete de ${b.data} carregado no Volante & Indicadores!`, "🎯");
     }
 
     // AUDITORIA E CALIBRAÇÃO DO PORTFÓLIO DE APOSTAS
@@ -2528,7 +2528,7 @@ function gerarPalpiteInteligente() {
 
       return {
         dezenasSugeridas,
-        justificativa: escolhidos[0]?.motivo || 'Otimização Estatística NASA',
+        justificativa: escolhidos[0]?.motivo || 'Otimização Estatística',
         jogoCompleto
       };
     }
@@ -2670,7 +2670,7 @@ function gerarPalpiteInteligente() {
           <div class="p-2.5 bg-slate-950/90 rounded-lg border border-cyan-800/60 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
               <div class="text-[10px] text-cyan-400 font-sans font-bold flex items-center gap-1">
-                <span>💡</span> Sugestão Estatística da IA NASA:
+                <span>💡</span> Sugestão Estatística da do app:
               </div>
               <div class="text-slate-300 text-xs mt-0.5 font-sans">${incompleto.sugestao.justificativa}</div>
             </div>
@@ -2971,7 +2971,7 @@ function gerarPalpiteInteligente() {
                   `).join('')}
                 </div>
                 <button type="button" onclick="carregarBilheteNoVolante('${b.id}')" class="w-full py-1.5 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-black rounded-lg text-[10px] shadow flex items-center justify-center gap-1">
-                  <span>🎯</span> Carregar no Volante & Telemetria NASA
+                  <span>🎯</span> Carregar no Volante & Indicadores
                 </button>
               </div>
             ` : ''}
@@ -3092,7 +3092,7 @@ function gerarPalpiteInteligente() {
           .eq('user_id', accountId);
 
         if (error) {
-          console.warn('[NASA DB] Erro ao consultar carteira_apostas:', error);
+          console.warn('[Banco] Erro ao consultar carteira_apostas:', error);
           if (notificar && typeof toast === 'function') {
             toast(`⚠️ Erro no banco de dados: ${error.message || 'Tabela em manutenção'}`, '⚠️');
           }
@@ -3148,7 +3148,7 @@ function gerarPalpiteInteligente() {
 
           const { error: upsertErr } = await cliente.from('carteira_apostas').upsert(payload, { onConflict: 'user_id,bilhete_id' });
           if (upsertErr) {
-            console.warn('[NASA DB] Erro no upsert de apostas:', upsertErr);
+            console.warn('[Banco] Erro no upsert de apostas:', upsertErr);
           }
         }
 
@@ -3166,7 +3166,7 @@ function gerarPalpiteInteligente() {
           }
         }
       } catch (err) {
-        console.warn('[NASA DB] Falha de conexão com a base de dados:', err);
+        console.warn('[Banco] Falha de conexão com a base de dados:', err);
         if (notificar && typeof toast === 'function') {
           toast('⚠️ Banco de dados em pausa por inatividade. Reative o projeto no painel do Supabase.', '⚠️');
         }
@@ -3297,12 +3297,12 @@ function gerarPalpiteInteligente() {
 
     function exportarParaWhatsApp() {
       if (carteiraJogos.length === 0) { toast("Carteira vazia!", "⚠️"); tocarBeep('alert'); return; }
-      let txt = `🎰 *Meus Jogos Registrados (Loterias NASA Pro)*\n\n`;
+      let txt = `🎰 *Meus Jogos Registrados (Meu Volante PRO)*\n\n`;
       carteiraJogos.forEach((b, idx) => {
         txt += `*Jogo ${idx+1} (${b.modalidade.toUpperCase()}):*\n${b.dezenas.map(d => String(d).padStart(2,'0')).join(' - ')}\n\n`;
       });
       txt += `━━━━━━━━━━━━━━━━━━━━\n`;
-      txt += `🚀 *Auditado via Loterias NASA Pro*\n`;
+      txt += `🎯 *Auditado via Meu Volante PRO*\n`;
       txt += `🔗 *Audite seu jogo grátis:* https://vitoriobergamobrazil.github.io/loterias-nasa-pro/\n`;
       window.abrirWhatsApp({ texto: txt });
     }
@@ -4085,7 +4085,7 @@ function abrirModalDialog(msg, callback) {
     }
   
     // =========================================================================
-    // MOTOR DE FECHAMENTOS COMBINATÓRIOS NASA C(n, k) & AUTO-CALIBRAÇÃO ORBITAL
+    // MOTOR DE FECHAMENTOS COMBINATÓRIOS C(n, k) & AUTO-CALIBRAÇÃO ORBITAL
     // =========================================================================
 
     const MATRIZES_COMBINATORIAS_NASA = {
@@ -4264,7 +4264,7 @@ function abrirModalDialog(msg, callback) {
           dezenasBase = dezenasBase.slice(0, m.n);
         }
       } else {
-        // Gera o grupo de N dezenas usando a Matriz 4x4 da NASA
+        // Gera o grupo de N dezenas usando a Matriz 4x4 da
         const grupo = new Set(fixos);
         const frequencias = calcularFrequenciaHistorica();
         const ordenadas = Object.keys(frequencias).map(Number).sort((a,b) => frequencias[b] - frequencias[a]);
@@ -4312,7 +4312,7 @@ function abrirModalDialog(msg, callback) {
       `).join('');
 
       tocarSomNasa('sucesso');
-      toast(`Matriz ${m.nome} gerada com sucesso!`, '🚀');
+      toast(`Matriz ${m.nome} gerada com sucesso!`, '🎯');
     }
 
     function carregarApostaFechamentoNoVolante(idx) {
@@ -4340,17 +4340,17 @@ function abrirModalDialog(msg, callback) {
       if (jogosFechamentoGerados.length === 0) return;
       const config = getConfigAtual();
       const custo = formatarReais(jogosFechamentoGerados.length * config.precoBase);
-      let msg = `🚀 *Loterias Analytics Pro — Fechamento Combinatório NASA*\n`;
+      let msg = `🎯 *Meu Volante PRO — Fechamento Combinatório*\n`;
       msg += `🎯 *Modalidade:* ${modalidadeAtual.toUpperCase()}\n`;
       msg += `📊 *Total de Apostas:* ${jogosFechamentoGerados.length} (${custo})\n`;
-      msg += `📐 *Cobertura Combinatória:* Matriz Otimizada NASA C(n,k)\n\n`;
+      msg += `📐 *Cobertura Combinatória:* Matriz Otimizada C(n,k)\n\n`;
       jogosFechamentoGerados.slice(0, 10).forEach((j, idx) => {
         msg += `Jogo #${idx + 1}: ${j.map(d=>String(d).padStart(2,'0')).join(' ')}\n`;
       });
       if (jogosFechamentoGerados.length > 10) {
         msg += `... e mais ${jogosFechamentoGerados.length - 10} jogos.\n`;
       }
-      msg += `\nGerado com inteligência espacial no Loterias NASA Pro.`;
+      msg += `\nGerado com inteligência espacial no Meu Volante PRO.`;
       window.abrirWhatsApp({ texto: msg });
     }
 
@@ -4413,7 +4413,7 @@ function abrirModalDialog(msg, callback) {
 
 
     // =========================================================================
-    // SCANNER DE APOSTAS EM LOTE (AUDITORIA EM MASSA NASA)
+    // SCANNER DE APOSTAS EM LOTE (AUDITORIA EM MASSA)
     // =========================================================================
     let apostasAuditadasScanner = [];
 
@@ -4770,7 +4770,7 @@ function abrirModalDialog(msg, callback) {
       if (typeof fecharModalAuth === 'function') fecharModalAuth();
       if (typeof tocarSomNasa === 'function') tocarSomNasa('sucesso');
       if (typeof toast === 'function') {
-        toast(`👑 Bem-vindo(a), ${nome.split(' ')[0]}! Acesso VIP Vitalício Ativado!`, '🚀');
+        toast(`👑 Bem-vindo(a), ${nome.split(' ')[0]}! Acesso VIP Vitalício Ativado!`, '🎯');
       }
     }
 
@@ -4816,13 +4816,13 @@ function abrirModalDialog(msg, callback) {
           usuarioSessao = {
             nome: 'Visitante',
             email: 'visitante@loteriasnasa.pro',
-            avatar: '🚀',
+            avatar: '🎯',
             tipo: 'visitante',
             plano: 'free'
           };
         }
       } catch(e) {
-        usuarioSessao = { nome: 'Visitante', email: '', avatar: '🚀', tipo: 'visitante', plano: 'free' };
+        usuarioSessao = { nome: 'Visitante', email: '', avatar: '🎯', tipo: 'visitante', plano: 'free' };
       }
       atualizarVisualPlano();
       atualizarPerfilUsuarioUI();
@@ -4960,14 +4960,14 @@ function abrirModalDialog(msg, callback) {
         tabCadastrar.className = 'flex-1 py-1.5 rounded-lg transition bg-cyan-600 text-slate-950 font-black';
         tabEntrar.className = 'flex-1 py-1.5 rounded-lg text-slate-400 hover:text-white transition font-bold';
         campoNome.classList.remove('hidden');
-        titulo.innerText = 'Crie sua Conta NASA';
+        titulo.innerText = 'Crie sua Conta';
         subtitulo.innerText = 'Comece gratuitamente e organize seus bilhetes';
         btnTxt.innerText = 'CRIAR MINHA CONTA GRÁTIS';
       } else {
         tabEntrar.className = 'flex-1 py-1.5 rounded-lg transition bg-cyan-600 text-slate-950 font-black';
         tabCadastrar.className = 'flex-1 py-1.5 rounded-lg text-slate-400 hover:text-white transition font-bold';
         campoNome.classList.add('hidden');
-        titulo.innerText = 'Acesse sua Conta NASA';
+        titulo.innerText = 'Acesse sua Conta';
         subtitulo.innerText = 'Acesse seus bilhetes salvos em qualquer dispositivo';
         btnTxt.innerText = 'ENTRAR NA MINHA CONTA';
       }
@@ -5055,7 +5055,7 @@ function abrirModalDialog(msg, callback) {
         modoAuthAtual === 'cadastrar'
           ? `Conta criada! Bem-vindo, ${nomeExibido} — você ganhou 3 análises completas grátis.`
           : 'Login efetuado com sucesso!',
-        '🚀'
+        '🎯'
       );
     }
 
@@ -5113,7 +5113,7 @@ function abrirModalDialog(msg, callback) {
       }
 
       entrarComoVisitanteGratis(lead);
-      toast(sincronizado ? 'Teste gratuito ativado e contato registrado.' : 'Teste gratuito ativado. Sincronize o Supabase para registrar o contato.', '🚀');
+      toast(sincronizado ? 'Teste gratuito ativado e contato registrado.' : 'Teste gratuito ativado. Sincronize o Supabase para registrar o contato.', '🎯');
     }
 
     function entrarComoVisitanteGratis(lead = null) {
@@ -5123,7 +5123,7 @@ function abrirModalDialog(msg, callback) {
         nome: contato?.nome || 'Visitante',
         email: contato?.email || '',
         telefone: contato?.telefone || '',
-        avatar: '🚀',
+        avatar: '🎯',
         tipo: 'visitante',
         plano: 'free'
       };
@@ -5135,7 +5135,7 @@ function abrirModalDialog(msg, callback) {
     }
 
     function fazerLogout() {
-      usuarioSessao = { nome: 'Visitante', email: '', avatar: '🚀', tipo: 'visitante', plano: 'free' };
+      usuarioSessao = { nome: 'Visitante', email: '', avatar: '🎯', tipo: 'visitante', plano: 'free' };
       planoUsuario = 'free';
 
       // Limpeza completa e definitiva de todas as chaves de autenticação e cupons VIP
@@ -5233,7 +5233,7 @@ function abrirModalDialog(msg, callback) {
             nome: perfil?.display_name || user.email?.split('@')[0] || 'Usuário',
             email: user.email || '',
             telefone: '',
-            avatar: ativo ? '🚀' : '🆓',
+            avatar: ativo ? '🎯' : '🆓',
             plano: vitalicio ? 'lifetime' : (ativo ? 'pro' : 'free'),
             planoNome: vitalicio ? 'Acesso vitalício de teste' : (ativo ? 'VIP ativo' : 'Visitante Free'),
             dataCadastro: user.created_at?.slice(0, 10) || '',
@@ -5252,7 +5252,7 @@ function abrirModalDialog(msg, callback) {
     async function concederAcessoVitalicio(id) {
       try {
         await invocarAcaoAdministrativa({ action: 'grant_lifetime', targetUserId: id });
-        toast('Acesso vitalício de teste concedido.', '🚀');
+        toast('Acesso vitalício de teste concedido.', '🎯');
         await carregarUsuariosAdminRemotos();
       } catch (error) {
         toast(`Não foi possível conceder o acesso: ${error.message}`, '⚠️');
@@ -5442,7 +5442,7 @@ function abrirModalDialog(msg, callback) {
         } else if (u.plano === 'anual') {
           badgePlano = '<span class="px-2 py-0.5 rounded bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[10px] font-bold">💎 VIP Anual Elite</span>';
         } else if (u.plano === 'pro') {
-          badgePlano = '<span class="px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold">🚀 VIP Mensal</span>';
+          badgePlano = '<span class="px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold">🎯 VIP Mensal</span>';
         } else if (u.plano === 'bolao') {
           badgePlano = '<span class="px-2 py-0.5 rounded bg-purple-500/15 text-purple-300 border border-purple-500/30 text-[10px] font-bold">👥 Bolão Pro</span>';
         } else {
@@ -5552,13 +5552,13 @@ function abrirModalDialog(msg, callback) {
       const linkVip = `${window.location.origin}${window.location.pathname}?vip=${codVip}`;
 
       const texto = 
-        `🛰️ *Convite Exclusivo — Loterias NASA PRO*\n\n` +
+        `*Convite Exclusivo — Meu Volante PRO*\n\n` +
         `Olá, *${u.nome.split(' ')[0]}*! Aqui é o Vitório Bérgamo.\n\n` +
-        `Você foi selecionado como nosso *Testador VIP Pioneiro* no *Loterias NASA PRO*! Seu acesso completo com todas as matrizes, filtros orbitais e volante interativo já está 100% liberado.\n\n` +
+        `Você foi selecionado como nosso *Testador VIP Pioneiro* no *Meu Volante PRO*! Seu acesso completo com todas as matrizes, filtros orbitais e volante interativo já está 100% liberado.\n\n` +
         `👉 *Acesse agora com 1 toque no seu celular (sem precisar de senha):*\n` +
         `${linkVip}\n\n` +
         `Se preferir ativar manualmente no app, seu código VIP é: *${codVip}*\n\n` +
-        `Abra o link, faça seus palpites e depois me diga o que achou das análises! 🚀`;
+        `Abra o link, faça seus palpites e depois me diga o que achou das análises! 🎯`;
 
       window.abrirWhatsApp({ fone: fone, texto: texto });
       toast(`💬 Abrindo WhatsApp para ${u.nome.split(' ')[0]}...`, '📲');
@@ -5698,14 +5698,14 @@ function abrirModalDialog(msg, callback) {
 
       const nomesPlanos = {
         'pro': 'VIP Mensal (R$ 29,90)',
-        'anual': 'VIP Anual Apollo Elite (R$ 197,00)',
+        'anual': 'VIP Anual (R$ 197,00)',
         'bolao': 'Bolão Pro Sindicato (R$ 59,90)',
         'free': 'Visitante Grátis',
         'master': 'Master Vitalício'
       };
 
       const avatares = {
-        'pro': '🚀',
+        'pro': '🎯',
         'anual': '💎',
         'bolao': '👥',
         'free': '🆓',
@@ -5757,10 +5757,10 @@ function abrirModalDialog(msg, callback) {
       dataExp.setDate(hoje.getDate() + dias);
 
       u.plano = planoAlvo;
-      u.planoNome = planoAlvo === 'anual' ? 'VIP Anual Apollo Elite' : 'VIP Mensal';
+      u.planoNome = planoAlvo === 'anual' ? 'VIP Anual' : 'VIP Mensal';
       u.dataExpiracao = dataExp.toISOString().split('T')[0];
       u.status = 'ativo';
-      u.avatar = planoAlvo === 'anual' ? '💎' : '🚀';
+      u.avatar = planoAlvo === 'anual' ? '💎' : '🎯';
 
       salvarBaseUsuariosAdmin(base);
       tocarSomNasa('sucesso');
@@ -5825,10 +5825,10 @@ function abrirModalDialog(msg, callback) {
         dataExp.setDate(hoje.getDate() + dias);
 
         u.plano = plano;
-        u.planoNome = plano === 'anual' ? 'VIP Anual Apollo Elite' : (plano === 'bolao' ? 'Bolão Pro' : 'VIP Mensal');
+        u.planoNome = plano === 'anual' ? 'VIP Anual' : (plano === 'bolao' ? 'Bolão Pro' : 'VIP Mensal');
         u.status = 'ativo';
         u.dataExpiracao = dataExp.toISOString().split('T')[0];
-        u.avatar = plano === 'anual' ? '💎' : '🚀';
+        u.avatar = plano === 'anual' ? '💎' : '🎯';
 
         salvarBaseUsuariosAdmin(base);
         tocarSomNasa('sucesso');
@@ -5916,7 +5916,7 @@ function abrirModalDialog(msg, callback) {
     }
 
     // ===================================================================
-    // EXPOSIÇÃO GLOBAL CONTROLADA PARA MÓDULOS E UI (NASA PRO WINDOW BRIDGE)
+    // EXPOSIÇÃO GLOBAL CONTROLADA PARA MÓDULOS E UI (Meu Volante PRO WINDOW BRIDGE)
     // ===================================================================
     window.carteiraJogos = carteiraJogos;
     window.salvarCarteiraStorage = salvarCarteiraStorage;

@@ -279,7 +279,7 @@ function compartilharJogoGeradoWhatsapp() {
     }).join('\n\n');
 
     const textoLote = 
-`🚀 *${totalJogos} JOGOS GERADOS • ${nomeMod.toUpperCase()}*
+`🎯 *${totalJogos} JOGOS GERADOS • ${nomeMod.toUpperCase()}*
 🎯 *Concurso Alvo:* ${infoSorteio.concurso} (${infoSorteio.data})
 Sorteios são aleatórios: nenhum jogo tem mais chance que outro.
 
@@ -290,7 +290,7 @@ ${linhasJogos}
 • Dezenas bem espalhadas no volante
 • Equilíbrio estatístico de pares e ímpares
 
-🛰️ *Loterias NASA Pro* — Monte e audite seus jogos:
+*Meu Volante PRO* — Monte e audite seus jogos:
 👉 https://loterias.pd.dev.br/`;
 
     window.abrirWhatsApp({ texto: textoLote });
@@ -308,7 +308,7 @@ ${linhasJogos}
   const dezenasFormatadas = jogo.map(n => String(n).padStart(2, '0')).join(' - ');
 
   const textoUnico = 
-`🚀 *JOGO GERADO • ${nomeMod.toUpperCase()}*
+`🎯 *JOGO GERADO • ${nomeMod.toUpperCase()}*
 🎯 *Concurso Alvo:* ${infoSorteio.concurso} (${infoSorteio.data})
 📊 *Nota de Equilíbrio:* ${score}/100 (6 de 6 Testes OK)
 
@@ -320,7 +320,7 @@ ${linhasJogos}
 • Dezenas bem espalhadas no volante
 • Proporção ideal de pares e ímpares
 
-🛰️ *Loterias NASA Pro* — Monte e audite seus jogos:
+*Meu Volante PRO* — Monte e audite seus jogos:
 👉 https://loterias.pd.dev.br/`;
 
     window.abrirWhatsApp({ texto: textoUnico });

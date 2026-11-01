@@ -46,21 +46,21 @@ const PLANOS: Record<string, Plano> = {
     // no sandbox.
     valor: 5.9,
     recorrente: false,
-    descricao: "Loterias NASA Pro — análise avulsa"
+    descricao: "Meu Volante PRO — análise avulsa"
   },
   mensal: {
     nome: "PRO Mensal",
     valor: 29.9,
     recorrente: true,
     ciclo: "MONTHLY",
-    descricao: "Loterias NASA Pro — assinatura mensal"
+    descricao: "Meu Volante PRO — assinatura mensal"
   },
   anual: {
     nome: "PRO Anual",
     valor: 197,
     recorrente: true,
     ciclo: "YEARLY",
-    descricao: "Loterias NASA Pro — assinatura anual"
+    descricao: "Meu Volante PRO — assinatura anual"
   }
 }
 

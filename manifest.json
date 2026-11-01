@@ -1,18 +1,18 @@
 {
   "id": "/loterias-nasa-pro/",
-  "name": "Loterias Analytics Pro - NASA Edition",
-  "short_name": "Loterias NASA",
-  "description": "Inteligência Combinatória, Telemetria Espacial 2D e Bateria de Testes Estatísticos para Loterias Caixa.",
+  "name": "Meu Volante PRO",
+  "short_name": "Meu Volante",
+  "description": "Gerencie seus jogos de Mega-Sena e Lotofácil: confira resultados e controle seus gastos. Não prevê resultados.",
   "start_url": "./index.html",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#070b14",
-  "theme_color": "#0b1329",
+  "background_color": "#0b1220",
+  "theme_color": "#0b1220",
   "prefer_related_applications": false,
   "related_applications": [
     {
       "platform": "play",
-      "id": "pro.loteriasnasa.app"
+      "id": "br.dev.pd.meuvolante"
     }
   ],
   "icons": [
@@ -20,15 +20,25 @@
       "src": "icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
-  "categories": ["finance", "utilities", "entertainment"],
+  "categories": [
+    "finance",
+    "utilities",
+    "entertainment"
+  ],
   "lang": "pt-BR"
 }

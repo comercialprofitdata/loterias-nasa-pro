@@ -1,4 +1,4 @@
--- Loterias NASA: autorizacao e dados protegidos no Supabase
+-- Meu Volante PRO: autorizacao e dados protegidos no Supabase
 -- Execute no SQL Editor do seu projeto Supabase.
 -- Nunca coloque a service_role key no index.html.
 

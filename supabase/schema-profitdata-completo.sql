@@ -1,5 +1,5 @@
 -- ===================================================================
--- LOTERIAS NASA PRO — TABELAS OFICIAIS PROFITDATA (SÃO PAULO)
+-- MEU VOLANTE PRO — TABELAS OFICIAIS PROFITDATA (SÃO PAULO)
 -- Execute no SQL Editor do projeto kwiagspkzrnculrvtrmp no Supabase
 -- ===================================================================
 

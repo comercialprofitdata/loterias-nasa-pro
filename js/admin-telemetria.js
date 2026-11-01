@@ -1,5 +1,5 @@
 // =========================================================================
-// LOTERIAS NASA PRO — TELEMETRIA GLOBAL, LOG DE USO & CALIBRAÇÃO (ADMIN CEO)
+// MEU VOLANTE PRO — TELEMETRIA GLOBAL, LOG DE USO & CALIBRAÇÃO (ADMIN CEO)
 // Monitora palpites gerados, dezenas apostadas, scores e histórico de todos os usuários
 // =========================================================================
 (function () {
@@ -216,7 +216,7 @@
                   <th class="p-3">Ação</th>
                   <th class="p-3">Modalidade</th>
                   <th class="p-3">Dezenas Geradas</th>
-                  <th class="p-3 text-center">Score NASA</th>
+                  <th class="p-3 text-center">Score</th>
                   <th class="p-3">Dispositivo</th>
                 </tr>
               </thead>
@@ -343,7 +343,7 @@
         return;
       }
 
-      // 2. Botão Gerar Palpite / Auditoria NASA
+      // 2. Botão Gerar Palpite / Auditoria
       if (id === 'btn-gerar-palpite' || id === 'btn-hero-cta' || /auditoria|gerar|simular/i.test(texto)) {
         setTimeout(function () {
           try {

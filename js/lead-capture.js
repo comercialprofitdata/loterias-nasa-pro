@@ -26,7 +26,7 @@ function mostrarModalLeadCapture() {
 
       <!-- Header -->
       <div class="text-center space-y-2 relative z-10 pt-2">
-        <div class="text-4xl">🚀</div>
+        <div class="text-4xl">🎯</div>
         <h2 class="text-xl font-black text-white">Comece Agora</h2>
         <p class="text-sm text-slate-300">Gere seu 1º jogo grátis e receba dicas exclusivas</p>
       </div>

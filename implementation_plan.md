@@ -1,6 +1,6 @@
-# Plano de Transformação: Loterias NASA Pro em SaaS Comercial
+# Plano de Transformação: Meu Volante PRO em SaaS Comercial
 
-Este plano detalha a conversão do **Loterias Analytics Pro (NASA Telemetry Edition)** de uma ferramenta estática de página única em uma **plataforma SaaS comercial completa (Software as a Service)** com planos Free/PRO, paywall inteligente, autenticação na nuvem, cobrança via PIX/Cartão e conformidade jurídica.
+Este plano detalha a conversão do **Meu Volante PRO (NASA Telemetry Edition)** de uma ferramenta estática de página única em uma **plataforma SaaS comercial completa (Software as a Service)** com planos Free/PRO, paywall inteligente, autenticação na nuvem, cobrança via PIX/Cartão e conformidade jurídica.
 
 ---
 
@@ -27,7 +27,7 @@ Definir claramente o que o usuário **Gratuito** pode fazer e onde ele encontra 
   * Acesso ao **Mapa de Calor básico** e **Radar do Ciclo**.
   * Acesso a **2 testes estatísticos** (Sequências e Paridade).
   * Salvar até **2 bilhetes** na Carteira local.
-* **No Plano NASA VIP / PRO:**
+* **No Plano VIP / PRO:**
   * Geração em lote ilimitada (**3, 5, 10 ou mais apostas** simultâneas).
   * **Matriz 4x4 completa** com escolha de quadrante excluído.
   * **Bateria completa dos 6 Testes Orbitais** com diagnósticos de IA e substituição instantânea.
@@ -37,7 +37,7 @@ Definir claramente o que o usuário **Gratuito** pode fazer e onde ele encontra 
   * Carteira de bilhetes ilimitada na nuvem.
 
 ### Elementos Visuais:
-* Modal de Upgrade VIP com design futurista HUD: *"Desbloqueie a Telemetria Orbital Completa da NASA"*.
+* Modal de Upgrade VIP com design futurista HUD: *"Desbloqueie a Telemetria Orbital Completa da"*.
 * Selo **PRO** nos botões bloqueados com efeito neon pulsante.
 * Degradação elegante: o usuário pode experimentar 1 aposta grátis para se encantar com o sistema antes de assinar.
 
@@ -72,7 +72,7 @@ Integrar checkout transparente focado em **PIX com aprovação em tempo real (me
      * **Anual (Recomendado):** R$ 147,00 / ano (com 58% de desconto).
   3. O app gera o **QR Code do PIX e o código "PIX Copia e Cola"** na tela.
   4. O usuário paga no app do banco dele.
-  5. O webhook confirma o pagamento instantaneamente e a tela do usuário comemora com efeito sonoro e confetes: *"Conta promovida para NASA VIP!"*.
+  5. O webhook confirma o pagamento instantaneamente e a tela do usuário comemora com efeito sonoro e confetes: *"Conta promovida para VIP!"*.
 
 ---
 
@@ -88,7 +88,7 @@ Integrar checkout transparente focado em **PIX com aprovação em tempo real (me
 
 ### O que faremos:
 * **Assinatura Viral em Relatórios:** Ao exportar bolões para o WhatsApp, incluir no rodapé:
-  `🚀 Palpites gerados e auditados pela Inteligência Loterias NASA Pro. Teste grátis em: loteriasnasa.pro`
+  `🎯 Palpites gerados e auditados pela Inteligência Meu Volante PRO. Teste grátis em: loteriasnasa.pro`
 * **Programa de Afiliados / Convide um Amigo:** O usuário PRO ganha 1 mês grátis para cada amigo que assinar pelo link dele.
 * **Modo Impressão em Folha A4 / PDF:** Exportação de volantes prontos para conferência em reuniões de bolão da firma ou família.
 

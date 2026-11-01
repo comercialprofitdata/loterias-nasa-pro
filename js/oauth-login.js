@@ -56,7 +56,7 @@ function concluirLoginOAuth(dados) {
   if (typeof atualizarVisualPlano === 'function') atualizarVisualPlano();
   fecharModalAuth();
   tocarSomNasa('sucesso');
-  toast(`Bem-vindo, ${usuarioSessao.nome}! 🚀`, '🚀');
+  toast(`Bem-vindo, ${usuarioSessao.nome}! 🎯`, '🎯');
 }
 
 // Fallback direto e instantâneo por e-mail Google sem travas de popup/origem

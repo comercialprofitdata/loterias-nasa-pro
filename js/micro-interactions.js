@@ -393,7 +393,7 @@ function triggerCelebration() {
     z-index: 9999;
   `;
 
-  const emojis = ['🎉', '🚀', '⭐', '✨', '🎯'];
+  const emojis = ['🎉', '🎯', '⭐', '✨', '🎯'];
   for (let i = 0; i < 20; i++) {
     const emoji = document.createElement('span');
     emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];

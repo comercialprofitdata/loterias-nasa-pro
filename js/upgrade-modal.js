@@ -21,11 +21,11 @@ const UPGRADE_CONFIG = {
     },
     {
       id: 'mensal',
-      name: 'Astronauta PRO',
+      name: 'Mensal',
       price: 'R$ 29,90',
       period: '/mês · recorrente',
       badge: '',
-      icon: '🚀',
+      icon: '🎯',
       color: 'cyan',
       featured: true,
       cta: 'Assinar Plano PRO',
@@ -38,7 +38,7 @@ const UPGRADE_CONFIG = {
     },
     {
       id: 'anual',
-      name: 'Apollo VIP Anual',
+      name: 'Anual',
       price: 'R$ 197',
       period: '/ano · R$ 16,41/mês',
       badge: 'ECONOMIZE 45%',
@@ -90,7 +90,7 @@ function generateUpgradeModalHTML() {
       <div class="modal-upgrade-topbar">
         <div class="modal-upgrade-badge">
           <span>🔬</span>
-          <span>PLANOS NASA PRO</span>
+          <span>PLANOS Meu Volante PRO</span>
         </div>
         <button id="btn-close-upgrade-modal" class="modal-upgrade-close" title="Fechar" type="button" onclick="fecharModalUpgrade(); tocarBeep('click');">
           ✕

@@ -1,5 +1,5 @@
 // ===================================================================
-// REDESIGN NASA PRO 3.0 — Mobile-First FinTech & Telemetry Experience
+// REDESIGN Meu Volante PRO 3.0 — Mobile-First FinTech & Telemetry Experience
 // ===================================================================
 // Arquitetura inspirada nas 50 melhores referências globais e nacionais
 // (Jackpocket, TuLotero, Loterias CAIXA, 10Dobra, Expert Lotto):
@@ -25,7 +25,7 @@ let subAbaCarteiraAtiva = 'bilhetes'; // 'bilhetes' | 'bolao' | 'ferramentas'
 let volanteModo10Colunas = false;
 
 document.addEventListener('DOMContentLoaded', function () {
-  console.log('🎨 Inicializando NASA Pro Mobile 3.0...');
+  console.log('🎨 Inicializando Meu Volante PRO Mobile 3.0...');
 
   document.documentElement.classList.add('redesign');
 
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function () {
   inicializarPerfilExperiencia();
 
   activateTab('home');
-  console.log('✅ NASA Pro Mobile 3.0 pronto.');
+  console.log('✅ Meu Volante PRO Mobile 3.0 pronto.');
 });
 
 // ===================================================================
@@ -67,9 +67,9 @@ function criarTopbarUnificada() {
   topbar.innerHTML = `
     <!-- Logo Compacto -->
     <button type="button" class="nasa-brand-compact" onclick="activateTab('home'); tocarBeep('click');" title="Ir para o Início">
-      <div class="nasa-brand-icon">🚀</div>
+      <div class="nasa-brand-icon">🎯</div>
       <div class="nasa-brand-text">
-        <span class="nasa-brand-title">NASA PRO</span>
+        <span class="nasa-brand-title">Meu Volante PRO</span>
         <span class="nasa-brand-sub">TELEMETRY</span>
       </div>
     </button>
@@ -110,7 +110,7 @@ function criarSidebarDesktop() {
   const sidebar = document.createElement('aside');
   sidebar.id = 'nasa-desktop-sidebar';
   sidebar.className = 'nasa-desktop-sidebar';
-  sidebar.setAttribute('aria-label', 'Centro de Comando NASA Desktop');
+  sidebar.setAttribute('aria-label', 'Navegação');
 
   sidebar.innerHTML = `
     <!-- Alça de Redimensionamento Manual (Arraste com o Mouse) -->
@@ -118,9 +118,9 @@ function criarSidebarDesktop() {
 
     <!-- Topo da Barra Lateral: Logo & Status -->
     <div class="sidebar-brand-box" onclick="activateTab('home'); tocarBeep('click');" role="button" tabindex="0" title="Ir para o Cockpit Inicial">
-      <div class="sidebar-brand-icon">🚀</div>
+      <div class="sidebar-brand-icon">🎯</div>
       <div class="sidebar-brand-text">
-        <span class="sidebar-brand-title">NASA PRO</span>
+        <span class="sidebar-brand-title">Meu Volante PRO</span>
         <span class="sidebar-brand-sub">SEUS JOGOS EM ORDEM</span>
       </div>
       <span class="sidebar-version-badge">v3.2</span>
@@ -165,7 +165,7 @@ function criarSidebarDesktop() {
     <!-- Links de Navegação da Barra Lateral (SEM TRUNCAMENTO) -->
     <nav class="sidebar-nav-list" role="navigation" aria-label="Menu Principal">
       <button type="button" class="sidebar-nav-btn active" data-tab="home" onclick="activateTab('home'); tocarBeep('click');">
-        <span class="sidebar-nav-icon">🚀</span>
+        <span class="sidebar-nav-icon">🎯</span>
         <span class="sidebar-nav-label">Início</span>
       </button>
 
@@ -569,7 +569,7 @@ function createSimplifiedHome() {
 
         <!-- Botão Principal: Adaptativo por Modo de Experiência -->
         <button type="button" class="nasa-primary-cta" id="home-btn-hero-primary" onclick="iniciarJogo()">
-          <span class="text-xl" id="home-hero-btn-icon">🚀</span>
+          <span class="text-xl" id="home-hero-btn-icon">🎯</span>
           <span id="home-hero-btn-label">GERAR JOGO</span>
         </button>
 
@@ -788,7 +788,7 @@ function configurarSubAbasGerar() {
   segBar.className = 'nasa-segmented-bar';
   segBar.innerHTML = `
     <button type="button" id="seg-gerar-rapido" class="nasa-seg-btn active" onclick="alternarSubAbaGerar('rapido')">
-      <span>🚀</span> <span>Gerar</span>
+      <span>🎯</span> <span>Gerar</span>
     </button>
     <button type="button" id="seg-gerar-volante" class="nasa-seg-btn" onclick="alternarSubAbaGerar('volante')">
       <span>🎯</span> <span>Volante</span>
@@ -1190,7 +1190,7 @@ function criarDrawerPerfilConfig() {
           <span class="text-amber-400 text-xs font-bold">Avaliar →</span>
         </button>
 
-        <button type="button" onclick="fecharDrawerPerfil(); const t = '🛰️ Olá NASA PRO! Gostaria de registrar números na minha carteira / tirar uma dúvida:'; if (typeof window.abrirWhatsApp === 'function') { window.abrirWhatsApp({ texto: t }); } else { window.location.href = 'whatsapp://send?text=' + encodeURIComponent(t); }" class="w-full p-2.5 rounded-xl bg-slate-950 hover:bg-slate-900 border border-emerald-500/40 text-xs font-bold text-white flex items-center justify-between text-left transition">
+        <button type="button" onclick="fecharDrawerPerfil(); const t = 'Olá Meu Volante PRO! Gostaria de registrar números na minha carteira / tirar uma dúvida:'; if (typeof window.abrirWhatsApp === 'function') { window.abrirWhatsApp({ texto: t }); } else { window.location.href = 'whatsapp://send?text=' + encodeURIComponent(t); }" class="w-full p-2.5 rounded-xl bg-slate-950 hover:bg-slate-900 border border-emerald-500/40 text-xs font-bold text-white flex items-center justify-between text-left transition">
           <div class="flex items-center gap-2">
             <span>💬</span>
             <div>
@@ -1233,7 +1233,7 @@ function criarDrawerPerfilConfig() {
         </button>
 
         <div class="text-[10px] text-slate-500 text-center pt-2 font-mono">
-          <span>🔞 +18 • Aposte com responsabilidade • Loterias NASA v3.2</span>
+          <span>🔞 +18 • Aposte com responsabilidade • Meu Volante PRO v3.2</span>
         </div>
       </div>
     </div>
@@ -1674,7 +1674,7 @@ function carregarConcursoHistoricoNoVolante(numConcurso, modDesejada) {
 window.carregarConcursoHistoricoNoVolante = carregarConcursoHistoricoNoVolante;
 
 // ===================================================================
-// MOTOR DE PERSONALIZAÇÃO & PERFIS DE EXPERIÊNCIA DO USUÁRIO (NASA UX 3.0)
+// MOTOR DE PERSONALIZAÇÃO & PERFIS DE EXPERIÊNCIA DO USUÁRIO
 // ===================================================================
 const PERFIS_CONFIG = {
   rapido: {
@@ -1704,7 +1704,7 @@ const PERFIS_CONFIG = {
     nome: 'Científico & Auditor',
     nomeCurto: 'Científico',
     icon: '🔬',
-    tag: 'NASA TELEMETRIA',
+    tag: 'DETALHADO',
     cor: 'cyan',
     btnLabel: 'GERAR JOGO',
     btnIcon: '🔬',
@@ -1824,7 +1824,7 @@ function abrirModalSeletorPerfil({ onboarding = false } = {}) {
           <span class="text-2xl">🧭</span>
           <div>
             <h3 class="text-sm sm:text-base font-black text-white uppercase tracking-wide">Modo de Experiência</h3>
-            <p class="text-[11px] text-cyan-400 font-mono">Como você prefere usar o Loterias NASA Pro?</p>
+            <p class="text-[11px] text-cyan-400 font-mono">Como você prefere usar o Meu Volante PRO?</p>
           </div>
         </div>
         <button type="button" onclick="fecharModalSeletorPerfil()" class="text-slate-400 hover:text-white text-lg font-bold p-1">✕</button>
@@ -1894,7 +1894,7 @@ function executarAcaoPrincipalPorModo() {
     gerarPalpiteExpressHome();
     const box = document.getElementById('home-card-palpite-rapido-box');
     if (box) box.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    if (typeof toast === 'function') toast('⚡ Novo Palpite NASA gerado com sucesso!', '✨');
+    if (typeof toast === 'function') toast('⚡ Novo jogo gerado com sucesso!', '✨');
   } else if (modo === 'estrategista') {
     irParaVolanteManual();
   } else {

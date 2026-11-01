@@ -65,7 +65,7 @@
       transform: scale(0.98);
     }
 
-    /* TEMA CLARO NASA CLEANROOM / APOLLO WHITE DEFINITIVO (ZERO ARESTAS) */
+    /* TEMA CLARO CLEANROOM / APOLLO WHITE DEFINITIVO (ZERO ARESTAS) */
     html:not(.dark) body {
       background-color: #f8fafc !important;
       color: #0f172a !important;

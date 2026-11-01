@@ -1,6 +1,6 @@
 -- =========================================================================
 -- EXPURGO AUTOMÁTICO DE DADOS DE USUÁRIOS EXCLUÍDOS (TRIGGER POSTGRESQL)
--- Loterias NASA Pro - Conformidade LGPD & Limpeza de Contas Órfãs
+-- Meu Volante PRO - Conformidade LGPD & Limpeza de Contas Órfãs
 -- =========================================================================
 -- Quando um usuário for deletado de auth.users (seja via Edge Function,
 -- pelo próprio painel administrativo ou por solicitação do usuário),

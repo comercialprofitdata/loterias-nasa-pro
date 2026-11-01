@@ -1,7 +1,7 @@
 {
-  "name": "loterias-nasa-pro",
+  "name": "meu-volante-pro",
   "version": "1.2.0",
-  "description": "Loterias NASA Pro - PWA de Telemetria e Análise Estatística para Mega-Sena e Lotofácil",
+  "description": "Meu Volante PRO: gestão de jogos de Mega-Sena e Lotofácil",
   "type": "module",
   "scripts": {
     "test": "node --test tests/*.test.mjs",

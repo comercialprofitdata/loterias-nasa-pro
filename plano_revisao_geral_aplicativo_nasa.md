@@ -1,8 +1,8 @@
-# 🚀 Loterias NASA Pro: Dossiê Estratégico Multidisciplinar & Revisão Geral do Produto
+# 🎯 Meu Volante PRO: Dossiê Estratégico Multidisciplinar & Revisão Geral do Produto
 
 > **Destinatário:** Vitório B. Neto (Fundador & CEO Executivo)  
 > **Comitê Consultor:** Arquiteto de Dados Sênior, CEO de SaaS, Head de Growth & Marketing, Especialista em QA/Testes e Banca de Jogadores Reais (Apostadores Frequentes)  
-> **Objetivo:** Transformar o Loterias NASA Pro na maior e mais confiável plataforma de inteligência, armazenamento, conferência e apoio estatístico para Mega-Sena e Lotofácil do Brasil.
+> **Objetivo:** Transformar o Meu Volante PRO na maior e mais confiável plataforma de inteligência, armazenamento, conferência e apoio estatístico para Mega-Sena e Lotofácil do Brasil.
 
 ---
 
@@ -117,7 +117,7 @@ O apostador de loterias possui comportamentos distintos: há quem só joga na Me
 | :--- | :--- | :--- | :--- | :--- |
 | **Plano 0: Degustação (Grátis)** | Curioso / Primeiro Acesso | **R$ 0,00** | Freemium | 1 palpite calibrado por vez, teste básico de paridade, visualização do último concurso. Limite de 2 bilhetes salvos. |
 | **Plano Avulso: "Quero Apenas 1 Jogo"** | Apostador Ocasional / Mega Acumulada | **R$ 4,90** *(Pagamento Único)* | Microtransação PIX | 1 pacote completo com **3 palpites de alta entropia calibrados pela Matriz 4x4 + Diagnóstico dos 6 Testes**, exportação WhatsApp e comprovante. |
-| **Plano Mensal: "Apostador NASA"** | Apostador Semanal Regular | **R$ 29,90** /mês | Assinatura Recorrente | Palpites quânticos ilimitados, fechamentos C(n,k) até 22 dezenas, Scanner de apostas em lote (até 50 bilhetes), Simulador histórico com ROI em R$. |
+| **Plano Mensal: "Apostador"** | Apostador Semanal Regular | **R$ 29,90** /mês | Assinatura Recorrente | Palpites quânticos ilimitados, fechamentos C(n,k) até 22 dezenas, Scanner de apostas em lote (até 50 bilhetes), Simulador histórico com ROI em R$. |
 | **Plano Anual Elite: "Apollo VIP"** | Investidor Lotérico Assíduo | **R$ 197,00** /ano *(R$ 16,41/mês - 45% OFF)* | Assinatura Anual | Tudo do Mensal + **Auto-Calibração IA com 1 clique**, Suporte VIP via WhatsApp, Backup em Nuvem e Acesso Antecipado a todas as loterias. |
 | **Plano Bolão: "Sindicato Pro"** | Organizadores de Bolões / Lotéricas | **R$ 59,90** /mês | Recorrente Pro | Módulo de rateio de cotas, gestão de participantes, disparo de comprovantes com 1 clique no WhatsApp, fechamentos pesados de até 25 dezenas. |
 
@@ -138,12 +138,12 @@ O apostador de loterias possui comportamentos distintos: há quem só joga na Me
 
 * **O Maior Problema do Mercado:** A internet está inundada de promessas fraudulentas como *"Robô da Lotofácil que garante 14 pontos"*, *"Planilha milagrosa de R$ 97 que acerta a Mega-Sena"*. O público sério já está vacinado contra isso e sente repulsa.
 * **Nossa Bandeira Ética:**
-  > *"A NASA não promete milagres. A NASA utiliza matemática combinatória, física estatística e cálculo de variância para eliminar apostas estúpidas e maximizar a eficiência de cada centavo que você investe na loteria."*
-* **Slogan Principal:** *"Loterias NASA Pro: A Telemetria da Ciência a Favor do Seu Jogo."*
+  > *"A não promete milagres. A utiliza matemática combinatória, física estatística e cálculo de variância para eliminar apostas estúpidas e maximizar a eficiência de cada centavo que você investe na loteria."*
+* **Slogan Principal:** *"Meu Volante PRO: A Telemetria da Ciência a Favor do Seu Jogo."*
 
 ### 3.2 Loops de Viralidade Orgânica (Growth K-Factor)
 
-1. **Comprovante de Jogo "Padrão NASA" para WhatsApp:** Quando o usuário gera um palpite ou fechamento, o app gera uma mensagem formatada com as dezenas e o índice de entropia. No rodapé da mensagem: *"Gerado via Loterias NASA Pro - Teste grátis: https://loteriasnasa.pro"*.
+1. **Comprovante de Jogo "Padrão" para WhatsApp:** Quando o usuário gera um palpite ou fechamento, o app gera uma mensagem formatada com as dezenas e o índice de entropia. No rodapé da mensagem: *"Gerado via Meu Volante PRO - Teste grátis: https://loteriasnasa.pro"*.
 2. **Relatório de Cotas do Bolão:** O organizador envia o link do bolão para os 15 cotistas. Os 15 participantes abrem o link para conferir o bilhete e conhecem a ferramenta.
 3. **Scanner de Bilhetes em Lote:** O recurso que permite ao usuário conferir vários jogos de uma vez e receber o som de *"Prêmio Confirmado"* estimula o compartilhamento imediato em redes sociais.
 
@@ -172,26 +172,26 @@ Entrevistamos 3 perfis de apostadores fiéis que jogam assiduamente:
 ### 👤 Perfil 1: "Seu Tonho da Lotérica" (Apostador Tradicional de Lotofácil - 62 anos)
 * **Rotina:** Joga R$ 30 a R$ 60 toda semana na Lotofácil. Gosta de conferir bilhete no papel.
 * **O que ele odiava nos outros apps:** *"Tudo cheio de propaganda piscando, vídeo de meia hora tentando me vender curso, e tela minúscula que não dá pra enxergar os números."*
-* **O que ele amou no NASA Pro:** *"O volante é grande, o botão de calor mostra na hora quais números estão atrasados, e o botão de copiar o jogo pro WhatsApp pra mandar pro meu filho jogar pra mim na lotérica é uma benção."*
+* **O que ele amou no Meu Volante PRO:** *"O volante é grande, o botão de calor mostra na hora quais números estão atrasados, e o botão de copiar o jogo pro WhatsApp pra mandar pro meu filho jogar pra mim na lotérica é uma benção."*
 * **Pedido do Tonho:** *"Coloca o calendário dos dias de sorteio bem grandão pra eu não esquecer que dia tem jogo!"*
 
 ### 👤 Perfil 2: "Dr. Marcelo" (Apostador Analítico da Mega-Sena - 41 anos, Engenheiro)
 * **Rotina:** Joga apenas em concursos acumulados (> R$ 50 milhões). Estuda matemática e desconfia de promessas fáceis.
 * **O que ele achava do mercado:** *"99% dos sites vendem esquemas infantis de 'atrair a sorte'. Ridículo."*
-* **O que ele amou no NASA Pro:** *"A matriz 4x4 e a distribuição espacial de Shannon. Quando vi o teste de Qui-Quadrado e paridade em tempo real, percebi que finalmente alguém fez um software com rigor matemático de verdade. Pagaria o plano anual sem pestanejar."*
+* **O que ele amou no Meu Volante PRO:** *"A matriz 4x4 e a distribuição espacial de Shannon. Quando vi o teste de Qui-Quadrado e paridade em tempo real, percebi que finalmente alguém fez um software com rigor matemático de verdade. Pagaria o plano anual sem pestanejar."*
 
 ### 👤 Perfil 3: "Beto do Bolão da Firma" (Organizador de Bolões - 35 anos, Analista de RH)
 * **Rotina:** Organiza o bolão da empresa com 20 a 30 colegas na Mega da Virada e Lotofácil da Independência.
 * **O pesadelo dele:** *"Ficar cobrando quem pagou no PIX, calcular quanto dá cada cota de cabeça e digitar 15 jogos na mão conferindo número por número."*
-* **O que ele amou no NASA Pro:** *"A tela de Bolão faz a divisão em segundos, gera a mensagem pro grupo com o comprovante e me poupa 3 horas de trabalho. Isso vale muito mais que os R$ 59,90 da mensalidade."*
+* **O que ele amou no Meu Volante PRO:** *"A tela de Bolão faz a divisão em segundos, gera a mensagem pro grupo com o comprovante e me poupa 3 horas de trabalho. Isso vale muito mais que os R$ 59,90 da mensalidade."*
 
 ---
 
-## 📊 6. Benchmark Detalhado: Loterias NASA Pro vs. Os 50 Softwares do Mercado
+## 📊 6. Benchmark Detalhado: Meu Volante PRO vs. Os 50 Softwares do Mercado
 
 Após análise profunda de 50 softwares e plataformas concorrentes (nacionais e internacionais), sintetizamos a matriz comparativa definitiva:
 
-| Critério de Avaliação | Softwares Tradicionais (Cologa, NetSorte, Lotocarva, etc.) | Aplicativos Genéricos da Play Store | Loterias NASA Pro (Nossa Plataforma) |
+| Critério de Avaliação | Softwares Tradicionais (Cologa, NetSorte, Lotocarva, etc.) | Aplicativos Genéricos da Play Store | Meu Volante PRO (Nossa Plataforma) |
 | :--- | :--- | :--- | :--- |
 | **Interface & Design** | Visual arcaico dos anos 2000 (estilo Windows 98/XP), sem modo escuro responsivo. | Repletos de banners invasivos de anúncio (AdMob) que travam o celular. | **Design Aeroespacial Futurista "Mission Control" com temas Apollo White / Deep Space Dark.** |
 | **Rigor Matemático** | Fórmulas estáticas antigas em planilhas ou executáveis `.exe` obsoletos. | Geradores de números puramente aleatórios (*Math.random()* sem qualquer critério). | **Bateria de 6 Testes Orbitais, Entropia de Shannon 2D, Matriz 4x4 e Fechamentos $C(n,k)$ auditáveis.** |
@@ -206,7 +206,7 @@ Após análise profunda de 50 softwares e plataformas concorrentes (nacionais e 
 
 ### 7.1 Aviso de Responsabilidade & Disclaimer de Jogo Responsável (+18)
 > **AVISO LEGAL E DE JOGO RESPONSÁVEL (+18):**  
-> 1. O **Loterias NASA Pro** é uma plataforma tecnológica de análise de dados, cálculo combinatório e apoio estatístico para o apostador.  
+> 1. O **Meu Volante PRO** é uma plataforma tecnológica de análise de dados, cálculo combinatório e apoio estatístico para o apostador.  
 > 2. **NÃO GARANTIMOS GANHOS, PREMIAÇÕES OU ENRIQUECIMENTO.** Jogos de loteria são legalmente regulamentados no Brasil pela Caixa Econômica Federal e são inerentemente baseados na probabilidade e na aleatoriedade.  
 > 3. Os palpites, filtros e fechamentos sugeridos pela plataforma constituem meras hipóteses analíticas baseadas em leis probabilísticas, desvio padrão e frequências históricas.  
 > 4. O aplicativo **não recebe apostas financeiras e não comercializa bilhetes oficiais**. Todas as apostas reais devem ser efetuadas pelo usuário nas casas lotéricas credenciadas ou através dos canais eletrônicos oficiais da Caixa Econômica Federal.  

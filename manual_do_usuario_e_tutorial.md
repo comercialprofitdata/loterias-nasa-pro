@@ -1,13 +1,13 @@
-# 📖 Manual Oficial do Usuário & Guia de Operações NASA
+# 📖 Manual Oficial do Usuário & Guia de Operações
 
-**Loterias Analytics Pro — NASA Telemetry Edition**  
+**Meu Volante PRO**  
 *Documento de Onboarding, Manual de Instruções e Diretrizes do Teste Gratuito*
 
 ---
 
 ## 1. Visão Geral da Plataforma
 
-O **Loterias Analytics Pro** é um software de inteligência combinatória, análise de entropia espacial e validação estatística de apostas para as Loterias Caixa (Mega-Sena e Lotofácil). 
+O **Meu Volante PRO** é um software de inteligência combinatória, análise de entropia espacial e validação estatística de apostas para as Loterias Caixa (Mega-Sena e Lotofácil). 
 
 O sistema não é um jogo de azar nem promete ganhos mágicos: ele atua como um **instrumento de filtragem científica**, eliminando combinações matematicamente ineficientes (como sequências óbvias, acúmulos num mesmo quadrante ou vícios de datas de aniversário) que diluem prêmios ou reduzem drasticamente a chance estatística.
 
@@ -19,19 +19,19 @@ O sistema não é um jogo de azar nem promete ganhos mágicos: ele atua como um 
 No topo da tela, selecione **Mega-Sena** (foco em 6 dezenas de 1 a 60) ou **Lotofácil** (15 a 20 dezenas de 1 a 25). Toda a telemetria se reconfigura instantaneamente.
 
 ### Passo 2: Geração Inteligente com Matriz 4x4
-1. Clique em **`⚡ GERAR APOSTA NASA`**.
+1. Clique em **`⚡ GERAR APOSTA`**.
 2. O motor aplica a **Matriz 4x4**, garantindo que as dezenas sejam distribuídas de forma equilibrada nos quadrantes espaciais do volante, excluindo quadrantes intencionalmente para elevar a variância estatística.
 3. Se você for assinante **NASA VIP PRO**, poderá selecionar gerar **2, 3 ou 5 jogos simultâneos** em lote.
 
 ### Passo 3: Regras Personalizadas — Dezenas Fixas 📌 e Dezenas Proibidas 🚫 (Opcional)
 Acima do volante interativo, você conta com seletores de modo de toque:
 * **Modo Normal (🎯):** Seleciona ou desseleciona dezenas livremente no volante.
-* **Modo Fixar (📌):** Clique sobre os números que você deseja que sejam **obrigatórios**. Essas dezenas aparecem em destaque verde com alfinete e estarão **presentes em 100% dos jogos gerados** pelo motor da NASA.
+* **Modo Fixar (📌):** Clique sobre os números que você deseja que sejam **obrigatórios**. Essas dezenas aparecem em destaque verde com alfinete e estarão **presentes em 100% dos jogos gerados** pelo motor da.
 * **Modo Proibir (🚫):** Clique sobre as pedras que você rejeita. Elas ficarão tachadas em vermelho e o motor combinatório **nunca sorteará essas dezenas**.
 * **Botão Resetar Regras (🧹):** Limpa todas as dezenas fixas e proibidas com 1 clique, retornando o volante ao estado inicial neutro.
 
 ### Passo 4: Verificando a Bateria dos 6 Testes Orbitais
-Logo abaixo do volante, abra o painel **`🛡️ Bateria dos 6 Testes Estatísticos NASA`**:
+Logo abaixo do volante, abra o painel **`🛡️ Bateria dos 6 Testes Estatísticos`**:
 * **1º Teste: Sequências & Finais:** Garante que não haja sequências consecutivas longas (ex: 12-13-14) nem excesso de números terminados no mesmo dígito.
 * **2º Teste: Entropia de Shannon (H):** Mede a dispersão da informação matemática. Evita agrupamentos artificiais.
 * **3º Teste: Qui-Quadrado ($\chi^2$) Espacial:** Testa a uniformidade da distribuição entre os 4 quadrantes.
@@ -40,7 +40,7 @@ Logo abaixo do volante, abra o painel **`🛡️ Bateria dos 6 Testes Estatísti
 * **6º Teste: Partição Hipergeométrica:** Confirma que a distribuição respeita a faixa de probabilidade de 80,8% dos concursos oficiais.
 
 ### Passo 5: Aplicando as Dicas de Troca por IA
-Caso seu jogo falhe em algum teste (ficando com badge vermelho `Alerta`), a caixa **`💡 Dicas de Ajuste & Substituição NASA`** sugere exatamente qual pedra remover e qual pedra inserir para que a aposta atinja **Score 100/100 (6 de 6 Aprovados)**.
+Caso seu jogo falhe em algum teste (ficando com badge vermelho `Alerta`), a caixa **`💡 Dicas de Ajuste & Substituição`** sugere exatamente qual pedra remover e qual pedra inserir para que a aposta atinja **Score 100/100 (6 de 6 Aprovados)**.
 
 ### Passo 6: Teste Retrospectivo nos Últimos 50 Concursos
 Abra o **`⏳ Simulador de Desempenho Histórico`** para ver instantaneamente quantas Quadras, Quinas e Senas essa combinação teria acertado nos últimos 50 sorteios oficiais da Caixa.
@@ -64,9 +64,9 @@ Abra o **`⏳ Simulador de Desempenho Histórico`** para ver instantaneamente qu
 
 ---
 
-## 4. Estrutura do Teste Gratuito (Free Trial vs. NASA VIP PRO)
+## 4. Estrutura do Teste Gratuito (Free Trial vs. VIP PRO)
 
-| Funcionalidade | Plano Gratuito (Free Trial) | Plano NASA VIP PRO |
+| Funcionalidade | Plano Gratuito (Free Trial) | Plano VIP PRO |
 | :--- | :---: | :---: |
 | **Geração de Jogos** | 1 aposta por vez | Múltiplas apostas (2, 3, 5 ou mais) |
 | **Bateria de Testes** | 2 testes básicos visíveis | Todos os 6 Testes Orbitais com IA |
@@ -81,7 +81,7 @@ Abra o **`⏳ Simulador de Desempenho Histórico`** para ver instantaneamente qu
 ## 5. Dúvidas Frequentes (FAQ)
 
 **P: O software garante que vou ganhar na loteria?**  
-*R: Não. Loterias são jogos de probabilidade matemática e sorteio aleatório. O Loterias NASA Pro elimina as combinações que possuem probabilidade estatística quase nula, aumentando sua eficiência para que você nunca mais jogue dinheiro fora em apostas viciadas.*
+*R: Não. Loterias são jogos de probabilidade matemática e sorteio aleatório. O Meu Volante PRO elimina as combinações que possuem probabilidade estatística quase nula, aumentando sua eficiência para que você nunca mais jogue dinheiro fora em apostas viciadas.*
 
 **P: O software registra as apostas na Caixa por mim?**  
 *R: Não. O aplicativo gera e audita suas apostas. Para registrá-las oficialmente, utilize o botão "Copiar para Loterias Caixa" e cole no site ou app oficial da Caixa, ou leve seus volantes a uma casa lotérica credenciada.*

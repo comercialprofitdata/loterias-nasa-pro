@@ -1,10 +1,10 @@
 // =========================================================================
-// LOTERIAS NASA PRO — SERVICE WORKER v1.0
+// MEU VOLANTE PRO — SERVICE WORKER v1.0
 // Estratégia: Cache-First para assets estáticos, Network-First para dados
 // =========================================================================
 
-const CACHE_NAME = 'loterias-nasa-pro-v20261101.6';
-const CACHE_STATIC = 'nasa-static-v20261101.6';
+const CACHE_NAME = 'loterias-nasa-pro-v20261101.8';
+const CACHE_STATIC = 'nasa-static-v20261101.8';
 
 // Assets críticos para funcionamento offline
 const ASSETS_TO_CACHE = [
@@ -136,7 +136,7 @@ self.addEventListener('fetch', (event) => {
 // =========================================================================
 self.addEventListener('push', (event) => {
   const data = event.data ? event.data.json() : {};
-  const title = data.title || '🚀 Loterias NASA Pro';
+  const title = data.title || '🎯 Meu Volante PRO';
   const options = {
     body: data.body || 'Novo resultado disponível!',
     icon: './icon-192.png',
@@ -160,4 +160,4 @@ self.addEventListener('notificationclick', (event) => {
   );
 });
 
-console.log('[SW] Loterias NASA Pro Service Worker v1.0 — Operacional!');
+console.log('[SW] Meu Volante PRO Service Worker v1.0 — Operacional!');

@@ -1,5 +1,5 @@
 -- ===================================================================
--- LOTERIAS NASA PRO — SINCRONIZAÇÃO EM NUVEM DA CARTEIRA DE APOSTAS
+-- MEU VOLANTE PRO — SINCRONIZAÇÃO EM NUVEM DA CARTEIRA DE APOSTAS
 -- Execute este script no SQL Editor do seu projeto Supabase.
 -- Garante persistência permanente e sincronização entre celular e computador.
 -- ===================================================================

@@ -1,5 +1,5 @@
 // =========================================================================
-// LOTERIAS NASA PRO — SISTEMA DE FEEDBACK & AVALIAÇÃO DE TESTADORES VIP
+// MEU VOLANTE PRO — SISTEMA DE FEEDBACK & AVALIAÇÃO DE TESTADORES VIP
 // =========================================================================
 (function () {
   'use strict';
@@ -41,7 +41,7 @@
           <!-- Cabeçalho -->
           <div class="flex items-center gap-3 border-b border-slate-800/80 pb-3">
             <div class="w-10 h-10 rounded-2xl bg-cyan-950/80 border border-cyan-500 flex items-center justify-center text-xl shadow-lg shadow-cyan-950/40">
-              🛰️
+              
             </div>
             <div>
               <span class="text-[9px] font-mono font-black px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-800 uppercase tracking-wider">
@@ -64,10 +64,10 @@
               <button type="button" onclick="window.selecionarNotaFeedback(2)" class="fb-star-btn text-2xl transition hover:scale-125" data-nota="2" title="2 - Regular">🤔</button>
               <button type="button" onclick="window.selecionarNotaFeedback(3)" class="fb-star-btn text-2xl transition hover:scale-125" data-nota="3" title="3 - Bom">👍</button>
               <button type="button" onclick="window.selecionarNotaFeedback(4)" class="fb-star-btn text-2xl transition hover:scale-125" data-nota="4" title="4 - Muito Bom">✨</button>
-              <button type="button" onclick="window.selecionarNotaFeedback(5)" class="fb-star-btn text-2xl transition hover:scale-125" data-nota="5" title="5 - Excelente / Espetacular">🚀</button>
+              <button type="button" onclick="window.selecionarNotaFeedback(5)" class="fb-star-btn text-2xl transition hover:scale-125" data-nota="5" title="5 - Excelente / Espetacular">🎯</button>
             </div>
             <div id="feedback-nota-rotulo" class="text-center font-bold text-xs text-cyan-400">
-              🚀 5/5 — Excelente / Espetacular!
+              🎯 5/5 — Excelente / Espetacular!
             </div>
           </div>
 
@@ -113,7 +113,7 @@
     2: '🤔 2/5 — Regular / Ajustes Necessários',
     3: '👍 3/5 — Bom / No Caminho Certo',
     4: '✨ 4/5 — Muito Bom / Fácil de Usar',
-    5: '🚀 5/5 — Excelente / Espetacular!'
+    5: '🎯 5/5 — Excelente / Espetacular!'
   };
 
   window.selecionarNotaFeedback = function (nota) {
@@ -203,7 +203,7 @@
     window.fecharModalFeedbackTestador();
 
     if (typeof window.toast === 'function') {
-      window.toast(`Obrigado pelo feedback, ${nome.split(' ')[0]}! Juntos fazemos o melhor app! 🚀`, '🙏');
+      window.toast(`Obrigado pelo feedback, ${nome.split(' ')[0]}! Juntos fazemos o melhor app! 🎯`, '🙏');
     }
     if (typeof window.tocarSomNasa === 'function') window.tocarSomNasa('sucesso');
 
@@ -223,7 +223,7 @@
     const rotulo = ROTULOS_NOTAS[notaSelecionada] || `Nota ${notaSelecionada}/5`;
 
     const texto = 
-      `🛰️ *Feedback Loterias NASA PRO*\n\n` +
+      `*Feedback Meu Volante PRO*\n\n` +
       `👤 *Testador:* ${nome}\n` +
       `⭐ *Avaliação:* ${rotulo}\n\n` +
       `💡 *Sugestão de Melhoria:*\n"${mensagem || 'App muito bom! Parabéns pelo projeto!'}"\n\n` +
@@ -354,7 +354,7 @@
           </td>
           <td class="p-3.5 text-right">
             ${zapNum ? `
-              <button type="button" onclick="window.abrirWhatsApp ? window.abrirWhatsApp({ fone: '${zapNum}', texto: 'Olá, ${(f.nome || '').replace(/'/g, '')}! Vi sua sugestão no Loterias NASA PRO. Muito obrigado pelo feedback!' }) : (window.location.href = 'whatsapp://send?phone=55${zapNum}&text=Olá!')" class="px-2.5 py-1 bg-emerald-950 hover:bg-emerald-900 border border-emerald-800 text-emerald-300 rounded-lg text-[10px] font-bold inline-flex items-center gap-1 transition">
+              <button type="button" onclick="window.abrirWhatsApp ? window.abrirWhatsApp({ fone: '${zapNum}', texto: 'Olá, ${(f.nome || '').replace(/'/g, '')}! Vi sua sugestão no Meu Volante PRO. Muito obrigado pelo feedback!' }) : (window.location.href = 'whatsapp://send?phone=55${zapNum}&text=Olá!')" class="px-2.5 py-1 bg-emerald-950 hover:bg-emerald-900 border border-emerald-800 text-emerald-300 rounded-lg text-[10px] font-bold inline-flex items-center gap-1 transition">
                 <span>💬</span> <span>Responder</span>
               </button>
             ` : `

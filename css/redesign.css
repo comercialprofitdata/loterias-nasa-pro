@@ -1,5 +1,5 @@
 /* ===================================================================
-   REDESIGN NASA PRO 3.1 — Mobile-First FinTech & Telemetry Design System
+   REDESIGN Meu Volante PRO 3.1 — Mobile-First FinTech & Telemetry Design System
    Inspirado no benchmark de 50 apps (Jackpocket, TuLotero, Nubank, CAIXA)
    Mantém 100% das funcionalidades com ergonomia nativa para o polegar.
    =================================================================== */
@@ -1488,7 +1488,7 @@ html:not(.dark) .nasa-profile-sheet #drawer-admin-row button span {
   color: #78350f !important;
 }
 
-/* ========== DESKTOP / TABLET GRANDE (ACIMA DE 1024PX - CENTRO DE COMANDO NASA) ========== */
+/* ========== DESKTOP / TABLET GRANDE (ACIMA DE 1024PX - CENTRO DE COMANDO) ========== */
 :root {
   --sidebar-width: 290px;
 }
@@ -1519,7 +1519,7 @@ html:not(.dark) .nasa-theme-chip {
 }
 
 /* =========================================================================
-   BARRA LATERAL DESKTOP (COCKPIT NASA - REDIMENSIONÁVEL & SEM TRUNCAMENTO)
+   BARRA LATERAL DESKTOP (COCKPIT - REDIMENSIONÁVEL & SEM TRUNCAMENTO)
    ========================================================================= */
 .nasa-desktop-sidebar,
 #nasa-desktop-sidebar {

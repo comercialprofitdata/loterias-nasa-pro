@@ -1,5 +1,5 @@
 // =========================================================================
-// LOTERIAS NASA PRO — SIMULADOR RETROSPECTIVO ("E SE EU TIVESSE JOGADO?")
+// MEU VOLANTE PRO — SIMULADOR RETROSPECTIVO ("E SE EU TIVESSE JOGADO?")
 // =========================================================================
 (function () {
   'use strict';
@@ -111,7 +111,7 @@
             <div class="flex items-center gap-3">
               <span class="w-8 h-8 rounded-lg bg-cyan-950 border border-cyan-500 flex items-center justify-center text-cyan-300 text-lg">🔬</span>
               <div>
-                <h3 class="font-black text-sm sm:text-base text-cyan-300">Simulador Retrospectivo NASA</h3>
+                <h3 class="font-black text-sm sm:text-base text-cyan-300">Simulador Retrospectivo</h3>
                 <p class="text-[11px] text-slate-400">"E se eu tivesse apostado estes jogos nos últimos concursos reais?"</p>
               </div>
             </div>

@@ -1,6 +1,6 @@
-# 🚀 Guia de Publicação na Google Play Store (App Android Nativo via TWA / Bubblewrap)
+# 🎯 Guia de Publicação na Google Play Store (App Android Nativo via TWA / Bubblewrap)
 
-Este documento detalha o procedimento técnico padrão do Google para empacotar o **Loterias Analytics Pro** em um arquivo `.aab` (Android App Bundle) e publicá-lo na Google Play Store.
+Este documento detalha o procedimento técnico padrão do Google para empacotar o **Meu Volante PRO** em um arquivo `.aab` (Android App Bundle) e publicá-lo na Google Play Store.
 
 ---
 
@@ -12,7 +12,7 @@ A tecnologia **TWA (Google Trusted Web Activity)** é a solução oficial da equ
 * **Atualização Imediata:** Qualquer melhoria que você fizer no HTML/JS/CSS reflete imediatamente para os usuários que baixaram na Play Store, sem precisar enviar uma nova revisão para o Google.
 * **Tamanho Leve:** O aplicativo pesa menos de 3 MB na Play Store.
 * **Full Screen Nativo:** Remove barra de navegador, comportando-se como aplicativo nativo puro.
-* **Ícone e Splash Screen Nativa:** Tela de abertura com logo NASA e cores do sistema.
+* **Ícone e Splash Screen Nativa:** Tela de abertura com logo e cores do sistema.
 
 ---
 
@@ -28,7 +28,7 @@ A tecnologia **TWA (Google Trusted Web Activity)** é a solução oficial da equ
 
 ## 3. Passo a Passo de Empacotamento via Terminal
 
-Abra o terminal PowerShell nesta pasta (`C:\Users\vitorio.neto\Documents\Vitório PC\Arquivos BERT\Loterias Nasa`) e execute:
+Abra o terminal PowerShell nesta pasta (`C:\Users\vitorio.neto\Documents\Vitório PC\Arquivos BERT\Meu Volante PRO`) e execute:
 
 ```powershell
 # 1. Instalar o Bubblewrap CLI globalmente
@@ -39,8 +39,8 @@ bubblewrap init --manifest="https://vitoriobergamobrazil.github.io/loterias-nasa
 ```
 
 Durante o assistente, responda as perguntas:
-* **Application name:** `Loterias Analytics Pro - NASA Edition`
-* **Short name:** `Loterias NASA`
+* **Application name:** `Meu Volante PRO`
+* **Short name:** `Meu Volante PRO`
 * **Package name:** `com.loteriasnasa.pro`
 * **Display mode:** `standalone` ou `fullscreen`
 * **Theme color:** `#0b1329`
@@ -77,7 +77,7 @@ Para que o Google retire qualquer barra de endereço e valide a titularidade do 
 ## 5. Publicação no Google Play Console
 
 1. Acesse [Google Play Console](https://play.google.com/console).
-2. Clique em **Criar app** -> Nome: `Loterias NASA Pro` -> Categoria: `Finanças / Ferramentas`.
+2. Clique em **Criar app** -> Nome: `Meu Volante PRO` -> Categoria: `Finanças / Ferramentas`.
 3. Preencha a **Ficha da Loja (Store Listing)**:
    - Descrição curta: *Inteligência combinatória, telemetria espacial e testes estatísticos para apostadores.*
    - Descrição completa: utilize os tópicos do documento `manual_do_usuario_e_tutorial.md`.

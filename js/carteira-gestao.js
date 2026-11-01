@@ -1,5 +1,5 @@
 // =========================================================================
-// LOTERIAS NASA PRO — GESTÃO INTELIGENTE DE CARTEIRA (HIGH-CAPACITY UX)
+// MEU VOLANTE PRO — GESTÃO INTELIGENTE DE CARTEIRA (HIGH-CAPACITY UX)
 // Suporta de 1 a 500+ apostas com agrupamento por concurso, filtros e busca
 // =========================================================================
 (function () {
@@ -281,7 +281,7 @@
     if (!grupo || !grupo.bilhetes.length) return;
 
     const modNome = grupo.modalidade === 'lotofacil' ? 'Lotofácil' : 'Mega-Sena';
-    let msg = `🛰️ *Loterias NASA Pro — Lote de Apostas*\n`;
+    let msg = `*Meu Volante PRO — Lote de Apostas*\n`;
     msg += `Modalidade: *${modNome}*\n`;
     msg += `Concurso: *${grupo.concurso}* (${grupo.data})\n`;
     msg += `Total de Jogos: *${grupo.bilhetes.length}*\n\n`;
@@ -291,7 +291,7 @@
       msg += `*Jogo #${idx + 1}:* ${dezenasFormatadas}\n`;
     });
 
-    msg += `\n🛰️ *Loterias NASA Pro* — Monte e audite seus bolões:\n👉 https://loterias.pd.dev.br/`;
+    msg += `\n*Meu Volante PRO* — Monte e audite seus bolões:\n👉 https://loterias.pd.dev.br/`;
     if (typeof window.abrirWhatsApp === 'function') {
       window.abrirWhatsApp({ texto: msg });
     } else {
@@ -755,7 +755,7 @@
       }));
       return encodeURIComponent(b64);
     } catch (e) {
-      console.error('[NASA Sync] Erro ao compactar carteira:', e);
+      console.error('[Sync] Erro ao compactar carteira:', e);
       return '';
     }
   };
@@ -786,7 +786,7 @@
         dataRegistro: new Date().toISOString()
       }));
     } catch (e) {
-      console.error('[NASA Sync] Erro ao descompactar carteira:', e);
+      console.error('[Sync] Erro ao descompactar carteira:', e);
       return [];
     }
   };
@@ -810,12 +810,12 @@
     const total = lista.length;
 
     const texto = 
-      `🛰️ *Loterias NASA PRO — Sincronização de Jogos entre Aparelhos*\n\n` +
+      `*Meu Volante PRO — Sincronização de Jogos entre Aparelhos*\n\n` +
       `👤 *Testador VIP:* ${nome}\n` +
       `📦 *Total de Jogos Salvos:* ${total} bilhete(s)\n\n` +
       `👉 *Abra este link no seu outro celular para carregar todos os seus jogos instantaneamente:*\n` +
       `${link}\n\n` +
-      `Ao abrir o link no seu outro celular, todos os seus jogos e seu acesso VIP serão ativados automaticamente! 🚀`;
+      `Ao abrir o link no seu outro celular, todos os seus jogos e seu acesso VIP serão ativados automaticamente! 🎯`;
 
     if (typeof window.abrirWhatsApp === 'function') {
       window.abrirWhatsApp({ texto: texto });
@@ -879,7 +879,7 @@
         }
       }
     } catch (e) {
-      console.warn('[NASA Sync] Erro ao processar URL sync:', e);
+      console.warn('[Sync] Erro ao processar URL sync:', e);
     }
   };
 

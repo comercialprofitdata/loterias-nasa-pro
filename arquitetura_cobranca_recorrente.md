@@ -1,6 +1,6 @@
 # 💳 Arquitetura de Cobrança Recorrente (Cartão de Crédito e Pix Automático)
 
-Este documento especifica a esteira de pagamentos em modelo SaaS com **cobrança recorrente automática no cartão de crédito** para o **Loterias NASA Pro**.
+Este documento especifica a esteira de pagamentos em modelo SaaS com **cobrança recorrente automática no cartão de crédito** para o **Meu Volante PRO**.
 
 ---
 
@@ -9,8 +9,8 @@ Este documento especifica a esteira de pagamentos em modelo SaaS com **cobrança
 | Nível / Plano | Valor | Ciclo de Cobrança | Recursos Inclusos |
 | :--- | :--- | :--- | :--- |
 | **Pioneiro (Free Trial)** | R$ 0,00 | Degustação Vitalícia / 3 dias PRO | 1 jogo por clique, 1 auditoria diária, visualização básica de calor. |
-| **Comandante NASA VIP (Mensal)** | **R$ 29,90** / mês | Recorrência mensal automática no cartão | Geração em lote (até 5 jogos simultâneos), Bateria dos 6 Testes completa, IA de substituição em tempo real, download TXT ilimitado. |
-| **Comandante NASA VIP (Anual)** | **R$ 197,00** / ano | Recorrência anual (equivale a R$ 16,40/mês) | Todos os benefícios do mensal + 45% de economia + Acesso prioritário a novas loterias. |
+| **Comandante VIP (Mensal)** | **R$ 29,90** / mês | Recorrência mensal automática no cartão | Geração em lote (até 5 jogos simultâneos), Bateria dos 6 Testes completa, IA de substituição em tempo real, download TXT ilimitado. |
+| **Comandante VIP (Anual)** | **R$ 197,00** / ano | Recorrência anual (equivale a R$ 16,40/mês) | Todos os benefícios do mensal + 45% de economia + Acesso prioritário a novas loterias. |
 | **Bolão Corporativo / Syndicate** | **R$ 59,90** / mês | Recorrência mensal no cartão | Rateador de cotas com envio individual de cobrança Pix no WhatsApp + Relatório PDF personalizado do bolão. |
 
 ---
@@ -39,12 +39,12 @@ O fluxo de autorização funciona através de uma arquitetura simples e segura (
 sequenceDiagram
     autonumber
     actor Cliente as Usuário / Apostador
-    participant App as App Loterias NASA
+    participant App as App Meu Volante PRO
     participant Gateway as Gateway (Asaas / Stripe)
     participant Backend as Webhook Handler
     participant DB as Banco de Dados (Auth/Licenças)
 
-    Cliente->>App: Clica em "Assinar NASA VIP Pro" (R$ 29,90/mês)
+    Cliente->>App: Clica em "Assinar VIP Pro" (R$ 29,90/mês)
     App->>Gateway: Abre Checkout Seguro (Cartão de Crédito)
     Cliente->>Gateway: Digita dados do Cartão e confirma
     Gateway-->>Gateway: Processa recorrência e tokeniza cartão
@@ -80,5 +80,5 @@ const userSession = {
 ## 5. Próximos Passos de Implementação Prática
 
 1. **Criar conta PJ ou PF no Asaas ou Stripe.**
-2. **Cadastrar o produto "Loterias NASA VIP"** com preço recorrente de R$ 29,90/mês e R$ 197,00/ano.
-3. **Plugar a URL do Checkout** diretamente no botão `"QUERO SER NASA VIP PRO"` do modal de assinatura existente no `index.html`.
+2. **Cadastrar o produto "Meu Volante PRO VIP"** com preço recorrente de R$ 29,90/mês e R$ 197,00/ano.
+3. **Plugar a URL do Checkout** diretamente no botão `"QUERO SER VIP PRO"` do modal de assinatura existente no `index.html`.

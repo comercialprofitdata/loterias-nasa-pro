@@ -1,5 +1,5 @@
 // =========================================================================
-// LOTERIAS NASA PRO — ESPELHO DE VOLANTE EM PDF / IMPRESSÃO A4 (LOTÉRICA)
+// MEU VOLANTE PRO — ESPELHO DE VOLANTE EM PDF / IMPRESSÃO A4 (LOTÉRICA)
 // =========================================================================
 (function () {
   'use strict';
@@ -67,7 +67,7 @@
       <html lang="pt-BR">
       <head>
         <meta charset="utf-8">
-        <title>Espelho de Volantes - Loterias NASA Pro</title>
+        <title>Espelho de Volantes - Meu Volante PRO</title>
         <style>
           @page {
             size: A4 portrait;
@@ -146,7 +146,7 @@
         </div>
 
         <div class="header-doc">
-          <h2 style="margin: 0; font-size: 18px; letter-spacing: 1px;">🛰️ LOTERIAS NASA PRO — ESPELHO DE VOLANTES</h2>
+          <h2 style="margin: 0; font-size: 18px; letter-spacing: 1px;">MEU VOLANTE PRO — ESPELHO DE VOLANTES</h2>
           <p style="margin: 3px 0 0; font-size: 11px; color: #444;">
             Modalidade: <strong>${nomeMod}</strong> | Lote: <strong>${jogos.length} Apostas</strong> | Emissão: ${dataHoje} às ${horaHoje}
           </p>
@@ -168,7 +168,7 @@
         </div>
 
         <div class="footer-nota">
-          Documento gerado pelo sistema estatístico Loterias NASA Pro. Utilize este espelho para passar as apostas nos volantes oficiais da Caixa ou direto no terminal lotérico. Não possui valor fiscal até validação na Casa Lotérica.
+          Documento gerado pelo sistema estatístico Meu Volante PRO. Utilize este espelho para passar as apostas nos volantes oficiais da Caixa ou direto no terminal lotérico. Não possui valor fiscal até validação na Casa Lotérica.
         </div>
 
         <script>

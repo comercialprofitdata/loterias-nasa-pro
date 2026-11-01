@@ -8,7 +8,8 @@ const BOAS_VINDAS_CHAVE = 'nasa_boas_vindas_v1';
 const BOAS_VINDAS_PASSOS = [
   { titulo: 'Seu próximo jogo em um toque', texto: 'Gere um jogo de Mega-Sena ou Lotofácil, ou escolha suas próprias dezenas.', bolas: [7, 18, 23, 34, 41, 56] },
   { titulo: 'Nada de bilhete perdido', texto: 'Salve seus jogos e veja a conferência com o resultado da Caixa em um só lugar.', icone: '✓' },
-  { titulo: 'Combinado entre nós', texto: 'Todas as combinações têm a mesma chance. O app organiza seus jogos, mas não prevê resultados nem garante prêmios.', icone: '18+', confirmar: true }
+  { titulo: 'Ciência, não achismo', texto: 'Dados oficiais da Caixa e matemática de verdade para você entender cada jogo: chance real, custo e histórico.', icone: '∑' },
+  { titulo: 'Combinado entre nós', texto: 'Todas as combinações têm a mesma chance. A ciência mostra os fatos, mas ninguém prevê resultados nem garante prêmios.', icone: '18+', confirmar: true }
 ];
 
 function abrirBoasVindas() {

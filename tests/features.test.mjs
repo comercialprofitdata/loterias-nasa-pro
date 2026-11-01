@@ -125,7 +125,7 @@ test('Testadores VIP: Validação de estrutura do CSV do Google Play', () => {
 test('Parser Inteligente: Extração de apostas a partir de texto do WhatsApp e concursos passados', async () => {
   const { parsearJogosTexto } = await import('../scripts/test-parser.mjs');
 
-  const textoWhatsApp = `🛰️ Loterias NASA Pro — Lote de Apostas
+  const textoWhatsApp = `Meu Volante PRO — Lote de Apostas
 Modalidade: Mega-Sena
 Concurso: #2788 (27/10/2026)
 Total de Jogos: 2

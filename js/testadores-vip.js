@@ -1,5 +1,5 @@
 // =========================================================================
-// LOTERIAS NASA PRO — PROGRAMA DOS 20 TESTADORES GOOGLE PLAY (CLOSED TEST)
+// MEU VOLANTE PRO — PROGRAMA DOS 20 TESTADORES GOOGLE PLAY (CLOSED TEST)
 // =========================================================================
 (function () {
   'use strict';
@@ -42,7 +42,7 @@
             <div class="flex items-center gap-3">
               <span class="w-8 h-8 rounded-lg bg-emerald-950 border border-emerald-500 flex items-center justify-center text-emerald-300 text-lg">👥</span>
               <div>
-                <h3 class="font-black text-sm sm:text-base text-emerald-400">Programa de Testadores VIP NASA</h3>
+                <h3 class="font-black text-sm sm:text-base text-emerald-400">Programa de Testadores VIP</h3>
                 <p class="text-[11px] text-slate-400">Grupo fechado de 20 pioneiros para homologação na Google Play</p>
               </div>
             </div>
@@ -82,7 +82,7 @@
                 </div>
               </div>
               <button type="submit" class="w-full py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold rounded-xl text-xs shadow-lg shadow-emerald-950/40 transition">
-                🚀 Confirmar Minha Vaga como Testador VIP
+                🎯 Confirmar Minha Vaga como Testador VIP
               </button>
             </form>
 
@@ -168,15 +168,15 @@
     zapEl.value = '';
 
     if (typeof window.toast === 'function') {
-      window.toast('🎉 Vaga confirmada no Programa de Testadores!', '🛰️');
+      window.toast('🎉 Vaga confirmada no Programa de Testadores!', '');
     }
     if (typeof window.tocarBeep === 'function') window.tocarBeep('success');
   };
 
   window.compartilharConviteTestadoresWhatsApp = function () {
     const texto = 
-      `🛰️ *Convite Exclusivo - Loterias NASA Pro*\n\n` +
-      `Fui convidado para o grupo pioneiro de 20 testadores do *Loterias NASA* antes do lançamento na Google Play Store!\n\n` +
+      `*Convite Exclusivo - Meu Volante PRO*\n\n` +
+      `Fui convidado para o grupo pioneiro de 20 testadores do *Meu Volante PRO* antes do lançamento na Google Play Store!\n\n` +
       `Se você aposta na Mega-Sena ou Lotofácil e quer testar as matrizes gratuitamente, garanta uma das 20 vagas:\n` +
       `${window.location.origin}${window.location.pathname}?programa=testadores`;
 

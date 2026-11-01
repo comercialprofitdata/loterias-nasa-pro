@@ -1,5 +1,5 @@
 // =========================================================================
-// LOTERIAS NASA PRO — ERROR TRAP & TELEMETRIA SILENCIOSA (OBSERVABILIDADE)
+// MEU VOLANTE PRO — ERROR TRAP & TELEMETRIA SILENCIOSA (OBSERVABILIDADE)
 // =========================================================================
 (function () {
   'use strict';
@@ -74,7 +74,7 @@
   // API pública de auditoria no console
   window.telemetriaErros = function () {
     const logs = obterLogsSalvos();
-    console.group(`🛰️ [Loterias NASA] Log de Telemetria de Erros (${logs.length} registros)`);
+    console.group(`[Meu Volante PRO] Log de Telemetria de Erros (${logs.length} registros)`);
     if (logs.length === 0) {
       console.log('✅ Nenhum erro não tratado registrado nesta sessão/dispositivo.');
     } else {

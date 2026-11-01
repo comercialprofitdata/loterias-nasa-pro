@@ -19,5 +19,5 @@ test('Legal & LGPD: Página de exclusão de conta existe (Requisito Play Store)'
 test('Legal: Licença e isenções de responsabilidade', () => {
   assert.ok(fs.existsSync('LICENSE'), 'LICENSE deve existir');
   const readme = fs.readFileSync('README.md', 'utf-8');
-  assert.ok(readme.includes('não declara vínculo oficial com NASA ou MIT') || readme.includes('Loterias Nasa'), 'README deve manter clareza sobre o posicionamento');
+  assert.ok(readme.includes('não declara vínculo oficial com ou MIT') || readme.includes('Meu Volante PRO'), 'README deve manter clareza sobre o posicionamento');
 });
