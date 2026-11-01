@@ -225,7 +225,7 @@
       }
 
       grupos[grupoChave].bilhetes.push(b);
-      grupos[grupoChave].totalCusto += Number(b.custo || (mod === 'lotofacil' ? 3.0 : 5.0));
+      grupos[grupoChave].totalCusto += window.custoDoBilhete(b);
       const premio = Number(b.premioGanho || 0);
       grupos[grupoChave].totalPremio += premio;
       if (premio > 0) grupos[grupoChave].premiadosCount++;
@@ -431,7 +431,7 @@
     let totalGasto = 0;
     let totalGanho = 0;
     listaOriginal.forEach(b => {
-      const custoPadrao = b.modalidade === 'lotofacil' ? 3.0 : 5.0;
+      const custoPadrao = b.modalidade === 'lotofacil' ? 3.5 : 6.0;
       totalGasto += Number(b.custo || custoPadrao);
       totalGanho += Number(b.premioGanho || 0);
     });
@@ -569,9 +569,6 @@
           statusBadge = `
             <div class="flex items-center gap-1.5 flex-wrap">
               <span class="status-badge-aguardando px-2.5 py-1 rounded-full text-[10px] font-medium">⏳ Aguardando Sorteio</span>
-              <button type="button" onclick="event.stopPropagation(); window.reatribuirConcursoLote('${g.id}', '${ultimoNum}')" class="btn-conferir-anterior px-2.5 py-1 rounded-full text-[10px] font-bold transition flex items-center gap-1 shadow-sm active:scale-95" title="Se você jogou este bilhete no concurso anterior, toque para conferir">
-                <span>⚡</span> Conferir com ${ultimoNum}
-              </button>
             </div>
           `;
         }

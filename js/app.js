@@ -385,7 +385,7 @@
 
       // Registrar Service Worker com Verificação Imediata de Atualizações
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js?v=20261101.8', { scope: './' })
+        navigator.serviceWorker.register('./sw.js?v=20261101.10', { scope: './' })
           .then((reg) => {
             console.log('[Meu Volante PRO] Service Worker registrado. Verificando atualizações...');
             reg.update(); // força verificação no servidor imediatamente
@@ -2698,7 +2698,7 @@ function gerarPalpiteInteligente() {
     function aceitarSugestaoEImportar() {
       if (!ultimoIncompletoDetectado) return;
       const { sugestao, modalidade, concursoAlvo, data } = ultimoIncompletoDetectado;
-      const precoBase = modalidade === 'lotofacil' ? 3.0 : 5.0;
+      const precoBase = modalidade === 'lotofacil' ? 3.5 : 6.0;
 
       carteiraJogos.unshift({
         id: Date.now(),
@@ -2786,7 +2786,7 @@ function gerarPalpiteInteligente() {
       }
 
       const mod = res.modalidadeDetectada || (res.jogos?.[0]?.length >= 15 || res.incompletos?.[0]?.modalidade === 'lotofacil' ? 'lotofacil' : modalidadeAtual);
-      const precoBase = mod === 'lotofacil' ? 3.0 : 5.0;
+      const precoBase = mod === 'lotofacil' ? 3.5 : 6.0;
 
       let concFinal = inputConcManual || res.concurso;
       if (concFinal && !concFinal.startsWith('#') && /^\d+$/.test(concFinal)) {
@@ -4551,7 +4551,7 @@ function abrirModalDialog(msg, callback) {
         return 0;
       }
       const mod = res.modalidadeDetectada || (res.jogos[0].length >= 15 ? 'lotofacil' : modalidadeAtual);
-      const precoBase = mod === 'lotofacil' ? 3.0 : 5.0;
+      const precoBase = mod === 'lotofacil' ? 3.5 : 6.0;
 
       let concFinal = manualConcInput || res.concurso;
       if (concFinal && !concFinal.startsWith('#') && /^\d+$/.test(concFinal)) {

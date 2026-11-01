@@ -78,3 +78,41 @@
 
 #fluxo-espelho-jogo > * { width: 34px !important; height: 34px !important; min-width: 0 !important; padding: 0 !important; border-radius: 50% !important; font-size: 13px !important; }
 #home-mod-ativa-badge, .nasa-hero-top-row { display: none !important; }
+
+/* Texto legível e fonte única fora das dezenas. */
+main .font-mono, .font-mono { font-family: Inter, system-ui, sans-serif !important; }
+#display-meu-jogo > *, #fluxo-espelho-jogo > *, .volante-btn, .fluxo-bola { font-family: Inter, system-ui, sans-serif !important; font-variant-numeric: tabular-nums; }
+main [class*="text-[8px]"], main [class*="text-[9px]"], main [class*="text-[10px]"], main [class*="text-[11px]"] { font-size: 12px !important; line-height: 1.4; }
+.volante-btn { font-size: 13px !important; }
+#banca-investido, #banca-premios, #banca-lucro { font-size: 13px !important; overflow-wrap: anywhere; }
+.nasa-sec-btn span:first-child:not(:last-child) { display: none; }
+
+.gastos-painel { background: #0f172a; border: 1px solid #1e293b; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+.gastos-topo { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.gastos-rotulo { display: block; font-size: 13px; color: #a3b1c6; }
+.gastos-topo strong { font-size: 22px; color: #f1f5f9; font-variant-numeric: tabular-nums; }
+.gastos-topo small { font-size: 14px; font-weight: 500; color: #a3b1c6; }
+.gastos-editar { min-height: 44px; padding: 0 14px; border: 1px solid #334155; border-radius: 12px; background: transparent; color: #e2e8f0; font-size: 14px; font-weight: 700; white-space: nowrap; }
+.gastos-barra { height: 8px; border-radius: 8px; background: #1e293b; overflow: hidden; }
+.gastos-barra i { display: block; height: 100%; background: #10b981; }
+.gastos-barra i.passou { background: #f59e0b; }
+.gastos-nota { font-size: 13px; line-height: 1.4; color: #a3b1c6; margin: 0; }
+.gastos-tabela { width: 100%; border-collapse: collapse; font-size: 14px; color: #e2e8f0; font-variant-numeric: tabular-nums; }
+.gastos-tabela th { text-align: left; font-size: 13px; color: #a3b1c6; font-weight: 600; padding: 6px 0; }
+.gastos-tabela td { padding: 8px 0; border-top: 1px solid #1e293b; }
+#tabela-chances h3 { font-size: 15px; font-weight: 800; color: #f1f5f9; margin: 0 0 8px; }
+#tabela-chances { display: flex; flex-direction: column; gap: 8px; padding-bottom: 8px; }
+
+#revisao-jogo { display: flex; flex-direction: column; gap: 6px; padding: 10px 2px 0; font-size: 14px; color: #a3b1c6; }
+#revisao-jogo p { margin: 0; }
+.revisao-linha { display: flex; justify-content: space-between; gap: 12px; }
+.revisao-linha strong { color: #f1f5f9; font-variant-numeric: tabular-nums; }
+.revisao-aviso { padding: 10px 12px; border-radius: 12px; background: #2a2110; color: #fcd34d; font-size: 13px; line-height: 1.4; }
+
+.folha-fundo { position: fixed; inset: 0; z-index: 9000; background: rgba(2, 6, 23, .7); display: flex; align-items: flex-end; }
+.folha { width: 100%; max-width: 520px; margin: 0 auto; background: #141c2b; border-radius: 20px 20px 0 0; padding: 24px 20px max(20px, env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: 10px; color: #f1f5f9; }
+.folha h2 { font-size: 20px; font-weight: 800; margin: 0; }
+.folha p, .folha label { font-size: 14px; color: #a3b1c6; margin: 0; }
+.folha input { min-height: 50px; padding: 0 14px; border-radius: 12px; border: 1px solid #334155; background: #0b1220; color: #f1f5f9; font-size: 18px; }
+.folha button { min-height: 50px; border-radius: 14px; border: 0; background: #10b981; color: #052e24; font-size: 15px; font-weight: 800; }
+.folha button.folha-sair { background: transparent; color: #cbd5e1; }

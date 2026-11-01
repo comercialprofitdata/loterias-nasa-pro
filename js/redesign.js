@@ -70,7 +70,7 @@ function criarTopbarUnificada() {
       <div class="nasa-brand-icon">🎯</div>
       <div class="nasa-brand-text">
         <span class="nasa-brand-title">Meu Volante PRO</span>
-        <span class="nasa-brand-sub">TELEMETRY</span>
+        
       </div>
     </button>
 
@@ -569,7 +569,7 @@ function createSimplifiedHome() {
 
         <!-- Botão Principal: Adaptativo por Modo de Experiência -->
         <button type="button" class="nasa-primary-cta" id="home-btn-hero-primary" onclick="iniciarJogo()">
-          <span class="text-xl" id="home-hero-btn-icon">🎯</span>
+          <span class="text-xl" id="home-hero-btn-icon" hidden></span>
           <span id="home-hero-btn-label">GERAR JOGO</span>
         </button>
 
@@ -638,7 +638,7 @@ function createSimplifiedHome() {
         <button type="button" class="nasa-tool-tile" onclick="activateTab('fechamentos'); tocarBeep('click');">
           <div class="nasa-tool-tile-header">
             <div class="nasa-tool-icon bg-cyan-950 text-cyan-300 border border-cyan-800">📐</div>
-            <span class="text-[10px] font-mono font-bold text-cyan-400">C(n,k)</span>
+            
           </div>
           <div class="nasa-tool-title">Fechamentos</div>
           <div class="nasa-tool-desc">Combine de 10 a 20 dezenas em menos apostas. Cobre menos combinações.</div>
@@ -647,7 +647,7 @@ function createSimplifiedHome() {
         <button type="button" class="nasa-tool-tile" onclick="activateTab('analise'); tocarBeep('click');">
           <div class="nasa-tool-tile-header">
             <div class="nasa-tool-icon bg-rose-950 text-rose-300 border border-rose-800">🔥</div>
-            <span class="text-[10px] font-mono font-bold text-rose-400">TOP 10</span>
+            
           </div>
           <div class="nasa-tool-title">Quentes & Ciclo</div>
           <div class="nasa-tool-desc">Mais sorteadas, atrasadas e dezenas que faltam no ciclo</div>
@@ -1779,7 +1779,7 @@ function aplicarPerfilModo(modoId, { silencioso = false } = {}) {
   // Atualiza botão Hero na Home
   const heroBtnIcon = document.getElementById('home-hero-btn-icon');
   const heroBtnLabel = document.getElementById('home-hero-btn-label');
-  if (heroBtnIcon) heroBtnIcon.innerText = config.btnIcon;
+  if (heroBtnIcon) heroBtnIcon.hidden = true;
   if (heroBtnLabel) heroBtnLabel.innerText = config.btnLabel;
 
   // Ajusta a sub-aba na tela Gerar

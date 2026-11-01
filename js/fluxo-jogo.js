@@ -168,6 +168,8 @@ function montarIndicadores() {
 
 // Sem jogos salvos não há o que filtrar nem somar: fica só o convite para começar.
 function ajustarCarteira() {
+  // Totais agora ficam no painel de gastos.
+  document.getElementById('banca-investido')?.closest('.grid')?.classList.add('hidden');
   const lista = document.getElementById('total-bilhetes-salvos');
   const tela = document.getElementById('carteira-subview-bilhetes');
   if (!lista || !tela) return;
@@ -179,7 +181,20 @@ function ajustarCarteira() {
 }
 
 function iniciarFluxoJogo() {
+  // Começa com um jogo, sem aviso nem som na abertura.
+  const avisoOriginal = window.toast;
+  const beepOriginal = window.tocarBeep;
+  window.toast = () => {};
+  window.tocarBeep = () => {};
   if (typeof setQtdJogosParaGerar === 'function') setQtdJogosParaGerar(1);
+  window.toast = avisoOriginal;
+  window.tocarBeep = beepOriginal;
+
+  document.getElementById('home-active-mod-badge')?.parentElement?.parentElement?.classList.add('hidden');
+  trocarIconesNavegacao();
+  ligarBotaoVoltar();
+  ligarPremioGuardado();
+  ligarRevisao();
   [...document.querySelectorAll('#carteira-subview-bilhetes button')]
     .find((b) => b.textContent.includes('Mandar pelo WhatsApp'))?.closest('.rounded-2xl, .rounded-3xl')?.remove();
   const atualizar = window.atualizarPainelCarteira;
@@ -187,6 +202,7 @@ function iniciarFluxoJogo() {
     window.atualizarPainelCarteira = function (...args) {
       const retorno = atualizar.apply(this, args);
       ajustarCarteira();
+      window.renderizarGastos?.();
       return retorno;
     };
   }
@@ -202,3 +218,91 @@ function iniciarFluxoJogo() {
 window.exigirLeadAntesDeSalvar = () => true;
 
 document.addEventListener('DOMContentLoaded', () => setTimeout(iniciarFluxoJogo, 0));
+
+// Os 5 destinos da barra inferior usam um único conjunto de ícones.
+function trocarIconesNavegacao() {
+  const tracos = {
+    'Início': '<path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/>',
+    'Gerar': '<rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="9" cy="9" r="1.5"/><circle cx="15" cy="15" r="1.5"/>',
+    'Fechar': '<path d="M4 6h16M4 12h16M4 18h10"/>',
+    'Análise': '<path d="M5 20V11M12 20V5M19 20v-6"/>',
+    'Carteira': '<path d="M3 8h18v12H3z"/><path d="M16 14h2M7 8V5h10v3"/>'
+  };
+  document.querySelectorAll('.tab-label').forEach((rotulo) => {
+    const desenho = tracos[rotulo.textContent.trim()];
+    const icone = rotulo.previousElementSibling;
+    if (desenho && icone) {
+      icone.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${desenho}</svg>`;
+    }
+  });
+}
+
+// Voltar do Android: fecha o que está aberto, depois volta de aba. Só sai do app na Início.
+function ligarBotaoVoltar() {
+  const original = window.mudarAba;
+  let vindoDoHistorico = false;
+  window.mudarAba = function (aba, ...resto) {
+    const retorno = original.call(this, aba, ...resto);
+    window.scrollTo(0, 0);
+    if (!vindoDoHistorico && history.state?.aba !== aba) history.pushState({ aba }, '');
+    return retorno;
+  };
+
+  const fecharAberto = () => {
+    const folha = document.querySelector('.folha-fundo');
+    if (folha) { folha.remove(); return true; }
+    const modal = [...document.querySelectorAll('.fixed.inset-0')]
+      .find((m) => !m.classList.contains('hidden') && getComputedStyle(m).display !== 'none');
+    if (!modal) return false;
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    return true;
+  };
+
+  history.replaceState({ aba: 'inicio' }, '');
+  window.addEventListener('popstate', (evento) => {
+    if (fecharAberto()) {
+      history.pushState({ aba: abaAtual }, '');
+      return;
+    }
+    vindoDoHistorico = true;
+    window.mudarAba(evento.state?.aba || 'inicio');
+    vindoDoHistorico = false;
+  });
+}
+
+// Mostra o último prêmio conhecido enquanto a consulta à Caixa não responde.
+function ligarPremioGuardado() {
+  ['js-mega-premio', 'js-loto-premio'].forEach((classe) => {
+    const chave = `meu_volante_${classe}`;
+    document.querySelectorAll(`.${classe}`).forEach((el) => {
+      const ajustar = () => {
+        const texto = el.textContent.trim();
+        if (texto.startsWith('R$')) {
+          try { localStorage.setItem(chave, texto); } catch {}
+          return;
+        }
+        let guardado = null;
+        try { guardado = localStorage.getItem(chave); } catch {}
+        const novo = guardado || 'Consultando...';
+        if (texto !== novo) el.textContent = novo;
+      };
+      new MutationObserver(ajustar).observe(el, { childList: true, characterData: true, subtree: true });
+      ajustar();
+    });
+  });
+}
+
+function ligarRevisao() {
+  const gaveta = document.getElementById('fluxo-gaveta-indicadores');
+  if (gaveta && !document.getElementById('tabela-chances')) {
+    const tabela = document.createElement('div');
+    tabela.id = 'tabela-chances';
+    gaveta.querySelector('summary').after(tabela);
+    gaveta.querySelector('summary').textContent = 'Ver chances e indicadores';
+  }
+  const display = document.getElementById('display-meu-jogo');
+  if (display) new MutationObserver(() => window.renderizarRevisaoDoJogo?.()).observe(display, { childList: true });
+  window.renderizarRevisaoDoJogo?.();
+  window.renderizarGastos?.();
+}
