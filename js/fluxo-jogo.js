@@ -169,7 +169,17 @@ function montarIndicadores() {
   const gaveta = criarGaveta('Ver indicadores do jogo', 'fluxo-gaveta-indicadores');
   blocos[0].before(gaveta);
   blocos.forEach((bloco) => gaveta.appendChild(bloco));
-  document.getElementById('card-sugestao-troca')?.classList.add('hidden');
+  // A troca sugerida fica junto do jogo, antes dos ajustes.
+  const troca = document.getElementById('card-sugestao-troca');
+  const ajustes = document.getElementById('fluxo-gaveta-ajustes');
+  if (troca && ajustes) {
+    ajustes.before(troca);
+    troca.querySelector('h3').textContent = 'Ajustar o jogo';
+    const nota = document.createElement('p');
+    nota.className = 'gastos-nota';
+    nota.textContent = 'A troca aproxima o jogo da faixa comum dos indicadores. Ela não aumenta a chance de acerto.';
+    troca.appendChild(nota);
+  }
 }
 
 // Sem jogos salvos não há o que filtrar nem somar: fica só o convite para começar.

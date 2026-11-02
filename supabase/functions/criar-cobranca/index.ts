@@ -39,25 +39,25 @@ interface Plano {
 
 const PLANOS: Record<string, Plano> = {
   avulso: {
-    nome: "Passe de 30 dias",
+    nome: "Passe de 15 dias",
     // O Asaas recusa cobrança abaixo de R$ 5,00; R$ 4,90 batia nesse piso
     // e toda tentativa de compra falhava com "valor não pode ser menor
     // que R$ 5,00" — só foi descoberto simulando uma cobrança de verdade
     // no sandbox.
     valor: 5.9,
     recorrente: false,
-    descricao: "Meu Volante PRO — passe de 30 dias"
+    descricao: "Meu Volante PRO — passe de 15 dias"
   },
   mensal: {
     nome: "PRO Mensal",
-    valor: 29.9,
+    valor: 12.9,
     recorrente: true,
     ciclo: "MONTHLY",
     descricao: "Meu Volante PRO — assinatura mensal"
   },
   anual: {
     nome: "PRO Anual",
-    valor: 197,
+    valor: 97,
     recorrente: true,
     ciclo: "YEARLY",
     descricao: "Meu Volante PRO — assinatura anual"

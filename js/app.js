@@ -385,7 +385,7 @@
 
       // Registrar Service Worker com Verificação Imediata de Atualizações
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js?v=20261102.26', { scope: './' })
+        navigator.serviceWorker.register('./sw.js?v=20261102.27', { scope: './' })
           .then((reg) => {
             console.log('[Meu Volante PRO] Service Worker registrado. Verificando atualizações...');
             reg.update(); // força verificação no servidor imediatamente
@@ -2090,7 +2090,7 @@ function gerarPalpiteInteligente() {
           if (jogo[i] === jogo[i-1] + 1 && jogo[i+1] === jogo[i] + 1) {
             sai = jogo[i];
             entra = [7, 18, 24, 38, 45, 56].find(x => !jogo.includes(x) && x !== sai - 1 && x !== sai + 1) || 28;
-            motivo = 'Quebrar sequência de 3 números consecutivos (ocorre em menos de 5% dos sorteios).';
+            motivo = 'Quebrar sequência de 3 números consecutivos.';
             testeAfetado = '1º Seq & Finais';
             break;
           }
@@ -2123,11 +2123,11 @@ function gerarPalpiteInteligente() {
         if (zscore > 1.6) {
           sai = Math.max(...jogo);
           entra = [14, 18, 23, 27].find(x => !jogo.includes(x)) || 18;
-          motivo = 'Ajustar soma para o centro da Curva Gaussiana (reduzir soma para a faixa ótima de 150 a 210).';
+          motivo = 'Reduz a soma para perto da faixa mais comum, de 150 a 210.';
         } else {
           sai = Math.min(...jogo);
           entra = [38, 42, 47, 53].find(x => !jogo.includes(x)) || 42;
-          motivo = 'Ajustar soma para o centro da Curva Gaussiana (aumentar soma para a faixa ótima de 150 a 210).';
+          motivo = 'Aumenta a soma para perto da faixa mais comum, de 150 a 210.';
         }
         testeAfetado = '5º Curva Normal da Soma';
       }
@@ -2137,7 +2137,7 @@ function gerarPalpiteInteligente() {
       if (aprovados < 6 && !sai) {
         sai = jogo[jogo.length - 1];
         entra = [18, 27, 35, 42, 53].find(x => !jogo.includes(x)) || 33;
-        motivo = 'Calibrar dezenas para alcançar aprovação plena nos 6 testes estatísticos aeroespaciais.';
+        motivo = 'Aproxima o jogo da faixa comum dos 6 indicadores.';
         testeAfetado = 'Calibração Geral';
       }
 
@@ -2146,7 +2146,7 @@ function gerarPalpiteInteligente() {
           <div class="p-3.5 bg-slate-950 rounded-2xl border border-amber-500/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3 font-mono shadow-lg shadow-amber-950/30">
             <div>
               <div class="flex items-center gap-2 text-xs font-bold text-white flex-wrap">
-                <span class="text-amber-400 font-black flex items-center gap-1">⚡ AJUSTE:</span>
+                
                 <span class="text-[10px] px-1.5 py-0.5 rounded bg-rose-950 text-rose-300 border border-rose-800 font-mono font-bold">${testeAfetado}</span>
                 <span>Substituir</span>
                 <span class="w-6 h-6 rounded-lg bg-rose-600 text-white font-black flex items-center justify-center shadow">${String(sai).padStart(2,'0')}</span>
@@ -2156,7 +2156,7 @@ function gerarPalpiteInteligente() {
               <p class="text-[11px] text-slate-300 mt-1 font-sans leading-snug">${motivo}</p>
             </div>
             <button onclick="aplicarSubstituicao(${sai}, ${entra})" class="px-3.5 py-2 bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 active:scale-95 text-slate-950 font-black text-xs rounded-xl shadow-lg shadow-emerald-500/20 whitespace-nowrap transition flex items-center gap-1.5 self-start sm:self-center">
-              <span>🎯</span> Substituir Agora
+              Trocar dezena
             </button>
           </div>
         `;
@@ -2167,11 +2167,11 @@ function gerarPalpiteInteligente() {
               <span class="w-8 h-8 rounded-xl bg-emerald-950 border border-emerald-500 text-emerald-400 flex items-center justify-center text-base shadow">🎯</span>
               <div>
                 <strong class="text-emerald-400 text-xs block font-mono uppercase tracking-wider">6 DE 6 NA FAIXA COMUM</strong>
-                <span class="text-[11px] text-slate-300 font-sans block">Esta aposta passou com êxito em todos os 6 testes estatísticos aeroespaciais.</span>
+                <span class="text-[11px] text-slate-300 font-sans block">Nenhuma troca sugerida para este jogo.</span>
               </div>
             </div>
             <button onclick="gerarApostaNasaComMatriz4x4()" class="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-cyan-300 font-bold text-xs rounded-xl border border-cyan-800/80 active:scale-95 transition ml-auto whitespace-nowrap flex items-center gap-1.5">
-              <span>⚡</span> Gerar Outra Aposta
+              Gerar outro jogo
             </button>
           </div>
         `;

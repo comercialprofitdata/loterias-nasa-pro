@@ -65,16 +65,39 @@ const ORDEM_ESTADO: Record<string, number> = {
 const LIBERAM_ACESSO = new Set(["confirmada", "recebida"])
 
 const DURACAO_PLANO_DIAS: Record<string, number> = {
-  avulso: 30,
+  avulso: 15,
   mensal: 31,
   anual: 366
 }
 
-function validadeDoPlano(plano: string, pagoEm: string): string {
-  const dias = DURACAO_PLANO_DIAS[plano] ?? 31
+function validadeDoPlano(plano: string, pagoEm: string, promo = false): string {
+  const dias = promo ? DIAS_PROMO : DURACAO_PLANO_DIAS[plano] ?? 31
   const data = new Date(pagoEm)
   data.setDate(data.getDate() + dias)
   return data.toISOString()
+}
+
+const VAGAS_PROMO = 100
+const DIAS_PROMO = 92
+
+/** Primeiros assinantes do mensal: a próxima cobrança só vem depois de 3 meses. */
+async function aplicarPromoLancamento(idAssinatura: string, pagoEm: string) {
+  const { count, error } = await admin
+    .from("subscriptions")
+    .select("id", { count: "exact", head: true })
+    .eq("plan_code", "mensal")
+    .like("provider_subscription_id", "sub_%")
+  if (error || (count ?? VAGAS_PROMO) >= VAGAS_PROMO) return false
+
+  const proxima = new Date(pagoEm)
+  proxima.setDate(proxima.getDate() + DIAS_PROMO)
+  const resposta = await fetch(`${Deno.env.get("ASAAS_API_URL")}/subscriptions/${idAssinatura}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json", access_token: Deno.env.get("ASAAS_API_KEY") ?? "", "User-Agent": "MeuVolantePRO" },
+    body: JSON.stringify({ nextDueDate: proxima.toISOString().slice(0, 10) })
+  })
+  if (!resposta.ok) throw new Error(`asaas: HTTP ${resposta.status}`)
+  return true
 }
 
 async function tratarFimDaAssinatura(idAssinatura: string) {
@@ -190,6 +213,17 @@ serve(async (req) => {
   const idAssinatura = pagamento.subscription ?? pagamento.id
 
   if (liberaAcesso) {
+    // Só a primeira fatura da assinatura entra na promoção.
+    let promo = false
+    if (plano === "mensal" && pagamento.subscription && !assinaturaAtual) {
+      try {
+        promo = await aplicarPromoLancamento(pagamento.subscription, pagoEm)
+      } catch (erro) {
+        console.error("Erro ao aplicar a promoção:", erro)
+        return json({ erro: "falha na promoção" }, 500)
+      }
+    }
+
     const { error } = await admin.from("subscriptions").upsert(
       {
         user_id: userId,
@@ -198,7 +232,7 @@ serve(async (req) => {
         provider_subscription_id: idAssinatura,
         plan_code: plano,
         status: "active",
-        valid_until: validadeDoPlano(plano, pagoEm),
+        valid_until: validadeDoPlano(plano, pagoEm, promo),
         updated_at: new Date().toISOString()
       },
       { onConflict: "provider_subscription_id" }

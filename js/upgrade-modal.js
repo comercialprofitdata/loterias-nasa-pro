@@ -6,7 +6,7 @@ const UPGRADE_CONFIG = {
   plans: [
     {
       id: 'avulso',
-      name: 'Passe de 30 dias',
+      name: 'Passe de 15 dias',
       price: 'R$ 5,90',
       period: 'pagamento único',
       badge: 'EXPERIMENTAR',
@@ -14,7 +14,7 @@ const UPGRADE_CONFIG = {
       color: 'emerald',
       cta: 'Comprar passe',
       features: [
-        '30 dias com todos os recursos',
+        '15 dias com todos os recursos',
         'Todos os indicadores do jogo',
         'Sem renovação automática'
       ]
@@ -22,7 +22,7 @@ const UPGRADE_CONFIG = {
     {
       id: 'mensal',
       name: 'Mensal',
-      price: 'R$ 29,90',
+      price: 'R$ 12,90',
       period: '/mês · recorrente',
       badge: '',
       icon: '🎯',
@@ -39,15 +39,15 @@ const UPGRADE_CONFIG = {
     {
       id: 'anual',
       name: 'Anual',
-      price: 'R$ 197',
-      period: '/ano · R$ 16,42/mês',
-      badge: 'ECONOMIZE 45%',
+      price: 'R$ 97',
+      period: '/ano · R$ 8,08/mês',
+      badge: 'ECONOMIZE 37%',
       icon: '👑',
       color: 'amber',
       cta: 'Assinar anual',
       features: [
         'Todos os recursos do plano PRO liberados',
-        'Economia direta de 45% (R$ 16,42/mês)',
+        'Economia de 37% em relação ao mensal',
         'Carteira e bolões sem limite'
       ]
     }

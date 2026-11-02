@@ -200,3 +200,6 @@ main [class*="text-[8px]"], main [class*="text-[9px]"], main [class*="text-[10px
 
 /* Já estão na navegação; o modo de experiência saiu do produto. */
 .nasa-modo-chip, .nasa-tool-tile, .sidebar-size-btn, #btn-toggle-sidebar { display: none !important; }
+
+.promo-lancamento { margin: 8px 0; padding: 10px 12px; border-radius: 12px; background: #2a2110; color: #fcd34d; font-size: 13px; line-height: 1.4; }
+#card-sugestao-troca { margin: 0; }
