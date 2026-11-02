@@ -13,6 +13,11 @@ function idDoAparelho() {
   return id;
 }
 
+// Sessões antigas guardam endereços internos, que não pertencem a ninguém.
+function emailReal(email) {
+  return email && !String(email).endsWith('@loteriasnasa.pro') ? email : null;
+}
+
 function registrarEvento(evento, detalhe = '') {
   try {
     const cliente = typeof obterClienteSupabase === 'function' ? obterClienteSupabase() : null;
@@ -20,7 +25,7 @@ function registrarEvento(evento, detalhe = '') {
     const contato = JSON.parse(localStorage.getItem('loterias_nasa_visitor_lead') || 'null');
     cliente.from('eventos_uso').insert({
       aparelho: idDoAparelho(),
-      email: contato?.email || (typeof usuarioSessao !== 'undefined' && usuarioSessao?.email) || null,
+      email: emailReal(contato?.email) || emailReal(typeof usuarioSessao !== 'undefined' && usuarioSessao?.email) || null,
       evento,
       detalhe: String(detalhe).slice(0, 80),
       modalidade: typeof modalidadeAtual !== 'undefined' ? modalidadeAtual : null
