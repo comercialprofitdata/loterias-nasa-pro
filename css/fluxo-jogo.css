@@ -187,3 +187,9 @@ main [class*="text-[8px]"], main [class*="text-[9px]"], main [class*="text-[10px
 .pix-valor { font-size: 28px; color: #f1f5f9; }
 #pix-qr { background: #fff; padding: 8px; border-radius: 12px; box-sizing: content-box; }
 #pix-copiar { width: 100%; }
+
+.vip-link { display: block; width: 100%; text-align: center; }
+.vip-form { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+.vip-form input, .vip-form select { flex: 1 1 140px; min-height: 44px; padding: 0 10px; border: 1px solid #334155; border-radius: 12px; background: #0b1220; color: #f1f5f9; font-size: 14px; }
+.vip-acoes { white-space: nowrap; }
+.vip-acoes .fluxo-link { margin-right: 8px; }

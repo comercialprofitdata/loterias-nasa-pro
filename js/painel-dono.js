@@ -25,6 +25,56 @@ function baixarContatos(contatos) {
   URL.revokeObjectURL(link.href);
 }
 
+async function renderizarVips(area) {
+  const { data, error } = await obterClienteSupabase().rpc('listar_codigos_vip');
+  if (error) {
+    area.innerHTML = '<p class="gastos-nota">Rode o script RODAR-VIP.sql para ativar os códigos.</p>';
+    return;
+  }
+  area.innerHTML = `
+    <form id="vip-novo" class="vip-form">
+      <input id="vip-nome" required maxlength="120" placeholder="Nome do testador" aria-label="Nome do testador" />
+      <select id="vip-dias" aria-label="Validade">
+        <option value="30">30 dias</option>
+        <option value="90">90 dias</option>
+        <option value="365">1 ano</option>
+        <option value="">Vitalício</option>
+      </select>
+      <button type="submit" class="ritual-ver">Criar código</button>
+    </form>
+    <div class="dono-rolagem"><table class="gastos-tabela">
+      <thead><tr><th>Testador</th><th>Código</th><th>Validade</th><th>Usado</th><th></th></tr></thead>
+      <tbody>${data.map((v) => `<tr>
+        <td>${textoSeguro(v.nome)}</td><td>${textoSeguro(v.codigo)}</td>
+        <td>${v.dias ? `${v.dias} dias` : 'Vitalício'}</td><td>${v.usos}/${v.usos_max}</td>
+        <td class="vip-acoes">
+          <button type="button" class="fluxo-link" data-enviar="${textoSeguro(v.codigo)}" data-nome="${textoSeguro(v.nome)}">WhatsApp</button>
+          <button type="button" class="fluxo-link" data-alterar="${textoSeguro(v.codigo)}" data-ativo="${!v.ativo}">${v.ativo ? 'Desativar' : 'Reativar'}</button>
+        </td></tr>`).join('') || '<tr><td colspan="5">Nenhum código criado.</td></tr>'}</tbody>
+    </table></div>`;
+
+  area.querySelector('#vip-novo').addEventListener('submit', async (evento) => {
+    evento.preventDefault();
+    const dias = area.querySelector('#vip-dias').value;
+    const { error: erro } = await obterClienteSupabase().rpc('criar_codigo_vip', {
+      p_nome: area.querySelector('#vip-nome').value,
+      p_dias: dias ? Number(dias) : null,
+      p_usos: 1
+    });
+    if (erro) toast('Não foi possível criar o código.', '⚠️');
+    renderizarVips(area);
+  });
+  area.querySelectorAll('[data-enviar]').forEach((botao) => botao.addEventListener('click', () => {
+    const link = `${window.location.origin}/?vip=${encodeURIComponent(botao.dataset.enviar)}`;
+    const texto = `Olá, ${botao.dataset.nome}! Seu acesso VIP ao Meu Volante PRO: ${link}`;
+    window.open(`https://wa.me/?text=${encodeURIComponent(texto)}`, '_blank', 'noopener');
+  }));
+  area.querySelectorAll('[data-alterar]').forEach((botao) => botao.addEventListener('click', async () => {
+    await obterClienteSupabase().rpc('alterar_codigo_vip', { p_codigo: botao.dataset.alterar, p_ativo: botao.dataset.ativo === 'true' });
+    renderizarVips(area);
+  }));
+}
+
 function htmlPainel(d) {
   const numero = (rotulo, valor) => `<div class="dono-numero"><strong>${textoSeguro(valor)}</strong><span>${rotulo}</span></div>`;
   const moeda = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(d.receita);
@@ -45,6 +95,9 @@ function htmlPainel(d) {
       <thead><tr><th>Pessoa</th><th>Gerados</th><th>Salvos</th><th>Último uso</th></tr></thead>
       <tbody>${d.uso.map((u) => `<tr><td>${textoSeguro(u.pessoa)}</td><td>${u.jogos_gerados}</td><td>${u.jogos_salvos}</td><td>${dataCurta(u.ultimo_uso)}</td></tr>`).join('') || '<tr><td colspan="4">Sem registros ainda.</td></tr>'}</tbody>
     </table></div>
+
+    <h3>Códigos VIP</h3>
+    <div id="dono-vips"></div>
 
     <h3>Contatos</h3>
     <button type="button" class="gastos-editar" id="dono-exportar">Baixar contatos (CSV)</button>
@@ -81,6 +134,7 @@ async function abrirPainelDono() {
     return;
   }
   corpo.innerHTML = htmlPainel(data);
+  renderizarVips(corpo.querySelector('#dono-vips'));
   corpo.querySelector('#dono-exportar').addEventListener('click', () => baixarContatos(data.contatos));
 }
 window.abrirPainelDono = abrirPainelDono;

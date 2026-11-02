@@ -33,6 +33,7 @@ function registrarEvento(evento, detalhe = '') {
   } catch {}
 }
 window.registrarEvento = registrarEvento;
+window.idDoAparelho = idDoAparelho;
 
 function acompanhar(nomeFuncao, evento, detalhe = () => '') {
   const original = window[nomeFuncao];
