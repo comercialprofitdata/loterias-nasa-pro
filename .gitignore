@@ -18,3 +18,4 @@ android/
 android/.segredos.json
 client_secret*.json
 !download/MeuVolantePRO.apk
+supabase/RODAR-VIP-ANTIGOS.sql

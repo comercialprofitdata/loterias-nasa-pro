@@ -235,7 +235,68 @@ function ligarTemaDaModalidade() {
   aplicarTemaDaModalidade();
 }
 
+function podeVerPlanos() {
+  return planoUsuario !== 'pro' && !window.contextoLoja?.ativo();
+}
+
+function abrirPlanos() {
+  window.fecharDrawerPerfil?.();
+  window.abrirModalPaywall?.('botao_planos');
+}
+
+function atualizarEntradaPlanos() {
+  const existente = document.getElementById('cartao-planos');
+  if (!podeVerPlanos()) {
+    existente?.remove();
+    return;
+  }
+  const hero = document.getElementById('home-btn-hero-primary')?.parentElement;
+  if (existente || !hero) return;
+  const cartao = document.createElement('div');
+  cartao.id = 'cartao-planos';
+  cartao.className = 'gastos-painel';
+  cartao.innerHTML = `
+    <div class="gastos-topo">
+      <div><strong class="instalar-titulo">Plano grátis</strong><p class="gastos-nota">Mais jogos, carteira e bolões sem limite.</p></div>
+      <button type="button" class="ritual-ver">Ver planos</button>
+    </div>`;
+  cartao.querySelector('button').addEventListener('click', abrirPlanos);
+  hero.after(cartao);
+}
+
+function ligarEntradaPlanos() {
+  const atualizarPlano = window.atualizarVisualPlano;
+  if (typeof atualizarPlano === 'function') {
+    window.atualizarVisualPlano = function (...args) {
+      const retorno = atualizarPlano.apply(this, args);
+      atualizarEntradaPlanos();
+      return retorno;
+    };
+  }
+  const abrirMenu = window.abrirDrawerPerfil;
+  if (typeof abrirMenu === 'function') {
+    window.abrirDrawerPerfil = function (...args) {
+      const retorno = abrirMenu.apply(this, args);
+      const linha = document.getElementById('drawer-admin-row');
+      if (linha && podeVerPlanos() && !document.getElementById('drawer-ver-planos')) {
+        const botao = document.createElement('button');
+        botao.type = 'button';
+        botao.id = 'drawer-ver-planos';
+        botao.className = 'ritual-ver';
+        botao.style.width = '100%';
+        botao.style.marginTop = '12px';
+        botao.textContent = 'Ver planos';
+        botao.addEventListener('click', abrirPlanos);
+        linha.before(botao);
+      }
+      return retorno;
+    };
+  }
+  atualizarEntradaPlanos();
+}
+
 function iniciarFluxoJogo() {
+  ligarEntradaPlanos();
   ligarTemaDaModalidade();
   fixarTemaEscuro();
   limparFechar();
