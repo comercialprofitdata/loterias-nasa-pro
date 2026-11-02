@@ -3,8 +3,8 @@
 // Estratégia: Cache-First para assets estáticos, Network-First para dados
 // =========================================================================
 
-const CACHE_NAME = 'loterias-nasa-pro-v20261102.7';
-const CACHE_STATIC = 'nasa-static-v20261102.7';
+const CACHE_NAME = 'loterias-nasa-pro-v20261102.8';
+const CACHE_STATIC = 'nasa-static-v20261102.8';
 
 // Assets críticos para funcionamento offline
 const ASSETS_TO_CACHE = [
@@ -13,23 +13,50 @@ const ASSETS_TO_CACHE = [
   './manifest.json',
   './icon-192.png',
   './icon-512.png',
+  './supabase/config.js',
+  './css/admin-dashboard.css',
   './css/app.css',
-  './js/app.js',
-  './js/error-trap.js',
-  './js/feedback-testadores.js',
-  './js/simulador-retrospectivo.js',
-  './js/volante-impressao.js',
-  './js/testadores-vip.js',
-  './js/carteira-gestao.js',
-  './js/admin-telemetria.js',
-  './js/historico-oficial.js',
-  './js/whatsapp-share.js',
-  './js/upgrade-modal.js',
-  './js/caixa-api.js',
-  './js/historico-real.js',
-  './js/sorteios-reais.js',
-  './js/conferencia-real.js',
+  './css/fluxo-jogo.css',
+  './css/gerar-simplificado.css',
+  './css/redesign.css',
   './css/tailwind.css',
+  './css/upgrade-modal.css',
+  './js/admin-charts.js',
+  './js/admin-dashboard.js',
+  './js/admin-telemetria.js',
+  './js/analisar-numeros.js',
+  './js/app.js',
+  './js/assinatura.js',
+  './js/boas-vindas.js',
+  './js/cadastro.js',
+  './js/caixa-api.js',
+  './js/carteira-gestao.js',
+  './js/checkout-asaas.js',
+  './js/conferencia-real.js',
+  './js/contexto-loja.js',
+  './js/creditos-gratis.js',
+  './js/error-trap.js',
+  './js/eventos.js',
+  './js/feedback-testadores.js',
+  './js/fluxo-jogo.js',
+  './js/gastos.js',
+  './js/historico-oficial.js',
+  './js/historico-real.js',
+  './js/instalar.js',
+  './js/lead-capture.js',
+  './js/menu-fix.js',
+  './js/micro-interactions.js',
+  './js/migrar-app.js',
+  './js/oauth-login.js',
+  './js/redesign.js',
+  './js/ritual.js',
+  './js/science-gate.js',
+  './js/simulador-retrospectivo.js',
+  './js/sorteios-reais.js',
+  './js/testadores-vip.js',
+  './js/upgrade-modal.js',
+  './js/volante-impressao.js',
+  './js/whatsapp-share.js',
   'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap'
 ];
 
@@ -106,7 +133,12 @@ self.addEventListener('fetch', (event) => {
           }
           return networkResponse;
         })
-        .catch(() => caches.match(event.request))
+        .catch(async () => {
+          const guardado = await caches.match(event.request, { ignoreSearch: true });
+          if (guardado) return guardado;
+          if (event.request.mode === 'navigate') return caches.match('./index.html');
+          return new Response('', { status: 503, statusText: 'Sem internet' });
+        })
     );
     return;
   }

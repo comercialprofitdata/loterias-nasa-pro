@@ -155,3 +155,7 @@ main [class*="text-[8px]"], main [class*="text-[9px]"], main [class*="text-[10px
 .troca-conteudo p, .troca-conteudo ol { font-size: 16px; line-height: 1.5; color: #cbd5e1; margin: 0; text-align: left; }
 .troca-conteudo ol { padding-left: 22px; list-style: decimal; display: flex; flex-direction: column; gap: 8px; }
 .troca-conteudo a { width: 100%; min-height: 52px; border-radius: 14px; background: #10b981; color: #052e24; font-size: 16px; font-weight: 800; display: flex; align-items: center; justify-content: center; text-decoration: none; }
+
+.instalar-titulo { font-size: 16px !important; }
+.instalar-passos { margin: 0; padding-left: 22px; list-style: decimal; font-size: 15px; line-height: 1.5; color: #cbd5e1; display: flex; flex-direction: column; gap: 8px; }
+#aviso-sem-internet { position: fixed; left: 12px; right: 12px; bottom: 92px; z-index: 40; padding: 10px 14px; border-radius: 12px; background: #2a2110; color: #fcd34d; font-size: 13px; text-align: center; }
