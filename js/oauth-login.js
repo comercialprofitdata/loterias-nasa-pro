@@ -59,26 +59,9 @@ function concluirLoginOAuth(dados) {
   toast(`Bem-vindo, ${usuarioSessao.nome}! 🎯`, '🎯');
 }
 
-// Fallback direto e instantâneo por e-mail Google sem travas de popup/origem
-function solicitarEmailGoogleDireto(errOriginal) {
-  const emailSugerido = (usuarioSessao && usuarioSessao.email) ? usuarioSessao.email : '';
-  const email = prompt('🌐 Conectar com Google Account:\n\nInforme seu e-mail do Google (Gmail) para entrar ou criar sua conta:', emailSugerido);
-  
-  if (!email || !email.trim()) return;
-  const limpo = email.trim();
-
-  if (!limpo.includes('@')) {
-    toast('Por favor, informe um endereço de e-mail válido.', '⚠️');
-    return;
-  }
-
-  concluirLoginOAuth({
-    nome: limpo.split('@')[0],
-    email: limpo,
-    fotoUrl: '',
-    tipo: 'google_oauth',
-    provedorId: 'google_instant'
-  });
+// Sem o Google disponível, a pessoa usa e-mail e senha: nunca entra sem verificação.
+function solicitarEmailGoogleDireto() {
+  if (typeof toast === 'function') toast('Entrada com Google indisponível. Use e-mail e senha.', '⚠️');
 }
 
 // ===================================================================

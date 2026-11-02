@@ -180,7 +180,18 @@ function ajustarCarteira() {
   tela.classList.toggle('fluxo-carteira-vazia', vazia);
 }
 
+function ocultarLoginsIndisponiveis() {
+  const config = window.NASA_SUPABASE_CONFIG || {};
+  if (!config.googleEnabled) document.querySelector('button[onclick="loginComGoogle()"]')?.classList.add('hidden');
+  if (!config.metaEnabled) document.querySelector('button[onclick="loginComMeta()"]')?.classList.add('hidden');
+  if (!config.googleEnabled && !config.metaEnabled) {
+    const divisor = [...document.querySelectorAll('#modal-auth-saas span')].find((el) => el.textContent.trim() === 'ou com e-mail');
+    divisor?.parentElement?.classList.add('hidden');
+  }
+}
+
 function iniciarFluxoJogo() {
+  ocultarLoginsIndisponiveis();
   // Começa com um jogo, sem aviso nem som na abertura.
   const avisoOriginal = window.toast;
   const beepOriginal = window.tocarBeep;
