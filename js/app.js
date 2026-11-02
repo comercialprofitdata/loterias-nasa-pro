@@ -385,7 +385,7 @@
 
       // Registrar Service Worker com Verificação Imediata de Atualizações
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js?v=20261102.21', { scope: './' })
+        navigator.serviceWorker.register('./sw.js?v=20261102.22', { scope: './' })
           .then((reg) => {
             console.log('[Meu Volante PRO] Service Worker registrado. Verificando atualizações...');
             reg.update(); // força verificação no servidor imediatamente
@@ -4896,22 +4896,8 @@ function abrirModalDialog(msg, callback) {
 
     function abrirModalAuthOuPerfil() {
       tocarBeep('click');
-      if (usuarioSessao && usuarioSessao.tipo === 'master_founder') {
-        // Menu administrativo do proprietario autorizado
-        mudarAba('admin');
-        return;
-      }
-
       if (usuarioSessao && usuarioSessao.tipo !== 'visitante') {
-        // Usuário já está logado
-        confirmarAcaoDialog(
-          `Conta conectada: ${usuarioSessao.nome} (${usuarioSessao.email}). Plano: ${usuarioSessao.plano || 'VIP'}. Deseja sair?`,
-          () => {
-            fazerLogout();
-          },
-          '👤 Gerenciar Conta',
-          'Sair da Conta'
-        );
+        abrirDrawerPerfil();
       } else {
         abrirModalAuth();
       }

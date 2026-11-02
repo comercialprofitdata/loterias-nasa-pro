@@ -193,3 +193,7 @@ main [class*="text-[8px]"], main [class*="text-[9px]"], main [class*="text-[10px
 .vip-form input, .vip-form select { flex: 1 1 140px; min-height: 44px; padding: 0 10px; border: 1px solid #334155; border-radius: 12px; background: #0b1220; color: #f1f5f9; font-size: 14px; }
 .vip-acoes { white-space: nowrap; }
 .vip-acoes .fluxo-link { margin-right: 8px; }
+
+.senha-caixa { position: relative; }
+.senha-caixa input { padding-right: 78px !important; }
+.senha-ver { position: absolute; right: 4px; top: 50%; transform: translateY(-50%); min-height: 40px; padding: 0 10px; border: 0; background: none; color: #34d399; font-size: 13px; font-weight: 700; }

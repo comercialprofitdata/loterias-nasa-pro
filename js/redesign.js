@@ -214,7 +214,7 @@ function criarSidebarDesktop() {
       </button>
 
       <!-- Cartão de Identidade / VIP -->
-      <div class="sidebar-profile-card" onclick="abrirModalAuthOuPerfil(); tocarBeep('click');" role="button" tabindex="0" title="Gerenciar Conta / Acesso Master">
+      <div class="sidebar-profile-card" onclick="abrirDrawerPerfil();" role="button" tabindex="0" title="Gerenciar Conta / Acesso Master">
         <div class="sidebar-profile-avatar" id="sidebar-user-avatar">👤</div>
         <div class="sidebar-profile-info">
           <span class="sidebar-profile-name" id="sidebar-user-name">Visitante</span>
@@ -464,7 +464,7 @@ function sincronizarHeaderStatusUsuario() {
     } else if (usuarioSessao.tipo === 'vip_convidado' || ehPro) {
       sideAvatar.innerText = '👑';
       sideName.innerText = usuarioSessao.nome || 'Assinante VIP';
-      sideBadge.innerText = 'VIP Vitalício';
+      sideBadge.innerText = 'Plano Pro';
       sideBadge.className = 'sidebar-profile-badge vip-badge';
     } else if (usuarioSessao.tipo !== 'visitante') {
       sideAvatar.innerText = (usuarioSessao.nome?.[0] || 'U').toUpperCase();
@@ -1098,7 +1098,7 @@ function criarDrawerPerfilConfig() {
 
       <!-- Ações de Conta e Assinatura -->
       <div class="grid grid-cols-1 gap-2 my-3">
-        <button type="button" id="drawer-btn-auth" onclick="fecharDrawerPerfil(); abrirModalAuthOuPerfil();" class="py-2.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs border border-slate-700 flex items-center justify-center gap-1.5">
+        <button type="button" id="drawer-btn-auth" onclick="acaoContaNoMenu();" class="py-2.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs border border-slate-700 flex items-center justify-center gap-1.5">
           <span id="drawer-txt-auth">Entrar / Criar Conta</span>
         </button>
               </div>
