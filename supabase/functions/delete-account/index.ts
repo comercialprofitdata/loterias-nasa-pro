@@ -42,6 +42,21 @@ function emailValido(email: string): boolean {
 async function apagarDadosDoUsuario(userId: string, email: string) {
   const etapas: string[] = []
 
+  // Cancela no gateway antes de apagar: sem isso a pessoa continuaria cobrada.
+  const { data: recorrentes } = await admin
+    .from("subscriptions")
+    .select("provider_subscription_id")
+    .eq("user_id", userId)
+    .like("provider_subscription_id", "sub_%")
+  for (const assinatura of recorrentes ?? []) {
+    const resposta = await fetch(`${Deno.env.get("ASAAS_API_URL")}/subscriptions/${assinatura.provider_subscription_id}`, {
+      method: "DELETE",
+      headers: { access_token: Deno.env.get("ASAAS_API_KEY") ?? "", "User-Agent": "MeuVolantePRO" }
+    })
+    if (!resposta.ok && resposta.status !== 404) throw new Error(`asaas: HTTP ${resposta.status}`)
+  }
+  etapas.push("cobranças futuras")
+
   const { error: erroAssinaturas } = await admin
     .from("subscriptions")
     .delete()

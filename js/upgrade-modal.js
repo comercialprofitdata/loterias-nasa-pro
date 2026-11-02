@@ -6,13 +6,13 @@ const UPGRADE_CONFIG = {
   plans: [
     {
       id: 'avulso',
-      name: 'Passe Avulso 1 Jogo',
+      name: 'Passe de 30 dias',
       price: 'R$ 5,90',
       period: 'pagamento único',
       badge: 'EXPERIMENTAR',
       icon: '🎯',
       color: 'emerald',
-      cta: 'Liberar 1 Jogo',
+      cta: 'Comprar passe',
       features: [
         '3 apostas geradas',
         'Todos os indicadores do jogo',

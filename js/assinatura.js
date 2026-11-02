@@ -22,6 +22,8 @@ function planosQueDaoPro(planCode) {
 
 function assinaturaVigente(registro) {
   if (!registro) return false;
+  // Cancelada continua valendo até o fim do período já pago.
+  if (registro.status === 'canceled') return Boolean(registro.valid_until) && new Date(registro.valid_until).getTime() > Date.now();
   if (registro.status !== 'active' && registro.status !== 'trial') return false;
   if (!registro.valid_until) return true;
   return new Date(registro.valid_until).getTime() > Date.now();
@@ -143,3 +145,60 @@ window.assinatura = {
 };
 
 console.log('💳 Assinatura carregada. Debug: window.assinatura.sincronizar()');
+
+async function cancelarAssinatura() {
+  const cliente = obterClienteSupabase();
+  const { data } = await cliente.auth.getSession();
+  const token = data?.session?.access_token;
+  if (!token) {
+    toast('Entre na sua conta para cancelar.', '⚠️');
+    return;
+  }
+  const resposta = await fetch(`${window.NASA_SUPABASE_CONFIG.url}/functions/v1/cancelar-assinatura`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}`, apikey: window.NASA_SUPABASE_CONFIG.anonKey }
+  });
+  const corpo = await resposta.json().catch(() => ({}));
+  if (!resposta.ok) {
+    toast(corpo.erro || 'Não foi possível cancelar agora.', '⚠️');
+    return;
+  }
+  const ate = corpo.validaAte ? new Date(corpo.validaAte).toLocaleDateString('pt-BR') : null;
+  toast(ate ? `Renovação cancelada. Seu acesso vale até ${ate}.` : 'Renovação cancelada.', '✅');
+  document.getElementById('drawer-cancelar-assinatura')?.remove();
+}
+
+async function mostrarCancelamentoNoMenu() {
+  const cliente = obterClienteSupabase();
+  const linha = document.getElementById('drawer-admin-row');
+  if (!cliente || !linha || document.getElementById('drawer-cancelar-assinatura')) return;
+  const { data: sessao } = await cliente.auth.getSession();
+  if (!sessao?.session?.user) return;
+  const { data } = await cliente.from('subscriptions').select('provider_subscription_id')
+    .eq('user_id', sessao.session.user.id).eq('status', 'active').like('provider_subscription_id', 'sub_%').limit(1);
+  if (!data?.length) return;
+  const botao = document.createElement('button');
+  botao.type = 'button';
+  botao.id = 'drawer-cancelar-assinatura';
+  botao.className = 'gastos-editar';
+  botao.style.width = '100%';
+  botao.style.marginTop = '12px';
+  botao.textContent = 'Cancelar assinatura';
+  botao.addEventListener('click', () => confirmarAcaoDialog(
+    'A renovação será cancelada. Você mantém o acesso até o fim do período já pago.',
+    cancelarAssinatura,
+    'Cancelar assinatura',
+    'Cancelar renovação'
+  ));
+  linha.before(botao);
+}
+
+document.addEventListener('DOMContentLoaded', () => setTimeout(() => {
+  const abrir = window.abrirDrawerPerfil;
+  if (typeof abrir !== 'function') return;
+  window.abrirDrawerPerfil = function (...args) {
+    const retorno = abrir.apply(this, args);
+    mostrarCancelamentoNoMenu();
+    return retorno;
+  };
+}, 300));

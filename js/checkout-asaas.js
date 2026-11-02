@@ -3,7 +3,7 @@
 // ===================================================================
 
 const CHECKOUT_PLANOS = {
-  avulso: { nome: '🎯 Análise Avulsa 1 Jogo', preco: 'R$ 5,90', periodo: 'pagamento único' },
+  avulso: { nome: 'Passe de 30 dias', preco: 'R$ 5,90', periodo: 'pagamento único' },
   mensal: { nome: '🎯 Mensal Mensal', preco: 'R$ 29,90', periodo: 'por mês' },
   anual: { nome: '👑 Anual', preco: 'R$ 197', periodo: 'por ano · equivale a R$ 16,41/mês' }
 };

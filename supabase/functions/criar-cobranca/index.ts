@@ -19,12 +19,12 @@ const ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!
 
 const ASAAS_API_KEY = Deno.env.get("ASAAS_API_KEY")!
 // Sandbox: https://api-sandbox.asaas.com/v3 · Produção: https://api.asaas.com/v3
-const ASAAS_API_URL = Deno.env.get("ASAAS_API_URL") ?? "https://api-sandbox.asaas.com/v3"
+const ASAAS_API_URL = Deno.env.get("ASAAS_API_URL") ?? ""
 
 const CORS = {
-  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Origin": "https://loterias.pd.dev.br",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type, Authorization"
+  "Access-Control-Allow-Headers": "Content-Type, Authorization, apikey"
 }
 
 const admin = createClient(SUPABASE_URL, SERVICE_ROLE_KEY)
@@ -39,14 +39,14 @@ interface Plano {
 
 const PLANOS: Record<string, Plano> = {
   avulso: {
-    nome: "Análise Avulsa",
+    nome: "Passe de 30 dias",
     // O Asaas recusa cobrança abaixo de R$ 5,00; R$ 4,90 batia nesse piso
     // e toda tentativa de compra falhava com "valor não pode ser menor
     // que R$ 5,00" — só foi descoberto simulando uma cobrança de verdade
     // no sandbox.
     valor: 5.9,
     recorrente: false,
-    descricao: "Meu Volante PRO — análise avulsa"
+    descricao: "Meu Volante PRO — passe de 30 dias"
   },
   mensal: {
     nome: "PRO Mensal",
@@ -77,7 +77,7 @@ async function chamarAsaas(caminho: string, metodo: string, corpo?: unknown) {
     method: metodo,
     headers: {
       "Content-Type": "application/json",
-      "User-Agent": "LoteriasNasaPro",
+      "User-Agent": "MeuVolantePRO",
       access_token: ASAAS_API_KEY
     },
     body: corpo ? JSON.stringify(corpo) : undefined
@@ -139,7 +139,7 @@ serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: CORS })
   if (req.method !== "POST") return responder({ erro: "use POST" }, 405)
 
-  if (!ASAAS_API_KEY) {
+  if (!ASAAS_API_KEY || !ASAAS_API_URL) {
     return responder({ erro: "gateway não configurado" }, 503)
   }
 
@@ -180,6 +180,28 @@ serve(async (req) => {
     sessao.user.user_metadata?.full_name ||
     email.split("@")[0]
 
+  // Clique repetido ou checkout abandonado reaproveita a cobrança em aberto.
+  const { data: pendente } = await admin
+    .from("cobrancas")
+    .select("id, url_pagamento")
+    .eq("user_id", sessao.user.id)
+    .eq("plano", corpo.plano)
+    .eq("status", "pendente")
+    .not("url_pagamento", "is", null)
+    .order("criada_em", { ascending: false })
+    .limit(1)
+    .maybeSingle()
+
+  if (pendente) {
+    return responder({
+      id: pendente.id,
+      plano: plano.nome,
+      valor: plano.valor,
+      recorrente: plano.recorrente,
+      urlPagamento: pendente.url_pagamento
+    })
+  }
+
   try {
     const customerId = await obterOuCriarCliente(sessao.user.id, nome, email, documento)
 
@@ -211,7 +233,7 @@ serve(async (req) => {
       urlPagamento = faturas?.data?.[0]?.invoiceUrl ?? null
     }
 
-    await admin.from("cobrancas").insert({
+    const { error: erroRegistro } = await admin.from("cobrancas").insert({
       id: cobranca.id,
       user_id: sessao.user.id,
       email,
@@ -223,6 +245,7 @@ serve(async (req) => {
       vence_em: cobranca.dueDate ?? cobranca.nextDueDate ?? null,
       evento_bruto: cobranca
     })
+    if (erroRegistro) throw new Error(`registro da cobrança: ${erroRegistro.message}`)
 
     return responder({
       id: cobranca.id,
@@ -233,6 +256,6 @@ serve(async (req) => {
     })
   } catch (err) {
     console.error("Falha ao criar cobrança:", err)
-    return responder({ erro: String(err instanceof Error ? err.message : err) }, 502)
+    return responder({ erro: "Não foi possível criar a cobrança. Tente novamente." }, 502)
   }
 })
