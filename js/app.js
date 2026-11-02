@@ -385,7 +385,7 @@
 
       // Registrar Service Worker com Verificação Imediata de Atualizações
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js?v=20261102.12', { scope: './' })
+        navigator.serviceWorker.register('./sw.js?v=20261102.13', { scope: './' })
           .then((reg) => {
             console.log('[Meu Volante PRO] Service Worker registrado. Verificando atualizações...');
             reg.update(); // força verificação no servidor imediatamente
@@ -4898,16 +4898,7 @@ function abrirModalDialog(msg, callback) {
       tocarBeep('click');
       if (usuarioSessao && usuarioSessao.tipo === 'master_founder') {
         // Menu administrativo do proprietario autorizado
-        if (confirm(`👑 CONTA ADMINISTRATIVA ATIVA\n\n• Clique em OK para ir direto ao PAINEL ADMINISTRATIVO\n• Clique em Cancelar para gerenciar login/sair da conta.`)) {
-          mudarAba('admin');
-          return;
-        }
-        confirmarAcaoDialog(
-          `Conta administrativa: ${usuarioSessao.nome}. Deseja encerrar a sessão e voltar a Visitante?`,
-          () => { fazerLogout(); },
-          '👑 Sessão Master',
-          'Sair da Conta Master'
-        );
+        mudarAba('admin');
         return;
       }
 

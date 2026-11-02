@@ -1120,7 +1120,7 @@ function criarDrawerPerfilConfig() {
       <!-- Botão Painel Admin (visível apenas para o fundador/admin) -->
       <div id="drawer-admin-row" class="hidden pt-3">
         <button type="button" onclick="fecharDrawerPerfil(); mudarAba('admin');" class="w-full py-2.5 px-3 rounded-xl bg-amber-500/20 border border-amber-500/50 text-amber-300 font-black text-xs flex items-center justify-center gap-2">
-          <span>Abrir painel administrativo</span>
+          <span>Abrir painel do dono</span>
         </button>
       </div>
 

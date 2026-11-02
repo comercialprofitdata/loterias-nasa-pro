@@ -163,3 +163,14 @@ main [class*="text-[8px]"], main [class*="text-[9px]"], main [class*="text-[10px
 .tema-lotofacil #display-meu-jogo > *, .tema-lotofacil #fluxo-espelho-jogo > * { background: #9333ea !important; color: #fff !important; border-color: #a855f7 !important; }
 .tema-lotofacil .fluxo-card-jogo #modalidade-label { color: #c084fc !important; }
 .tema-lotofacil #bv-avancar { background: #9333ea; color: #fff; }
+
+.dono-conteudo { width: 100%; max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; color: #f1f5f9; align-self: flex-start; }
+.dono-topo { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.dono-topo h2 { font-size: 22px; font-weight: 800; margin: 0; }
+.dono-conteudo h3 { font-size: 16px; font-weight: 800; margin: 18px 0 8px; }
+.dono-grade { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+.dono-numero { background: #141c2b; border: 1px solid #26324a; border-radius: 14px; padding: 12px; display: flex; flex-direction: column; gap: 4px; }
+.dono-numero strong { font-size: 20px; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.dono-numero span { font-size: 13px; color: #a3b1c6; }
+.dono-rolagem { overflow-x: auto; }
+.dono-rolagem table { min-width: 460px; }
