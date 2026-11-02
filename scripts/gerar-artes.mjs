@@ -32,7 +32,7 @@ await arte('marketing/play/destaque-1024x500.png', 1024, 500, `
     <div style="font-size:26px;color:#A3B1C6">Gastos, conferência e chance real. Não prevemos resultados.</div>
   </div>`);
 
-const cores = { 'Ciência': '#10B981', 'Consciência': '#F59E0B', 'Mitos': '#A855F7', 'App': '#38BDF8' };
+const cores = { 'Métodos': '#22D3EE', 'Ciência': '#10B981', 'Consciência': '#F59E0B', 'Mitos': '#A855F7', 'App': '#38BDF8' };
 for (const post of posts) {
   await arte(`marketing/instagram/dia-${String(post.dia).padStart(2, '0')}.png`, 1080, 1350, `
     <div style="height:100%;box-sizing:border-box;padding:88px;display:flex;flex-direction:column;justify-content:space-between">

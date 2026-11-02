@@ -1,52 +1,71 @@
-# Meu Volante PRO: marca e Instagram
+# Meu Volante PRO: estratégia de marca, Instagram e vendas
 
-## Marca
-- **Promessa:** seus jogos em ordem, com ciência e sem achismo.
-- **Tom:** direto, calmo e em português simples.
-- **Cores:** fundo `#0B1220`, superfície `#141C2B`, ação `#10B981`, texto `#F1F5F9`, roxo `#A855F7` só para a Lotofácil.
-- **Fonte:** Inter.
-- **Logo:** `logo.svg`, um volante com dezenas marcadas.
+## Posicionamento
+**Jogue com ciência, não no achismo.**
+Para quem já joga Mega-Sena e Lotofácil e quer entender cada jogo, controlar o gasto e conferir tudo em um só lugar.
 
-## Regras de toda publicação
-- Sem promessa de ganho, depoimento de ganhador ou prêmio acumulado como chamada.
-- Sem conteúdo voltado a menores. Conta e anúncios só para maiores de 18 anos.
-- Sem vínculo sugerido com a Caixa e sem o logo dela.
-- Toda conta matemática é conferida antes de publicar.
-- Advogado revisa os textos antes da primeira publicação.
+A ciência é o nosso diferencial, com um limite claro: ela mostra fatos e ajuda a decidir melhor, mas não aumenta a chance de nenhuma combinação.
+
+## O que podemos e não podemos dizer
+| Pode | Não pode |
+|---|---|
+| "Veja a chance real do seu jogo" | "Aumente suas chances" |
+| "Evite padrões muito populares, que podem dividir o prêmio" | "Números que mais vão sair" |
+| "Entenda seu jogo com dados de 500 concursos" | "Método comprovado" ou "jogo calibrado para ganhar" |
+| "Controle quanto você gasta" | Depoimento de ganhador ou prêmio como chamada |
 
 ## Perfil
-- **Nome:** Meu Volante PRO
-- **Bio:** Seus jogos da Mega-Sena e Lotofácil em ordem. Gastos, conferência e chance real. Não prevemos resultados. +18.
-- **Destaques:** Como usar | Chances reais | Gastos | Bolão | Jogo responsável
+**Nome:** Meu Volante PRO | Jogue com ciência
 
-## Quatro temas
-1. **Ciência:** probabilidade explicada sem complicar.
-2. **Consciência:** gastos, limite e jogo responsável.
-3. **App:** como salvar, conferir e dividir.
-4. **Mitos:** o que os dados mostram e o que não mostram.
+**Bio:**
+Jogue com ciência, não no achismo 🎯
+Mega-Sena e Lotofácil: chance real, custo, conferência e 500 sorteios analisados.
+Sem promessa de ganho. +18
 
-## 30 dias (3 publicações por semana)
-| Dia | Tema | Formato | Publicação |
-|---|---|---|---|
-| 1 | App | Carrossel | O que é o Meu Volante PRO |
-| 3 | Ciência | Carrossel | Qual a chance real na Mega-Sena: 1 em 50.063.860 |
-| 5 | Consciência | Post | Você sabe quanto gastou com loterias neste ano? |
-| 8 | Mitos | Carrossel | Dezena "atrasada" tem mais chance? Não |
-| 10 | App | Vídeo | Salve um jogo em 15 segundos |
-| 12 | Ciência | Carrossel | Por que 7 dezenas custam 7 apostas |
-| 15 | Consciência | Post | Como definir um limite mensal |
-| 17 | Mitos | Carrossel | Sequência 1-2-3-4-5-6 tem a mesma chance que qualquer outra |
-| 19 | App | Vídeo | Confira seu jogo sem sair de casa |
-| 22 | Ciência | Carrossel | Chance na Lotofácil: 1 em 3.268.760 |
-| 24 | Mitos | Post | Jogar datas não muda a chance, mas pode dividir o prêmio |
-| 26 | App | Carrossel | Como dividir um bolão sem planilha |
-| 29 | Consciência | Post | Jogo é diversão: sinais para dar uma pausa |
+**Destaques:** Comece aqui | Métodos | Chances | Gastos | Bolão | Jogo responsável
 
-## Vendas
-1. **Agora:** grátis, para medir quem salva um jogo e volta depois do sorteio.
-2. **Lista de espera:** para o plano pago, depois que as pessoas estiverem voltando.
-3. **Plano pago, a testar:** carteira ilimitada, sincronização, histórico e bolões. Faixa inicial de R$ 9,90 a R$ 14,90 por mês.
-4. **Nunca cobrar:** conferência, limite de gastos e avisos de jogo responsável.
+**Fixados:** o que é o app; a chance real na Mega-Sena; como usar a Matriz 4x4.
 
-## Mega da Virada
-Datas a confirmar no site da Caixa. O foco é organizar o bolão e controlar o gasto, nunca o valor do prêmio.
+## Temas e proporção
+- **Métodos, 40%:** Matriz 4x4, indicadores, fechamentos e estatísticas. É o carro-chefe.
+- **Mitos, 25%:** o que os dados confirmam e o que derrubam. É o que mais tende a gerar compartilhamento.
+- **App, 20%:** como gerar, salvar, conferir e dividir.
+- **Consciência, 15%:** limite de gastos e jogo responsável. É o que nos diferencia dos perfis de palpite.
+
+## Frequência
+- 3 publicações por semana.
+- Stories nos dias de sorteio: resultado oficial e uma curiosidade, sem chamada para apostar.
+- Publicar também em vídeo curto os posts com melhor desempenho.
+
+## Crescimento, em ordem
+1. **Indicação:** resumo de jogo e de bolão enviado pelo WhatsApp, com o link do app.
+2. **Testadores VIP:** códigos individuais em troca de opinião sincera.
+3. **Conteúdo compartilhável:** mitos e contas de custo.
+4. **Campanha do lançamento:** 3 meses pelo preço de 1, depois de testada com uma assinatura real.
+5. **Mega da Virada:** organizar bolão e controlar gasto, sem usar o valor do prêmio como chamada.
+6. **Anúncios e influenciadores:** só depois de revisão jurídica e com público 18+.
+
+## Funil
+Post → perfil → link → cadastro → gerar e salvar um jogo → ver o resultado → plano.
+
+A oferta aparece ao atingir o limite de 10 jogos e em "Ver planos". Nunca depois de um resultado sem prêmio.
+
+## O que medir por semana
+| Etapa | Medida |
+|---|---|
+| Instagram | Alcance, salvamentos, compartilhamentos e cliques no link |
+| Cadastro | Cliques no link → cadastros |
+| Uso | Cadastros → primeiro jogo salvo; volta depois do sorteio |
+| Venda | Quem vê os planos → quem paga; cancelamento em 30 dias |
+
+As metas serão definidas depois das 2 primeiras semanas, porque ainda não há dados. Para decidir sobre preço, esperar cerca de 200 visualizações dos planos.
+
+## Planos do lançamento
+- **Grátis:** gerar, conferir e salvar até 10 jogos. Conferência e limite de gastos nunca são pagos.
+- **Passe:** 15 dias por R$ 5,90, sem renovação.
+- **Mensal:** R$ 12,90.
+- **Anual:** R$ 97.
+- **Promoção:** 3 meses pelo preço de 1 para os 100 primeiros mensais.
+
+## Calendário
+As artes e legendas estão em `marketing/instagram/`. A ordem está em `instagram-posts.json`.
