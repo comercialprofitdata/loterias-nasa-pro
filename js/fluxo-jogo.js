@@ -77,12 +77,16 @@ function montarBotaoSalvar() {
       mudarAba('carteira');
       return;
     }
-    const antes = carteiraJogos.length;
-    marcarComoJogadoProximoConcurso();
-    if (carteiraJogos.length > antes) {
-      salvo = true;
-      document.getElementById('txt-btn-joguei-jogo').textContent = '✓ Salvo. Ver meus jogos';
-    }
+    const salvar = () => {
+      const antes = carteiraJogos.length;
+      marcarComoJogadoProximoConcurso();
+      if (carteiraJogos.length > antes) {
+        salvo = true;
+        document.getElementById('txt-btn-joguei-jogo').textContent = '✓ Salvo. Ver meus jogos';
+      }
+    };
+    window.salvarDepoisDoCadastro?.(salvar);
+    salvar();
   });
 
   const display = document.getElementById('display-meu-jogo');
@@ -224,9 +228,6 @@ function iniciarFluxoJogo() {
   montarVolante();
   montarIndicadores();
 }
-
-// Salvar não exige conta: fica no aparelho, e a conta é oferecida depois.
-window.exigirLeadAntesDeSalvar = () => true;
 
 document.addEventListener('DOMContentLoaded', () => setTimeout(iniciarFluxoJogo, 0));
 

@@ -385,7 +385,7 @@
 
       // Registrar Service Worker com Verificação Imediata de Atualizações
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js?v=20261101.13', { scope: './' })
+        navigator.serviceWorker.register('./sw.js?v=20261101.14', { scope: './' })
           .then((reg) => {
             console.log('[Meu Volante PRO] Service Worker registrado. Verificando atualizações...');
             reg.update(); // força verificação no servidor imediatamente
@@ -5085,7 +5085,7 @@ function abrirModalDialog(msg, callback) {
       const telefoneNumeros = (telefone || '').replace(/\D/g, '');
 
       if (!nome || !email || telefoneNumeros.length < 10 || !consentimento) {
-        toast('Informe nome, e-mail, telefone e aceite o recebimento de novidades.', '⚠️');
+        toast('Informe nome, e-mail e celular e confirme a idade.', '⚠️');
         return;
       }
 
@@ -5093,7 +5093,7 @@ function abrirModalDialog(msg, callback) {
         nome,
         email,
         telefone,
-        consentimento: true,
+        aceitePrivacidade: true,
         consentimentoEm: new Date().toISOString()
       };
       localStorage.setItem('loterias_nasa_visitor_lead', JSON.stringify(lead));
@@ -5105,7 +5105,7 @@ function abrirModalDialog(msg, callback) {
           name: nome,
           email,
           phone: telefone,
-          marketing_consent: true,
+          marketing_consent: false,
           consent_at: lead.consentimentoEm,
           source: 'visitor_trial'
         }, { onConflict: 'email', ignoreDuplicates: true });

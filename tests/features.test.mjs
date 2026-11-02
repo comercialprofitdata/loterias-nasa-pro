@@ -299,3 +299,14 @@ test('Base oficial: concursos completos, sem dezena repetida e em ordem', async 
     });
   }
 });
+
+test('Cadastro: regras de celular e e-mail', () => {
+  const texto = fs.readFileSync('js/cadastro.js', 'utf8');
+  const janela = {};
+  new Function('window', 'document', 'localStorage', texto)(janela, { addEventListener() {} }, {});
+  assert.equal(janela.validarCelular('(11) 91234-5678').valor, '11912345678');
+  assert.ok(janela.validarCelular('(20) 91234-5678').erro);
+  assert.ok(janela.validarCelular('(11) 3234-5678').erro);
+  assert.ok(janela.validarEmail('a@gmal.com').erro);
+  assert.equal(janela.validarEmail('A@Gmail.com').valor, 'a@gmail.com');
+});
