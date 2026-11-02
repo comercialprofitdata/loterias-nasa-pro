@@ -85,6 +85,10 @@ function ligarCadastro() {
   const subtitulo = titulo?.nextElementSibling;
   if (titulo) titulo.textContent = 'Crie seu acesso para salvar';
   if (subtitulo) subtitulo.textContent = 'Seus jogos ficam guardados e você acompanha a conferência.';
+  const opcional = document.createElement('label');
+  opcional.className = 'flex items-start gap-2 text-[10px] text-slate-400 leading-relaxed font-sans';
+  opcional.innerHTML = '<input id="check-visitante-novidades" type="checkbox" class="mt-0.5 accent-cyan-500" /><span>Quero receber novidades por e-mail e WhatsApp (opcional).</span>';
+  document.getElementById('check-visitante-consentimento')?.closest('label')?.after(opcional);
   const botao = modal.querySelector('button[type="submit"]');
   if (botao) botao.textContent = 'Salvar meu jogo';
   const aceite = document.getElementById('check-visitante-consentimento')?.nextElementSibling;

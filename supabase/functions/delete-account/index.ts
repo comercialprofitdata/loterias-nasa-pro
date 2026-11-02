@@ -63,6 +63,7 @@ async function apagarDadosDoUsuario(userId: string, email: string) {
   etapas.push("carteira de apostas")
 
   // Expurga logs de telemetria do usuário
+  if (email) await admin.from("eventos_uso").delete().eq("email", email)
   await admin
     .from("user_telemetria_logs")
     .delete()

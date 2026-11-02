@@ -385,7 +385,7 @@
 
       // Registrar Service Worker com Verificação Imediata de Atualizações
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js?v=20261101.14', { scope: './' })
+        navigator.serviceWorker.register('./sw.js?v=20261101.15', { scope: './' })
           .then((reg) => {
             console.log('[Meu Volante PRO] Service Worker registrado. Verificando atualizações...');
             reg.update(); // força verificação no servidor imediatamente
@@ -5105,7 +5105,7 @@ function abrirModalDialog(msg, callback) {
           name: nome,
           email,
           phone: telefone,
-          marketing_consent: false,
+          marketing_consent: Boolean(document.getElementById('check-visitante-novidades')?.checked),
           consent_at: lead.consentimentoEm,
           source: 'visitor_trial'
         }, { onConflict: 'email', ignoreDuplicates: true });
