@@ -25,7 +25,7 @@ function registrarEvento(evento, detalhe = '') {
     const contato = JSON.parse(localStorage.getItem('loterias_nasa_visitor_lead') || 'null');
     cliente.from('eventos_uso').insert({
       aparelho: idDoAparelho(),
-      email: emailReal(contato?.email) || emailReal(typeof usuarioSessao !== 'undefined' && usuarioSessao?.email) || null,
+      email: emailReal(contato?.email) || contato?.telefone?.replace(/\D/g, '') || emailReal(typeof usuarioSessao !== 'undefined' && usuarioSessao?.email) || null,
       evento,
       detalhe: String(detalhe).slice(0, 80),
       modalidade: typeof modalidadeAtual !== 'undefined' ? modalidadeAtual : null

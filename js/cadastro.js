@@ -59,7 +59,7 @@ function ligarCadastro() {
     evento.preventDefault();
     const campoEmail = document.getElementById('input-visitante-email');
     const campoCelular = document.getElementById('input-visitante-telefone');
-    const email = validarEmail(campoEmail.value);
+    const email = campoEmail.value.trim() ? validarEmail(campoEmail.value) : { valor: '' };
     const celular = validarCelular(campoCelular.value);
     const erro = email.erro || celular.erro;
     if (erro) {
@@ -80,6 +80,13 @@ function ligarCadastro() {
   const modal = document.getElementById('modal-cadastro-visitante');
   if (!modal) return;
   modal.querySelector('.inline-block')?.remove();
+  const campoEmail = document.getElementById('input-visitante-email');
+  campoEmail.required = false;
+  campoEmail.placeholder = 'Opcional';
+  const rotuloEmail = modal.querySelector('label[for="input-visitante-email"]');
+  if (rotuloEmail) rotuloEmail.textContent = 'E-mail (opcional)';
+  const rotuloCelular = modal.querySelector('label[for="input-visitante-telefone"]');
+  if (rotuloCelular) rotuloCelular.textContent = 'Celular com DDD';
   const titulo = modal.querySelector('h2');
   const subtitulo = titulo?.nextElementSibling;
   if (titulo) titulo.textContent = 'Crie seu acesso';

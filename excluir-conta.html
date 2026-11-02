@@ -102,9 +102,9 @@
   <div class="cartao">
     <form id="formulario">
       <div class="campo">
-        <label class="rotulo" for="email">E-mail da conta</label>
-        <input id="email" name="email" type="email" required maxlength="254"
-               placeholder="o e-mail que você usa no aplicativo" autocomplete="email" />
+        <label class="rotulo" for="email">E-mail ou celular com DDD</label>
+        <input id="email" name="email" type="text" required maxlength="254"
+               placeholder="o que você usou no cadastro" />
       </div>
 
       <div class="campo">
@@ -159,7 +159,12 @@
   formulario.addEventListener('submit', async (evento) => {
     evento.preventDefault();
 
-    const email = document.getElementById('email').value.trim().toLowerCase();
+    const informado = document.getElementById('email').value.trim().toLowerCase();
+    const email = informado.includes('@') ? informado : informado.replace(/\D/g, '');
+    if (email.length < 5) {
+      mostrar('Informe o e-mail ou o celular do cadastro.', 'erro');
+      return;
+    }
     const motivo = document.getElementById('motivo').value.trim();
 
     if (!document.getElementById('confirmacao').checked) {
@@ -198,7 +203,7 @@
       formulario.style.display = 'none';
       mostrar(
         'Solicitação registrada. A exclusão será concluída em até 30 dias e ' +
-        'você receberá a confirmação em ' + email + '.',
+        'você receberá a confirmação em ' + informado + '.',
         'ok'
       );
     } catch (erro) {

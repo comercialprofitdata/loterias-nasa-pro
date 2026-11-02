@@ -385,7 +385,7 @@
 
       // Registrar Service Worker com Verificação Imediata de Atualizações
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js?v=20261102.11', { scope: './' })
+        navigator.serviceWorker.register('./sw.js?v=20261102.12', { scope: './' })
           .then((reg) => {
             console.log('[Meu Volante PRO] Service Worker registrado. Verificando atualizações...');
             reg.update(); // força verificação no servidor imediatamente
@@ -5076,14 +5076,14 @@ function abrirModalDialog(msg, callback) {
       const consentimento = document.getElementById('check-visitante-consentimento')?.checked === true;
       const telefoneNumeros = (telefone || '').replace(/\D/g, '');
 
-      if (!nome || !email || telefoneNumeros.length < 10 || !consentimento) {
-        toast('Informe nome, e-mail e celular e confirme a idade.', '⚠️');
+      if (!nome || telefoneNumeros.length < 10 || !consentimento) {
+        toast('Informe nome e celular e confirme a idade.', '⚠️');
         return;
       }
 
       const lead = {
         nome,
-        email,
+        email: email || null,
         telefone,
         aceitePrivacidade: true,
         consentimentoEm: new Date().toISOString()
@@ -5095,7 +5095,7 @@ function abrirModalDialog(msg, callback) {
       if (cliente) {
         const { error } = await cliente.from('visitor_leads').insert({
           name: nome,
-          email,
+          email: email || null,
           phone: telefone,
           marketing_consent: Boolean(document.getElementById('check-visitante-novidades')?.checked),
           consent_at: lead.consentimentoEm,
