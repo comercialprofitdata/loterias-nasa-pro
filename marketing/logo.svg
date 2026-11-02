@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Meu Volante PRO">
+  <rect width="512" height="512" rx="96" fill="#0B1220"/>
+  <g fill="#26324A">
+    <circle cx="106" cy="106" r="34"/><circle cx="306" cy="106" r="34"/><circle cx="406" cy="106" r="34"/>
+    <circle cx="106" cy="206" r="34"/><circle cx="206" cy="206" r="34"/><circle cx="306" cy="206" r="34"/>
+    <circle cx="206" cy="306" r="34"/><circle cx="406" cy="306" r="34"/>
+    <circle cx="106" cy="406" r="34"/><circle cx="306" cy="406" r="34"/>
+  </g>
+  <g fill="#10B981">
+    <circle cx="206" cy="106" r="34"/><circle cx="406" cy="206" r="34"/><circle cx="106" cy="306" r="34"/>
+    <circle cx="306" cy="306" r="34"/><circle cx="206" cy="406" r="34"/><circle cx="406" cy="406" r="34"/>
+  </g>
+</svg>

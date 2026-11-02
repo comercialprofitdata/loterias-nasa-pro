@@ -12,3 +12,7 @@ supabase/.temp/
 *.zip
 *.keystore
 *.apk
+
+android/
+*.aab
+android/.segredos.json

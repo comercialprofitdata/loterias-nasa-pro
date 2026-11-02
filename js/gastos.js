@@ -104,7 +104,7 @@ function htmlHistoricoMensal() {
 }
 
 function renderizarGastos() {
-  const hero = document.getElementById('home-btn-hero-primary')?.closest('.nasa-hero-card, .rounded-2xl, .rounded-3xl');
+  const hero = document.getElementById('home-btn-hero-primary')?.parentElement;
   if (hero) {
     let painel = document.getElementById('painel-gastos-inicio');
     if (!painel) {
