@@ -473,8 +473,8 @@ function sincronizarHeaderStatusUsuario() {
       sideBadge.className = 'sidebar-profile-badge';
     } else {
       sideAvatar.innerText = '👤';
-      sideName.innerText = 'Visitante';
-      sideBadge.innerText = 'Toque para Entrar';
+      sideName.innerText = usuarioSessao.nome?.split(' ')[0] || 'Visitante';
+      sideBadge.innerText = usuarioSessao.nome && usuarioSessao.nome !== 'Visitante' ? 'Plano grátis' : 'Toque para entrar';
       sideBadge.className = 'sidebar-profile-badge';
     }
   }

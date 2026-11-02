@@ -42,17 +42,6 @@ function retomarCompra() {
   }, 800);
 }
 
-async function mostrarPromoLancamento() {
-  const { data } = await obterClienteSupabase().rpc('vagas_promo_lancamento');
-  const cartoes = document.querySelector('#modal-upgrade-nasa .modal-upgrade-content');
-  const primeiro = cartoes?.querySelector('.modal-upgrade-plan-card');
-  if (!(data > 0) || !primeiro || cartoes.querySelector('.promo-lancamento')) return;
-  const faixa = document.createElement('p');
-  faixa.className = 'promo-lancamento';
-  faixa.textContent = `Lançamento: no plano mensal, 3 meses pelo preço de 1. Restam ${data} vagas. Depois, R$ 12,90 por mês, e você cancela quando quiser.`;
-  primeiro.parentElement.before(faixa);
-}
-
 function acaoContaNoMenu() {
   window.fecharDrawerPerfil?.();
   if (!usuarioSessao || usuarioSessao.tipo === 'visitante') {
@@ -138,15 +127,6 @@ document.addEventListener('DOMContentLoaded', () => setTimeout(() => {
     esqueci.textContent = 'Esqueci a senha';
     esqueci.addEventListener('click', esqueciSenha);
     envio.after(esqueci);
-  }
-
-  const abrirPlanos = window.abrirModalUpgrade;
-  if (typeof abrirPlanos === 'function') {
-    window.abrirModalUpgrade = function (...args) {
-      const retorno = abrirPlanos.apply(this, args);
-      mostrarPromoLancamento();
-      return retorno;
-    };
   }
 
   const abrirMenu = window.abrirDrawerPerfil;

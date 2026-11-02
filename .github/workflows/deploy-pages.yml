@@ -17,10 +17,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  verify:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -33,6 +30,22 @@ jobs:
 
       - name: Run CI Automated Tests & Syntax Check
         run: npm run ci
+
+  deploy:
+    if: github.repository == 'vitoriobergamobrazil/loterias-nasa-pro'
+    needs: verify
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
 
       - name: Configure Pages
         uses: actions/configure-pages@v5

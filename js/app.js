@@ -385,7 +385,7 @@
 
       // Registrar Service Worker com Verificação Imediata de Atualizações
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js?v=20261102.27', { scope: './' })
+        navigator.serviceWorker.register('./sw.js?v=20261102.30', { scope: './' })
           .then((reg) => {
             console.log('[Meu Volante PRO] Service Worker registrado. Verificando atualizações...');
             reg.update(); // força verificação no servidor imediatamente
@@ -639,27 +639,27 @@
       const qtdAtiva = modalidadeAtual === 'megasena' ? qtdDesejadaMega : qtdDesejadaLoto;
       labelAtiva.innerText = `${qtdAtiva} números`;
 
-      const corAtiva = modalidadeAtual === 'megasena'
-        ? 'bg-emerald-600 text-slate-950 font-black shadow-lg shadow-emerald-500/20'
-        : 'bg-purple-600 text-white font-black shadow-lg shadow-purple-500/20';
-
+      const select = document.createElement('select');
+      select.id = 'select-qtd-dezenas';
+      select.setAttribute('aria-label', 'Dezenas por aposta');
+      select.className = 'w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-cyan-500 font-sans text-sm';
       for (let q = config.minDezenas; q <= config.maxDezenas; q++) {
-        const btn = document.createElement('button');
-        const ativo = q === qtdAtiva;
-        btn.innerText = `${q} nºs`;
-        btn.className = `px-2 py-1 rounded-lg text-[10px] font-mono font-bold transition ${
-          ativo ? corAtiva : 'bg-slate-950 text-slate-400 border border-slate-800 hover:text-white'
-        }`;
-        btn.onclick = () => {
-          tocarBeep('click');
-          if (modalidadeAtual === 'megasena') qtdDesejadaMega = q;
-          else qtdDesejadaLoto = q;
-          renderizarSeletoresQtd();
-          atualizarControlesQtdApostas();
-          gerarMultiplasApostas(qtdApostasDesejada, false);
-        };
-        container.appendChild(btn);
+        const option = document.createElement('option');
+        option.value = String(q);
+        option.textContent = `${q} números`;
+        option.selected = q === qtdAtiva;
+        select.appendChild(option);
       }
+      select.addEventListener('change', () => {
+        const qtd = Number(select.value);
+        tocarBeep('click');
+        if (modalidadeAtual === 'megasena') qtdDesejadaMega = qtd;
+        else qtdDesejadaLoto = qtd;
+        renderizarSeletoresQtd();
+        atualizarControlesQtdApostas();
+        gerarMultiplasApostas(qtdApostasDesejada, false);
+      });
+      container.appendChild(select);
     }
 
     function renderizarOpcoesFechamento() {
@@ -760,9 +760,8 @@
 
       const ehPro = planoUsuario === 'pro' || (usuarioSessao && usuarioSessao.tipo === 'master_founder');
 
-      // Números bloqueados a partir do 2º jogo gratuito (o 1º jogo é sempre 100% liberado)
-      const numerosBloqueadosRaw = !ehPro ? localStorage.getItem('nasa_numeros_bloqueados') : null;
-      const numerosBloqueados = numerosBloqueadosRaw ? new Set(JSON.parse(numerosBloqueadosRaw)) : new Set();
+      // O limite gratuito é pela quantidade de jogos, nunca por dezenas ocultas.
+      const numerosBloqueados = new Set();
 
       for (let i = 1; i <= config.totalNumeros; i++) {
         const btn = document.createElement('button');
@@ -893,8 +892,7 @@
       }
 
       const ehPro = planoUsuario === 'pro' || (usuarioSessao && usuarioSessao.tipo === 'master_founder');
-      const numerosBloqueadosRaw = !ehPro ? localStorage.getItem('nasa_numeros_bloqueados') : null;
-      const numerosBloqueados = numerosBloqueadosRaw ? new Set(JSON.parse(numerosBloqueadosRaw)) : new Set();
+      const numerosBloqueados = new Set();
 
       jogo.forEach((num) => {
         const ehFixo = getFixos().includes(num);
@@ -1818,6 +1816,11 @@ function gerarPalpiteInteligente() {
 
     // Gerador de Múltiplas Apostas ("Quero X apostas de Y números")
     function gerarMultiplasApostas(qtd = qtdApostasDesejada, usarVitorio = false) {
+      if (typeof window.limitarGeracaoGratuita === 'function') {
+        const permitidas = window.limitarGeracaoGratuita(qtd);
+        if (!permitidas) return;
+        qtd = permitidas;
+      }
       tocarBeep('success');
       vibrarHaptico(25);
       const k = modalidadeAtual === 'megasena' ? qtdDesejadaMega : qtdDesejadaLoto;
@@ -1857,20 +1860,9 @@ function gerarPalpiteInteligente() {
       const ehMasterFounder = typeof usuarioSessao !== 'undefined' && usuarioSessao && usuarioSessao.tipo === 'master_founder';
 
       if (!ehProUser && !ehMasterFounder) {
-        const jogosGratisRecebidos = Number(localStorage.getItem('nasa_jogos_gratis_recebidos') || 0);
-
-        if (jogosGratisRecebidos >= 1) {
-          const jogo = apostas[0].dezenas;
-          const shuffled = [...jogo].sort(() => Math.random() - 0.5);
-          const numeroBloqueados = shuffled.slice(0, 2);
-          localStorage.setItem('nasa_numeros_bloqueados', JSON.stringify(numeroBloqueados));
-        } else {
-          localStorage.removeItem('nasa_numeros_bloqueados');
-          localStorage.setItem('nasa_jogos_gratis_recebidos', '1');
-        }
-      } else {
-        localStorage.removeItem('nasa_numeros_bloqueados');
+        localStorage.setItem('nasa_jogos_gratis_recebidos', '1');
       }
+      localStorage.removeItem('nasa_numeros_bloqueados');
 
       atualizarDisplayJogo();
       renderizarVolante();
@@ -2161,20 +2153,7 @@ function gerarPalpiteInteligente() {
           </div>
         `;
       } else {
-        container.innerHTML = `
-          <div class="p-3.5 bg-slate-950 rounded-2xl border border-emerald-500/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 font-mono shadow-lg shadow-emerald-500/10">
-            <div class="flex items-center gap-3">
-              <span class="w-8 h-8 rounded-xl bg-emerald-950 border border-emerald-500 text-emerald-400 flex items-center justify-center text-base shadow">🎯</span>
-              <div>
-                <strong class="text-emerald-400 text-xs block font-mono uppercase tracking-wider">6 DE 6 NA FAIXA COMUM</strong>
-                <span class="text-[11px] text-slate-300 font-sans block">Nenhuma troca sugerida para este jogo.</span>
-              </div>
-            </div>
-            <button onclick="gerarApostaNasaComMatriz4x4()" class="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-cyan-300 font-bold text-xs rounded-xl border border-cyan-800/80 active:scale-95 transition ml-auto whitespace-nowrap flex items-center gap-1.5">
-              Gerar outro jogo
-            </button>
-          </div>
-        `;
+        container.innerHTML = '';
       }
     }
 
@@ -4822,10 +4801,14 @@ function abrirModalDialog(msg, callback) {
 
     async function restaurarSessaoSupabase() {
       const cliente = obterClienteSupabase();
-      if (!cliente) return;
+      if (!cliente) return false;
 
       const { data, error } = await cliente.auth.getSession();
-      if (error || !data.session?.user) return;
+      if (error) {
+        console.error('Não foi possível restaurar a sessão Supabase:', error.message);
+        return false;
+      }
+      if (!data.session?.user) return false;
 
       const usuario = data.session.user;
       const { data: perfil } = await cliente
@@ -4846,6 +4829,7 @@ function abrirModalDialog(msg, callback) {
       usuarioSessao = {
         nome: perfil?.display_name || usuario.user_metadata?.full_name || usuario.email?.split('@')[0] || 'Usuário',
         email: usuario.email || '',
+        telefone: usuario.user_metadata?.phone || '',
         avatar: 'U',
         tipo: perfil?.role === 'owner' ? 'master_founder' : 'supabase',
         plano: assinatura ? 'pro' : 'free',
@@ -4862,6 +4846,7 @@ function abrirModalDialog(msg, callback) {
       if (typeof sincronizarCarteiraNuvem === 'function') {
         sincronizarCarteiraNuvem(false);
       }
+      return true;
     }
 
     function atualizarPerfilUsuarioUI() {
@@ -5912,6 +5897,4 @@ function abrirModalDialog(msg, callback) {
     window.carregarConcursoHistoricoNoVolante = carregarConcursoHistoricoNoVolante;
     window.gerarJogoCalibradoUnico = gerarJogoCalibradoUnico;
     window.avaliarJogo = avaliarJogo;
-
-
-
+    window.restaurarSessaoSupabase = restaurarSessaoSupabase;

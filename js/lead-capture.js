@@ -174,30 +174,4 @@ async function submeterLeadCapture(event) {
   }
 }
 
-// ===================================================================
-// TRIGGER: mostrar modal ao carregar home (1x por sessão)
-// ===================================================================
-document.addEventListener('DOMContentLoaded', () => {
-  // Aguardar um pouco pra não aparecer muito rápido
-  setTimeout(() => {
-    // Só mostrar se estamos na home (tab ativo)
-    const tabAtivo = document.getElementById('tab-home')?.classList.contains('active');
-    if (tabAtivo || typeof abaAtual === 'undefined') {
-      mostrarModalLeadCapture();
-    }
-  }, 1200);
-
-  // Se usuário clicar na aba HOME depois, mostrar novamente (1x)
-  const tabHomeBtn = document.getElementById('tab-home');
-  if (tabHomeBtn) {
-    tabHomeBtn.addEventListener('click', () => {
-      const jaMostrou = sessionStorage.getItem('lead_modal_mostrou_desta_vez');
-      if (!jaMostrou && !usuarioSessao?.email) {
-        setTimeout(() => mostrarModalLeadCapture(), 500);
-        sessionStorage.setItem('lead_modal_mostrou_desta_vez', 'true');
-      }
-    });
-  }
-});
-
 console.log('📧 Lead Capture module loaded');
