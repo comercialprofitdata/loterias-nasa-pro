@@ -16,3 +16,4 @@ supabase/.temp/
 android/
 *.aab
 android/.segredos.json
+client_secret*.json
