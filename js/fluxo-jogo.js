@@ -117,12 +117,14 @@ function montarVolante() {
   card.prepend(espelho);
   const display = document.getElementById('display-meu-jogo');
   const copiar = () => { espelho.innerHTML = display.innerHTML; };
+  new IntersectionObserver(([item]) => {
+    espelho.toggleAttribute('data-oculto', item.isIntersecting);
+  }).observe(display);
   new MutationObserver(copiar).observe(display, { childList: true, subtree: true });
   copiar();
 
   document.getElementById('chk-destaque-subgrid')?.closest('label')?.classList.add('hidden');
   const chk = document.getElementById('chk-destaque-subgrid');
-  if (chk) chk.checked = false;
   if (typeof volanteModo10Colunas !== 'undefined') volanteModo10Colunas = true;
   grade.classList.add('classic-10x6');
   [...card.querySelectorAll('p, div')].find((el) => !el.children.length && el.textContent.trim().startsWith('Dica:'))?.classList.add('hidden');
@@ -217,7 +219,24 @@ function limparFechar() {
   titulo?.closest('.rounded-2xl')?.classList.add('hidden');
 }
 
+function aplicarTemaDaModalidade() {
+  const lotofacil = typeof modalidadeAtual !== 'undefined' && modalidadeAtual === 'lotofacil';
+  document.documentElement.classList.toggle('tema-lotofacil', lotofacil);
+}
+
+function ligarTemaDaModalidade() {
+  const trocar = window.trocarModalidade;
+  window.trocarModalidade = function (...args) {
+    const retorno = trocar.apply(this, args);
+    aplicarTemaDaModalidade();
+    window.renderizarRevisaoDoJogo?.();
+    return retorno;
+  };
+  aplicarTemaDaModalidade();
+}
+
 function iniciarFluxoJogo() {
+  ligarTemaDaModalidade();
   fixarTemaEscuro();
   limparFechar();
   ocultarLoginsIndisponiveis();

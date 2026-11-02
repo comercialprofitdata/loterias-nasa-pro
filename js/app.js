@@ -385,7 +385,7 @@
 
       // Registrar Service Worker com Verificação Imediata de Atualizações
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js?v=20261102.9', { scope: './' })
+        navigator.serviceWorker.register('./sw.js?v=20261102.11', { scope: './' })
           .then((reg) => {
             console.log('[Meu Volante PRO] Service Worker registrado. Verificando atualizações...');
             reg.update(); // força verificação no servidor imediatamente
@@ -437,14 +437,14 @@
         btnMega.className = 'px-3 py-1 rounded-lg text-xs font-black transition bg-emerald-600 text-slate-950 shadow';
         btnLoto.className = 'px-3 py-1 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition';
         labelTopo.className = 'text-xs font-black uppercase tracking-wider text-emerald-400 block font-mono';
-        labelTopo.innerText = '🎯 MEGA-SENA ANALYTICS';
+        labelTopo.innerText = '🎯 Seu jogo';
       
       carregarOpcoesFechamento();
     } else {
         btnLoto.className = 'px-3 py-1 rounded-lg text-xs font-black transition bg-purple-600 text-white shadow';
         btnMega.className = 'px-3 py-1 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition';
         labelTopo.className = 'text-xs font-black uppercase tracking-wider text-purple-400 block font-mono';
-        labelTopo.innerText = '🟣 LOTOFÁCIL ANALYTICS';
+        labelTopo.innerText = '🟣 Seu jogo';
       }
 
       renderizarTelaCompleta();
@@ -699,7 +699,7 @@
         }
         painelRegras.innerHTML = chips.length > 0 
           ? chips.join('<span class="text-slate-600 mx-1">•</span>')
-          : '<span class="text-[10px] text-slate-500 italic">Dica: Use "Fixar" para dezenas obrigatórias ou "Proibir" para excluir. Clique em qualquer dezena para alternar.</span>';
+          : '';
       }
 
       const linhasAtivas = new Set(jogo.map(n => Math.floor((n - 1) / 10) + 1));
@@ -1048,15 +1048,7 @@
         return;
       }
 
-      container.innerHTML = `
-        <div class="p-2 rounded-xl bg-emerald-950/25 border border-emerald-800/40 text-emerald-300 text-[11px] flex items-center justify-between gap-2 font-mono">
-          <div class="flex items-center gap-1.5">
-            <span class="text-xs">✨</span>
-            <span>Jogo inédito no seu histórico pessoal (${jogosCarteira.length} apostas cadastradas).</span>
-          </div>
-          <button type="button" onclick="mudarAba('carteira')" class="text-[9px] text-cyan-400 hover:underline">Ver Histórico</button>
-        </div>
-      `;
+      container.innerHTML = '';
       container.classList.remove('hidden');
     }
 
@@ -2280,8 +2272,8 @@ function gerarPalpiteInteligente() {
       });
 
       txt += `\n━━━━━━━━━━━━━━━━━━━━\n`;
-      txt += `⚡ *Gerado e auditado via Meu Volante PRO*\n`;
-      txt += `🔗 *Audite seu jogo grátis:* https://vitoriobergamobrazil.github.io/loterias-nasa-pro/\n`;
+      txt += `*Feito no Meu Volante PRO*\n`;
+      txt += `🔗 *Organize seus jogos:* https://loterias.pd.dev.br/\n`;
 
       window.abrirWhatsApp({ texto: txt });
     }
@@ -2413,7 +2405,7 @@ function gerarPalpiteInteligente() {
       if (jogosMod.length === 0) {
         elGaps.innerText = 'Sem apostas ativas';
         elRedundancia.innerText = '0%';
-        elDiag.innerText = 'Adicione suas apostas para a IA calcular a calibração de cobertura do portfólio.';
+        elDiag.innerText = 'Adicione seus jogos para ver quantas dezenas eles cobrem.';
         elBadge.innerText = 'Aguardando';
         elBadge.className = 'text-xs px-2 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-800 font-bold';
         return;
@@ -2428,13 +2420,13 @@ function gerarPalpiteInteligente() {
       elGaps.innerText = gaps.length > 0 ? `Lacuna no ${gaps.join(', ')}` : 'Todos os 4 setores cobertos';
 
       if (gaps.length > 0 || taxaRedundancia > 35) {
-        elBadge.innerText = 'Requer Calibração';
+        elBadge.innerText = 'Muitas repetidas';
         elBadge.className = 'text-xs px-2 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-800 font-bold';
-        elDiag.innerHTML = `⚠️ <strong>Diagnóstico de Portfólio:</strong> Seus ${jogosMod.length} bilhetes têm alta concentração e deixaram o <strong>${gaps.join(', ') || 'algumas faixas'}</strong> sem nenhuma cobertura. Clique abaixo para gerar o próximo jogo compensatório.`;
+        elDiag.innerHTML = `Seus ${jogosMod.length} jogos repetem muitas dezenas. Isso descreve seus jogos e não muda a chance de nenhum deles.`;
       } else {
         elBadge.innerText = 'Jogos variados';
         elBadge.className = 'text-xs px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800 font-bold';
-        elDiag.innerHTML = `✅ <strong>Excelente Cobertura:</strong> Suas apostas estão cobrindo ${dezenasUnicas} números sem desperdício de redundância.`;
+        elDiag.innerHTML = `Seus jogos cobrem ${dezenasUnicas} dezenas diferentes. Isso descreve seus jogos e não muda a chance de nenhum deles.`;
       }
     }
 
@@ -3302,8 +3294,8 @@ function gerarPalpiteInteligente() {
         txt += `*Jogo ${idx+1} (${b.modalidade.toUpperCase()}):*\n${b.dezenas.map(d => String(d).padStart(2,'0')).join(' - ')}\n\n`;
       });
       txt += `━━━━━━━━━━━━━━━━━━━━\n`;
-      txt += `🎯 *Auditado via Meu Volante PRO*\n`;
-      txt += `🔗 *Audite seu jogo grátis:* https://vitoriobergamobrazil.github.io/loterias-nasa-pro/\n`;
+      txt += `*Feito no Meu Volante PRO*\n`;
+      txt += `🔗 *Organize seus jogos:* https://loterias.pd.dev.br/\n`;
       window.abrirWhatsApp({ texto: txt });
     }
 

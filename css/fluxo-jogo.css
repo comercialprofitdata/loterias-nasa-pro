@@ -32,12 +32,6 @@
 }
 .fluxo-card-volante #volante-grid { gap: 6px; }
 .fluxo-card-volante .volante-btn { min-height: 40px; }
-.fluxo-card-volante [class*="volante-quad-"], .fluxo-card-volante .subgrid-active-cell {
-  background: #111c30 !important; color: #cbd5e1 !important; border: 1px solid #26324a !important;
-  box-shadow: none !important; outline: 0 !important;
-}
-.fluxo-card-volante div:has(> div > .legenda-quad-title),
-.fluxo-card-volante div:has(> .legenda-quad-title) { display: none !important; }
 .fluxo-link { background: none; border: 0; color: #94a3b8; font-size: 13px; text-decoration: underline; min-height: 40px; }
 .fluxo-link[hidden] { display: none; }
 
@@ -159,3 +153,13 @@ main [class*="text-[8px]"], main [class*="text-[9px]"], main [class*="text-[10px
 .instalar-titulo { font-size: 16px !important; }
 .instalar-passos { margin: 0; padding-left: 22px; list-style: decimal; font-size: 15px; line-height: 1.5; color: #cbd5e1; display: flex; flex-direction: column; gap: 8px; }
 #aviso-sem-internet { position: fixed; left: 12px; right: 12px; bottom: 92px; z-index: 40; padding: 10px 14px; border-radius: 12px; background: #2a2110; color: #fcd34d; font-size: 13px; text-align: center; }
+
+/* Espelho só aparece quando o jogo principal saiu da tela. */
+#fluxo-espelho-jogo[data-oculto] { display: none; }
+
+/* Lotofácil: identidade roxa em toda a interface. */
+.tema-lotofacil .fluxo-btn-principal, .tema-lotofacil .ritual-ver, .tema-lotofacil .nasa-primary-cta,
+.tema-lotofacil .fluxo-bola, .tema-lotofacil .gastos-barra i:not(.passou) { background: #9333ea !important; color: #fff !important; }
+.tema-lotofacil #display-meu-jogo > *, .tema-lotofacil #fluxo-espelho-jogo > * { background: #9333ea !important; color: #fff !important; border-color: #a855f7 !important; }
+.tema-lotofacil .fluxo-card-jogo #modalidade-label { color: #c084fc !important; }
+.tema-lotofacil #bv-avancar { background: #9333ea; color: #fff; }
