@@ -111,6 +111,6 @@ revoke all on function public.painel_dono() from public, anon;
 grant execute on function public.painel_dono() to authenticated;
 
 update public.profiles set role = 'owner'
- where id in (select id from auth.users where lower(email) = lower('comercial.profitdata@gmail.com'));
+ where id in (select id from auth.users where lower(email) in ('comercial.profitdata@gmail.com', 'vitorio.bergamo@gmail.com'));
 
 select (select count(*) from public.profiles where role = 'owner') as donos;
