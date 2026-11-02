@@ -118,3 +118,28 @@ main [class*="text-[8px]"], main [class*="text-[9px]"], main [class*="text-[10px
 .folha button.folha-sair { background: transparent; color: #cbd5e1; }
 
 #modal-cadastro-visitante[data-obrigatorio] { background: #0b1220; }
+
+/* Revelação do resultado e ritmo da geração. */
+.ritual-ver { min-height: 44px; padding: 0 16px; border: 0; border-radius: 12px; background: #10b981; color: #052e24; font-size: 14px; font-weight: 800; white-space: nowrap; }
+.ritual-tela { align-items: center; background: #0b1220; padding: 24px 20px; overflow-y: auto; }
+.ritual-conteudo { width: 100%; max-width: 420px; margin: auto; display: flex; flex-direction: column; gap: 12px; color: #f1f5f9; text-align: center; }
+.ritual-conteudo h2 { font-size: 24px; font-weight: 800; margin: 0; }
+.ritual-conteudo h3 { font-size: 15px; font-weight: 700; color: #a3b1c6; margin: 12px 0 0; }
+.ritual-bolas { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; min-height: 44px; }
+.ritual-bolas span { width: 44px; height: 44px; border-radius: 50%; background: #1e293b; color: #e2e8f0; font-weight: 800; font-size: 15px; font-variant-numeric: tabular-nums; display: inline-flex; align-items: center; justify-content: center; transition: background .2s, color .2s; }
+#ritual-sorteadas span { background: #f1f5f9; color: #0b1220; animation: ritual-entra .3s ease-out; }
+.ritual-jogo span.acertou { background: #10b981; color: #052e24; }
+#ritual-desfecho { min-height: 72px; display: flex; flex-direction: column; justify-content: center; gap: 4px; }
+#ritual-desfecho strong { font-size: 20px; }
+#ritual-acao { min-height: 52px; border: 1px solid #334155; border-radius: 14px; background: transparent; color: #f1f5f9; font-size: 15px; font-weight: 800; }
+@keyframes ritual-entra { from { transform: translateY(-14px); opacity: 0; } to { transform: none; opacity: 1; } }
+#display-meu-jogo.fluxo-pulso { animation: none; }
+#display-meu-jogo.fluxo-pulso > * { animation: ritual-entra .28s ease-out backwards; }
+#display-meu-jogo.fluxo-pulso > *:nth-child(2) { animation-delay: .08s; }
+#display-meu-jogo.fluxo-pulso > *:nth-child(3) { animation-delay: .16s; }
+#display-meu-jogo.fluxo-pulso > *:nth-child(4) { animation-delay: .24s; }
+#display-meu-jogo.fluxo-pulso > *:nth-child(5) { animation-delay: .32s; }
+#display-meu-jogo.fluxo-pulso > *:nth-child(n+6) { animation-delay: .4s; }
+@media (prefers-reduced-motion: reduce) {
+  #display-meu-jogo.fluxo-pulso > *, #ritual-sorteadas span { animation: none; }
+}
