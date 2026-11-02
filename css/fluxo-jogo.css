@@ -147,3 +147,11 @@ main [class*="text-[8px]"], main [class*="text-[9px]"], main [class*="text-[10px
 .fluxo-passo { font-size: 13px; font-weight: 800; color: #a3b1c6; margin: 0; }
 
 .btn-acao-grupo-print, .btn-acao-grupo-excluir, .divisor-acoes-ponto { display: none !important; }
+
+#troca-app { position: fixed; inset: 0; z-index: 9500; background: #0b1220; color: #f1f5f9; padding: 32px 24px; overflow-y: auto; display: flex; }
+.troca-conteudo { margin: auto; width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 16px; text-align: center; align-items: center; }
+.troca-conteudo img { border-radius: 20px; }
+.troca-conteudo h1 { font-size: 26px; font-weight: 800; margin: 0; }
+.troca-conteudo p, .troca-conteudo ol { font-size: 16px; line-height: 1.5; color: #cbd5e1; margin: 0; text-align: left; }
+.troca-conteudo ol { padding-left: 22px; list-style: decimal; display: flex; flex-direction: column; gap: 8px; }
+.troca-conteudo a { width: 100%; min-height: 52px; border-radius: 14px; background: #10b981; color: #052e24; font-size: 16px; font-weight: 800; display: flex; align-items: center; justify-content: center; text-decoration: none; }

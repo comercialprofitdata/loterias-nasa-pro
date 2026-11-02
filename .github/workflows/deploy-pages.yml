@@ -51,7 +51,7 @@ jobs:
       - name: Build site folder
         run: |
           mkdir -p dist/supabase
-          cp -r google37f87419eb6687ca.html index.html privacidade.html excluir-conta.html manifest.json sw.js CNAME icon-192.png icon-512.png icon-maskable-512.png css js .well-known dist/
+          cp -r download google37f87419eb6687ca.html index.html privacidade.html excluir-conta.html manifest.json sw.js CNAME icon-192.png icon-512.png icon-maskable-512.png css js .well-known dist/
           cp supabase/config.js dist/supabase/
           touch dist/.nojekyll
 
