@@ -37,7 +37,21 @@ function rodandoComoAppDaLoja() {
 }
 
 // Venda também suspensa na web: o backend de pagamento ainda não está no ar.
-const VENDA_SUSPENSA = true;
+// O teste de compra abre só por este endereço, nesta aba, e nunca dentro do app da loja.
+function testeDeCompraAtivo() {
+  try {
+    if (document.referrer.startsWith('android-app://')) return false;
+    if (new URLSearchParams(window.location.search).get('venda') === 'teste') {
+      sessionStorage.setItem('meu_volante_teste_compra', '1');
+    }
+    return sessionStorage.getItem('meu_volante_teste_compra') === '1';
+  } catch {
+    return false;
+  }
+}
+
+const TESTE_DE_COMPRA = testeDeCompraAtivo();
+const VENDA_SUSPENSA = !TESTE_DE_COMPRA;
 const MODO_LOJA = VENDA_SUSPENSA || rodandoComoAppDaLoja();
 
 /**
@@ -131,3 +145,15 @@ window.contextoLoja = {
 };
 
 console.log(`🏷️ Contexto: ${MODO_LOJA ? 'app da loja' : 'navegador'}`);
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (!TESTE_DE_COMPRA) return;
+  setTimeout(() => {
+    const botao = document.createElement('button');
+    botao.type = 'button';
+    botao.id = 'botao-teste-compra';
+    botao.textContent = 'Testar compra';
+    botao.addEventListener('click', () => window.abrirModalPaywall?.('teste_compra'));
+    document.body.appendChild(botao);
+  }, 500);
+});
