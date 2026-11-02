@@ -127,7 +127,7 @@
   };
 
   window.alternarGrupoCarteira = function (grupoId) {
-    window.carteiraFiltros.gruposAbertos[grupoId] = !window.carteiraFiltros.gruposAbertos[grupoId];
+    window.carteiraFiltros.gruposAbertos[grupoId] = window.carteiraFiltros.gruposAbertos[grupoId] === false;
     if (typeof window.tocarBeep === 'function') window.tocarBeep('click');
     window.atualizarPainelCarteira();
   };
@@ -489,7 +489,7 @@
     if (btnConferir) {
       if (listaOriginal.length === 0) {
         btnConferir.className = 'px-3 py-1.5 bg-slate-800 text-slate-400 border border-slate-700 font-bold text-xs rounded-xl shadow cursor-not-allowed opacity-60';
-        btnConferir.innerHTML = '<span>⚡</span> <span>CONFERIR TUDO</span>';
+        btnConferir.innerHTML = '<span>⚡</span> <span>Conferir jogos</span>';
       } else {
         const todosConferidos = listaOriginal.every(b => b.conferido);
         const temPendentesPassados = listaOriginal.some(b => !b.conferido && window.concursoOuDataEhPassado(b.concursoAlvo || b.concurso, b.data, b.modalidade));
@@ -501,7 +501,7 @@
           btnConferir.innerHTML = '<span>⚡</span> <span>CONFERIR AGORA</span>';
         } else {
           btnConferir.className = 'px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-black text-xs rounded-xl shadow active:scale-95 transition flex items-center gap-1.5';
-          btnConferir.innerHTML = '<span>⚡</span> <span>CONFERIR TUDO</span>';
+          btnConferir.innerHTML = '<span>⚡</span> <span>Conferir jogos</span>';
         }
       }
     }
@@ -548,7 +548,7 @@
       const grupos = agruparBilhetes(filtrados);
 
       container.innerHTML = grupos.map((g) => {
-        const aberto = !!window.carteiraFiltros.gruposAbertos[g.id];
+        const aberto = window.carteiraFiltros.gruposAbertos[g.id] !== false;
         const isMega = g.modalidade === 'megasena';
         const todosConferidos = g.bilhetes.every(b => b.conferido);
         const algumConferido = g.bilhetes.some(b => b.conferido);

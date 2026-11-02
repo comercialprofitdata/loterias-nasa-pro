@@ -44,6 +44,9 @@ jobs:
           node scripts/atualizar-historico.mjs
           sed -i "s/historico-oficial.js?v=[0-9.]*/historico-oficial.js?v=$(date +%Y%m%d%H)/" index.html
 
+      - name: Build CSS
+        run: npm run build:css
+
       # Lista fechada: documentos internos, SQL e scripts não vão para o site.
       - name: Build site folder
         run: |

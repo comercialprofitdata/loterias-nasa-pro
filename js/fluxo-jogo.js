@@ -171,7 +171,17 @@ function montarIndicadores() {
 }
 
 // Sem jogos salvos não há o que filtrar nem somar: fica só o convite para começar.
+function recolherFiltrosDaCarteira() {
+  const tela = document.getElementById('carteira-subview-bilhetes');
+  const filtros = [...(tela?.children || [])].find((b) => b.innerText?.includes('EXIBIR'));
+  if (!filtros || filtros.closest('.fluxo-gaveta')) return;
+  const gaveta = criarGaveta('Filtrar jogos', 'fluxo-gaveta-filtros');
+  filtros.before(gaveta);
+  gaveta.appendChild(filtros);
+}
+
 function ajustarCarteira() {
+  recolherFiltrosDaCarteira();
   // Totais agora ficam no painel de gastos.
   document.getElementById('banca-investido')?.closest('.grid')?.classList.add('hidden');
   const lista = document.getElementById('total-bilhetes-salvos');

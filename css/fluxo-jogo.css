@@ -143,3 +143,5 @@ main [class*="text-[8px]"], main [class*="text-[9px]"], main [class*="text-[10px
 @media (prefers-reduced-motion: reduce) {
   #display-meu-jogo.fluxo-pulso > *, #ritual-sorteadas span { animation: none; }
 }
+
+.fluxo-passo { font-size: 13px; font-weight: 800; color: #a3b1c6; margin: 0; }
