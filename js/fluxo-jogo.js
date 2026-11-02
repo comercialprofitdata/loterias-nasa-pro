@@ -264,7 +264,7 @@ function ligarBotaoVoltar() {
     const folha = document.querySelector('.folha-fundo');
     if (folha) { folha.remove(); return true; }
     const modal = [...document.querySelectorAll('.fixed.inset-0')]
-      .find((m) => !m.classList.contains('hidden') && getComputedStyle(m).display !== 'none');
+      .find((m) => !m.dataset.obrigatorio && !m.classList.contains('hidden') && getComputedStyle(m).display !== 'none');
     if (!modal) return false;
     modal.classList.add('hidden');
     modal.classList.remove('flex');

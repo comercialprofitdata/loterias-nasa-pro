@@ -1,8 +1,7 @@
 // ===================================================================
 // CADASTRO AO SALVAR: e-mail e telefone validados
 // ===================================================================
-// Gerar é livre. O cadastro é pedido no primeiro jogo salvo, e quem já tinha
-// jogos no aparelho continua sem barreira.
+// Ninguém novo usa o app sem cadastro. Quem já tinha jogos ou conta continua.
 
 const DDDS_VALIDOS = new Set([
   11, 12, 13, 14, 15, 16, 17, 18, 19, 21, 22, 24, 27, 28, 31, 32, 33, 34, 35, 37, 38,
@@ -39,7 +38,7 @@ window.validarCelular = validarCelular;
 
 function temAcessoSemCadastro() {
   if (localStorage.getItem('loterias_nasa_visitor_lead')) return true;
-  if (typeof usuarioSessao !== 'undefined' && usuarioSessao && usuarioSessao.tipo !== 'visitante') return true;
+  if (typeof usuarioSessao !== 'undefined' && usuarioSessao && !['visitante', 'google_oauth'].includes(usuarioSessao.tipo)) return true;
   return Array.isArray(carteiraJogos) && carteiraJogos.length > 0;
 }
 
@@ -83,16 +82,56 @@ function ligarCadastro() {
   modal.querySelector('.inline-block')?.remove();
   const titulo = modal.querySelector('h2');
   const subtitulo = titulo?.nextElementSibling;
-  if (titulo) titulo.textContent = 'Crie seu acesso para salvar';
-  if (subtitulo) subtitulo.textContent = 'Seus jogos ficam guardados e você acompanha a conferência.';
+  if (titulo) titulo.textContent = 'Crie seu acesso';
+  if (subtitulo) subtitulo.textContent = 'Cadastre-se para usar o Meu Volante PRO.';
   const opcional = document.createElement('label');
   opcional.className = 'flex items-start gap-2 text-[10px] text-slate-400 leading-relaxed font-sans';
   opcional.innerHTML = '<input id="check-visitante-novidades" type="checkbox" class="mt-0.5 accent-cyan-500" /><span>Quero receber novidades por e-mail e WhatsApp (opcional).</span>';
   document.getElementById('check-visitante-consentimento')?.closest('label')?.after(opcional);
   const botao = modal.querySelector('button[type="submit"]');
-  if (botao) botao.textContent = 'Salvar meu jogo';
+  if (botao) botao.textContent = 'Entrar no app';
   const aceite = document.getElementById('check-visitante-consentimento')?.nextElementSibling;
   if (aceite) aceite.innerHTML = 'Tenho 18 anos ou mais e li a <a href="privacidade.html" target="_blank" rel="noopener" class="underline">Política de Privacidade</a>.';
 }
 
-document.addEventListener('DOMContentLoaded', () => setTimeout(ligarCadastro, 0));
+/** Tela obrigatória: sem botão de fechar, e só sai depois do cadastro. */
+function exigirCadastroNaEntrada() {
+  if (temAcessoSemCadastro()) return;
+  const modal = document.getElementById('modal-cadastro-visitante');
+  if (!modal) return;
+  modal.dataset.obrigatorio = '1';
+  modal.style.zIndex = '8000';
+  modal.querySelector('button[aria-label="Fechar cadastro"]')?.classList.add('hidden');
+  const fechar = window.fecharCadastroVisitante;
+  window.fecharCadastroVisitante = function (...args) {
+    if (temAcessoSemCadastro()) {
+      delete modal.dataset.obrigatorio;
+      return fechar.apply(this, args);
+    }
+  };
+  if (window.NASA_SUPABASE_CONFIG?.googleEnabled && !document.getElementById('bv-google')) {
+    const google = document.createElement('button');
+    google.type = 'button';
+    google.id = 'bv-google';
+    google.className = 'w-full py-3 bg-white text-slate-900 font-bold text-sm rounded-xl';
+    google.textContent = 'Preencher com Google';
+    google.addEventListener('click', () => loginComGoogle());
+    modal.querySelector('form')?.before(google);
+  }
+  // Google traz nome e e-mail; o celular ainda é obrigatório.
+  const concluir = window.concluirLoginOAuth;
+  window.concluirLoginOAuth = function (dados) {
+    const retorno = concluir.call(this, dados);
+    document.getElementById('input-visitante-nome').value = dados.nome || '';
+    document.getElementById('input-visitante-email').value = dados.email || '';
+    abrirCadastroVisitante();
+    document.getElementById('input-visitante-telefone')?.focus();
+    return retorno;
+  };
+  abrirCadastroVisitante();
+}
+
+document.addEventListener('DOMContentLoaded', () => setTimeout(() => {
+  ligarCadastro();
+  exigirCadastroNaEntrada();
+}, 200));

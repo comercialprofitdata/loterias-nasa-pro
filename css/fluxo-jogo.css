@@ -116,3 +116,5 @@ main [class*="text-[8px]"], main [class*="text-[9px]"], main [class*="text-[10px
 .folha input { min-height: 50px; padding: 0 14px; border-radius: 12px; border: 1px solid #334155; background: #0b1220; color: #f1f5f9; font-size: 18px; }
 .folha button { min-height: 50px; border-radius: 14px; border: 0; background: #10b981; color: #052e24; font-size: 15px; font-weight: 800; }
 .folha button.folha-sair { background: transparent; color: #cbd5e1; }
+
+#modal-cadastro-visitante[data-obrigatorio] { background: #0b1220; }
