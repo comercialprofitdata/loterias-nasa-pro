@@ -385,7 +385,7 @@
 
       // Registrar Service Worker com Verificação Imediata de Atualizações
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js?v=20261101.16', { scope: './' })
+        navigator.serviceWorker.register('./sw.js?v=20261101.17', { scope: './' })
           .then((reg) => {
             console.log('[Meu Volante PRO] Service Worker registrado. Verificando atualizações...');
             reg.update(); // força verificação no servidor imediatamente
@@ -5101,15 +5101,16 @@ function abrirModalDialog(msg, callback) {
       const cliente = obterClienteSupabase();
       let sincronizado = false;
       if (cliente) {
-        const { error } = await cliente.from('visitor_leads').upsert({
+        const { error } = await cliente.from('visitor_leads').insert({
           name: nome,
           email,
           phone: telefone,
           marketing_consent: Boolean(document.getElementById('check-visitante-novidades')?.checked),
           consent_at: lead.consentimentoEm,
           source: 'visitor_trial'
-        }, { onConflict: 'email', ignoreDuplicates: true });
-        sincronizado = !error;
+        });
+        // E-mail já cadastrado (23505) também conta como contato registrado.
+        sincronizado = !error || error.code === '23505';
       }
 
       entrarComoVisitanteGratis(lead);
