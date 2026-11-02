@@ -5,7 +5,7 @@ window.NASA_SUPABASE_CONFIG = {
   businessName: 'Meu Volante PRO',
   url: 'https://kwiagspkzrnculrvtrmp.supabase.co',
   anonKey: 'sb_publishable_afUKxEsidmT7QAWT4OI9Rw_kKAxXyYH',
-  googleEnabled: false,
+  googleEnabled: true,
   metaEnabled: false,
   supportEmail: 'contato@profitdata.com.br',
   supportPhone: '',

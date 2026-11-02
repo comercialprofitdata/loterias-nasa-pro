@@ -8,7 +8,7 @@
 
 const OAUTH_CONFIG = {
   google: {
-    clientId: '121397262223-jkjraet5rgrs86kfkk5auec38l5kgoo1.apps.googleusercontent.com',
+    clientId: '70551320136-utr8jj8vsspc23gi5vg2l5osmclidei0.apps.googleusercontent.com',
     scope: 'openid profile email',
     userInfoUrl: 'https://www.googleapis.com/oauth2/v3/userinfo'
   },
