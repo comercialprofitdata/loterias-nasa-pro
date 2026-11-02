@@ -33,7 +33,8 @@ async function renderizarVips(area) {
   }
   area.innerHTML = `
     <form id="vip-novo" class="vip-form">
-      <input id="vip-nome" required maxlength="120" placeholder="Nome do testador" aria-label="Nome do testador" />
+      <input id="vip-nome" required maxlength="120" placeholder="Nome do testador ou da campanha" aria-label="Nome do testador ou da campanha" />
+      <input id="vip-usos" type="number" min="1" max="1000" value="1" aria-label="Quantidade de acessos" title="Quantidade de acessos" />
       <select id="vip-dias" aria-label="Validade">
         <option value="30">30 dias</option>
         <option value="90">90 dias</option>
@@ -59,14 +60,14 @@ async function renderizarVips(area) {
     const { error: erro } = await obterClienteSupabase().rpc('criar_codigo_vip', {
       p_nome: area.querySelector('#vip-nome').value,
       p_dias: dias ? Number(dias) : null,
-      p_usos: 1
+      p_usos: Math.max(1, Number(area.querySelector('#vip-usos').value) || 1)
     });
     if (erro) toast('Não foi possível criar o código.', '⚠️');
     renderizarVips(area);
   });
   area.querySelectorAll('[data-enviar]').forEach((botao) => botao.addEventListener('click', () => {
     const link = `${window.location.origin}/?vip=${encodeURIComponent(botao.dataset.enviar)}`;
-    const texto = `Olá, ${botao.dataset.nome}! Seu acesso VIP ao Meu Volante PRO: ${link}`;
+    const texto = `Seu acesso VIP ao Meu Volante PRO: ${link}`;
     window.open(`https://wa.me/?text=${encodeURIComponent(texto)}`, '_blank', 'noopener');
   }));
   area.querySelectorAll('[data-alterar]').forEach((botao) => botao.addEventListener('click', async () => {
