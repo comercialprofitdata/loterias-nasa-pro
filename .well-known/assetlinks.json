@@ -1,14 +1,18 @@
 [
   {
-    "relation": [
-      "delegate_permission/common.handle_all_urls"
-    ],
+    "relation": ["delegate_permission/common.handle_all_urls"],
     "target": {
       "namespace": "android_app",
       "package_name": "br.dev.pd.meuvolante",
-      "sha256_cert_fingerprints": [
-        "08:E4:27:81:7E:08:D8:57:85:75:3C:BC:76:07:32:90:31:2E:8D:D3:23:79:28:00:FC:01:B2:81:4D:BC:62:A7"
-      ]
+      "sha256_cert_fingerprints": ["08:E4:27:81:7E:08:D8:57:85:75:3C:BC:76:07:32:90:31:2E:8D:D3:23:79:28:00:FC:01:B2:81:4D:BC:62:A7"]
+    }
+  },
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "io.github.vitoriobergamobrazil.twa",
+      "sha256_cert_fingerprints": ["EE:18:77:11:D1:5D:8D:9F:0E:6C:FB:B6:8B:8D:13:0B:5B:DA:64:D7:BA:8F:BD:5C:F0:D9:A3:B3:21:F7:75:10"]
     }
   }
 ]
