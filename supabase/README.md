@@ -13,6 +13,10 @@ O aplicativo usa Supabase para autenticacao, perfis, assinaturas e auditoria.
 
 A `service_role key` nunca deve ser colocada em `index.html`, `config.js`, GitHub Pages ou qualquer arquivo enviado ao navegador.
 
+## Cupons VIP pelo aplicativo
+
+Para habilitar a criação de códigos personalizados no painel do dono, execute `RODAR-CUPOM-PERSONALIZADO.sql` uma vez no SQL Editor. Depois dessa instalação inicial, crie, compartilhe, desative e reative os cupons pelo painel do aplicativo; não é necessário inserir cada novo cupom manualmente no Supabase.
+
 ## Edge Functions
 
 As funcoes em `functions/` devem ser publicadas pelo Supabase CLI ou pelo fluxo de deploy do projeto:

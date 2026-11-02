@@ -34,6 +34,7 @@ async function renderizarVips(area) {
   area.innerHTML = `
     <form id="vip-novo" class="vip-form">
       <input id="vip-nome" required maxlength="120" placeholder="Nome do testador ou da campanha" aria-label="Nome do testador ou da campanha" />
+      <input id="vip-codigo" maxlength="32" pattern="[A-Za-z0-9][A-Za-z0-9-]{2,31}" placeholder="Código personalizado (opcional)" aria-label="Código personalizado (opcional)" title="Use de 3 a 32 letras, números ou hífens." />
       <input id="vip-usos" type="number" min="1" max="1000" value="1" aria-label="Quantidade de acessos" title="Quantidade de acessos" />
       <select id="vip-dias" aria-label="Validade">
         <option value="30">1 mês</option>
@@ -45,11 +46,12 @@ async function renderizarVips(area) {
       <button type="submit" class="ritual-ver">Criar código</button>
     </form>
     <div class="dono-rolagem"><table class="gastos-tabela">
-      <thead><tr><th>Testador</th><th>Código</th><th>Validade</th><th>Usado</th><th></th></tr></thead>
+      <thead><tr><th>Campanha / pessoa</th><th>Código</th><th>Validade</th><th>Usado</th><th></th></tr></thead>
       <tbody>${data.map((v) => `<tr>
         <td>${textoSeguro(v.nome)}</td><td>${textoSeguro(v.codigo)}</td>
         <td>${v.dias ? `${v.dias} dias` : 'Vitalício'}</td><td>${v.usos}/${v.usos_max}</td>
         <td class="vip-acoes">
+          <button type="button" class="fluxo-link" data-copiar="${textoSeguro(v.codigo)}">Copiar link</button>
           <button type="button" class="fluxo-link" data-enviar="${textoSeguro(v.codigo)}" data-nome="${textoSeguro(v.nome)}">WhatsApp</button>
           <button type="button" class="fluxo-link" data-alterar="${textoSeguro(v.codigo)}" data-ativo="${!v.ativo}">${v.ativo ? 'Desativar' : 'Reativar'}</button>
         </td></tr>`).join('') || '<tr><td colspan="5">Nenhum código criado.</td></tr>'}</tbody>
@@ -57,22 +59,67 @@ async function renderizarVips(area) {
 
   area.querySelector('#vip-novo').addEventListener('submit', async (evento) => {
     evento.preventDefault();
+    const nome = area.querySelector('#vip-nome').value.trim();
+    const codigo = area.querySelector('#vip-codigo').value.trim().toUpperCase();
+    const usos = Number(area.querySelector('#vip-usos').value);
     const dias = area.querySelector('#vip-dias').value;
-    const { error: erro } = await obterClienteSupabase().rpc('criar_codigo_vip', {
-      p_nome: area.querySelector('#vip-nome').value,
-      p_dias: dias ? Number(dias) : null,
-      p_usos: Math.max(1, Number(area.querySelector('#vip-usos').value) || 1)
-    });
-    if (erro) toast('Não foi possível criar o código.', '⚠️');
-    renderizarVips(area);
+    if (!nome || !Number.isInteger(usos) || usos < 1 || usos > 1000) {
+      toast('Informe o nome da campanha e uma quantidade entre 1 e 1.000.', '⚠️');
+      return;
+    }
+
+    const cliente = obterClienteSupabase();
+    const resultado = codigo
+      ? await cliente.rpc('criar_codigo_vip_personalizado', {
+        p_codigo: codigo,
+        p_nome: nome,
+        p_dias: dias ? Number(dias) : null,
+        p_usos: usos
+      })
+      : await cliente.rpc('criar_codigo_vip', {
+        p_nome: nome,
+        p_dias: dias ? Number(dias) : null,
+        p_usos: usos
+      });
+    if (resultado.error) {
+      const mensagem = resultado.error.code === '23505'
+        ? 'Este código já existe. Escolha outro.'
+        : resultado.error.code === '42883'
+          ? 'Atualize o recurso de cupons no Supabase para criar códigos personalizados.'
+          : 'Não foi possível criar o código VIP.';
+      toast(mensagem, '⚠️');
+      return;
+    }
+    if (typeof resultado.data !== 'string' || !resultado.data) {
+      toast('O servidor não confirmou a criação do código. Atualize a lista antes de tentar novamente.', '⚠️');
+      return;
+    }
+    toast(`Código ${resultado.data} criado. Copie o link para enviar pelo Direct.`, '✅');
+    await renderizarVips(area);
   });
+  area.querySelectorAll('[data-copiar]').forEach((botao) => botao.addEventListener('click', async () => {
+    const link = `${window.location.origin}${window.location.pathname}?vip=${encodeURIComponent(botao.dataset.copiar)}`;
+    try {
+      await navigator.clipboard.writeText(link);
+      toast('Link VIP copiado. Você já pode enviar pelo Direct.', '✅');
+    } catch {
+      toast('Não foi possível copiar o link. Verifique a permissão de área de transferência do navegador.', '⚠️');
+    }
+  }));
   area.querySelectorAll('[data-enviar]').forEach((botao) => botao.addEventListener('click', () => {
     const link = `${window.location.origin}/?vip=${encodeURIComponent(botao.dataset.enviar)}`;
     const texto = `Seu acesso VIP ao Meu Volante PRO: ${link}`;
     window.open(`https://wa.me/?text=${encodeURIComponent(texto)}`, '_blank', 'noopener');
   }));
   area.querySelectorAll('[data-alterar]').forEach((botao) => botao.addEventListener('click', async () => {
-    await obterClienteSupabase().rpc('alterar_codigo_vip', { p_codigo: botao.dataset.alterar, p_ativo: botao.dataset.ativo === 'true' });
+    const { error: erro } = await obterClienteSupabase().rpc('alterar_codigo_vip', {
+      p_codigo: botao.dataset.alterar,
+      p_ativo: botao.dataset.ativo === 'true'
+    });
+    if (erro) {
+      toast('Não foi possível alterar o status do código VIP.', '⚠️');
+      return;
+    }
     renderizarVips(area);
   }));
 }
