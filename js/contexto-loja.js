@@ -36,7 +36,7 @@ function rodandoComoAppDaLoja() {
   }
 }
 
-// Venda também suspensa na web: o backend de pagamento ainda não está no ar.
+// Mude para true para suspender a venda na web.
 // O teste de compra abre só por este endereço, nesta aba, e nunca dentro do app da loja.
 function testeDeCompraAtivo() {
   try {
@@ -51,7 +51,7 @@ function testeDeCompraAtivo() {
 }
 
 const TESTE_DE_COMPRA = testeDeCompraAtivo();
-const VENDA_SUSPENSA = !TESTE_DE_COMPRA;
+const VENDA_SUSPENSA = false;
 const MODO_LOJA = VENDA_SUSPENSA || rodandoComoAppDaLoja();
 
 /**
