@@ -4,8 +4,8 @@
 
 const CHECKOUT_PLANOS = {
   avulso: { nome: 'Passe de 30 dias', preco: 'R$ 5,90', periodo: 'pagamento único' },
-  mensal: { nome: '🎯 Mensal Mensal', preco: 'R$ 29,90', periodo: 'por mês' },
-  anual: { nome: '👑 Anual', preco: 'R$ 197', periodo: 'por ano · equivale a R$ 16,42/mês' }
+  mensal: { nome: 'Mensal', preco: 'R$ 29,90', periodo: 'por mês' },
+  anual: { nome: 'Anual', preco: 'R$ 197', periodo: 'por ano · equivale a R$ 16,42/mês' }
 };
 
 /** Valida CPF pelos dígitos verificadores, para não criar cliente inválido no gateway. */
@@ -91,13 +91,16 @@ function mostrarCheckoutReal(planId) {
         <input id="checkout-cpf" type="text" inputmode="numeric" maxlength="14" placeholder="000.000.000-00"
                style="width:100%; box-sizing:border-box; padding:0.65rem 0.75rem; background:rgba(2,6,23,0.8); border:1px solid rgba(71,85,105,0.8); border-radius:0.6rem; color:white; outline:none; font-size:0.85rem;" />
         <p style="font-size:0.65rem; color:#64748b; margin:0.35rem 0 0; line-height:1.3;">
-          Exigido pelo gateway oficial do Asaas para emissão de PIX.
+          Exigido pelo Asaas, que processa o pagamento.
         </p>
       </div>
 
-      <div style="background: rgba(6,182,212,0.1); border: 1px solid rgba(34,211,238,0.4); border-radius: 0.75rem; padding: 0.65rem 0.85rem; font-size: 0.74rem; color: #7dd3fc; line-height: 1.35;">
-        Você será levado à página segura do Asaas para pagar via <strong>PIX instantâneo</strong> ou <strong>Cartão</strong>.
+      <p class="pagamento-rotulo">Forma de pagamento</p>
+      <div class="pagamento-opcoes" role="radiogroup" aria-label="Forma de pagamento">
+        <label><input type="radio" name="checkout-metodo" value="PIX" checked /><span>Pix</span></label>
+        <label><input type="radio" name="checkout-metodo" value="CREDIT_CARD" /><span>Cartão</span></label>
       </div>
+      <p class="gastos-nota" id="checkout-nota-metodo">O QR Code aparece aqui mesmo, e a liberação é automática.</p>
 
       <div id="checkout-erro" style="display:none; background:rgba(248,113,113,0.12); border:1px solid rgba(248,113,113,0.4); border-radius:0.75rem; padding:0.65rem; margin-top:0.65rem; font-size:0.75rem; color:#fca5a5;"></div>
 
@@ -108,13 +111,21 @@ function mostrarCheckoutReal(planId) {
         </button>
         <button type="button" id="checkout-continuar"
                 style="padding:0.65rem; background:linear-gradient(135deg, rgb(34,197,94), rgb(6,182,212)); color:rgb(15,23,42); border:none; border-radius:0.75rem; font-weight:800; cursor:pointer; font-size:0.82rem;">
-          Ir para Pagamento ➔
+          Continuar
         </button>
       </div>
     </div>
   `;
 
   document.getElementById('btn-close-upgrade-modal')?.addEventListener('click', fecharModalUpgrade);
+
+  document.querySelectorAll('input[name="checkout-metodo"]').forEach((opcao) => {
+    opcao.addEventListener('change', () => {
+      document.getElementById('checkout-nota-metodo').textContent = opcao.value === 'PIX'
+        ? 'O QR Code aparece aqui mesmo, e a liberação é automática.'
+        : 'Você digita o cartão na página segura do Asaas. Seus dados não passam pelo app.';
+    });
+  });
 
   const campoCpf = document.getElementById('checkout-cpf');
   campoCpf?.addEventListener('input', (evento) => {
@@ -137,6 +148,7 @@ async function iniciarPagamento(planId) {
   const botao = document.getElementById('checkout-continuar');
   const nome = document.getElementById('checkout-nome')?.value.trim();
   const cpf = document.getElementById('checkout-cpf')?.value.trim();
+  const metodo = document.querySelector('input[name="checkout-metodo"]:checked')?.value || 'PIX';
 
   if (!nome || nome.length < 3) {
     mostrarErroCheckout('Informe seu nome completo.');
@@ -179,7 +191,7 @@ async function iniciarPagamento(planId) {
       },
       body: JSON.stringify({
         plano: planId,
-        metodo: 'UNDEFINED',
+        metodo,
         documento: cpf.replace(/\D/g, ''),
         nome
       })
@@ -195,6 +207,11 @@ async function iniciarPagamento(planId) {
       throw new Error('cobrança criada, mas sem link de pagamento');
     }
 
+    if (metodo === 'PIX' && dados.pix?.qrCode) {
+      mostrarPix(dados);
+      return;
+    }
+
     window.open(dados.urlPagamento, '_blank', 'noopener');
     mostrarAguardandoPagamento(dados);
   } catch (err) {
@@ -202,9 +219,40 @@ async function iniciarPagamento(planId) {
     mostrarErroCheckout(`Não foi possível continuar: ${err.message}`);
     if (botao) {
       botao.disabled = false;
-      botao.textContent = 'Ir para Pagamento ➔';
+      botao.textContent = 'Continuar';
     }
   }
+}
+
+function mostrarPix(cobranca) {
+  const content = document.querySelector('#modal-upgrade-nasa .modal-upgrade-content');
+  if (!content) return;
+
+  const valor = Number(cobranca.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  content.innerHTML = `
+    <div class="modal-upgrade-topbar">
+      <div class="modal-upgrade-badge"><span>PAGAMENTO COM PIX</span></div>
+      <button class="modal-upgrade-close" title="Fechar" type="button" onclick="fecharModalUpgrade()">✕</button>
+    </div>
+    <div class="pix-tela">
+      <strong class="pix-valor">${valor}</strong>
+      <span class="gastos-nota">VBJ Soluções Empresariais Inteligentes LTDA</span>
+      <img id="pix-qr" alt="QR Code Pix" width="220" height="220" />
+      <button type="button" class="ritual-ver" id="pix-copiar">Copiar código Pix</button>
+      <p class="gastos-nota" id="pix-estado" role="status">Aguardando o pagamento. Pode deixar esta tela aberta.</p>
+    </div>`;
+
+  content.querySelector('#pix-qr').src = `data:image/png;base64,${cobranca.pix.qrCode}`;
+  content.querySelector('#pix-copiar').addEventListener('click', async (evento) => {
+    await navigator.clipboard.writeText(cobranca.pix.copiaECola);
+    evento.target.textContent = 'Código copiado';
+  });
+
+  aguardarConfirmacaoPagamento({ tentativas: 60, intervaloMs: 5000 }).then((confirmado) => {
+    const estado = document.getElementById('pix-estado');
+    if (confirmado) fecharModalUpgrade();
+    else if (estado) estado.textContent = 'Ainda não recebemos a confirmação. Se já pagou, seu acesso será liberado assim que o banco confirmar.';
+  });
 }
 
 function mostrarAguardandoPagamento(cobranca) {

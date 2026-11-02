@@ -13,11 +13,11 @@ const ARQUIVO_WEBHOOK = '.env.asaas';
 
 const leitor = createInterface({ input: process.stdin, output: process.stdout });
 const token = (await leitor.question('Token do Supabase (sbp_...): ')).trim();
-const chaveAsaas = (await leitor.question('Chave de API do Asaas ($aact_prod_...): ')).trim();
+const chaveAsaas = (await leitor.question('Chave do Asaas (Enter para manter a atual): ')).trim();
 leitor.close();
 
 if (!token.startsWith('sbp_')) throw new Error('Token do Supabase inválido.');
-if (!chaveAsaas.startsWith('$aact_prod_')) throw new Error('A chave deve ser de produção e começar com $aact_prod_.');
+if (chaveAsaas && !chaveAsaas.startsWith('$aact_prod_')) throw new Error('A chave deve ser de produção e começar com $aact_prod_.');
 
 let tokenWebhook = existsSync(ARQUIVO_WEBHOOK)
   ? readFileSync(ARQUIVO_WEBHOOK, 'utf8').split('=')[1]?.trim()
@@ -31,7 +31,7 @@ const segredos = await fetch(`${API}/secrets`, {
   method: 'POST',
   headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
   body: JSON.stringify([
-    { name: 'ASAAS_API_KEY', value: chaveAsaas },
+    ...(chaveAsaas ? [{ name: 'ASAAS_API_KEY', value: chaveAsaas }] : []),
     { name: 'ASAAS_API_URL', value: 'https://api.asaas.com/v3' },
     { name: 'ASAAS_WEBHOOK_TOKEN', value: tokenWebhook }
   ])

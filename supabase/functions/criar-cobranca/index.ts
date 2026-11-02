@@ -64,7 +64,7 @@ const PLANOS: Record<string, Plano> = {
   }
 }
 
-const METODOS = ["PIX", "CREDIT_CARD", "UNDEFINED"] as const
+const METODOS = ["PIX", "CREDIT_CARD"] as const
 
 const responder = (corpo: unknown, status = 200) =>
   new Response(JSON.stringify(corpo), {
@@ -135,6 +135,18 @@ function vencimentoEmDias(dias: number): string {
   return data.toISOString().slice(0, 10)
 }
 
+/** QR Code e copia e cola da fatura; assinatura usa a primeira fatura em aberto. */
+async function obterPix(idCobranca: string) {
+  let idFatura = idCobranca
+  if (idCobranca.startsWith("sub_")) {
+    const faturas = await chamarAsaas(`/subscriptions/${idCobranca}/payments`, "GET")
+    idFatura = faturas?.data?.[0]?.id
+  }
+  if (!idFatura) throw new Error("fatura ainda não disponível")
+  const pix = await chamarAsaas(`/payments/${idFatura}/pixQrCode`, "GET")
+  return { qrCode: pix.encodedImage, copiaECola: pix.payload, expiraEm: pix.expirationDate }
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: CORS })
   if (req.method !== "POST") return responder({ erro: "use POST" }, 405)
@@ -166,7 +178,7 @@ serve(async (req) => {
   const plano = PLANOS[String(corpo.plano ?? "")]
   if (!plano) return responder({ erro: "plano inválido" }, 400)
 
-  const metodo = String(corpo.metodo ?? "UNDEFINED")
+  const metodo = String(corpo.metodo ?? "PIX")
   if (!METODOS.includes(metodo as typeof METODOS[number])) {
     return responder({ erro: "método de pagamento inválido" }, 400)
   }
@@ -180,29 +192,36 @@ serve(async (req) => {
     sessao.user.user_metadata?.full_name ||
     email.split("@")[0]
 
-  // Clique repetido ou checkout abandonado reaproveita a cobrança em aberto.
-  const { data: pendente } = await admin
-    .from("cobrancas")
-    .select("id, url_pagamento")
-    .eq("user_id", sessao.user.id)
-    .eq("plano", corpo.plano)
-    .eq("status", "pendente")
-    .not("url_pagamento", "is", null)
-    .order("criada_em", { ascending: false })
-    .limit(1)
-    .maybeSingle()
-
-  if (pendente) {
-    return responder({
-      id: pendente.id,
-      plano: plano.nome,
-      valor: plano.valor,
-      recorrente: plano.recorrente,
-      urlPagamento: pendente.url_pagamento
-    })
-  }
-
   try {
+    // Clique repetido reaproveita a cobrança em aberto. Trocar a forma de
+    // pagamento cancela a anterior, para não sobrar assinatura duplicada.
+    const { data: pendentes, error: erroPendentes } = await admin
+      .from("cobrancas")
+      .select("id, url_pagamento, metodo")
+      .eq("user_id", sessao.user.id)
+      .eq("plano", corpo.plano)
+      .eq("status", "pendente")
+      .order("criada_em", { ascending: false })
+    if (erroPendentes) throw new Error(erroPendentes.message)
+
+    const reaproveitada = (pendentes ?? []).find((c) => c.metodo === metodo && c.url_pagamento)
+    if (reaproveitada) {
+      return responder({
+        id: reaproveitada.id,
+        plano: plano.nome,
+        valor: plano.valor,
+        recorrente: plano.recorrente,
+        urlPagamento: reaproveitada.url_pagamento,
+        pix: metodo === "PIX" ? await obterPix(reaproveitada.id) : null
+      })
+    }
+
+    for (const antiga of pendentes ?? []) {
+      const caminho = antiga.id.startsWith("sub_") ? "subscriptions" : "payments"
+      await chamarAsaas(`/${caminho}/${antiga.id}`, "DELETE")
+      await admin.from("cobrancas").update({ status: "cancelada" }).eq("id", antiga.id)
+    }
+
     const customerId = await obterOuCriarCliente(sessao.user.id, nome, email, documento)
 
     const base = {
@@ -252,7 +271,8 @@ serve(async (req) => {
       plano: plano.nome,
       valor: plano.valor,
       recorrente: plano.recorrente,
-      urlPagamento
+      urlPagamento,
+      pix: metodo === "PIX" ? await obterPix(cobranca.id) : null
     })
   } catch (err) {
     console.error("Falha ao criar cobrança:", err)

@@ -176,3 +176,14 @@ main [class*="text-[8px]"], main [class*="text-[9px]"], main [class*="text-[10px
 .dono-rolagem table { min-width: 460px; }
 
 #botao-teste-compra { position: fixed; right: 12px; bottom: 96px; z-index: 45; min-height: 48px; padding: 0 16px; border: 0; border-radius: 14px; background: #f59e0b; color: #1c1404; font-size: 14px; font-weight: 800; }
+
+.pagamento-rotulo { font-size: 13px; font-weight: 700; color: #cbd5e1; margin: 10px 0 6px; }
+.pagamento-opcoes { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+.pagamento-opcoes input { position: absolute; opacity: 0; }
+.pagamento-opcoes span { display: flex; min-height: 48px; align-items: center; justify-content: center; border: 1px solid #334155; border-radius: 12px; color: #e2e8f0; font-weight: 700; cursor: pointer; }
+.pagamento-opcoes input:checked + span { border: 2px solid #10b981; color: #34d399; }
+.pagamento-opcoes input:focus-visible + span { outline: 2px solid #f1f5f9; }
+.pix-tela { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 12px 0; text-align: center; }
+.pix-valor { font-size: 28px; color: #f1f5f9; }
+#pix-qr { background: #fff; padding: 8px; border-radius: 12px; box-sizing: content-box; }
+#pix-copiar { width: 100%; }
