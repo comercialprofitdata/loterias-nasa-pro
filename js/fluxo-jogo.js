@@ -204,7 +204,22 @@ function ocultarLoginsIndisponiveis() {
   }
 }
 
+// Lançamento só no tema escuro: o claro volta quando for refeito.
+function fixarTemaEscuro() {
+  window.alternarTema = () => {};
+  document.documentElement.classList.add('dark');
+  document.querySelectorAll('[onclick*="alternarTema"]').forEach((b) => b.classList.add('hidden'));
+}
+
+function limparFechar() {
+  const titulo = [...document.querySelectorAll('#view-fechamentos span, #view-fechamentos div')]
+    .find((el) => !el.children.length && el.textContent.trim() === 'Custo do fechamento');
+  titulo?.closest('.rounded-2xl')?.classList.add('hidden');
+}
+
 function iniciarFluxoJogo() {
+  fixarTemaEscuro();
+  limparFechar();
   ocultarLoginsIndisponiveis();
   // Começa com um jogo, sem aviso nem som na abertura.
   const avisoOriginal = window.toast;

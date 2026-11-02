@@ -67,7 +67,7 @@ function criarTopbarUnificada() {
   topbar.innerHTML = `
     <!-- Logo Compacto -->
     <button type="button" class="nasa-brand-compact" onclick="activateTab('home'); tocarBeep('click');" title="Ir para o Início">
-      <div class="nasa-brand-icon">🎯</div>
+      <div class="nasa-brand-icon"><img src="./icon-192.png" alt="" width="32" height="32" style="border-radius:8px" /></div>
       <div class="nasa-brand-text">
         <span class="nasa-brand-title">Meu Volante PRO</span>
         
@@ -77,11 +77,9 @@ function criarTopbarUnificada() {
     <!-- Seletor Global de Loteria (1 toque em qualquer tela) -->
     <div class="nasa-modality-pill" role="tablist" aria-label="Escolher loteria">
       <button type="button" id="nasa-pill-mega" class="nasa-mod-btn active-mega" onclick="trocarModalidade('megasena')">
-        <span>🍀</span>
         <span>Mega</span>
       </button>
       <button type="button" id="nasa-pill-loto" class="nasa-mod-btn" onclick="trocarModalidade('lotofacil')">
-        <span>🟣</span>
         <span>Lotofácil</span>
       </button>
     </div>
@@ -143,10 +141,10 @@ function criarSidebarDesktop() {
     <div class="sidebar-mod-selector">
       <div class="sidebar-mod-pill" role="tablist" aria-label="Escolha a loteria">
         <button type="button" id="sidebar-pill-mega" class="sidebar-mod-btn active-mega" onclick="trocarModalidade('megasena'); tocarBeep('click');">
-          <span>🍀</span> <span>Mega-Sena</span>
+          <span>Mega-Sena</span>
         </button>
         <button type="button" id="sidebar-pill-loto" class="sidebar-mod-btn" onclick="trocarModalidade('lotofacil'); tocarBeep('click');">
-          <span>🟣</span> <span>Lotofácil</span>
+          <span>Lotofácil</span>
         </button>
       </div>
     </div>
@@ -155,7 +153,6 @@ function criarSidebarDesktop() {
     <div class="px-3 py-1">
       <button type="button" onclick="abrirModalSeletorPerfil()" class="nasa-modo-chip w-full justify-between" title="Alterar Modo de Experiência">
         <span class="flex items-center gap-1.5">
-          <span class="nasa-modo-icon">🎯</span>
           <span class="nasa-modo-label font-bold text-[11px]">Estrategista</span>
         </span>
         <span class="text-[9px] text-cyan-400 font-mono">Modo ▾</span>
@@ -165,38 +162,31 @@ function criarSidebarDesktop() {
     <!-- Links de Navegação da Barra Lateral (SEM TRUNCAMENTO) -->
     <nav class="sidebar-nav-list" role="navigation" aria-label="Menu Principal">
       <button type="button" class="sidebar-nav-btn active" data-tab="home" onclick="activateTab('home'); tocarBeep('click');">
-        <span class="sidebar-nav-icon">🎯</span>
         <span class="sidebar-nav-label">Início</span>
       </button>
 
       <button type="button" class="sidebar-nav-btn" data-tab="gerar" onclick="activateTab('gerar'); tocarBeep('click');">
-        <span class="sidebar-nav-icon">🎯</span>
         <span class="sidebar-nav-label">Gerador & Volante</span>
       </button>
 
       <button type="button" class="sidebar-nav-btn" data-tab="fechamentos" onclick="activateTab('fechamentos'); tocarBeep('click');">
-        <span class="sidebar-nav-icon">📐</span>
         <span class="sidebar-nav-label">Fechamentos</span>
       </button>
 
       <button type="button" class="sidebar-nav-btn" data-tab="analise" onclick="activateTab('analise'); tocarBeep('click');">
-        <span class="sidebar-nav-icon">📊</span>
         <span class="sidebar-nav-label">Estatísticas</span>
       </button>
 
       <button type="button" class="sidebar-nav-btn" data-tab="carteira" onclick="activateTab('carteira'); tocarBeep('click');">
-        <span class="sidebar-nav-icon">💼</span>
         <span class="sidebar-nav-label">Minha Carteira</span>
         <span class="sidebar-nav-count js-progresso-bilhetes">0</span>
       </button>
 
       <button type="button" class="sidebar-nav-btn" data-tab="bolao" onclick="irParaCarteiraSubAba('bolao'); tocarBeep('click');">
-        <span class="sidebar-nav-icon">👥</span>
         <span class="sidebar-nav-label">Bolões & Rateio</span>
       </button>
 
       <button type="button" id="sidebar-nav-admin" class="sidebar-nav-btn hidden" data-tab="admin" onclick="mudarAba('admin'); tocarBeep('click');" style="color: #fbbf24; border-color: rgba(245, 158, 11, 0.5);">
-        <span class="sidebar-nav-icon">👑</span>
         <span class="sidebar-nav-label font-black">Painel Admin</span>
       </button>
     </nav>
@@ -576,7 +566,6 @@ function createSimplifiedHome() {
         <!-- Botões Secundários: Caminho A ("Já tenho meus números") + Volante Manual -->
         <div class="nasa-secondary-cta-row">
           <button type="button" class="nasa-sec-btn" onclick="irParaVolanteManual()">
-            <span>🎯</span>
             <span>Já tenho meus números</span>
           </button>
         </div>
@@ -586,7 +575,6 @@ function createSimplifiedHome() {
       <div id="home-card-palpite-rapido-box" class="bg-gradient-to-br from-slate-900 via-slate-900 to-amber-950/40 border border-amber-500/50 rounded-2xl p-3.5 space-y-2.5 font-sans shadow-xl">
         <div class="flex items-center justify-between border-b border-slate-800/80 pb-2">
           <div class="flex items-center gap-1.5">
-            <span class="text-base">⚡</span>
             <div>
               <h3 class="text-xs font-black text-white uppercase tracking-wide">Jogo rápido</h3>
               <span class="text-[10px] text-amber-300/90 font-mono">Combinação gerada ao acaso. Não aumenta a chance.</span>
@@ -603,13 +591,13 @@ function createSimplifiedHome() {
 
         <div class="grid grid-cols-3 gap-1.5 pt-1">
           <button type="button" onclick="gerarPalpiteExpressHome()" class="py-2.5 px-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs border border-slate-700 flex items-center justify-center gap-1 active:scale-95 transition">
-            <span>🎲</span> Outro
+            Outro
           </button>
           <button type="button" onclick="copiarPalpiteExpressHome()" class="py-2.5 px-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-cyan-300 font-bold text-xs border border-cyan-800/60 flex items-center justify-center gap-1 active:scale-95 transition">
-            <span>📋</span> Copiar
+            Copiar
           </button>
           <button type="button" onclick="salvarPalpiteExpressHome()" class="py-2.5 px-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 font-black text-xs flex items-center justify-center gap-1 active:scale-95 transition shadow-md shadow-emerald-500/20">
-            <span>✅</span> Salvar
+            Salvar
           </button>
         </div>
       </div>
@@ -618,14 +606,13 @@ function createSimplifiedHome() {
       <div class="bg-slate-900/95 border border-slate-800 rounded-2xl p-3.5 space-y-2.5">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-1.5">
-            <span class="text-sm">🏛️</span>
             <div>
               <h3 class="text-xs font-black text-white uppercase tracking-wide" id="home-ultimo-titulo">Último Resultado Oficial Caixa</h3>
               <span class="text-[10px] text-slate-400 font-mono" id="home-ultimo-sub">Sincronizado em tempo real</span>
             </div>
           </div>
           <button type="button" onclick="sincronizarConcursos()" class="px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-400 text-[11px] font-bold border border-slate-700 flex items-center gap-1 active:scale-95 transition">
-            <span>🔄</span> Atualizar
+            Atualizar
           </button>
         </div>
         <div id="home-ultimo-dezenas" class="flex flex-wrap gap-1.5 pt-0.5">
@@ -677,7 +664,6 @@ function createSimplifiedHome() {
       <div id="home-bloco-apostas-ativas" class="bg-slate-900/95 border border-slate-800 rounded-2xl p-3.5 space-y-2">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-1.5">
-            <span class="text-sm">💼</span>
             <div>
               <h3 class="text-xs font-black text-white">Minhas Apostas Ativas</h3>
               <span class="text-[10px] text-slate-400">Monitoramento e conferência oficial</span>
@@ -788,16 +774,16 @@ function configurarSubAbasGerar() {
   segBar.className = 'nasa-segmented-bar';
   segBar.innerHTML = `
     <button type="button" id="seg-gerar-rapido" class="nasa-seg-btn active" onclick="alternarSubAbaGerar('rapido')">
-      <span>🎯</span> <span>Gerar</span>
+      <span>Gerar</span>
     </button>
     <button type="button" id="seg-gerar-volante" class="nasa-seg-btn" onclick="alternarSubAbaGerar('volante')">
-      <span>🎯</span> <span>Volante</span>
+      <span>Volante</span>
     </button>
     <button type="button" id="seg-gerar-testes" class="nasa-seg-btn" onclick="alternarSubAbaGerar('testes')">
-      <span>🛡️</span> <span>Testes (<span id="seg-badge-testes-count">6/6</span>)</span>
+      <span>Testes (<span id="seg-badge-testes-count">6/6</span>)</span>
     </button>
     <button type="button" id="seg-gerar-todos" class="nasa-seg-btn" onclick="alternarSubAbaGerar('todos')" title="Mostrar tudo na mesma tela">
-      <span>📋</span> <span>Tudo</span>
+      <span>Tudo</span>
     </button>
   `;
 
@@ -889,7 +875,7 @@ function configurarToggleGradeVolante() {
   btnToggle.type = 'button';
   btnToggle.id = 'btn-toggle-volante-cols';
   btnToggle.className = 'px-2.5 py-1 rounded-lg bg-slate-950 hover:bg-slate-800 text-cyan-300 border border-slate-800 text-[11px] font-bold transition inline-flex items-center gap-1';
-  btnToggle.innerHTML = '<span>📱</span> <span id="lbl-toggle-cols">Grade 6x10</span>';
+  btnToggle.innerHTML = '<span id="lbl-toggle-cols">Grade 6x10</span>';
   btnToggle.onclick = () => {
     volanteModo10Colunas = !volanteModo10Colunas;
     const grid = document.getElementById('volante-grid');
@@ -921,13 +907,13 @@ function configurarSubAbasAnalise() {
   segBar.className = 'nasa-segmented-bar';
   segBar.innerHTML = `
     <button type="button" id="seg-calor-ranking" class="nasa-seg-btn active" onclick="alternarSubAbaCalor('ranking')">
-      <span>🔥</span> <span>Quentes & Frias</span>
+      <span>Quentes & Frias</span>
     </button>
     <button type="button" id="seg-calor-ciclo" class="nasa-seg-btn" onclick="alternarSubAbaCalor('ciclo')">
-      <span>🔄</span> <span>Ciclo</span>
+      <span>Ciclo</span>
     </button>
     <button type="button" id="seg-calor-termica" class="nasa-seg-btn" onclick="alternarSubAbaCalor('termica')">
-      <span>🗺️</span> <span>Mapa de Calor</span>
+      <span>Mapa de Calor</span>
     </button>
   `;
 
@@ -986,13 +972,13 @@ function configurarSubAbasCarteiraEBolao() {
   segBar.className = 'nasa-segmented-bar';
   segBar.innerHTML = `
     <button type="button" id="seg-cart-bilhetes" class="nasa-seg-btn active" onclick="alternarSubAbaCarteira('bilhetes')">
-      <span>💼</span> <span>Bilhetes</span>
+      <span>Bilhetes</span>
     </button>
     <button type="button" id="seg-cart-bolao" class="nasa-seg-btn" onclick="alternarSubAbaCarteira('bolao')">
-      <span>👥</span> <span>Bolão & Cotas</span>
+      <span>Bolão & Cotas</span>
     </button>
     <button type="button" id="seg-cart-ferramentas" class="nasa-seg-btn" onclick="alternarSubAbaCarteira('ferramentas')">
-      <span>📡</span> <span>Scanner</span>
+      <span>Scanner</span>
     </button>
   `;
 
@@ -1113,10 +1099,10 @@ function criarDrawerPerfilConfig() {
       <!-- Ações de Conta e Assinatura -->
       <div class="grid grid-cols-2 gap-2 my-3">
         <button type="button" id="drawer-btn-auth" onclick="fecharDrawerPerfil(); abrirModalAuthOuPerfil();" class="py-2.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs border border-slate-700 flex items-center justify-center gap-1.5">
-          <span>🔑</span> <span id="drawer-txt-auth">Entrar / Criar Conta</span>
+          <span id="drawer-txt-auth">Entrar / Criar Conta</span>
         </button>
         <button type="button" onclick="fecharDrawerPerfil(); abrirModalPaywall('drawer');" class="py-2.5 px-3 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 font-black text-xs flex items-center justify-center gap-1.5 shadow">
-          <span>👑</span> <span>Planos VIP PRO</span>
+          <span>Planos VIP PRO</span>
         </button>
       </div>
 
@@ -1124,7 +1110,7 @@ function criarDrawerPerfilConfig() {
       <div class="p-3 rounded-2xl bg-slate-950 border border-slate-800 space-y-2 my-2">
         <div class="flex items-center justify-between">
           <span class="text-xs font-bold text-white flex items-center gap-1.5">
-            <span>🧭</span> Modo de Experiência
+            Modo de Experiência
           </span>
           <span id="drawer-modo-badge" class="text-[9px] px-2 py-0.5 rounded font-mono font-bold bg-emerald-950 text-emerald-300 border border-emerald-800">
             Estrategista
@@ -1132,15 +1118,12 @@ function criarDrawerPerfilConfig() {
         </div>
         <div class="grid grid-cols-3 gap-1.5 pt-1">
           <button type="button" onclick="selecionarModoExperiencia('rapido'); fecharDrawerPerfil();" class="p-2 rounded-xl border border-slate-800 hover:border-amber-500 bg-slate-900 text-center transition active:scale-95">
-            <span class="text-base block">⚡</span>
             <span class="text-[10px] font-bold text-slate-300 block mt-0.5">Rápido</span>
           </button>
           <button type="button" onclick="selecionarModoExperiencia('estrategista'); fecharDrawerPerfil();" class="p-2 rounded-xl border border-slate-800 hover:border-emerald-500 bg-slate-900 text-center transition active:scale-95">
-            <span class="text-base block">🎯</span>
             <span class="text-[10px] font-bold text-slate-300 block mt-0.5">Volante</span>
           </button>
           <button type="button" onclick="selecionarModoExperiencia('cientifico'); fecharDrawerPerfil();" class="p-2 rounded-xl border border-slate-800 hover:border-cyan-500 bg-slate-900 text-center transition active:scale-95">
-            <span class="text-base block">🔬</span>
             <span class="text-[10px] font-bold text-slate-300 block mt-0.5">Científico</span>
           </button>
         </div>
@@ -1150,28 +1133,24 @@ function criarDrawerPerfilConfig() {
       <div class="space-y-2 pt-2 border-t border-slate-800">
         <span class="text-[10px] font-mono uppercase tracking-wider text-slate-400 font-bold block">Ajustes do Aplicativo</span>
         <div class="grid grid-cols-3 gap-2">
-          <button type="button" onclick="alternarTema(); atualizarDadosDrawer();" class="p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs font-bold text-slate-200 flex flex-col items-center gap-1">
-            <span id="drawer-theme-icon" class="text-base">🌙</span>
-            <span>Tema</span>
-          </button>
+          
           <button type="button" onclick="alternarAudio(); atualizarDadosDrawer();" class="p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs font-bold text-slate-200 flex flex-col items-center gap-1">
             <span id="drawer-audio-icon" class="text-base">🔊</span>
             <span>Sons</span>
           </button>
           <button type="button" onclick="fecharDrawerPerfil(); sincronizarConcursos();" class="p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs font-bold text-emerald-400 flex flex-col items-center gap-1">
-            <span class="text-base">🔄</span>
             <span>Sincronizar</span>
           </button>
         </div>
         <button type="button" onclick="fecharDrawerPerfil(); forcarAtualizacaoPWA();" class="w-full mt-2 py-2 px-3 rounded-xl bg-cyan-950/80 hover:bg-cyan-900 border border-cyan-800 text-cyan-300 font-bold text-xs flex items-center justify-center gap-1.5 transition">
-          <span>🔄</span> <span>Forçar Atualização (Limpar Cache)</span>
+          <span>Forçar Atualização (Limpar Cache)</span>
         </button>
       </div>
 
       <!-- Botão Painel Admin (visível apenas para o fundador/admin) -->
       <div id="drawer-admin-row" class="hidden pt-3">
         <button type="button" onclick="fecharDrawerPerfil(); mudarAba('admin');" class="w-full py-2.5 px-3 rounded-xl bg-amber-500/20 border border-amber-500/50 text-amber-300 font-black text-xs flex items-center justify-center gap-2">
-          <span>👑</span> <span>Abrir Painel Administrativo (CEO)</span>
+          <span>Abrir Painel Administrativo (CEO)</span>
         </button>
       </div>
 
@@ -1181,7 +1160,6 @@ function criarDrawerPerfilConfig() {
 
         <button type="button" onclick="fecharDrawerPerfil(); if (typeof window.abrirModalFeedbackTestador === 'function') { window.abrirModalFeedbackTestador(); } else { toast('Abrindo...', '⭐'); }" class="w-full p-2.5 rounded-xl bg-gradient-to-r from-amber-950/40 via-slate-950 to-amber-950/30 hover:bg-slate-900 border border-amber-500/40 text-xs font-bold text-amber-300 flex items-center justify-between text-left transition shadow">
           <div class="flex items-center gap-2">
-            <span>⭐</span>
             <div>
               <div class="text-white font-black text-xs">Avaliar App & Sugerir Melhorias</div>
               <div class="text-[10px] text-amber-400/90 font-sans font-normal">Sua opinião como testador é fundamental</div>
@@ -1192,7 +1170,6 @@ function criarDrawerPerfilConfig() {
 
         <button type="button" onclick="fecharDrawerPerfil(); const t = 'Olá Meu Volante PRO! Gostaria de registrar números na minha carteira / tirar uma dúvida:'; if (typeof window.abrirWhatsApp === 'function') { window.abrirWhatsApp({ texto: t }); } else { window.location.href = 'whatsapp://send?text=' + encodeURIComponent(t); }" class="w-full p-2.5 rounded-xl bg-slate-950 hover:bg-slate-900 border border-emerald-500/40 text-xs font-bold text-white flex items-center justify-between text-left transition">
           <div class="flex items-center gap-2">
-            <span>💬</span>
             <div>
               <div class="text-emerald-400 font-black text-xs">Envie seus números pelo WhatsApp</div>
               <div class="text-[10px] text-slate-400 font-sans font-normal">Envie seus números ou fotos de bilhetes</div>
@@ -1210,7 +1187,6 @@ function criarDrawerPerfilConfig() {
 
         <button type="button" onclick="fecharDrawerPerfil(); abrirModalTermosLGPD('termos');" class="w-full p-2.5 rounded-xl bg-slate-950 hover:bg-slate-900 border border-slate-800 text-xs font-bold text-slate-300 flex items-center justify-between text-left transition">
           <div class="flex items-center gap-2">
-            <span>⚖️</span>
             <span>Termos de Uso & Isenção de Ganho (CDC)</span>
           </div>
           <span class="text-slate-500 text-[10px]">Ver →</span>
@@ -1218,7 +1194,6 @@ function criarDrawerPerfilConfig() {
 
         <button type="button" onclick="fecharDrawerPerfil(); abrirModalTermosLGPD('lgpd');" class="w-full p-2.5 rounded-xl bg-slate-950 hover:bg-slate-900 border border-slate-800 text-xs font-bold text-slate-300 flex items-center justify-between text-left transition">
           <div class="flex items-center gap-2">
-            <span>🛡️</span>
             <span>Privacidade & Proteção de Dados (LGPD)</span>
           </div>
           <span class="text-slate-500 text-[10px]">Ver →</span>
@@ -1226,7 +1201,6 @@ function criarDrawerPerfilConfig() {
 
         <button type="button" onclick="fecharDrawerPerfil(); abrirModalTermosLGPD('direitos');" class="w-full p-2.5 rounded-xl bg-rose-950/20 hover:bg-rose-950/40 border border-rose-900/30 text-xs font-bold text-rose-300 flex items-center justify-between text-left transition">
           <div class="flex items-center gap-2">
-            <span>🗑️</span>
             <span>Meus Dados / Exclusão de Conta (Art. 18)</span>
           </div>
           <span class="text-rose-500 text-[10px]">Gerenciar →</span>
@@ -1821,7 +1795,6 @@ function abrirModalSeletorPerfil({ onboarding = false } = {}) {
     <div class="bg-gradient-to-b from-slate-900 to-slate-950 border border-cyan-800/80 rounded-3xl max-w-md w-full p-4 sm:p-6 shadow-2xl space-y-4 font-sans relative">
       <div class="flex items-center justify-between border-b border-slate-800/80 pb-3">
         <div class="flex items-center gap-2">
-          <span class="text-2xl">🧭</span>
           <div>
             <h3 class="text-sm sm:text-base font-black text-white uppercase tracking-wide">Modo de Experiência</h3>
             <p class="text-[11px] text-cyan-400 font-mono">Como você prefere usar o Meu Volante PRO?</p>
@@ -1835,7 +1808,6 @@ function abrirModalSeletorPerfil({ onboarding = false } = {}) {
         <div onclick="selecionarModoExperiencia('rapido')" class="p-3 rounded-2xl bg-slate-950 hover:bg-slate-900 border ${modoAtivo === 'rapido' ? 'border-amber-400 bg-amber-950/20 ring-1 ring-amber-400/50' : 'border-amber-500/30'} cursor-pointer transition active:scale-[0.98] space-y-1">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
-              <span class="w-7 h-7 rounded-lg bg-amber-950/80 border border-amber-700 text-amber-300 flex items-center justify-center text-sm font-black">⚡</span>
               <span class="text-xs font-black text-white">Rápido & Prático</span>
             </div>
             <span class="text-[9px] font-mono font-bold px-2 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-800">1 CLIQUE</span>
@@ -1849,7 +1821,6 @@ function abrirModalSeletorPerfil({ onboarding = false } = {}) {
         <div onclick="selecionarModoExperiencia('estrategista')" class="p-3 rounded-2xl bg-slate-950 hover:bg-slate-900 border ${modoAtivo === 'estrategista' ? 'border-emerald-400 bg-emerald-950/20 ring-1 ring-emerald-400/50' : 'border-emerald-500/30'} cursor-pointer transition active:scale-[0.98] space-y-1">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
-              <span class="w-7 h-7 rounded-lg bg-emerald-950/80 border border-emerald-700 text-emerald-300 flex items-center justify-center text-sm font-black">🎯</span>
               <span class="text-xs font-black text-white">Estrategista do Volante</span>
             </div>
             <span class="text-[9px] font-mono font-bold px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800">VOLANTE VIVO</span>
@@ -1863,7 +1834,6 @@ function abrirModalSeletorPerfil({ onboarding = false } = {}) {
         <div onclick="selecionarModoExperiencia('cientifico')" class="p-3 rounded-2xl bg-slate-950 hover:bg-slate-900 border ${modoAtivo === 'cientifico' ? 'border-cyan-400 bg-cyan-950/20 ring-1 ring-cyan-400/50' : 'border-cyan-500/30'} cursor-pointer transition active:scale-[0.98] space-y-1">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
-              <span class="w-7 h-7 rounded-lg bg-cyan-950/80 border border-cyan-700 text-cyan-300 flex items-center justify-center text-sm font-black">🔬</span>
               <span class="text-xs font-black text-white">Científico & Auditor</span>
             </div>
             <span class="text-[9px] font-mono font-bold px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-800">TELEMETRIA TOTAL</span>

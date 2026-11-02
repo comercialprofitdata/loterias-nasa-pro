@@ -90,7 +90,6 @@
               div.className = 'mt-2 p-3 bg-emerald-950/90 border-2 border-emerald-500 rounded-2xl flex items-center justify-between gap-2 text-xs font-sans text-emerald-200 shadow-xl';
               div.innerHTML = `
                 <div class="flex items-center gap-2 min-w-0">
-                  <span class="text-lg">📥</span>
                   <span class="truncate">Identificamos <b>${res.jogos.length} jogos</b> colados aqui!</span>
                 </div>
                 <button type="button" onclick="salvarApostasDaBuscaRapida()" class="px-3 py-1.5 bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 text-slate-950 font-black rounded-xl text-xs shrink-0 shadow active:scale-95 transition">
@@ -489,7 +488,7 @@
     if (btnConferir) {
       if (listaOriginal.length === 0) {
         btnConferir.className = 'px-3 py-1.5 bg-slate-800 text-slate-400 border border-slate-700 font-bold text-xs rounded-xl shadow cursor-not-allowed opacity-60';
-        btnConferir.innerHTML = '<span>⚡</span> <span>Conferir jogos</span>';
+        btnConferir.innerHTML = '<span>Conferir jogos</span>';
       } else {
         const todosConferidos = listaOriginal.every(b => b.conferido);
         const temPendentesPassados = listaOriginal.some(b => !b.conferido && window.concursoOuDataEhPassado(b.concursoAlvo || b.concurso, b.data, b.modalidade));
@@ -498,10 +497,10 @@
           btnConferir.innerHTML = '<span>✓</span> <span>CONFERIDO</span>';
         } else if (temPendentesPassados) {
           btnConferir.className = 'px-3.5 py-1.5 bg-gradient-to-r from-amber-400 to-emerald-400 text-slate-950 font-black text-xs rounded-xl shadow-lg shadow-emerald-500/30 active:scale-95 transition flex items-center gap-1.5 animate-pulse';
-          btnConferir.innerHTML = '<span>⚡</span> <span>CONFERIR AGORA</span>';
+          btnConferir.innerHTML = '<span>CONFERIR AGORA</span>';
         } else {
           btnConferir.className = 'px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-black text-xs rounded-xl shadow active:scale-95 transition flex items-center gap-1.5';
-          btnConferir.innerHTML = '<span>⚡</span> <span>Conferir jogos</span>';
+          btnConferir.innerHTML = '<span>Conferir jogos</span>';
         }
       }
     }
@@ -521,10 +520,10 @@
             </div>
             <div class="flex flex-wrap justify-center gap-2 pt-2">
               <button type="button" onclick="mudarAba('gerador')" class="px-4 py-2.5 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-400 text-slate-950 font-black text-xs rounded-xl shadow-lg active:scale-95 transition flex items-center gap-1.5 font-mono">
-                <span>⚡</span> Gerar jogo
+                Gerar jogo
               </button>
               <button type="button" onclick="alternarSubAbaCarteira('ferramentas')" class="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-cyan-300 font-bold text-xs rounded-xl border border-slate-700 active:scale-95 transition flex items-center gap-1.5">
-                <span>📥</span> Colar Apostas
+                Colar Apostas
               </button>
             </div>
           </div>
@@ -532,7 +531,6 @@
       } else {
         container.innerHTML = `
           <div class="p-8 text-center bg-slate-950/60 rounded-2xl border border-slate-800 space-y-2">
-            <span class="text-3xl block">🔍</span>
             <p class="text-xs text-slate-400">Nenhum bilhete encontrado com os filtros selecionados.</p>
             <button onclick="window.carteiraFiltros.modalidade='todas'; window.carteiraFiltros.status='todos'; window.carteiraFiltros.busca=''; window.atualizarPainelCarteira();" class="text-cyan-400 text-xs underline font-bold">
               Limpar Filtros (${listaOriginal.length} apostas salvas)
@@ -612,7 +610,7 @@
             ${aberto && g.dezenasSorteadas && g.dezenasSorteadas.length > 0 ? `
               <div class="sorteio-oficial-faixa px-3 py-2 flex items-center justify-between gap-2 flex-wrap border-b">
                 <span class="sorteio-oficial-rotulo text-[10px] font-mono font-black uppercase tracking-wider flex items-center gap-1.5">
-                  <span>🎯</span> Sorteio Oficial Caixa:
+                  Sorteio Oficial Caixa:
                 </span>
                 <div class="flex items-center gap-1 flex-wrap">
                   ${g.dezenasSorteadas.map(d => `<span class="sorteio-bola-dezena w-6 h-6 rounded-md font-black text-[10px] font-mono flex items-center justify-center border shadow-sm">${String(d).padStart(2,'0')}</span>`).join('')}
@@ -670,15 +668,15 @@
               <div class="rodape-acoes-grupo px-3.5 py-2 border-t flex justify-between items-center text-[11px] font-sans flex-wrap gap-2">
                 <div class="flex items-center gap-2.5 flex-wrap">
                   <button type="button" onclick="compartilharWhatsAppGrupoCarteira('${g.id}')" class="btn-acao-grupo-whats hover:opacity-80 font-bold transition flex items-center gap-1">
-                    <span>📱</span> WhatsApp
+                    WhatsApp
                   </button>
                   <span class="divisor-acoes-ponto">•</span>
                   <button type="button" onclick="imprimirLoteGrupoCarteira('${g.id}')" class="btn-acao-grupo-print hover:opacity-80 font-bold transition flex items-center gap-1">
-                    <span>🖨️</span> Imprimir A4
+                    Imprimir A4
                   </button>
                   <span class="divisor-acoes-ponto">•</span>
                   <button type="button" onclick="reatribuirConcursoLote('${g.id}')" class="btn-acao-grupo-mudar hover:opacity-80 font-bold transition flex items-center gap-1" title="Corrigir o número do concurso deste lote">
-                    <span>✏️</span> Mudar Concurso
+                    Mudar Concurso
                   </button>
                 </div>
                 <button type="button" onclick="removerLoteGrupoCarteira('${g.id}')" class="btn-acao-grupo-excluir text-[10px] font-bold transition">
@@ -914,12 +912,10 @@
 
         <div class="space-y-2 pt-1">
           <button type="button" onclick="enviarSincronizacaoWhatsApp(); fecharModalSincronizarAparelhos();" class="w-full py-3 px-4 bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-slate-950 font-black rounded-2xl text-xs flex items-center justify-center gap-2 shadow-lg active:scale-95 transition">
-            <span class="text-base">💬</span>
             <span>Enviar para Meu WhatsApp (Abrir no outro celular)</span>
           </button>
 
           <button type="button" onclick="copiarLinkSincronizacaoCarteira();" class="w-full py-2.5 px-4 bg-slate-950 hover:bg-slate-800 border border-slate-700 text-white font-bold rounded-2xl text-xs flex items-center justify-center gap-2 transition active:scale-95">
-            <span>🔗</span>
             <span>Copiar Link de Transferência</span>
           </button>
         </div>

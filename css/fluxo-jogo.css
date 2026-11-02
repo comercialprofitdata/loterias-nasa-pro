@@ -145,3 +145,5 @@ main [class*="text-[8px]"], main [class*="text-[9px]"], main [class*="text-[10px
 }
 
 .fluxo-passo { font-size: 13px; font-weight: 800; color: #a3b1c6; margin: 0; }
+
+.btn-acao-grupo-print, .btn-acao-grupo-excluir, .divisor-acoes-ponto { display: none !important; }
