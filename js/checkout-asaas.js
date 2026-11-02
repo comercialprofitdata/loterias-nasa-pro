@@ -46,13 +46,16 @@ function mostrarCheckoutReal(planId) {
   if (!plano) return;
 
   // Garante que visitante nunca cai direto na tela de CPF/pagamento
-  if (!usuarioSessao || usuarioSessao.tipo === 'visitante' || !usuarioSessao.email) {
-    if (typeof fecharModalUpgrade === 'function') fecharModalUpgrade();
-    toast('Cadastre sua conta grátis antes de assinar.', '📧');
-    setTimeout(() => {
-      if (typeof abrirModalAuth === 'function') abrirModalAuth();
-      else if (typeof abrirModalAuthOuPerfil === 'function') abrirModalAuthOuPerfil();
-    }, 300);
+  if (!window.__sessaoParaCompra) {
+    obterSessaoSupabase().then((sessao) => {
+      if (sessao) {
+        window.__sessaoParaCompra = true;
+        mostrarCheckoutReal(planId);
+        window.__sessaoParaCompra = false;
+        return;
+      }
+      pedirContaParaComprar(planId);
+    });
     return;
   }
 

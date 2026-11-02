@@ -211,21 +211,6 @@ function processarUpgrade(planId) {
     return;
   }
 
-  // REGRA DE OURO FREEMIUM: O usuário precisa ter uma conta antes de ir para qualquer cobrança!
-  const usuarioNaoLogado = !usuarioSessao || usuarioSessao.tipo === 'visitante' || !usuarioSessao.email;
-  if (usuarioNaoLogado) {
-    fecharModalUpgrade();
-    toast('Crie sua conta grátis em 1 toque antes de assinar!', '🎁');
-    setTimeout(() => {
-      if (typeof abrirModalAuth === 'function') {
-        abrirModalAuth();
-      } else if (typeof abrirModalAuthOuPerfil === 'function') {
-        abrirModalAuthOuPerfil();
-      }
-    }, 300);
-    return;
-  }
-
   if (typeof mostrarCheckoutReal === 'function') {
     mostrarCheckoutReal(planId);
   } else {

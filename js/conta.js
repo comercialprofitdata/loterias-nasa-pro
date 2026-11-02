@@ -17,6 +17,31 @@ async function conferirDono() {
   if (data === true) mostrarAcessoDono();
 }
 
+// O pagamento precisa de conta com senha, para a compra valer em qualquer aparelho.
+function pedirContaParaComprar(plano) {
+  sessionStorage.setItem('meu_volante_plano_pendente', plano);
+  window.fecharModalUpgrade?.();
+  window.abrirModalAuth?.();
+  window.alternarAbaAuth?.('cadastrar');
+  const contato = JSON.parse(localStorage.getItem('loterias_nasa_visitor_lead') || 'null');
+  const nome = document.getElementById('input-auth-nome');
+  const email = document.getElementById('input-auth-email');
+  if (nome && contato?.nome) nome.value = contato.nome;
+  if (email && contato?.email) email.value = contato.email;
+  toast('Crie uma senha para concluir a compra. Se já tem conta, toque em Entrar.', '🔒');
+}
+window.pedirContaParaComprar = pedirContaParaComprar;
+
+function retomarCompra() {
+  const plano = sessionStorage.getItem('meu_volante_plano_pendente');
+  if (!plano) return;
+  sessionStorage.removeItem('meu_volante_plano_pendente');
+  setTimeout(() => {
+    window.abrirModalUpgrade?.('retomar');
+    window.mostrarCheckoutReal?.(plano);
+  }, 800);
+}
+
 function acaoContaNoMenu() {
   window.fecharDrawerPerfil?.();
   if (!usuarioSessao || usuarioSessao.tipo === 'visitante') {
@@ -116,7 +141,10 @@ document.addEventListener('DOMContentLoaded', () => setTimeout(() => {
   const cliente = obterClienteSupabase();
   cliente?.auth.onAuthStateChange((evento) => {
     if (evento === 'PASSWORD_RECOVERY') setTimeout(abrirNovaSenha, 0);
-    if (evento === 'SIGNED_IN') conferirDono();
+    if (evento === 'SIGNED_IN') {
+      conferirDono();
+      retomarCompra();
+    }
   });
   conferirDono();
 }, 500));

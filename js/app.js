@@ -299,7 +299,7 @@
     function abrirModalPaywall(origem = 'geral') {
       const motivos = {
         multi_jogos: 'A geração simultânea de 2, 3 ou 5 apostas com verificação cruzada é exclusiva do Plano PRO.',
-        carteira_limite: 'Você atingiu o limite de 2 bilhetes salvos no Plano Grátis. Faça upgrade para salvar bilhetes ilimitados.',
+        carteira_limite: 'Você atingiu o limite de 10 jogos salvos no Plano Grátis. Faça upgrade para salvar bilhetes ilimitados.',
         lote_salvar: 'O salvamento e exportação em lote de todas as apostas requer o Plano PRO.',
         bateria_testes: 'Este indicador faz parte do plano Pro. O Plano Grátis mostra 2 dos 6 testes.',
         score_telemetria: 'O resumo dos 6 indicadores está disponível no plano Pro.'
@@ -385,7 +385,7 @@
 
       // Registrar Service Worker com Verificação Imediata de Atualizações
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js?v=20261102.24', { scope: './' })
+        navigator.serviceWorker.register('./sw.js?v=20261102.26', { scope: './' })
           .then((reg) => {
             console.log('[Meu Volante PRO] Service Worker registrado. Verificando atualizações...');
             reg.update(); // força verificação no servidor imediatamente
@@ -2306,7 +2306,7 @@ function gerarPalpiteInteligente() {
         return;
       }
 
-      if (planoUsuario !== 'pro' && carteiraJogos.length >= 2) {
+      if (planoUsuario !== 'pro' && carteiraJogos.length >= 10) {
         abrirModalPaywall('carteira_limite');
         return;
       }

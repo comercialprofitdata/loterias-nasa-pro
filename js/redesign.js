@@ -121,7 +121,7 @@ function criarSidebarDesktop() {
         <span class="sidebar-brand-title">Meu Volante PRO</span>
         <span class="sidebar-brand-sub">SEUS JOGOS EM ORDEM</span>
       </div>
-      <span class="sidebar-version-badge">v3.2</span>
+      
     </div>
 
     <!-- Barra de Controle de Tamanho (◀ | P | M | G) -->
@@ -666,7 +666,7 @@ function createSimplifiedHome() {
           <div class="flex items-center gap-1.5">
             <div>
               <h3 class="text-xs font-black text-white">Minhas Apostas Ativas</h3>
-              <span class="text-[10px] text-slate-400">Monitoramento e conferência oficial</span>
+              <span class="text-[10px] text-slate-400">Jogos aguardando o próximo sorteio</span>
             </div>
           </div>
           <button type="button" onclick="irParaCarteiraSubAba('bilhetes')" class="px-2 py-1 rounded-xl bg-slate-800 text-cyan-300 text-[10px] font-bold border border-slate-700">
@@ -1167,7 +1167,7 @@ function criarDrawerPerfilConfig() {
         </button>
 
         <div class="text-[10px] text-slate-500 text-center pt-2 font-mono">
-          <span>🔞 +18 • Aposte com responsabilidade • Meu Volante PRO v3.2</span>
+          <span>🔞 +18 • Aposte com responsabilidade</span>
         </div>
       </div>
     </div>

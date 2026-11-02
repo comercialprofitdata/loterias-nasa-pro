@@ -36,7 +36,8 @@ async function renderizarVips(area) {
       <input id="vip-nome" required maxlength="120" placeholder="Nome do testador ou da campanha" aria-label="Nome do testador ou da campanha" />
       <input id="vip-usos" type="number" min="1" max="1000" value="1" aria-label="Quantidade de acessos" title="Quantidade de acessos" />
       <select id="vip-dias" aria-label="Validade">
-        <option value="30">30 dias</option>
+        <option value="30">1 mês</option>
+        <option value="60">2 meses</option>
         <option value="90">90 dias</option>
         <option value="365">1 ano</option>
         <option value="">Vitalício</option>

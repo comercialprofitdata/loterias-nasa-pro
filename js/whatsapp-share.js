@@ -123,11 +123,11 @@ function marcarComoJogadoProximoConcurso() {
   const ehPro = (typeof planoUsuario !== 'undefined' && planoUsuario === 'pro') ||
                 (typeof usuarioSessao !== 'undefined' && (usuarioSessao?.tipo === 'master_founder' || usuarioSessao?.tipo === 'vip_convidado' || usuarioSessao?.plano === 'pro'));
 
-  if (!ehPro && carteiraJogos.length >= 2) {
+  if (!ehPro && carteiraJogos.length >= 10) {
     if (typeof abrirModalPaywall === 'function') {
       abrirModalPaywall('carteira_limite');
     } else if (typeof toast === 'function') {
-      toast('Limite de 2 bilhetes do Plano Grátis atingido. Faça upgrade para salvar bilhetes ilimitados.', '⚠️');
+      toast('Limite de 10 jogos do plano grátis atingido. Veja os planos para salvar jogos ilimitados.', '⚠️');
     }
     return;
   }
@@ -205,11 +205,11 @@ function salvarJogoAtivoNaCarteira() {
   const ehPro = (typeof planoUsuario !== 'undefined' && planoUsuario === 'pro') ||
                 (typeof usuarioSessao !== 'undefined' && (usuarioSessao?.tipo === 'master_founder' || usuarioSessao?.tipo === 'vip_convidado' || usuarioSessao?.plano === 'pro'));
 
-  if (!ehPro && carteiraJogos.length >= 2) {
+  if (!ehPro && carteiraJogos.length >= 10) {
     if (typeof abrirModalPaywall === 'function') {
       abrirModalPaywall('carteira_limite');
     } else if (typeof toast === 'function') {
-      toast('Limite de 2 bilhetes do Plano Grátis atingido. Faça upgrade para salvar bilhetes ilimitados.', '⚠️');
+      toast('Limite de 10 jogos do plano grátis atingido. Veja os planos para salvar jogos ilimitados.', '⚠️');
     }
     return;
   }
