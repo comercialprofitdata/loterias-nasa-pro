@@ -132,7 +132,7 @@
   <h2>Outra forma de pedir</h2>
   <p>
     Se preferir, escreva para
-    <a href="mailto:vitorio.bergamo@gmail.com?subject=Exclus%C3%A3o%20de%20conta%20-%20Meu%20Volante%20PRO">vitorio.bergamo@gmail.com</a>
+    <a href="mailto:contato@pd.dev.br?subject=Exclus%C3%A3o%20de%20conta%20-%20Meu%20Volante%20PRO">contato@pd.dev.br</a>
     com o assunto “Exclusão de conta”. O prazo é o mesmo.
   </p>
 
@@ -173,7 +173,7 @@
     if (!base) {
       mostrar(
         'Não foi possível abrir a solicitação automaticamente. ' +
-        'Escreva para vitorio.bergamo@gmail.com com o assunto "Exclusão de conta".',
+        'Escreva para contato@pd.dev.br com o assunto "Exclusão de conta".',
         'erro'
       );
       return;
@@ -183,17 +183,19 @@
     botao.textContent = 'Enviando...';
 
     try {
-      const requisicao = await fetch(base + '/functions/v1/delete-account', {
+      const chave = window.NASA_SUPABASE_CONFIG.anonKey;
+      const requisicao = await fetch(base + '/rest/v1/exclusao_solicitacoes', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, motivo })
+        headers: {
+          'Content-Type': 'application/json',
+          apikey: chave,
+          Authorization: 'Bearer ' + chave,
+          Prefer: 'return=minimal'
+        },
+        body: JSON.stringify({ email, motivo: motivo || null, origem: 'web' })
       });
 
-      const dados = await requisicao.json();
-
-      if (!requisicao.ok || dados.erro) {
-        throw new Error(dados.erro || 'falha na solicitação');
-      }
+      if (!requisicao.ok) throw new Error('falha na solicitação');
 
       formulario.style.display = 'none';
       mostrar(
@@ -205,7 +207,7 @@
       console.error(erro);
       mostrar(
         'Não conseguimos registrar agora. Escreva para ' +
-        'vitorio.bergamo@gmail.com com o assunto "Exclusão de conta" — ' +
+        'contato@pd.dev.br com o assunto "Exclusão de conta" — ' +
         'seu pedido vale a partir da data do e-mail.',
         'erro'
       );
