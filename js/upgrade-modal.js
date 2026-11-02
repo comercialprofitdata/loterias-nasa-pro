@@ -14,9 +14,9 @@ const UPGRADE_CONFIG = {
       color: 'emerald',
       cta: 'Comprar passe',
       features: [
-        '3 apostas geradas',
+        '30 dias com todos os recursos',
         'Todos os indicadores do jogo',
-        'Score de eficiência e raio-x detalhado'
+        'Sem renovação automática'
       ]
     },
     {
@@ -28,11 +28,11 @@ const UPGRADE_CONFIG = {
       icon: '🎯',
       color: 'cyan',
       featured: true,
-      cta: 'Assinar Plano PRO',
+      cta: 'Assinar mensal',
       features: [
-        'Geração ilimitada de apostas e matrizes 4x4',
-        'Bateria completa dos 6 testes em tempo real',
-        'Fechamentos matemáticos C(n,k) ilimitados',
+        'Geração sem limite e matriz 4x4',
+        'Todos os indicadores do jogo',
+        'Fechamentos sem limite',
         'Conferência instantânea e carteira em nuvem'
       ]
     },
@@ -40,14 +40,14 @@ const UPGRADE_CONFIG = {
       id: 'anual',
       name: 'Anual',
       price: 'R$ 197',
-      period: '/ano · R$ 16,41/mês',
+      period: '/ano · R$ 16,42/mês',
       badge: 'ECONOMIZE 45%',
       icon: '👑',
       color: 'amber',
       cta: 'Assinar anual',
       features: [
         'Todos os recursos do plano PRO liberados',
-        'Economia direta de 45% (R$ 16,41/mês)',
+        'Economia direta de 45% (R$ 16,42/mês)',
         'Carteira e bolões sem limite'
       ]
     }

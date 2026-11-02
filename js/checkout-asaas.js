@@ -5,7 +5,7 @@
 const CHECKOUT_PLANOS = {
   avulso: { nome: 'Passe de 30 dias', preco: 'R$ 5,90', periodo: 'pagamento único' },
   mensal: { nome: '🎯 Mensal Mensal', preco: 'R$ 29,90', periodo: 'por mês' },
-  anual: { nome: '👑 Anual', preco: 'R$ 197', periodo: 'por ano · equivale a R$ 16,41/mês' }
+  anual: { nome: '👑 Anual', preco: 'R$ 197', periodo: 'por ano · equivale a R$ 16,42/mês' }
 };
 
 /** Valida CPF pelos dígitos verificadores, para não criar cliente inválido no gateway. */
