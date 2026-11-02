@@ -77,7 +77,7 @@ await p.evaluate(async () => {
   renderizarGastos();
 });
 await foto('2-inicio');
-await p.click('.ritual-ver');
+await p.click('#cartao-na-proxima .ritual-ver');
 await p.waitForTimeout(4500);
 await p.screenshot({ path: 'marketing/play/captura-3-resultado.png' });
 await p.click('#ritual-acao');
