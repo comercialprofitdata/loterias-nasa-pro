@@ -6,21 +6,7 @@
 @media (prefers-reduced-motion: reduce) { .fluxo-pulso { animation: none; } }
 
 @media (max-width: 640px) {
-  #fluxo-espelho-jogo:not([hidden]) {
-    position: fixed; bottom: calc(var(--bottom-bar-height) + env(safe-area-inset-bottom, 0px) + 8px);
-    left: 50%; width: min(520px, calc(100vw - 24px)); min-height: 48px; padding: 6px 38px 6px 8px;
-    transform: translateX(-50%); flex-wrap: nowrap; justify-content: flex-start; align-items: center; gap: 5px;
-    overflow-x: auto; overflow-y: hidden; border-radius: 14px; box-shadow: 0 8px 24px rgba(2, 6, 23, .6);
-    scrollbar-width: none; -webkit-overflow-scrolling: touch;
-  }
-  #fluxo-espelho-jogo::-webkit-scrollbar { display: none; }
-  #fluxo-espelho-jogo .fluxo-espelho-instrucao { width: auto; flex: 0 0 auto; padding: 0 4px; font-size: 10px; white-space: nowrap; }
-  #fluxo-espelho-jogo > .fluxo-bola { width: 30px !important; height: 30px !important; min-width: 30px !important; font-size: 12px !important; }
-  #fluxo-espelho-jogo > .fluxo-bola::after { display: none; }
-  .fluxo-resumo-fechar {
-    display: flex; position: absolute; top: 4px; right: 4px; width: 32px; height: 32px; align-items: center; justify-content: center;
-    border: 0; border-radius: 10px; background: #1e293b; color: #cbd5e1; font-size: 20px; line-height: 1;
-  }
+  #fluxo-espelho-jogo { display: none !important; }
   #volante-titulo-tipo { font-size: 12px !important; }
   .fluxo-card-volante #card-sugestao-troca { padding: 10px; }
   .fluxo-card-volante #card-sugestao-troca h3 { font-size: 12px !important; }

@@ -138,53 +138,6 @@ function montarVolante() {
   gaveta.appendChild(card);
   gaveta.open = true;
 
-  // O resumo compacto acompanha a seleção acima da navegação inferior.
-  const espelho = document.createElement('div');
-  espelho.id = 'fluxo-espelho-jogo';
-  espelho.setAttribute('aria-live', 'polite');
-  espelho.className = 'fluxo-resumo-flutuante';
-  document.body.appendChild(espelho);
-  const fecharResumo = document.createElement('button');
-  fecharResumo.type = 'button';
-  fecharResumo.className = 'fluxo-resumo-fechar';
-  fecharResumo.textContent = '×';
-  fecharResumo.setAttribute('aria-label', 'Fechar resumo fixo do jogo');
-  espelho.appendChild(fecharResumo);
-  let resumoDispensado = false;
-  fecharResumo.addEventListener('click', () => {
-    resumoDispensado = true;
-    espelho.hidden = true;
-  });
-  const display = document.getElementById('display-meu-jogo');
-  const copiar = () => {
-    const jogo = typeof getJogoAtual === 'function' ? getJogoAtual() : [];
-    const instrucao = document.createElement('span');
-    instrucao.className = 'fluxo-espelho-instrucao';
-    instrucao.textContent = jogo.length
-      ? `${jogo.length} dezenas · toque para remover`
-      : 'Toque nas dezenas para montar seu jogo';
-    espelho.replaceChildren(instrucao, fecharResumo);
-    jogo.forEach((numero) => {
-      const dezena = document.createElement('button');
-      dezena.type = 'button';
-      dezena.className = 'fluxo-bola';
-      dezena.textContent = String(numero).padStart(2, '0');
-      dezena.setAttribute('aria-label', `Remover dezena ${String(numero).padStart(2, '0')}`);
-      dezena.addEventListener('click', () => window.removerDezenaDoJogo?.(numero));
-      espelho.appendChild(dezena);
-    });
-  };
-  new IntersectionObserver(([item]) => {
-    if (item.isIntersecting) {
-      if (!resumoDispensado) espelho.hidden = false;
-    } else {
-      resumoDispensado = false;
-      espelho.hidden = true;
-    }
-  }, { threshold: 0.1, rootMargin: '0px 0px -24% 0px' }).observe(grade);
-  new MutationObserver(copiar).observe(display, { childList: true });
-  copiar();
-
   document.getElementById('chk-destaque-subgrid')?.closest('label')?.classList.add('hidden');
   if (typeof volanteModo10Colunas !== 'undefined') volanteModo10Colunas = true;
   grade.classList.add('classic-10x6');
