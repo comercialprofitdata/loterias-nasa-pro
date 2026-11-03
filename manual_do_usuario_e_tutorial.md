@@ -49,6 +49,7 @@ Abra o **`⏳ Simulador de Desempenho Histórico`** para ver instantaneamente qu
 * Clique em **`💾 Salvar na Carteira`** para guardar seus bilhetes.
 * Vá até a aba **`💼 Minha Carteira`** para conferir bilhetes, expandir seus testes ou carregar de volta no volante.
 * Clique em **`📋 Copiar p/ Caixa`** para colar diretamente no site oficial de loterias ou **`📱 WhatsApp`** para enviar para seus amigos.
+* Na Mega-Sena, marque **`Planejar jogo para a Mega da Virada 2026`** para salvar os números como palpite na carteira. O app não registra nem vende a aposta; confirme calendário, concurso e disponibilidade nos canais oficiais da CAIXA. O palpite não conta como aposta realizada nem como gasto.
 
 ---
 

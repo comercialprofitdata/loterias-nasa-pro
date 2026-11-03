@@ -16,6 +16,9 @@
 
   window.concursoOuDataEhPassado = function (concurso, data, modalidade) {
     const mod = modalidade || 'megasena';
+    if (mod === 'megasena' && String(concurso || '').trim().toLowerCase() === 'mega da virada 2026') {
+      return false;
+    }
     const base = mod === 'megasena' ? (window.baseConcursosMega || []) : (window.baseConcursosLoto || []);
     const numConc = concurso ? Number(String(concurso).replace(/\D/g, '')) : null;
     
@@ -187,15 +190,17 @@
 
     bilhetes.forEach((b) => {
       const mod = b.modalidade || 'megasena';
-      let conc = b.concursoAlvo || b.concurso || 'Próximo';
-      let data = b.data || 'Sem data';
+      const ehPlanoMegaVirada = mod === 'megasena'
+        && String(b.concursoAlvo || '').trim().toLowerCase() === 'mega da virada 2026';
+      let conc = ehPlanoMegaVirada ? 'Mega da Virada 2026' : (b.concursoAlvo || b.concurso || 'Próximo');
+      let data = ehPlanoMegaVirada ? 'Data oficial a confirmar' : (b.data || 'Sem data');
 
       // REGRA MESTRA: A data de um sorteio é única por concurso na Caixa!
       // Se o concurso existe na base oficial (ex: #3077 é 28/10/2026),
       // a data de qualquer aposta desse concurso DEVE ser a data oficial dele!
       const numConc = Number(String(conc).replace(/\D/g, ''));
       const base = mod === 'megasena' ? (window.baseConcursosMega || []) : (window.baseConcursosLoto || []);
-      const enc = numConc > 0 ? base.find(c => Number(c.concurso) === numConc) : null;
+      const enc = !ehPlanoMegaVirada && numConc > 0 ? base.find(c => Number(c.concurso) === numConc) : null;
       if (enc && enc.data) {
         if (data !== enc.data || b.data !== enc.data) {
           data = enc.data;
@@ -206,7 +211,9 @@
 
       // Agrupa estritamente por MODALIDADE + CONCURSO (ex: megasena_#3077)
       // Dois bilhetes do mesmo concurso NUNCA mais serão divididos em cartões separados!
-      const concNorm = String(conc).trim().startsWith('#') ? String(conc).trim() : `#${String(conc).trim()}`;
+      const concNorm = ehPlanoMegaVirada
+        ? 'Mega da Virada 2026'
+        : (String(conc).trim().startsWith('#') ? String(conc).trim() : `#${String(conc).trim()}`);
       const grupoChave = `${mod}_${concNorm}`;
 
       if (!grupos[grupoChave]) {
@@ -224,7 +231,7 @@
       }
 
       grupos[grupoChave].bilhetes.push(b);
-      grupos[grupoChave].totalCusto += window.custoDoBilhete(b);
+      if (!ehPlanoMegaVirada) grupos[grupoChave].totalCusto += window.custoDoBilhete(b);
       const premio = Number(b.premioGanho || 0);
       grupos[grupoChave].totalPremio += premio;
       if (premio > 0) grupos[grupoChave].premiadosCount++;
@@ -269,7 +276,10 @@
     if (!grupo || !grupo.bilhetes.length) return;
     const jogos = grupo.bilhetes.map(b => b.dezenas);
     if (typeof window.imprimirJogosVolante === 'function') {
-      window.imprimirJogosVolante(jogos, grupo.modalidade);
+      const planejamento = grupo.concurso === 'Mega da Virada 2026';
+      window.imprimirJogosVolante(jogos, grupo.modalidade, planejamento
+        ? { planejamento: true, titulo: grupo.concurso }
+        : undefined);
     }
   };
 
@@ -279,11 +289,15 @@
     const grupo = grupos.find(g => g.id === grupoId);
     if (!grupo || !grupo.bilhetes.length) return;
 
-    const modNome = grupo.modalidade === 'lotofacil' ? 'Lotofácil' : 'Mega-Sena';
-    let msg = `*Meu Volante PRO — Lote de Apostas*\n`;
+    const planejamento = grupo.concurso === 'Mega da Virada 2026';
+    const modNome = planejamento ? grupo.concurso : (grupo.modalidade === 'lotofacil' ? 'Lotofácil' : 'Mega-Sena');
+    let msg = planejamento
+      ? `*Meu Volante PRO — Palpites planejados*\n`
+      : `*Meu Volante PRO — Lote de Apostas*\n`;
     msg += `Modalidade: *${modNome}*\n`;
     msg += `Concurso: *${grupo.concurso}* (${grupo.data})\n`;
     msg += `Total de Jogos: *${grupo.bilhetes.length}*\n\n`;
+    if (planejamento) msg += 'Palpites para planejamento; não são comprovantes nem registros de apostas oficiais. Confirme data, concurso e disponibilidade nos canais oficiais da CAIXA.\n\n';
 
     grupo.bilhetes.forEach((b, idx) => {
       const dezenasFormatadas = b.dezenas.map(n => String(n).padStart(2, '0')).join(' - ');
@@ -372,6 +386,12 @@
     const grupos = agruparBilhetes(bilhetes);
     const grupo = grupos.find(g => g.id === grupoId);
     if (!grupo) return;
+    if (grupo.concurso === 'Mega da Virada 2026') {
+      if (typeof window.toast === 'function') {
+        window.toast('O concurso e a data oficiais ainda precisam ser confirmados pela CAIXA.', '⚠️');
+      }
+      return;
+    }
 
     const base = grupo.modalidade === 'megasena' ? (window.baseConcursosMega || []) : (window.baseConcursosLoto || []);
     let concursoDestino = concursoAlvoDesejado;
@@ -550,10 +570,13 @@
         const isMega = g.modalidade === 'megasena';
         const todosConferidos = g.bilhetes.every(b => b.conferido);
         const algumConferido = g.bilhetes.some(b => b.conferido);
-        const ehPassado = window.concursoOuDataEhPassado(g.concurso, g.data, g.modalidade);
+        const ehPlanoMegaVirada = g.concurso === 'Mega da Virada 2026';
+        const ehPassado = !ehPlanoMegaVirada && window.concursoOuDataEhPassado(g.concurso, g.data, g.modalidade);
 
         let statusBadge = '';
-        if (g.totalPremio > 0) {
+        if (ehPlanoMegaVirada) {
+          statusBadge = '<span class="px-2.5 py-1 rounded-full bg-amber-500/15 text-amber-200 border border-amber-500/40 text-[10px] font-bold">📝 Palpite salvo • não é aposta oficial</span>';
+        } else if (g.totalPremio > 0) {
           statusBadge = `<span class="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[10px] font-black">🏆 ${g.premiadosCount} Premiado(s) • ${fmtBRL(g.totalPremio)}</span>`;
         } else if (todosConferidos || algumConferido) {
           const maxAcertos = Math.max(0, ...g.bilhetes.map(b => b.acertos || 0));
@@ -585,12 +608,14 @@
                 <div>
                   <div class="flex items-center gap-2 flex-wrap">
                     <h4 class="text-xs sm:text-sm font-black font-mono whitespace-nowrap">
-                      ${isMega ? 'Mega-Sena' : 'Lotofácil'} ${g.concurso.startsWith('#') ? g.concurso : `#${g.concurso}`}
+                      ${ehPlanoMegaVirada ? g.concurso : `${isMega ? 'Mega-Sena' : 'Lotofácil'} ${g.concurso.startsWith('#') ? g.concurso : `#${g.concurso}`}`}
                     </h4>
                     <span class="data-pill-concurso text-[10px] font-mono px-2 py-0.5 rounded border whitespace-nowrap">📅 ${g.data}</span>
                   </div>
                   <p class="text-[11px] font-sans mt-0.5 text-concurso-sub">
-                    ${g.bilhetes.length} aposta${g.bilhetes.length > 1 ? 's' : ''} • <strong class="font-mono text-concurso-custo">${fmtBRL(g.totalCusto)}</strong>
+                    ${ehPlanoMegaVirada
+                      ? `${g.bilhetes.length} palpite${g.bilhetes.length > 1 ? 's' : ''} • não contabilizado como gasto`
+                      : `${g.bilhetes.length} aposta${g.bilhetes.length > 1 ? 's' : ''} • <strong class="font-mono text-concurso-custo">${fmtBRL(g.totalCusto)}</strong>`}
                   </p>
                 </div>
               </div>
@@ -674,10 +699,10 @@
                   <button type="button" onclick="imprimirLoteGrupoCarteira('${g.id}')" class="btn-acao-grupo-print hover:opacity-80 font-bold transition flex items-center gap-1">
                     Imprimir A4
                   </button>
-                  <span class="divisor-acoes-ponto">•</span>
+                  ${!ehPlanoMegaVirada ? `<span class="divisor-acoes-ponto">•</span>
                   <button type="button" onclick="reatribuirConcursoLote('${g.id}')" class="btn-acao-grupo-mudar hover:opacity-80 font-bold transition flex items-center gap-1" title="Corrigir o número do concurso deste lote">
                     Mudar Concurso
-                  </button>
+                  </button>` : ''}
                 </div>
                 <button type="button" onclick="removerLoteGrupoCarteira('${g.id}')" class="btn-acao-grupo-excluir text-[10px] font-bold transition">
                   Excluir lote
@@ -703,7 +728,7 @@
               <span class="px-1.5 py-0.5 rounded text-[9px] font-black ${isMega ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-purple-500/20 text-purple-400 border border-purple-500/30'}">${(b.modalidade || 'megasena').toUpperCase()}</span>
               ${b.concursoAlvo ? `<span class="linha-acertos-rotulo text-[10px] font-bold">${b.concursoAlvo}</span>` : ''}
               <span class="linha-sem-acerto text-[10px]">📅 ${b.data || 'Oficial'}</span>
-              ${b.premioGanho > 0 ? `<span class="status-badge-premiado text-[10px] px-1.5 py-0.5 rounded font-black">🏆 +${fmtBRL(b.premioGanho)}</span>` : foiConferido ? `<span class="linha-sem-acerto text-[10px]">${acertos || 0} acertos</span>` : '<span class="linha-sem-acerto text-[9px]">Pendente</span>'}
+              ${b.concursoAlvo === 'Mega da Virada 2026' ? '<span class="text-amber-200 text-[9px] font-bold">Palpite, não aposta oficial</span>' : b.premioGanho > 0 ? `<span class="status-badge-premiado text-[10px] px-1.5 py-0.5 rounded font-black">🏆 +${fmtBRL(b.premioGanho)}</span>` : foiConferido ? `<span class="linha-sem-acerto text-[10px]">${acertos || 0} acertos</span>` : '<span class="linha-sem-acerto text-[9px]">Pendente</span>'}
             </div>
             <div class="flex flex-wrap gap-1">
               ${b.dezenas.map(d => {

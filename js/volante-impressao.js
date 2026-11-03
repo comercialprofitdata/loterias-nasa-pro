@@ -28,7 +28,7 @@
     return html;
   }
 
-  window.imprimirJogosVolante = function (jogosInput, modalidadeInput) {
+  window.imprimirJogosVolante = function (jogosInput, modalidadeInput, contexto = {}) {
     const modalidade = modalidadeInput || window.modalidadeAtual || 'megasena';
     let jogos = jogosInput;
 
@@ -51,7 +51,9 @@
       return;
     }
 
-    const nomeMod = modalidade === 'lotofacil' ? 'LOTOFÁCIL' : 'MEGA-SENA';
+    const nomeMod = contexto.planejamento
+      ? String(contexto.titulo || 'Palpite planejado').toUpperCase()
+      : (modalidade === 'lotofacil' ? 'LOTOFÁCIL' : 'MEGA-SENA');
     const dataHoje = new Date().toLocaleDateString('pt-BR');
     const horaHoje = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
 
@@ -148,7 +150,7 @@
         <div class="header-doc">
           <h2 style="margin: 0; font-size: 18px; letter-spacing: 1px;">MEU VOLANTE PRO — ESPELHO DE VOLANTES</h2>
           <p style="margin: 3px 0 0; font-size: 11px; color: #444;">
-            Modalidade: <strong>${nomeMod}</strong> | Lote: <strong>${jogos.length} Apostas</strong> | Emissão: ${dataHoje} às ${horaHoje}
+            Modalidade: <strong>${nomeMod}</strong> | Lote: <strong>${jogos.length} ${contexto.planejamento ? 'Palpites' : 'Apostas'}</strong> | Emissão: ${dataHoje} às ${horaHoje}
           </p>
         </div>
 
@@ -168,7 +170,9 @@
         </div>
 
         <div class="footer-nota">
-          Documento gerado pelo sistema estatístico Meu Volante PRO. Utilize este espelho para passar as apostas nos volantes oficiais da Caixa ou direto no terminal lotérico. Não possui valor fiscal até validação na Casa Lotérica.
+          ${contexto.planejamento
+            ? 'Palpite de planejamento do Meu Volante PRO. Este documento não é comprovante nem registro de aposta oficial. Confirme a data, o concurso e a disponibilidade das apostas nos canais oficiais da CAIXA.'
+            : 'Documento gerado pelo sistema estatístico Meu Volante PRO. Utilize este espelho para passar as apostas nos volantes oficiais da Caixa ou direto no terminal lotérico. Não possui valor fiscal até validação na Casa Lotérica.'}
         </div>
 
         <script>

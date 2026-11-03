@@ -105,11 +105,28 @@ function obterInfoProximoSorteio(modalidade) {
   };
 }
 
+function obterDestinoJogo(modalidade) {
+  if (modalidade === 'megasena' && window.estaPlanejandoMegaVirada?.()) {
+    return {
+      concurso: 'Mega da Virada 2026',
+      data: 'Data oficial a confirmar',
+      status: 'Palpite planejado • não é aposta oficial',
+      tipo: 'mega_virada_2026'
+    };
+  }
+  return { ...obterInfoProximoSorteio(modalidade), status: 'Aguardando sorteio', tipo: 'calibrado' };
+}
+window.obterDestinoJogo = obterDestinoJogo;
+
 /**
  * Registra o jogo (ou lote de jogos) com status ativo para o próximo concurso oficial
  * Permite que o apostador aperte "JOGUEI ESTE JOGO!" na hora que apostou na lotérica/app
  */
 function marcarComoJogadoProximoConcurso() {
+  if (window.estaPlanejandoMegaVirada?.()) {
+    salvarJogoAtivoNaCarteira();
+    return;
+  }
   if (typeof window.exigirLeadAntesDeSalvar === 'function' && !window.exigirLeadAntesDeSalvar()) {
     return;
   }
@@ -198,7 +215,8 @@ function salvarJogoAtivoNaCarteira() {
   const mod = typeof modalidadeAtual !== 'undefined' ? modalidadeAtual : 'megasena';
   const nomeMod = mod === 'megasena' ? 'Mega-Sena' : 'Lotofácil';
   const score = document.getElementById('score-numero')?.innerText || '98';
-  const infoSorteio = obterInfoProximoSorteio(mod);
+  const destinoJogo = obterDestinoJogo(mod);
+  const infoSorteio = destinoJogo;
 
   if (!Array.isArray(carteiraJogos)) carteiraJogos = [];
 
@@ -220,19 +238,24 @@ function salvarJogoAtivoNaCarteira() {
       carteiraJogos.unshift({
         id: Date.now() + i,
         modalidade: mod,
-        nome: `${nomeMod} • Jogo #${aposta.id || i + 1} (${aposta.dezenas.length} dezenas)`,
+        nome: destinoJogo.tipo === 'mega_virada_2026'
+          ? `Mega da Virada 2026 • Jogo #${aposta.id || i + 1}`
+          : `${nomeMod} • Jogo #${aposta.id || i + 1} (${aposta.dezenas.length} dezenas)`,
         dezenas: [...aposta.dezenas],
         data: infoSorteio.data,
         score: aposta.analise?.score || score,
         concursoAlvo: infoSorteio.concurso,
-        tipo: 'calibrado'
+        status: infoSorteio.status,
+        tipo: infoSorteio.tipo
       });
     });
 
     if (typeof salvarCarteiraStorage === 'function') salvarCarteiraStorage();
     if (typeof atualizarPainelCarteira === 'function') atualizarPainelCarteira();
     if (typeof renderizarCockpitInicioApostador === 'function') renderizarCockpitInicioApostador();
-    if (typeof toast === 'function') toast(`${loteApostasGeradas.length} jogos salvos na sua Carteira!`, '💼');
+    if (typeof toast === 'function') toast(destinoJogo.tipo === 'mega_virada_2026'
+      ? `${loteApostasGeradas.length} palpites da Mega da Virada salvos na Carteira.`
+      : `${loteApostasGeradas.length} jogos salvos na sua Carteira!`, '💼');
     return;
   }
 
@@ -246,12 +269,15 @@ function salvarJogoAtivoNaCarteira() {
   const novoBilhete = {
     id: Date.now(),
     modalidade: mod,
-    nome: `${nomeMod} • ${jogo.length} Dezenas`,
+    nome: destinoJogo.tipo === 'mega_virada_2026'
+      ? `Mega da Virada 2026 • ${jogo.length} dezenas`
+      : `${nomeMod} • ${jogo.length} Dezenas`,
     dezenas: [...jogo],
     data: infoSorteio.data,
     score: score,
     concursoAlvo: infoSorteio.concurso,
-    tipo: 'calibrado'
+    status: infoSorteio.status,
+    tipo: infoSorteio.tipo
   };
 
   carteiraJogos.unshift(novoBilhete);
@@ -259,14 +285,20 @@ function salvarJogoAtivoNaCarteira() {
   if (typeof atualizarPainelCarteira === 'function') atualizarPainelCarteira();
   if (typeof renderizarCockpitInicioApostador === 'function') renderizarCockpitInicioApostador();
 
-  if (typeof toast === 'function') toast('Jogo salvo na sua Carteira!', '💼');
+  if (typeof toast === 'function') toast(destinoJogo.tipo === 'mega_virada_2026'
+    ? 'Palpite da Mega da Virada salvo na Carteira. Ele ainda não é uma aposta oficial.'
+    : 'Jogo salvo na sua Carteira!', '💼');
 }
 
 function compartilharJogoGeradoWhatsapp() {
   const mod = typeof modalidadeAtual !== 'undefined' ? modalidadeAtual : 'megasena';
   const nomeMod = mod === 'megasena' ? 'Mega-Sena' : 'Lotofácil';
   const score = document.getElementById('score-numero')?.innerText || '98';
-  const infoSorteio = obterInfoProximoSorteio(mod);
+  const infoSorteio = obterDestinoJogo(mod);
+  const nomeDestino = infoSorteio.tipo === 'mega_virada_2026' ? 'Mega da Virada 2026' : nomeMod;
+  const avisoPlanejamento = infoSorteio.tipo === 'mega_virada_2026'
+    ? '\nEste é um palpite para planejamento; não é comprovante nem registro de aposta oficial.'
+    : '';
 
   // Caso 1: Foram gerados múltiplos jogos (2, 3 ou 5 jogos)
   if (typeof loteApostasGeradas !== 'undefined' && Array.isArray(loteApostasGeradas) && loteApostasGeradas.length > 1) {
@@ -279,9 +311,9 @@ function compartilharJogoGeradoWhatsapp() {
     }).join('\n\n');
 
     const textoLote = 
-`🎯 *${totalJogos} JOGOS GERADOS • ${nomeMod.toUpperCase()}*
+`🎯 *${totalJogos} JOGOS GERADOS • ${nomeDestino.toUpperCase()}*
 🎯 *Concurso Alvo:* ${infoSorteio.concurso} (${infoSorteio.data})
-Sorteios são aleatórios: nenhum jogo tem mais chance que outro.
+Sorteios são aleatórios: nenhum jogo tem mais chance que outro.${avisoPlanejamento}
 
 ${linhasJogos}
 
@@ -308,9 +340,10 @@ ${linhasJogos}
   const dezenasFormatadas = jogo.map(n => String(n).padStart(2, '0')).join(' - ');
 
   const textoUnico = 
-`🎯 *JOGO GERADO • ${nomeMod.toUpperCase()}*
+`🎯 *JOGO GERADO • ${nomeDestino.toUpperCase()}*
 🎯 *Concurso Alvo:* ${infoSorteio.concurso} (${infoSorteio.data})
 📊 *Nota de Equilíbrio:* ${score}/100 (6 de 6 Testes OK)
+${avisoPlanejamento}
 
 🎯 *Dezenas:*
 👉 *${dezenasFormatadas}*

@@ -78,6 +78,15 @@ function montarBotaoSalvar() {
       return;
     }
     const salvar = () => {
+      if (window.estaPlanejandoMegaVirada?.()) {
+        const antes = carteiraJogos.length;
+        window.salvarJogoAtivoNaCarteira?.();
+        if (carteiraJogos.length > antes) {
+          salvo = true;
+          document.getElementById('txt-btn-joguei-jogo').textContent = '✓ Palpite salvo na carteira';
+        }
+        return;
+      }
       const antes = carteiraJogos.length;
       marcarComoJogadoProximoConcurso();
       if (carteiraJogos.length > antes) {
@@ -93,11 +102,28 @@ function montarBotaoSalvar() {
   new MutationObserver(() => {
     salvo = false;
     const rotulo = document.getElementById('txt-btn-joguei-jogo');
-    if (rotulo) rotulo.textContent = 'Salvar este jogo';
+    if (rotulo) rotulo.textContent = window.estaPlanejandoMegaVirada?.()
+      ? 'Salvar palpite da Mega da Virada'
+      : 'Salvar este jogo';
     display.classList.remove('fluxo-pulso');
     void display.offsetWidth;
     display.classList.add('fluxo-pulso');
   }).observe(display, { childList: true });
+
+  window.atualizarModoMegaVirada = () => {
+    const seletor = document.getElementById('chk-mega-virada');
+    const painel = document.getElementById('planejar-mega-virada');
+    const botaoTexto = document.getElementById('txt-btn-joguei-jogo');
+    if (!seletor || !painel || !botaoTexto) return;
+    const megaSelecionada = modalidadeAtual === 'megasena';
+    painel.classList.toggle('hidden', !megaSelecionada);
+    if (!megaSelecionada) seletor.checked = false;
+    const ativo = megaSelecionada && seletor.checked;
+    botaoTexto.textContent = ativo ? 'Salvar palpite da Mega da Virada' : 'Salvar este jogo';
+  };
+  window.estaPlanejandoMegaVirada = () => modalidadeAtual === 'megasena'
+    && Boolean(document.getElementById('chk-mega-virada')?.checked);
+  window.atualizarModoMegaVirada();
 }
 
 function montarVolante() {
@@ -302,6 +328,7 @@ function ligarTemaDaModalidade() {
   window.trocarModalidade = function (...args) {
     const retorno = trocar.apply(this, args);
     aplicarTemaDaModalidade();
+    window.atualizarModoMegaVirada?.();
     window.renderizarRevisaoDoJogo?.();
     return retorno;
   };
