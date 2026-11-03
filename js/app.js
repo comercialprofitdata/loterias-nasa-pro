@@ -4770,53 +4770,70 @@ function abrirModalDialog(msg, callback) {
       try {
         verificarParametrosVipUrl();
         const salvo = localStorage.getItem('loterias_nasa_user');
-
-        if (salvo) {
-          const usuarioLocal = JSON.parse(salvo);
-          const emailLower = (usuarioLocal?.email || '').toLowerCase();
-          
-          // Papel e plano salvos no aparelho não valem: só o servidor os concede.
-          if (usuarioLocal?.tipo === 'master_founder' || usuarioLocal?.tipo === 'vip_convidado') {
-            localStorage.removeItem('loterias_nasa_vip_cupom');
-            usuarioSessao = { ...usuarioLocal, tipo: 'visitante', plano: 'free' };
-            planoUsuario = 'free';
-          } else {
-            usuarioSessao = usuarioLocal;
-          }
-        } else {
-          usuarioSessao = {
-            nome: 'Visitante',
-            email: 'visitante@loteriasnasa.pro',
-            avatar: '🎯',
-            tipo: 'visitante',
-            plano: 'free'
-          };
-        }
-      } catch(e) {
+        const usuarioLocal = salvo ? JSON.parse(salvo) : null;
+        const contato = JSON.parse(localStorage.getItem('loterias_nasa_visitor_lead') || 'null');
+        const visitanteSalvo = usuarioLocal?.tipo === 'visitante' ? usuarioLocal : null;
+        usuarioSessao = {
+          nome: contato?.nome || visitanteSalvo?.nome || 'Visitante',
+          email: contato?.email || visitanteSalvo?.email || '',
+          telefone: contato?.telefone || visitanteSalvo?.telefone || '',
+          avatar: '🎯',
+          tipo: 'visitante',
+          plano: 'free'
+        };
+        planoUsuario = 'free';
+      } catch (e) {
         usuarioSessao = { nome: 'Visitante', email: '', avatar: '🎯', tipo: 'visitante', plano: 'free' };
+        planoUsuario = 'free';
       }
       atualizarVisualPlano();
       atualizarPerfilUsuarioUI();
     }
 
+    function restaurarVisitanteSemConta() {
+      let contato = null;
+      try {
+        contato = JSON.parse(localStorage.getItem('loterias_nasa_visitor_lead') || 'null');
+      } catch (error) {
+        console.warn('Não foi possível ler o perfil local de visitante:', error.message);
+      }
+
+      const vip = window.obterVipAtivo?.();
+      usuarioSessao = {
+        nome: contato?.nome || 'Visitante',
+        email: contato?.email || '',
+        telefone: contato?.telefone || '',
+        avatar: '🎯',
+        tipo: 'visitante',
+        plano: vip ? 'pro' : 'free'
+      };
+      planoUsuario = vip ? 'pro' : 'free';
+      atualizarVisualPlano();
+      atualizarPerfilUsuarioUI();
+      if (typeof sincronizarHeaderStatusUsuario === 'function') sincronizarHeaderStatusUsuario();
+      if (typeof atualizarDadosDrawer === 'function') atualizarDadosDrawer();
+      return false;
+    }
+
     async function restaurarSessaoSupabase() {
       const cliente = obterClienteSupabase();
-      if (!cliente) return false;
+      if (!cliente) return restaurarVisitanteSemConta();
 
       const { data, error } = await cliente.auth.getSession();
       if (error) {
         console.error('Não foi possível restaurar a sessão Supabase:', error.message);
-        return false;
+        return restaurarVisitanteSemConta();
       }
-      if (!data.session?.user) return false;
+      if (!data.session?.user) return restaurarVisitanteSemConta();
 
       const usuario = data.session.user;
-      const { data: perfil } = await cliente
+      const { data: perfil, error: erroPerfil } = await cliente
         .from('profiles')
         .select('display_name, role, analises_gratis_restantes')
         .eq('id', usuario.id)
         .maybeSingle();
-      const { data: assinatura } = await cliente
+      if (erroPerfil) console.warn('Não foi possível carregar o perfil da conta:', erroPerfil.message);
+      const { data: assinatura, error: erroAssinatura } = await cliente
         .from('subscriptions')
         .select('status, valid_until, plan_code')
         .eq('user_id', usuario.id)
@@ -4825,14 +4842,17 @@ function abrirModalDialog(msg, callback) {
         .order('valid_until', { ascending: false })
         .limit(1)
         .maybeSingle();
+      if (erroAssinatura) console.warn('Não foi possível confirmar o plano da conta:', erroAssinatura.message);
 
+      const vip = window.obterVipAtivo?.();
+      const ehPro = Boolean(assinatura) || Boolean(vip);
       usuarioSessao = {
         nome: perfil?.display_name || usuario.user_metadata?.full_name || usuario.email?.split('@')[0] || 'Usuário',
         email: usuario.email || '',
         telefone: usuario.user_metadata?.phone || '',
         avatar: 'U',
         tipo: perfil?.role === 'owner' ? 'master_founder' : 'supabase',
-        plano: assinatura ? 'pro' : 'free',
+        plano: ehPro ? 'pro' : 'free',
         // Créditos de análise grátis (3 por cadastro, sem prazo — ver
         // js/creditos-gratis.js). O default 3 vem da coluna no Supabase;
         // se a linha de profiles ainda não existir por algum motivo,
@@ -4840,7 +4860,7 @@ function abrirModalDialog(msg, callback) {
         creditosGratis: perfil?.analises_gratis_restantes ?? 0,
         dataConexao: new Date().toISOString()
       };
-      planoUsuario = assinatura ? 'pro' : 'free';
+      planoUsuario = ehPro ? 'pro' : 'free';
       atualizarVisualPlano();
       atualizarPerfilUsuarioUI();
       if (typeof sincronizarCarteiraNuvem === 'function') {

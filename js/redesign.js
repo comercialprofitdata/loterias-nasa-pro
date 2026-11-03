@@ -461,10 +461,10 @@ function sincronizarHeaderStatusUsuario() {
       sideName.innerText = usuarioSessao.nome || 'Vitório Bérgamo';
       sideBadge.innerText = 'Master Founder';
       sideBadge.className = 'sidebar-profile-badge master-badge';
-    } else if (usuarioSessao.tipo === 'vip_convidado' || ehPro) {
+    } else if (ehPro) {
       sideAvatar.innerText = '👑';
       sideName.innerText = usuarioSessao.nome || 'Assinante VIP';
-      sideBadge.innerText = 'Plano Pro';
+      sideBadge.innerText = window.obterVipAtivo?.() ? 'VIP por cupom' : 'Plano Pro';
       sideBadge.className = 'sidebar-profile-badge vip-badge';
     } else if (usuarioSessao.tipo !== 'visitante') {
       sideAvatar.innerText = (usuarioSessao.nome?.[0] || 'U').toUpperCase();
@@ -1219,9 +1219,14 @@ function atualizarDadosDrawer() {
   if (typeof usuarioSessao !== 'undefined' && usuarioSessao) {
     if (nameEl) nameEl.innerText = usuarioSessao.nome || 'Visitante';
     if (emailEl) {
-      emailEl.innerText = usuarioSessao.tipo === 'visitante'
-        ? 'Sem conta conectada'
-        : (usuarioSessao.email || 'Conta conectada');
+      const vip = usuarioSessao.tipo === 'visitante' ? window.obterVipAtivo?.() : null;
+      if (vip) {
+        emailEl.innerText = window.rotuloAcessoVip?.(vip) || 'Sem conta • VIP por cupom';
+      } else {
+        emailEl.innerText = usuarioSessao.tipo === 'visitante'
+          ? 'Sem conta conectada'
+          : (usuarioSessao.email || 'Conta conectada');
+      }
     }
     if (avatarEl) {
       avatarEl.innerText = usuarioSessao.tipo === 'master_founder'
@@ -1963,4 +1968,3 @@ window.gerarPalpiteExpressHome = gerarPalpiteExpressHome;
 window.salvarPalpiteExpressHome = salvarPalpiteExpressHome;
 window.copiarPalpiteExpressHome = copiarPalpiteExpressHome;
 window.obterPerfilExperienciaSalvo = obterPerfilExperienciaSalvo;
-

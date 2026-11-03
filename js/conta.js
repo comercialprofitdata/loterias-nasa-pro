@@ -144,6 +144,10 @@ document.addEventListener('DOMContentLoaded', () => setTimeout(() => {
     if (evento === 'SIGNED_IN') {
       conferirDono();
       retomarCompra();
+      setTimeout(() => window.restaurarSessaoSupabase?.(), 0);
+    }
+    if (evento === 'SIGNED_OUT') {
+      setTimeout(() => window.restaurarSessaoSupabase?.(), 0);
     }
   });
   conferirDono();

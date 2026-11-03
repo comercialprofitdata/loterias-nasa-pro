@@ -18,19 +18,28 @@ function emailReal(email) {
   return email && !String(email).endsWith('@loteriasnasa.pro') ? email : null;
 }
 
-function registrarEvento(evento, detalhe = '') {
+async function registrarEvento(evento, detalhe = '') {
+  const cliente = typeof obterClienteSupabase === 'function' ? obterClienteSupabase() : null;
+  if (!cliente) {
+    console.warn('Evento de uso não registrado: cliente Supabase indisponível.');
+    return false;
+  }
+
   try {
-    const cliente = typeof obterClienteSupabase === 'function' ? obterClienteSupabase() : null;
-    if (!cliente) return;
     const contato = JSON.parse(localStorage.getItem('loterias_nasa_visitor_lead') || 'null');
-    cliente.from('eventos_uso').insert({
+    const { error } = await cliente.from('eventos_uso').insert({
       aparelho: idDoAparelho(),
       email: emailReal(contato?.email) || contato?.telefone?.replace(/\D/g, '') || emailReal(typeof usuarioSessao !== 'undefined' && usuarioSessao?.email) || null,
-      evento,
+      evento: String(evento).slice(0, 40),
       detalhe: String(detalhe).slice(0, 80),
       modalidade: typeof modalidadeAtual !== 'undefined' ? modalidadeAtual : null
-    }).then(() => {}, () => {});
-  } catch {}
+    });
+    if (error) throw error;
+    return true;
+  } catch (error) {
+    console.warn('Falha ao registrar evento de uso:', error?.message || error);
+    return false;
+  }
 }
 window.registrarEvento = registrarEvento;
 window.idDoAparelho = idDoAparelho;

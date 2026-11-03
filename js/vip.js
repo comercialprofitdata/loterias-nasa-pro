@@ -15,6 +15,21 @@ function vipVigente() {
   return Boolean(vip) && (!vip.validoAte || new Date(vip.validoAte) > new Date());
 }
 
+function obterVipAtivo() {
+  const vip = lerVip();
+  return vipVigente() ? { validoAte: vip.validoAte || null } : null;
+}
+window.obterVipAtivo = obterVipAtivo;
+
+function rotuloAcessoVip(vip) {
+  if (!vip) return 'Sem conta conectada';
+  const validade = vip.validoAte
+    ? `até ${new Date(vip.validoAte).toLocaleDateString('pt-BR')}`
+    : 'vitalício';
+  return `Sem conta • VIP por cupom ${validade}`;
+}
+window.rotuloAcessoVip = rotuloAcessoVip;
+
 async function conferirCodigoVip(codigo) {
   const contato = JSON.parse(localStorage.getItem('loterias_nasa_visitor_lead') || 'null');
   const { data, error } = await obterClienteSupabase().rpc('resgatar_codigo_vip', {
@@ -31,6 +46,40 @@ function liberarVip() {
   if (typeof usuarioSessao !== 'undefined' && usuarioSessao) usuarioSessao.plano = 'pro';
   window.atualizarVisualPlano?.();
   window.aplicarGateCientificoNasa?.();
+  window.sincronizarHeaderStatusUsuario?.();
+  window.atualizarDadosDrawer?.();
+}
+
+async function revalidarVipSalvo() {
+  const salvo = lerVip();
+  if (!salvo) return false;
+  if (vipVigente()) liberarVip();
+
+  try {
+    const resposta = await conferirCodigoVip(salvo.codigo);
+    if (resposta?.ok) {
+      localStorage.setItem(VIP_CHAVE, JSON.stringify({ codigo: salvo.codigo, validoAte: resposta.valido_ate }));
+      liberarVip();
+      return true;
+    }
+
+    localStorage.removeItem(VIP_CHAVE);
+    const contaRestaurada = await window.restaurarSessaoSupabase?.();
+    if (!contaRestaurada) {
+      if (typeof window.aplicarPlano === 'function') window.aplicarPlano(false, 'cupom VIP recusado');
+      else {
+        planoUsuario = 'free';
+        window.atualizarVisualPlano?.();
+        window.aplicarGateCientificoNasa?.();
+      }
+      window.sincronizarHeaderStatusUsuario?.();
+      window.atualizarDadosDrawer?.();
+    }
+    return false;
+  } catch (error) {
+    console.warn('Não foi possível revalidar o acesso VIP; mantendo o último resultado válido:', error.message);
+    return vipVigente();
+  }
 }
 
 async function resgatarVip(codigo) {
@@ -131,17 +180,5 @@ document.addEventListener('DOMContentLoaded', () => setTimeout(async () => {
     return;
   }
 
-  const salvo = lerVip();
-  if (!salvo) return;
-  if (vipVigente()) liberarVip();
-  try {
-    const resposta = await conferirCodigoVip(salvo.codigo);
-    if (resposta?.ok) {
-      localStorage.setItem(VIP_CHAVE, JSON.stringify({ codigo: salvo.codigo, validoAte: resposta.valido_ate }));
-    } else {
-      localStorage.removeItem(VIP_CHAVE);
-    }
-  } catch {
-    // Sem conexão, vale o último resultado conferido.
-  }
+  await revalidarVipSalvo();
 }, 400));
