@@ -474,6 +474,21 @@
       }
     }
 
+    function removerDezenaDoJogo(num) {
+      const jogo = getJogoAtual();
+      if (!jogo.includes(num)) return;
+
+      setJogoAtual(jogo.filter(n => n !== num));
+      const fixos = getFixos();
+      const indiceFixo = fixos.indexOf(num);
+      if (indiceFixo !== -1) fixos.splice(indiceFixo, 1);
+      atualizarDisplayJogo();
+      renderizarVolante();
+      executarAnaliseDinamicaDoJogo();
+      executarAnaliseVitorio();
+    }
+    window.removerDezenaDoJogo = removerDezenaDoJogo;
+
     function setQtdJogosParaGerar(qtd) {
       if (qtd > 1 && !verificarAcessoRecursoVip('Geração de Múltiplos Jogos Simultâneos')) return;
       if (qtd > 1 && planoUsuario !== 'pro') {
@@ -913,23 +928,12 @@
           const badge = document.createElement('button');
           badge.type = 'button';
           badge.className = `w-10 h-10 rounded-xl ${cor} font-bold text-xs flex items-center justify-center shadow-sm font-mono relative active:scale-90 transition cursor-pointer`;
-          badge.title = ehFixo ? 'Dezena Fixada (toque para soltar)' : 'Toque para fixar (📌) esta dezena nos próximos sorteios';
+          badge.title = `Remover dezena ${String(num).padStart(2, '0')} do jogo`;
+          badge.setAttribute('aria-label', badge.title);
           badge.innerHTML = ehFixo
             ? `${String(num).padStart(2, '0')}<span class="absolute -top-1 -right-1 text-[8px] leading-none">📌</span>`
             : String(num).padStart(2, '0');
-          badge.onclick = () => {
-            const fixos = getFixos();
-            if (fixos.includes(num)) {
-              fixos.splice(fixos.indexOf(num), 1);
-              toast(`Dezena ${String(num).padStart(2, '0')} liberada.`, '🔓');
-            } else {
-              fixos.push(num);
-              toast(`Dezena ${String(num).padStart(2, '0')} travada (📌) para os próximos giros!`, '📌');
-            }
-            tocarBeep('click');
-            atualizarDisplayJogo();
-            renderizarVolante();
-          };
+          badge.onclick = () => removerDezenaDoJogo(num);
           display.appendChild(badge);
         }
       });
@@ -2140,15 +2144,14 @@ function gerarPalpiteInteligente() {
               <div class="flex items-center gap-2 text-xs font-bold text-white flex-wrap">
                 
                 <span class="text-[10px] px-1.5 py-0.5 rounded bg-rose-950 text-rose-300 border border-rose-800 font-mono font-bold">${testeAfetado}</span>
-                <span>Substituir</span>
-                <span class="w-6 h-6 rounded-lg bg-rose-600 text-white font-black flex items-center justify-center shadow">${String(sai).padStart(2,'0')}</span>
-                <span class="text-slate-400 font-sans">por</span>
-                <span class="w-6 h-6 rounded-lg bg-emerald-500 text-slate-950 font-black flex items-center justify-center shadow">${String(entra).padStart(2,'0')}</span>
+                <span class="text-rose-300">Sai ${String(sai).padStart(2,'0')}</span>
+                <span class="text-slate-500 font-sans" aria-hidden="true">→</span>
+                <span class="text-emerald-300">Entra ${String(entra).padStart(2,'0')}</span>
               </div>
               <p class="text-[11px] text-slate-300 mt-1 font-sans leading-snug">${motivo}</p>
             </div>
-            <button onclick="aplicarSubstituicao(${sai}, ${entra})" class="px-3.5 py-2 bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 active:scale-95 text-slate-950 font-black text-xs rounded-xl shadow-lg shadow-emerald-500/20 whitespace-nowrap transition flex items-center gap-1.5 self-start sm:self-center">
-              Trocar dezena
+            <button type="button" onclick="aplicarSubstituicao(${sai}, ${entra})" class="px-3.5 py-2 bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 active:scale-95 text-slate-950 font-black text-xs rounded-xl shadow-lg shadow-emerald-500/20 whitespace-nowrap transition flex items-center gap-1.5 self-start sm:self-center">
+              Aplicar troca
             </button>
           </div>
         `;
@@ -2171,15 +2174,14 @@ function gerarPalpiteInteligente() {
           <div class="p-3 bg-slate-950 rounded-xl border border-cyan-800/40 flex flex-col sm:flex-row sm:items-center justify-between gap-3 font-mono">
             <div>
               <div class="flex items-center gap-2 text-xs font-bold text-white">
-                <span>Substituir</span>
-                <span class="w-6 h-6 rounded bg-rose-600 text-white font-black flex items-center justify-center">${String(sai).padStart(2,'0')}</span>
-                <span class="text-slate-400 font-sans">por</span>
-                <span class="w-6 h-6 rounded bg-purple-600 text-white font-black flex items-center justify-center">${String(entra).padStart(2,'0')}</span>
+                <span class="text-rose-300">Sai ${String(sai).padStart(2,'0')}</span>
+                <span class="text-slate-500 font-sans" aria-hidden="true">→</span>
+                <span class="text-purple-300">Entra ${String(entra).padStart(2,'0')}</span>
               </div>
               <p class="text-[11px] text-slate-400 mt-1 font-sans">${motivo}</p>
             </div>
-            <button onclick="aplicarSubstituicao(${sai}, ${entra})" class="px-3 py-1.5 bg-purple-600 hover:bg-purple-500 active:scale-95 text-white font-bold text-xs rounded-lg shadow whitespace-nowrap transition">
-              Substituir Agora
+            <button type="button" onclick="aplicarSubstituicao(${sai}, ${entra})" class="px-3 py-1.5 bg-purple-600 hover:bg-purple-500 active:scale-95 text-white font-bold text-xs rounded-lg shadow whitespace-nowrap transition">
+              Aplicar troca
             </button>
           </div>
         `;

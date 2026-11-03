@@ -111,22 +111,58 @@ function montarVolante() {
   card.before(gaveta);
   gaveta.appendChild(card);
 
-  // Jogo atual fixo no topo enquanto a pessoa marca as dezenas.
+  // O resumo acompanha a grade e permite remover dezenas sem voltar ao topo.
   const espelho = document.createElement('div');
   espelho.id = 'fluxo-espelho-jogo';
-  card.prepend(espelho);
+  espelho.setAttribute('aria-live', 'polite');
+  card.firstElementChild?.after(espelho);
   const display = document.getElementById('display-meu-jogo');
-  const copiar = () => { espelho.innerHTML = display.innerHTML; };
+  const copiar = () => {
+    const jogo = typeof getJogoAtual === 'function' ? getJogoAtual() : [];
+    const instrucao = document.createElement('span');
+    instrucao.className = 'fluxo-espelho-instrucao';
+    instrucao.textContent = jogo.length
+      ? `${jogo.length} selecionada${jogo.length === 1 ? '' : 's'} · toque para remover`
+      : 'Toque nas dezenas para montar seu jogo';
+    espelho.replaceChildren(instrucao);
+    jogo.forEach((numero) => {
+      const dezena = document.createElement('button');
+      dezena.type = 'button';
+      dezena.className = 'fluxo-bola';
+      dezena.textContent = String(numero).padStart(2, '0');
+      dezena.setAttribute('aria-label', `Remover dezena ${String(numero).padStart(2, '0')}`);
+      dezena.addEventListener('click', () => window.removerDezenaDoJogo?.(numero));
+      espelho.appendChild(dezena);
+    });
+  };
   new IntersectionObserver(([item]) => {
     espelho.toggleAttribute('data-oculto', item.isIntersecting);
   }).observe(display);
-  new MutationObserver(copiar).observe(display, { childList: true, subtree: true });
+  new MutationObserver(copiar).observe(display, { childList: true });
   copiar();
 
   document.getElementById('chk-destaque-subgrid')?.closest('label')?.classList.add('hidden');
-  const chk = document.getElementById('chk-destaque-subgrid');
   if (typeof volanteModo10Colunas !== 'undefined') volanteModo10Colunas = true;
   grade.classList.add('classic-10x6');
+  const modos = document.getElementById('btn-modo-normal')?.parentElement?.parentElement;
+  const regras = document.getElementById('painel-regras-ativas');
+  if (modos && regras) {
+    const preferencias = document.createElement('details');
+    preferencias.className = 'fluxo-preferencias';
+    const resumo = document.createElement('summary');
+    preferencias.appendChild(resumo);
+    modos.before(preferencias);
+    preferencias.append(modos, regras);
+    const atualizarResumo = () => {
+      const fixas = typeof getFixos === 'function' ? getFixos().length : 0;
+      const proibidas = typeof getProibidos === 'function' ? getProibidos().length : 0;
+      resumo.textContent = fixas || proibidas
+        ? `Preferências avançadas · ${fixas} fixas · ${proibidas} proibidas`
+        : 'Preferências avançadas · fixas e proibidas';
+    };
+    new MutationObserver(atualizarResumo).observe(regras, { childList: true, subtree: true });
+    atualizarResumo();
+  }
   [...card.querySelectorAll('p, div')].find((el) => !el.children.length && el.textContent.trim().startsWith('Dica:'))?.classList.add('hidden');
   const rotuloWhats = document.getElementById('txt-whatsapp-botao');
   if (rotuloWhats) new MutationObserver(() => {
@@ -158,6 +194,26 @@ function montarVolante() {
     atualizar();
   }
 
+  const sugestao = document.getElementById('card-sugestao-troca');
+  const conteudoSugestao = document.getElementById('conteudo-sugestao-troca');
+  if (sugestao && conteudoSugestao) {
+    sugestao.querySelector('h3').textContent = 'Sugestão opcional';
+    const cabecalhoSugestao = sugestao.firstElementChild;
+    cabecalhoSugestao?.removeAttribute('onclick');
+    cabecalhoSugestao?.removeAttribute('title');
+    document.getElementById('seta-sugestao-troca')?.remove();
+    const avisoSugestao = document.createElement('p');
+    avisoSugestao.className = 'gastos-nota';
+    avisoSugestao.textContent = 'Ajuda a organizar indicadores; não aumenta a chance de ganhar.';
+    sugestao.appendChild(avisoSugestao);
+    grade.after(sugestao);
+    const atualizarVisibilidadeSugestao = () => {
+      sugestao.hidden = conteudoSugestao.textContent.trim() === '' && conteudoSugestao.children.length === 0;
+    };
+    new MutationObserver(atualizarVisibilidadeSugestao).observe(conteudoSugestao, { childList: true, subtree: true, characterData: true });
+    atualizarVisibilidadeSugestao();
+  }
+
   if (typeof renderizarVolante === 'function') renderizarVolante();
 }
 
@@ -169,17 +225,6 @@ function montarIndicadores() {
   const gaveta = criarGaveta('Ver indicadores do jogo', 'fluxo-gaveta-indicadores');
   blocos[0].before(gaveta);
   blocos.forEach((bloco) => gaveta.appendChild(bloco));
-  // A troca sugerida fica junto do jogo, antes dos ajustes.
-  const troca = document.getElementById('card-sugestao-troca');
-  const ajustes = document.getElementById('fluxo-gaveta-ajustes');
-  if (troca && ajustes) {
-    ajustes.before(troca);
-    troca.querySelector('h3').textContent = 'Ajustar o jogo';
-    const nota = document.createElement('p');
-    nota.className = 'gastos-nota';
-    nota.textContent = 'A troca aproxima o jogo da faixa comum dos indicadores. Ela não aumenta a chance de acerto.';
-    troca.appendChild(nota);
-  }
 }
 
 // Sem jogos salvos não há o que filtrar nem somar: fica só o convite para começar.

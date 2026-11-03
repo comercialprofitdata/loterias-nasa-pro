@@ -5,6 +5,13 @@
 @keyframes fluxo-pulso { from { transform: scale(.97); opacity: .5; } to { transform: scale(1); opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .fluxo-pulso { animation: none; } }
 
+@media (max-width: 640px) {
+  #fluxo-espelho-jogo:not([data-oculto]) {
+    position: fixed; top: calc(64px + env(safe-area-inset-top, 0px)); left: 50%; width: min(520px, calc(100vw - 24px));
+    transform: translateX(-50%); box-shadow: 0 8px 24px rgba(2, 6, 23, .6);
+  }
+}
+
 .fluxo-btn-principal, .fluxo-btn-secundario {
   width: 100% !important; min-height: 50px !important; border-radius: 14px !important;
   font-size: 15px !important; font-weight: 800 !important; letter-spacing: 0 !important;
@@ -30,6 +37,25 @@
   position: sticky; top: 64px; z-index: 5; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px;
   padding: 8px; background: #020617; border: 1px solid #1e293b; border-radius: 12px;
 }
+.fluxo-espelho-instrucao { width: 100%; color: #94a3b8; font-size: 11px; line-height: 1.3; text-align: center; }
+#fluxo-espelho-jogo > .fluxo-bola { position: relative; }
+#fluxo-espelho-jogo > .fluxo-bola::after {
+  content: '×'; position: absolute; top: -5px; right: -5px; width: 14px; height: 14px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; background: #334155; color: #e2e8f0; font-size: 11px; line-height: 1;
+}
+.fluxo-preferencias { border: 1px solid #1e293b; border-radius: 12px; background: #020617; }
+.fluxo-preferencias > summary {
+  min-height: 44px; padding: 10px 12px; color: #cbd5e1; font-size: 12px; font-weight: 700;
+  cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between;
+}
+.fluxo-preferencias > summary::-webkit-details-marker { display: none; }
+.fluxo-preferencias > summary::after { content: '⌄'; color: #94a3b8; font-size: 16px; }
+.fluxo-preferencias[open] > summary::after { transform: rotate(180deg); }
+.fluxo-preferencias[open] > *:not(summary) { margin: 0 8px 8px; }
+.fluxo-card-volante #card-sugestao-troca { margin: 10px 0 0; padding: 12px; border-radius: 16px; box-shadow: none; }
+.fluxo-card-volante #card-sugestao-troca[hidden] { display: none !important; }
+.fluxo-card-volante #card-sugestao-troca > div:first-child { cursor: default; }
+.fluxo-card-volante #card-sugestao-troca #conteudo-sugestao-troca > div { padding: 10px; }
 .fluxo-card-volante #volante-grid { gap: 6px; }
 .fluxo-card-volante .volante-btn { min-height: 40px; }
 .fluxo-link { background: none; border: 0; color: #94a3b8; font-size: 13px; text-decoration: underline; min-height: 40px; }
@@ -70,7 +96,7 @@
 .fluxo-bola { width: 36px; height: 36px; border-radius: 50%; background: #10b981; color: #052e24; font-weight: 800; font-size: 13px; display: inline-flex; align-items: center; justify-content: center; }
 .nasa-tool-tag, .nasa-tool-badge { display: none !important; }
 
-#fluxo-espelho-jogo > * { width: 34px !important; height: 34px !important; min-width: 0 !important; padding: 0 !important; border-radius: 50% !important; font-size: 13px !important; }
+#fluxo-espelho-jogo > .fluxo-bola { width: 34px !important; height: 34px !important; min-width: 34px !important; padding: 0 !important; border-radius: 50% !important; font-size: 13px !important; }
 #home-mod-ativa-badge, .nasa-hero-top-row { display: none !important; }
 
 /* Texto legível e fonte única fora das dezenas. */
