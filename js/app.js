@@ -2151,7 +2151,7 @@ function gerarPalpiteInteligente() {
               <p class="text-[11px] text-slate-300 mt-1 font-sans leading-snug">${motivo}</p>
             </div>
             <button type="button" onclick="aplicarSubstituicao(${sai}, ${entra})" class="px-3.5 py-2 bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 active:scale-95 text-slate-950 font-black text-xs rounded-xl shadow-lg shadow-emerald-500/20 whitespace-nowrap transition flex items-center gap-1.5 self-start sm:self-center">
-              Aplicar troca
+              Aplicar troca recomendada
             </button>
           </div>
         `;
@@ -2181,7 +2181,7 @@ function gerarPalpiteInteligente() {
               <p class="text-[11px] text-slate-400 mt-1 font-sans">${motivo}</p>
             </div>
             <button type="button" onclick="aplicarSubstituicao(${sai}, ${entra})" class="px-3 py-1.5 bg-purple-600 hover:bg-purple-500 active:scale-95 text-white font-bold text-xs rounded-lg shadow whitespace-nowrap transition">
-              Aplicar troca
+              Aplicar troca recomendada
             </button>
           </div>
         `;

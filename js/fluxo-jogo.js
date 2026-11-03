@@ -110,21 +110,34 @@ function montarVolante() {
   const gaveta = criarGaveta('Escolher minhas dezenas', 'fluxo-gaveta-volante');
   card.before(gaveta);
   gaveta.appendChild(card);
+  gaveta.open = true;
 
-  // O resumo acompanha a grade e permite remover dezenas sem voltar ao topo.
+  // O resumo compacto acompanha a seleção acima da navegação inferior.
   const espelho = document.createElement('div');
   espelho.id = 'fluxo-espelho-jogo';
   espelho.setAttribute('aria-live', 'polite');
-  card.firstElementChild?.after(espelho);
+  espelho.className = 'fluxo-resumo-flutuante';
+  document.body.appendChild(espelho);
+  const fecharResumo = document.createElement('button');
+  fecharResumo.type = 'button';
+  fecharResumo.className = 'fluxo-resumo-fechar';
+  fecharResumo.textContent = '×';
+  fecharResumo.setAttribute('aria-label', 'Fechar resumo fixo do jogo');
+  espelho.appendChild(fecharResumo);
+  let resumoDispensado = false;
+  fecharResumo.addEventListener('click', () => {
+    resumoDispensado = true;
+    espelho.hidden = true;
+  });
   const display = document.getElementById('display-meu-jogo');
   const copiar = () => {
     const jogo = typeof getJogoAtual === 'function' ? getJogoAtual() : [];
     const instrucao = document.createElement('span');
     instrucao.className = 'fluxo-espelho-instrucao';
     instrucao.textContent = jogo.length
-      ? `${jogo.length} selecionada${jogo.length === 1 ? '' : 's'} · toque para remover`
+      ? `${jogo.length} dezenas · toque para remover`
       : 'Toque nas dezenas para montar seu jogo';
-    espelho.replaceChildren(instrucao);
+    espelho.replaceChildren(instrucao, fecharResumo);
     jogo.forEach((numero) => {
       const dezena = document.createElement('button');
       dezena.type = 'button';
@@ -136,8 +149,13 @@ function montarVolante() {
     });
   };
   new IntersectionObserver(([item]) => {
-    espelho.toggleAttribute('data-oculto', item.isIntersecting);
-  }).observe(display);
+    if (item.isIntersecting) {
+      if (!resumoDispensado) espelho.hidden = false;
+    } else {
+      resumoDispensado = false;
+      espelho.hidden = true;
+    }
+  }, { threshold: 0.1, rootMargin: '0px 0px -24% 0px' }).observe(grade);
   new MutationObserver(copiar).observe(display, { childList: true });
   copiar();
 
@@ -197,7 +215,7 @@ function montarVolante() {
   const sugestao = document.getElementById('card-sugestao-troca');
   const conteudoSugestao = document.getElementById('conteudo-sugestao-troca');
   if (sugestao && conteudoSugestao) {
-    sugestao.querySelector('h3').textContent = 'Sugestão opcional';
+    sugestao.querySelector('h3').textContent = 'Ajustar pelas recomendações';
     const cabecalhoSugestao = sugestao.firstElementChild;
     cabecalhoSugestao?.removeAttribute('onclick');
     cabecalhoSugestao?.removeAttribute('title');
@@ -206,7 +224,7 @@ function montarVolante() {
     avisoSugestao.className = 'gastos-nota';
     avisoSugestao.textContent = 'Ajuda a organizar indicadores; não aumenta a chance de ganhar.';
     sugestao.appendChild(avisoSugestao);
-    grade.after(sugestao);
+    grade.before(sugestao);
     const atualizarVisibilidadeSugestao = () => {
       sugestao.hidden = conteudoSugestao.textContent.trim() === '' && conteudoSugestao.children.length === 0;
     };

@@ -62,7 +62,12 @@ test('o resumo do volante oferece remoção direta e a sugestão de troca fica j
 
   assert.match(fluxo, /Remover dezena \$\{String\(numero\)\.padStart\(2, '0'\)\}/);
   assert.match(fluxo, /window\.removerDezenaDoJogo\?\.\(numero\)/);
-  assert.match(fluxo, /grade\.after\(sugestao\)/);
+  assert.match(fluxo, /grade\.before\(sugestao\)/);
+  assert.match(fluxo, /gaveta\.open = true/);
+  assert.match(fluxo, /Fechar resumo fixo do jogo/);
   assert.match(fluxo, /Preferências avançadas · fixas e proibidas/);
+  assert.match(css, /bottom: calc\(var\(--bottom-bar-height\) \+ env\(safe-area-inset-bottom, 0px\) \+ 8px\)/);
+  assert.match(css, /#volante-titulo-tipo \{ font-size: 12px/);
   assert.match(css, /#fluxo-espelho-jogo > \.fluxo-bola::after/);
+  assert.match(fs.readFileSync('js/app.js', 'utf8'), /Aplicar troca recomendada/);
 });
