@@ -629,6 +629,71 @@
       toast(`Dezena ${String(num).padStart(2,'0')} liberada dos proibidos!`, "🔓");
     }
 
+    // Explicações didáticas e matemáticas de cada um dos 6 testes
+    const EXPLICACAO_TESTES = {
+      1: {
+        titulo: "1º Sem Sequências Viciadas (Sequências & Finais)",
+        desc: "Avalia a presença de números consecutivos e repetições de dígitos finais. Mais de 95% dos concursos oficiais da história da Caixa apresentam no máximo 2 números em sequência contínua (ex: 12-13). Jogos com 3 ou 4 números seguidos têm probabilidade estatística ínfima de ocorrência."
+      },
+      2: {
+        titulo: "2º Espalhamento no Bilhete (Entropia de Shannon)",
+        desc: "Mede o grau de dispersão espacial das dezenas no volante calculando a entropia bidimensional (linhas e colunas). Impede jogos concentrados em uma única linha vertical ou horizontal, garantindo variedade geométrica natural."
+      },
+      3: {
+        titulo: "3º Equilíbrio Espacial (Aderência Qui-Quadrado χ²)",
+        desc: "Compara a distribuição do seu jogo contra a distribuição teórica ideal uniforme através do teste qui-quadrado de Pearson. Garante que os números não fiquem aglomerados em cantos específicos do volante."
+      },
+      4: {
+        titulo: "4º Pares, Ímpares e Primos",
+        desc: "Analisa a paridade e a presença de números primos no volante. Em 82,3% dos concursos oficiais da Mega-Sena, o resultado sorteado possui equilíbrio de 3P/3I, 4P/2I ou 2P/4I, acompanhado de 1 a 3 números primos."
+      },
+      5: {
+        titulo: "5º Soma Equilibrada (Curva Gaussiana Normal)",
+        desc: "Calcula a soma de todas as dezenas e compara com a curva de distribuição normal da Caixa. Na Mega-Sena, mais de 78% dos sorteios têm soma concentrada entre 150 e 210. Somas extremas (< 100 ou > 260) são desvios raros."
+      },
+      6: {
+        titulo: "6º Balanço por Quadrantes (Hipergeométrica Setorial)",
+        desc: "Divide o volante de 60 dezenas em 4 quadrantes iguais (Q1, Q2, Q3, Q4 com 15 dezenas cada). Mais de 80% dos concursos distribuem as dezenas em pelo menos 3 quadrantes distintos, evitando quadrantes com 4 ou mais dezenas empilhadas."
+      }
+    };
+
+    function abrirModalExplicacaoTeste(numTeste) {
+      const info = EXPLICACAO_TESTES[numTeste] || { titulo: `Teste ${numTeste}`, desc: "Critério de validação estatística." };
+      tocarBeep('click');
+
+      const fundo = document.createElement('div');
+      fundo.id = 'modal-explicacao-teste';
+      fundo.className = 'folha-fundo';
+      fundo.setAttribute('role', 'dialog');
+      fundo.setAttribute('aria-modal', 'true');
+      fundo.innerHTML = `
+        <div class="folha bg-slate-900 border border-slate-700 rounded-3xl p-5 max-w-sm mx-auto space-y-3.5 shadow-2xl">
+          <div class="flex justify-between items-start pb-2 border-b border-slate-800">
+            <div>
+              <span class="text-[9px] uppercase font-black text-cyan-400 tracking-wider block">CRITÉRIO MATEMÁTICO</span>
+              <h3 class="text-sm font-black text-white font-sans mt-0.5">${info.titulo}</h3>
+            </div>
+            <button type="button" class="btn-fechar-modal-info text-slate-400 hover:text-white text-lg font-bold">✕</button>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed font-sans">
+            ${info.desc}
+          </p>
+          <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-[11px] text-cyan-300 font-sans">
+            💡 <strong>Por que está no app?</strong> Ajuda a calibrar seu volante para dentro dos padrões de distribuição dos sorteios reais da Caixa.
+          </div>
+          <button type="button" class="btn-fechar-modal-info w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs border border-slate-700 transition">
+            Entendi
+          </button>
+        </div>
+      `;
+
+      document.body.appendChild(fundo);
+      const fechar = () => fundo.remove();
+      fundo.querySelectorAll('.btn-fechar-modal-info').forEach(b => b.addEventListener('click', fechar));
+      fundo.addEventListener('click', (e) => { if (e.target === fundo) fechar(); });
+    }
+    window.abrirModalExplicacaoTeste = abrirModalExplicacaoTeste;
+
     function renderizarTelaCompleta() {
       renderizarSeletoresQtd();
       atualizarControlesQtdApostas();
@@ -686,6 +751,9 @@
         `).join('');
       }
     }
+
+    let dezenaDesbalanceadaAtiva = null;
+    window.getDezenaDesbalanceadaAtiva = () => dezenaDesbalanceadaAtiva;
 
     function renderizarVolante() {
       const config = getConfigAtual();
@@ -784,6 +852,7 @@
         const ehFixo = fixos.includes(i);
         const ehProibido = proibidos.includes(i);
         const ehNumeroBloqueado = numerosBloqueados.has(i) && marcado;
+        const ehDesbalanceado = marcado && dezenaDesbalanceadaAtiva === i;
         const numStr = String(i).padStart(2, '0');
 
         const linhaNum = Math.floor((i - 1) / 10) + 1;
@@ -809,11 +878,15 @@
         if (ehFixo) estilo = 'bg-emerald-900/90 text-emerald-300 border-2 border-emerald-400 font-black shadow';
         else if (ehProibido) estilo = 'bg-rose-950/90 text-rose-400 border-2 border-rose-600 line-through opacity-60';
         else if (ehNumeroBloqueado) estilo = 'bg-amber-950/90 text-amber-300 border-2 border-amber-400 font-black scale-105 shadow-md shadow-amber-500/30';
+        else if (ehDesbalanceado) estilo = 'bg-rose-600 text-white border-2 border-rose-300 font-black animate-pulse shadow-lg shadow-rose-500/50';
         else if (marcado) estilo = modalidadeAtual === 'megasena' ? 'volante-marcado-mega' : 'volante-marcado-loto';
 
         if (ehNumeroBloqueado) {
           btn.innerHTML = `<span class="flex items-center gap-0.5">${numStr}<span class="text-[8px]">🔒</span></span>`;
           btn.title = 'Dezena bloqueada! Assine PRO para desbloquear gerações ilimitadas.';
+        } else if (ehDesbalanceado) {
+          btn.innerHTML = `<span class="flex items-center justify-center gap-0.5">${numStr}<span class="text-[8px]">⚠️</span></span>`;
+          btn.title = 'Dezena desbalanceada! Clique em Aplicar troca para substituir.';
         } else {
           btn.innerText = numStr;
         }
@@ -2137,12 +2210,18 @@ function gerarPalpiteInteligente() {
         testeAfetado = 'Calibração Geral';
       }
 
+      // Atualiza a dezena desbalanceada ativa para dar destaque visual no volante
+      if (sai && aprovados < 6) {
+        dezenaDesbalanceadaAtiva = sai;
+      } else {
+        dezenaDesbalanceadaAtiva = null;
+      }
+
       if (sai && entra && aprovados < 6) {
         container.innerHTML = `
           <div class="p-3.5 bg-slate-950 rounded-2xl border border-amber-500/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3 font-mono shadow-lg shadow-amber-950/30">
             <div>
               <div class="flex items-center gap-2 text-xs font-bold text-white flex-wrap">
-                
                 <span class="text-[10px] px-1.5 py-0.5 rounded bg-rose-950 text-rose-300 border border-rose-800 font-mono font-bold">${testeAfetado}</span>
                 <span class="text-rose-300">Sai ${String(sai).padStart(2,'0')}</span>
                 <span class="text-slate-500 font-sans" aria-hidden="true">→</span>
@@ -2193,6 +2272,7 @@ function gerarPalpiteInteligente() {
     function aplicarSubstituicao(sai, entra) {
       tocarBeep('success');
       vibrarHaptico(20);
+      dezenaDesbalanceadaAtiva = null;
       let jogo = getJogoAtual().filter(n => n !== sai);
       jogo.push(entra);
       setJogoAtual(jogo.sort((a,b)=>a-b));
@@ -2202,6 +2282,46 @@ function gerarPalpiteInteligente() {
       executarAnaliseVitorio();
       toast(`Substituído: ${sai} ➔ ${entra}`, "✨");
     }
+
+    function gerarJogosDoBolao() {
+      tocarBeep('success');
+      vibrarHaptico(25);
+      const cotas = Math.max(1, parseInt(document.getElementById('bolao-cotas')?.value || 10, 10));
+      // Gera lote proporcional ao número de participantes ou configuração do gerador
+      const qtdJogos = Math.min(10, Math.max(2, Math.ceil(cotas / 2)));
+      gerarMultiplasApostas(qtdJogos, true);
+      renderizarAbasJogosGeradosTela1();
+      calcularRateioBolao();
+      toast(`Gerados ${qtdJogos} jogos otimizados para o Bolão!`, "👥");
+    }
+    window.gerarJogosDoBolao = gerarJogosDoBolao;
+
+    function salvarBolaoNaCarteira() {
+      tocarBeep('success');
+      const nomeBolao = document.getElementById('bolao-nome')?.value || 'Bolão em Grupo';
+      const cotas = Math.max(1, parseInt(document.getElementById('bolao-cotas')?.value || 10, 10));
+      
+      if (typeof loteApostasGeradas !== 'undefined' && loteApostasGeradas.length > 0) {
+        loteApostasGeradas.forEach((aposta, i) => {
+          carteiraJogos.unshift({
+            id: Date.now() + i,
+            modalidade: modalidadeAtual,
+            nome: `${nomeBolao} • Cota ${i + 1}/${cotas}`,
+            dezenas: [...aposta.dezenas],
+            data: 'Bolão em Grupo',
+            score: aposta.analise?.score || 99,
+            status: 'Aguardando sorteio',
+            tipo: 'bolao'
+          });
+        });
+        atualizarPainelCarteira();
+        calcularRateioBolao();
+        toast(`${loteApostasGeradas.length} jogos do Bolão salvos na carteira!`, "💾");
+      } else {
+        incluirJogoAtualNoBolao();
+      }
+    }
+    window.salvarBolaoNaCarteira = salvarBolaoNaCarteira;
 
     function calcularRateioBolao() {
       const cotas = Math.max(1, parseInt(document.getElementById('bolao-cotas')?.value || 10, 10));

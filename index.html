@@ -2,14 +2,14 @@
 <html lang="pt-BR" class="dark">
 <head>
   <script>
-    // Limpa caches obsoletos de versões antigas do localStorage e Service Worker
+    // Limpa caches obsoletos de versÃµes antigas do localStorage e Service Worker
     try {
       localStorage.removeItem('loterias_nasa_historico_v2');
       localStorage.removeItem('loterias_nasa_historico');
       if ('caches' in window) {
         caches.keys().then(function(names) {
           names.forEach(function(name) {
-            if (!name.includes('v20261103.40')) {
+            if (!name.includes('v20261103.41')) {
               caches.delete(name);
             }
           });
@@ -17,76 +17,76 @@
       }
     } catch (_) {}
   </script>
-  <script src="./js/error-trap.js?v=20261103.40"></script>
+  <script src="./js/error-trap.js?v=20261103.41"></script>
   <link rel="manifest" href="./manifest.json" />
-  <script src="./supabase/config.js?v=20261103.40"></script>
+  <script src="./supabase/config.js?v=20261103.41"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <!-- Google Identity Services (Google Sign-In) -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <!-- Redesign Meu Volante PRO (Resizable Desktop Sidebar + Clear Typography) -->
-  <link rel="stylesheet" href="./css/redesign.css?v=20261103.40" />
-  <script src="./js/redesign.js?v=20261103.40" defer></script>
+  <link rel="stylesheet" href="./css/redesign.css?v=20261103.41" />
+  <script src="./js/redesign.js?v=20261103.41" defer></script>
   <!-- Upgrade Modal (Elegant Checkout) -->
-  <link rel="stylesheet" href="./css/upgrade-modal.css?v=20261103.40" />
-  <script src="./js/upgrade-modal.js?v=20261103.40" defer></script>
+  <link rel="stylesheet" href="./css/upgrade-modal.css?v=20261103.41" />
+  <script src="./js/upgrade-modal.js?v=20261103.41" defer></script>
   <!-- Gerar Simplificada (Mobile-first, accessibility) -->
-  <link rel="stylesheet" href="./css/gerar-simplificado.css?v=20261103.40" />
+  <link rel="stylesheet" href="./css/gerar-simplificado.css?v=20261103.41" />
   <!-- Admin Dashboard (Professional Management) -->
-  <link rel="stylesheet" href="./css/admin-dashboard.css?v=20261103.40" />
-  <script src="./js/admin-dashboard.js?v=20261103.40" defer></script>
-  <script src="./js/admin-charts.js?v=20261103.40" defer></script>
+  <link rel="stylesheet" href="./css/admin-dashboard.css?v=20261103.41" />
+  <script src="./js/admin-dashboard.js?v=20261103.41" defer></script>
+  <script src="./js/admin-charts.js?v=20261103.41" defer></script>
   <!-- Micro-interactions (Sounds, Haptic, Animations) -->
-  <script src="./js/micro-interactions.js?v=20261103.40" defer></script>
+  <script src="./js/micro-interactions.js?v=20261103.41" defer></script>
   <!-- Science Gate (enforcement real do paywall + teaser dos 6 testes) -->
-  <!-- Créditos de análise grátis (3 por cadastro, sem prazo) -->
-  <script src="./js/creditos-gratis.js?v=20261103.40" defer></script>
-  <script src="./js/science-gate.js?v=20261103.40" defer></script>
-  <!-- Caminho A: "Já tenho meus números" -->
-  <script src="./js/analisar-numeros.js?v=20261103.40" defer></script>
+  <!-- CrÃ©ditos de anÃ¡lise grÃ¡tis (3 por cadastro, sem prazo) -->
+  <script src="./js/creditos-gratis.js?v=20261103.41" defer></script>
+  <script src="./js/science-gate.js?v=20261103.41" defer></script>
+  <!-- Caminho A: "JÃ¡ tenho meus nÃºmeros" -->
+  <script src="./js/analisar-numeros.js?v=20261103.41" defer></script>
   <!-- OAuth Login (Google + Meta) -->
-  <script src="./js/oauth-login.js?v=20261103.40" defer></script>
-  <!-- Testadores VIP & Feedbacks Periódicos -->
-  <script src="./js/feedback-testadores.js?v=20261103.40" defer></script>
+  <script src="./js/oauth-login.js?v=20261103.41" defer></script>
+  <!-- Testadores VIP & Feedbacks PeriÃ³dicos -->
+  <script src="./js/feedback-testadores.js?v=20261103.41" defer></script>
   <!-- Lead Capture (Email/WhatsApp on Home) -->
-  <script src="./js/lead-capture.js?v=20261103.40" defer></script>
+  <script src="./js/lead-capture.js?v=20261103.41" defer></script>
   <!-- Menu Fix (ensure bottom tab bar always visible) -->
-  <script src="./js/menu-fix.js?v=20261103.40" defer></script>
+  <script src="./js/menu-fix.js?v=20261103.41" defer></script>
   <!-- Acesso direto ao portal da Caixa (carrega antes de quem consome) -->
-  <script src="./js/caixa-api.js?v=20261103.40" defer></script>
+  <script src="./js/caixa-api.js?v=20261103.41" defer></script>
   <!-- Sorteios Reais (Real lottery data via APIs) -->
-  <script src="./js/sorteios-reais.js?v=20261103.40" defer></script>
-  <!-- Conferência de bilhetes contra o resultado oficial da Caixa -->
-  <script src="./js/conferencia-real.js?v=20261103.40" defer></script>
-  <!-- Histórico oficial de concursos (base das análises estatísticas) -->
-  <script src="./js/historico-oficial.js?v=20261103.40" defer></script>
-  <script src="./js/historico-real.js?v=20261103.40" defer></script>
-  <!-- Assinatura: o servidor decide quem é PRO -->
-  <script src="./js/assinatura.js?v=20261103.40" defer></script>
-  <!-- Checkout real via Asaas (PIX e cartão) -->
-  <script src="./js/checkout-asaas.js?v=20261103.40" defer></script>
+  <script src="./js/sorteios-reais.js?v=20261103.41" defer></script>
+  <!-- ConferÃªncia de bilhetes contra o resultado oficial da Caixa -->
+  <script src="./js/conferencia-real.js?v=20261103.41" defer></script>
+  <!-- HistÃ³rico oficial de concursos (base das anÃ¡lises estatÃ­sticas) -->
+  <script src="./js/historico-oficial.js?v=20261103.41" defer></script>
+  <script src="./js/historico-real.js?v=20261103.41" defer></script>
+  <!-- Assinatura: o servidor decide quem Ã© PRO -->
+  <script src="./js/assinatura.js?v=20261103.41" defer></script>
+  <!-- Checkout real via Asaas (PIX e cartÃ£o) -->
+  <script src="./js/checkout-asaas.js?v=20261103.41" defer></script>
   <!-- Contexto: remove a venda externa quando roda como app da Play Store -->
-  <script src="./js/contexto-loja.js?v=20261103.40" defer></script>
+  <script src="./js/contexto-loja.js?v=20261103.41" defer></script>
   <!-- Simulador Retrospectivo ("E se eu tivesse jogado?") -->
-  <script src="./js/simulador-retrospectivo.js?v=20261103.40" defer></script>
-  <!-- Espelho de Volantes para Impressão A4 e PDF -->
-  <script src="./js/volante-impressao.js?v=20261103.40" defer></script>
+  <script src="./js/simulador-retrospectivo.js?v=20261103.41" defer></script>
+  <!-- Espelho de Volantes para ImpressÃ£o A4 e PDF -->
+  <script src="./js/volante-impressao.js?v=20261103.41" defer></script>
   <!-- Programa dos 20 Testadores VIP Google Play -->
-  <script src="./js/testadores-vip.js?v=20261103.40" defer></script>
-  <!-- Gestão de Carteira em Lotes (High-Capacity UX) -->
-  <script src="./js/carteira-gestao.js?v=20261103.40" defer></script>
-  <!-- Telemetria & Calibração Global de Jogos dos Usuários -->
-  <script src="./js/admin-telemetria.js?v=20261103.40" defer></script>
+  <script src="./js/testadores-vip.js?v=20261103.41" defer></script>
+  <!-- GestÃ£o de Carteira em Lotes (High-Capacity UX) -->
+  <script src="./js/carteira-gestao.js?v=20261103.41" defer></script>
+  <!-- Telemetria & CalibraÃ§Ã£o Global de Jogos dos UsuÃ¡rios -->
+  <script src="./js/admin-telemetria.js?v=20261103.41" defer></script>
   <link rel="apple-touch-icon" href="./icon-192.png" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, , viewport-fit=cover" />
   <title>Meu Volante PRO</title>
   
-  <!-- Prevenção de Cache no GitHub Pages -->
+  <!-- PrevenÃ§Ã£o de Cache no GitHub Pages -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   
-  <!-- Configurações PWA & Mobile Engine -->
+  <!-- ConfiguraÃ§Ãµes PWA & Mobile Engine -->
   <meta name="theme-color" content="#020617" />
     <meta name="mobile-web-app-capable" content="yes" />
   <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png" />
@@ -99,11 +99,11 @@
 
   <!-- Chart.js for Admin Dashboard -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js" defer></script>
-  <link rel="stylesheet" href="./css/tailwind.css?v=20261103.40" />
+  <link rel="stylesheet" href="./css/tailwind.css?v=20261103.41" />
   <script>
       
     // =========================================================================
-    // COMPLIANCE JURÍDICO, LGPD, CALENDÁRIO OFICIAL CAIXA & PLANO AVULSO
+    // COMPLIANCE JURÃDICO, LGPD, CALENDÃRIO OFICIAL CAIXA & PLANO AVULSO
     // =========================================================================
 
     function abrirModalTermosLGPD(aba = 'termos') {
@@ -138,31 +138,31 @@
       if (aba === 'termos') {
         box.innerHTML = `
           <div class="space-y-3">
-            <h4 class="text-sm font-bold text-white">Termos e Condições Gerais de Uso</h4>
-            <p><b>1. Objeto do Aplicativo:</b> O Meu Volante PRO é uma plataforma para organização, conferência, armazenamento de jogos e geração de hipóteses numéricas fundamentadas em análise combinatória e estatística descritiva (frequência, variância e paridade).</p>
-            <p><b>2. Isenção Total de Garantia de Ganho:</b> O usuário reconhece expressamente que as loterias brasileiras operadas pela Caixa Econômica Federal são eventos puramente aleatórios. Nenhuma ferramenta tecnológica, algoritmo ou modelo matemático é capaz de prever o resultado futuro ou garantir premiações.</p>
-            <p><b>3. Ausência de Intermediação de Apostas:</b> O aplicativo não é uma casa lotérica e não comercializa apostas financeiras. A efetivação de qualquer jogo é de responsabilidade estrita do apostador junto aos canais credenciados oficiais.</p>
-            <p><b>4. Maioridade Obrigatória:</b> O uso desta aplicação é restrito a indivíduos com idade igual ou superior a 18 anos.</p>
+            <h4 class="text-sm font-bold text-white">Termos e CondiÃ§Ãµes Gerais de Uso</h4>
+            <p><b>1. Objeto do Aplicativo:</b> O Meu Volante PRO Ã© uma plataforma para organizaÃ§Ã£o, conferÃªncia, armazenamento de jogos e geraÃ§Ã£o de hipÃ³teses numÃ©ricas fundamentadas em anÃ¡lise combinatÃ³ria e estatÃ­stica descritiva (frequÃªncia, variÃ¢ncia e paridade).</p>
+            <p><b>2. IsenÃ§Ã£o Total de Garantia de Ganho:</b> O usuÃ¡rio reconhece expressamente que as loterias brasileiras operadas pela Caixa EconÃ´mica Federal sÃ£o eventos puramente aleatÃ³rios. Nenhuma ferramenta tecnolÃ³gica, algoritmo ou modelo matemÃ¡tico Ã© capaz de prever o resultado futuro ou garantir premiaÃ§Ãµes.</p>
+            <p><b>3. AusÃªncia de IntermediaÃ§Ã£o de Apostas:</b> O aplicativo nÃ£o Ã© uma casa lotÃ©rica e nÃ£o comercializa apostas financeiras. A efetivaÃ§Ã£o de qualquer jogo Ã© de responsabilidade estrita do apostador junto aos canais credenciados oficiais.</p>
+            <p><b>4. Maioridade ObrigatÃ³ria:</b> O uso desta aplicaÃ§Ã£o Ã© restrito a indivÃ­duos com idade igual ou superior a 18 anos.</p>
           </div>
         `;
       } else if (aba === 'lgpd') {
         box.innerHTML = `
           <div class="space-y-3">
-            <h4 class="text-sm font-bold text-white">Política de Privacidade e Proteção de Dados (LGPD)</h4>
-            <p><b>1. Princípio da Minimização:</b> Coletamos exclusivamente dados cadastrais essenciais (e-mail, nome de exibição e os bilhetes salvos na sua Carteira local/nuvem) para permitir o funcionamento do serviço.</p>
-            <p><b>2. Sigilo e Não Compartilhamento:</b> Sob nenhuma circunstância comercializamos ou compartilhamos seus dados ou históricos de apostas com terceiros ou anunciantes.</p>
-            <p><b>3. Pagamentos Seguros:</b> Dados bancários e de cartões de crédito são processados diretamente por instituições financeiras autorizadas pelo Banco Central (PCI-DSS compliant). O Meu Volante PRO não armazena dados de cartão.</p>
+            <h4 class="text-sm font-bold text-white">PolÃ­tica de Privacidade e ProteÃ§Ã£o de Dados (LGPD)</h4>
+            <p><b>1. PrincÃ­pio da MinimizaÃ§Ã£o:</b> Coletamos exclusivamente dados cadastrais essenciais (e-mail, nome de exibiÃ§Ã£o e os bilhetes salvos na sua Carteira local/nuvem) para permitir o funcionamento do serviÃ§o.</p>
+            <p><b>2. Sigilo e NÃ£o Compartilhamento:</b> Sob nenhuma circunstÃ¢ncia comercializamos ou compartilhamos seus dados ou histÃ³ricos de apostas com terceiros ou anunciantes.</p>
+            <p><b>3. Pagamentos Seguros:</b> Dados bancÃ¡rios e de cartÃµes de crÃ©dito sÃ£o processados diretamente por instituiÃ§Ãµes financeiras autorizadas pelo Banco Central (PCI-DSS compliant). O Meu Volante PRO nÃ£o armazena dados de cartÃ£o.</p>
           </div>
         `;
       } else {
         box.innerHTML = `
           <div class="space-y-3">
             <h4 class="text-sm font-bold text-white">Painel de Direitos do Titular de Dados (Artigo 18 da LGPD)</h4>
-            <p>Em total respeito à Lei Geral de Proteção de Dados Pessoais (Lei nº 13.709/2018), você tem controle integral sobre todas as informações mantidas na plataforma:</p>
+            <p>Em total respeito Ã  Lei Geral de ProteÃ§Ã£o de Dados Pessoais (Lei nÂº 13.709/2018), vocÃª tem controle integral sobre todas as informaÃ§Ãµes mantidas na plataforma:</p>
             <ul class="list-disc pl-5 space-y-1 text-slate-300">
-              <li><b>Confirmação e Acesso:</b> Todos os seus palpites, fechamentos e dados de perfil estão visíveis no seu dispositivo.</li>
-              <li><b>Portabilidade de Dados:</b> Você pode baixar a cópia integral de suas apostas e dados em formato aberto JSON.</li>
-              <li><b>Eliminação Definitiva:</b> Você tem o direito de apagar sua conta e todos os bilhetes a qualquer instante com 1 clique.</li>
+              <li><b>ConfirmaÃ§Ã£o e Acesso:</b> Todos os seus palpites, fechamentos e dados de perfil estÃ£o visÃ­veis no seu dispositivo.</li>
+              <li><b>Portabilidade de Dados:</b> VocÃª pode baixar a cÃ³pia integral de suas apostas e dados em formato aberto JSON.</li>
+              <li><b>EliminaÃ§Ã£o Definitiva:</b> VocÃª tem o direito de apagar sua conta e todos os bilhetes a qualquer instante com 1 clique.</li>
             </ul>
           </div>
         `;
@@ -175,7 +175,7 @@
         bilhetesSalvos: JSON.parse(localStorage.getItem('loterias_nasa_bilhetes') || '[]'),
         fechamentosSalvos: JSON.parse(localStorage.getItem('loterias_nasa_fechamentos') || '[]'),
         historicoSincronizacao: new Date().toISOString(),
-        termoConsentimento: 'Aceito em conformidade com o Art. 7º, I da Lei 13.709/2018'
+        termoConsentimento: 'Aceito em conformidade com o Art. 7Âº, I da Lei 13.709/2018'
       };
 
       const blob = new Blob([JSON.stringify(dados, null, 2)], { type: 'application/json' });
@@ -186,12 +186,12 @@
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-      toast('📥 Seus dados foram exportados com sucesso em arquivo JSON!', '🛡️');
+      toast('ðŸ“¥ Seus dados foram exportados com sucesso em arquivo JSON!', 'ðŸ›¡ï¸');
     }
 
-    // Chaves que o app grava no navegador. A versão anterior removia três
-    // chaves — duas delas nem existiam mais — e deixava a carteira, o lead e
-    // o trial para trás, ainda assim anunciando exclusão total.
+    // Chaves que o app grava no navegador. A versÃ£o anterior removia trÃªs
+    // chaves â€” duas delas nem existiam mais â€” e deixava a carteira, o lead e
+    // o trial para trÃ¡s, ainda assim anunciando exclusÃ£o total.
     const CHAVES_LOCAIS_DO_USUARIO = [
       'loterias_nasa_user',
       'loterias_carteira_db',
@@ -209,9 +209,9 @@
 
     async function solicitarExclusaoContaLGPD() {
       const confirmado = confirm(
-        'ATENÇÃO: isso apaga definitivamente sua conta, seus dados de cadastro ' +
+        'ATENÃ‡ÃƒO: isso apaga definitivamente sua conta, seus dados de cadastro ' +
         'e todos os jogos salvos na Carteira.\n\n' +
-        'A ação é irreversível (Art. 18, VI da LGPD). Deseja continuar?'
+        'A aÃ§Ã£o Ã© irreversÃ­vel (Art. 18, VI da LGPD). Deseja continuar?'
       );
       if (!confirmado) return;
 
@@ -219,8 +219,8 @@
       let pedidoRegistrado = false;
       let falhaNoServidor = false;
 
-      // Apagar só o navegador deixaria a conta e o cadastro de contato vivos
-      // no servidor — o oposto do que a mensagem promete ao usuário.
+      // Apagar sÃ³ o navegador deixaria a conta e o cadastro de contato vivos
+      // no servidor â€” o oposto do que a mensagem promete ao usuÃ¡rio.
       try {
         const cliente = obterClienteSupabase();
         const base = window.NASA_SUPABASE_CONFIG?.url;
@@ -230,7 +230,7 @@
           const email = [contato?.email, usuarioSessao?.email, contato?.telefone?.replace(/\D/g, '')]
             .find((e) => e && !e.endsWith('@loteriasnasa.pro'));
           if (email) {
-            // A exclusão é concluída a partir da fila de pedidos, em até 30 dias.
+            // A exclusÃ£o Ã© concluÃ­da a partir da fila de pedidos, em atÃ© 30 dias.
             const { error } = await cliente.from('exclusao_solicitacoes')
               .insert({ email: email.toLowerCase(), motivo: 'Solicitado no app', origem: 'app' });
             pedidoRegistrado = !error;
@@ -253,13 +253,13 @@
       fazerLogout();
 
       if (removidoDoServidor) {
-        toast('🗑️ Conta e dados excluídos definitivamente.', '✅');
+        toast('ðŸ—‘ï¸ Conta e dados excluÃ­dos definitivamente.', 'âœ…');
       } else if (pedidoRegistrado) {
-        toast('Dados apagados deste aparelho. A exclusão no servidor será concluída em até 30 dias.', '⏳');
+        toast('Dados apagados deste aparelho. A exclusÃ£o no servidor serÃ¡ concluÃ­da em atÃ© 30 dias.', 'â³');
       } else if (falhaNoServidor) {
-        toast('Dados apagados deste aparelho, mas o pedido não foi registrado. Escreva para contato@pd.dev.br.', '⚠️');
+        toast('Dados apagados deste aparelho, mas o pedido nÃ£o foi registrado. Escreva para contato@pd.dev.br.', 'âš ï¸');
       } else {
-        toast('🗑️ Dados apagados deste aparelho.', '✅');
+        toast('ðŸ—‘ï¸ Dados apagados deste aparelho.', 'âœ…');
       }
     }
 
@@ -271,16 +271,16 @@
 
   <!-- Toast Notification HUD -->
   <div id="toast" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-2xl shadow-2xl border text-xs font-mono font-bold flex items-center gap-2.5 transition-all duration-300 opacity-0 pointer-events-none -translate-y-4 max-w-[92%] bg-slate-900/95 backdrop-blur-md border-emerald-500/80 text-emerald-300 hud-glow">
-    <span id="toast-icon">⚡</span>
+    <span id="toast-icon">âš¡</span>
     <span id="toast-msg">SISTEMA INICIALIZADO</span>
   </div>
 
-  <!-- Modal Diálogo Customizado -->
+  <!-- Modal DiÃ¡logo Customizado -->
   <div id="modal-dialog" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
     <div class="bg-slate-900 border border-slate-700 rounded-3xl p-5 max-w-sm w-full space-y-4 shadow-2xl">
       <div class="flex items-center gap-2 text-cyan-400 font-mono font-bold text-sm">
-        <span id="modal-dialog-icon">⚠️</span>
-        <span id="modal-dialog-title">Confirmação de Comando</span>
+        <span id="modal-dialog-icon">âš ï¸</span>
+        <span id="modal-dialog-title">ConfirmaÃ§Ã£o de Comando</span>
       </div>
       <p id="modal-dialog-msg" class="text-xs text-slate-300 leading-relaxed font-sans"></p>
       <div class="flex gap-2 pt-1">
@@ -295,24 +295,24 @@
   </div>
 
   <!-- MODAL CHECKOUT & ASSINATURA VIP PRO -->
-    <!-- MODAL CHECKOUT & APRESENTAÇÃO DE PLANOS A, B e C (SAAS OFICIAL) -->
+    <!-- MODAL CHECKOUT & APRESENTAÃ‡ÃƒO DE PLANOS A, B e C (SAAS OFICIAL) -->
 
 
-    <!-- MODAL DE AUTENTICAÇÃO, GOOGLE SIGN-IN & CADASTRO SAAS -->
+    <!-- MODAL DE AUTENTICAÃ‡ÃƒO, GOOGLE SIGN-IN & CADASTRO SAAS -->
   <div id="modal-auth-saas" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 hidden overflow-y-auto">
     <div class="bg-slate-900 border border-cyan-800/80 rounded-3xl p-5 sm:p-6 max-w-sm w-full space-y-4 shadow-2xl relative overflow-hidden backdrop-blur-xl font-sans my-auto">
       <!-- Glow effect -->
       <div class="w-36 h-36 bg-cyan-500/10 rounded-full blur-3xl absolute -top-10 -right-10 pointer-events-none"></div>
 
-      <!-- Fechar Modal (visível se já estiver navegando) -->
+      <!-- Fechar Modal (visÃ­vel se jÃ¡ estiver navegando) -->
       <button type="button" id="btn-fechar-modal-auth" onclick="fecharModalAuth()" class="absolute top-4 right-4 w-7 h-7 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center text-xs font-bold transition">
-        ✕
+        âœ•
       </button>
 
-      <!-- Cabeçalho do Login -->
+      <!-- CabeÃ§alho do Login -->
       <div class="text-center space-y-1 pt-1">
         <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-cyan-600 via-teal-500 to-emerald-400 mx-auto flex items-center justify-center text-xl shadow-lg shadow-cyan-500/30">
-          🎯
+          ðŸŽ¯
         </div>
         <div class="inline-block px-2 py-0.5 rounded-full bg-cyan-950 border border-cyan-800 text-[9px] font-mono font-black text-cyan-300 tracking-wider uppercase">
           Meu Volante PRO
@@ -323,7 +323,7 @@
         </p>
       </div>
 
-<!-- BOTÕES OAUTH (GOOGLE + META) -->
+<!-- BOTÃ•ES OAUTH (GOOGLE + META) -->
       <div class="space-y-2 pt-1">
         <!-- Google Sign-In -->
         <button type="button" onclick="loginComGoogle()" class="w-full py-2.5 px-3 bg-white hover:bg-slate-100 text-slate-900 font-bold text-xs rounded-xl shadow-md flex items-center justify-center gap-2.5 active:scale-95 transition border border-slate-200">
@@ -362,7 +362,7 @@
         </button>
       </div>
 
-      <!-- Formulário de Autenticação / Cadastro -->
+      <!-- FormulÃ¡rio de AutenticaÃ§Ã£o / Cadastro -->
       <form onsubmit="submeterFormularioAuth(event)" class="space-y-2.5 font-mono text-xs">
         <div id="campo-auth-nome" class="hidden">
           <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Nome Completo</label>
@@ -389,12 +389,12 @@
 
   <div id="modal-cadastro-visitante" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-slate-900 border border-cyan-800/80 rounded-3xl p-5 sm:p-6 max-w-sm w-full space-y-4 shadow-2xl relative font-sans my-auto">
-      <button type="button" onclick="fecharCadastroVisitante()" class="absolute top-4 right-4 w-7 h-7 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center text-xs font-bold transition" aria-label="Fechar cadastro">✕</button>
+      <button type="button" onclick="fecharCadastroVisitante()" class="absolute top-4 right-4 w-7 h-7 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center text-xs font-bold transition" aria-label="Fechar cadastro">âœ•</button>
       <div class="text-center space-y-1 pt-1">
-        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-cyan-600 via-teal-500 to-emerald-400 mx-auto flex items-center justify-center text-xl shadow-lg shadow-cyan-500/30">🎯</div>
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-cyan-600 via-teal-500 to-emerald-400 mx-auto flex items-center justify-center text-xl shadow-lg shadow-cyan-500/30">ðŸŽ¯</div>
         <div class="inline-block px-2 py-0.5 rounded-full bg-cyan-950 border border-cyan-800 text-[9px] font-mono font-black text-cyan-300 tracking-wider uppercase">Meu Volante PRO</div>
         <h2 class="text-base font-black text-white">Ative seu teste gratuito</h2>
-        <p class="text-[11px] text-slate-400">Seu contato ajuda a enviar novidades importantes da missão.</p>
+        <p class="text-[11px] text-slate-400">Seu contato ajuda a enviar novidades importantes da missÃ£o.</p>
       </div>
       <form onsubmit="submeterCadastroVisitante(event)" class="space-y-2.5 font-mono text-xs">
         <div>
@@ -411,7 +411,7 @@
         </div>
         <label class="flex items-start gap-2 text-[10px] text-slate-400 leading-relaxed font-sans">
           <input id="check-visitante-consentimento" type="checkbox" required class="mt-0.5 accent-cyan-500" />
-          <span>Aceito receber novidades da Meu Volante PRO por e-mail ou WhatsApp e concordo com a Política de Privacidade.</span>
+          <span>Aceito receber novidades da Meu Volante PRO por e-mail ou WhatsApp e concordo com a PolÃ­tica de Privacidade.</span>
         </label>
         <button type="submit" class="w-full py-2.5 btn-rocket-launch text-slate-950 font-black text-xs rounded-xl shadow active:scale-95 transition flex items-center justify-center gap-1.5 font-sans">
           ATIVAR TESTE GRATUITO
@@ -420,10 +420,10 @@
     </div>
   </div>
 
-  <!-- Cabeçalho principal do aplicativo -->
-    <!-- CABEÇALHO UNIFICADO AEROESPACIAL (ZERO COLISÕES AO ROLAR) -->
+  <!-- CabeÃ§alho principal do aplicativo -->
+    <!-- CABEÃ‡ALHO UNIFICADO AEROESPACIAL (ZERO COLISÃ•ES AO ROLAR) -->
   <header class="sticky top-0 z-30 bg-slate-950/98 backdrop-blur-xl border-b border-slate-800 shadow-2xl safe-top">
-    <!-- Nível 1: Telemetria & Flight Ops -->
+    <!-- NÃ­vel 1: Telemetria & Flight Ops -->
     <div class="px-3 sm:px-4 py-1.5 bg-slate-950 border-b border-cyan-950/60 flex items-center justify-between text-[9px] font-mono text-cyan-400 max-w-lg lg:max-w-6xl xl:max-w-7xl mx-auto">
       <div class="flex items-center gap-1.5 sm:gap-2">
         <div class="flex items-center gap-1.5">
@@ -435,13 +435,13 @@
       <div class="flex items-center gap-1.5 sm:gap-2">
         <!-- Perfil / Login -->
         <button type="button" id="btn-user-profile" onclick="abrirModalAuthOuPerfil()" class="px-2 py-0.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-[9px] font-bold text-slate-200 flex items-center gap-1 transition" title="Minha Conta / Acesso Master">
-          <span id="avatar-user-topo" class="w-3.5 h-3.5 rounded-full bg-cyan-600 text-white flex items-center justify-center text-[8px] font-black">👤</span>
+          <span id="avatar-user-topo" class="w-3.5 h-3.5 rounded-full bg-cyan-600 text-white flex items-center justify-center text-[8px] font-black">ðŸ‘¤</span>
           <span id="nome-user-topo" class="max-w-[65px] truncate">Visitante</span>
         </button>
 
         <!-- Status do Plano -->
         <button type="button" id="btn-status-plano" onclick="abrirModalPaywall('header')" class="cursor-pointer text-[9px] px-2 py-0.5 rounded font-black border transition active:scale-95 flex items-center gap-1 bg-amber-950/80 border-amber-500 text-amber-300 shadow-[0_0_8px_rgba(245,158,11,0.25)]" title="Ver Planos VIP">
-          <span id="icone-plano-topo">⚡</span> <span id="label-plano-topo">PLANO GRATUITO</span>
+          <span id="icone-plano-topo">âš¡</span> <span id="label-plano-topo">PLANO GRATUITO</span>
         </button>
 
         <!-- Testadores VIP Play Store -->
@@ -451,37 +451,37 @@
       </div>
     </div>
 
-    <!-- Nível 2: Seletor de Modalidade e Controles -->
+    <!-- NÃ­vel 2: Seletor de Modalidade e Controles -->
     <div class="px-3 sm:px-4 py-1.5 flex items-center justify-between max-w-lg lg:max-w-6xl xl:max-w-7xl mx-auto border-b border-slate-900">
       <div class="flex items-center gap-1.5 p-0.5 bg-slate-900 rounded-xl border border-slate-800">
         <button id="btn-mod-mega" onclick="trocarModalidade('megasena')" class="px-3 py-1 rounded-lg text-xs font-black transition bg-emerald-600 text-slate-950 shadow">
           Mega-Sena
         </button>
         <button id="btn-mod-loto" onclick="trocarModalidade('lotofacil')" class="px-3 py-1 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition">
-          Lotofácil
+          LotofÃ¡cil
         </button>
       </div>
 
       <div class="flex items-center gap-1.5">
-        <button type="button" onclick="forcarAtualizacaoPWA()" class="text-[9px] font-mono text-cyan-400 bg-cyan-950/80 hover:bg-cyan-900 px-1.5 py-0.5 rounded border border-cyan-800 font-bold active:scale-95 transition flex items-center gap-1 cursor-pointer" title="Toque para Forçar Atualização Imediata">
+        <button type="button" onclick="forcarAtualizacaoPWA()" class="text-[9px] font-mono text-cyan-400 bg-cyan-950/80 hover:bg-cyan-900 px-1.5 py-0.5 rounded border border-cyan-800 font-bold active:scale-95 transition flex items-center gap-1 cursor-pointer" title="Toque para ForÃ§ar AtualizaÃ§Ã£o Imediata">
           <span>v3.2</span> </button>
         <button onclick="alternarTema()" id="btn-theme-toggle" class="w-8 h-8 rounded-xl bg-slate-900 hover:bg-slate-800 text-xs border border-slate-800 flex items-center justify-center text-amber-400 transition" title="Alternar Modo Claro / Modo Escuro">
-          <span id="theme-icon">🌙</span>
+          <span id="theme-icon">ðŸŒ™</span>
         </button>
         <button onclick="alternarAudio()" id="btn-audio-toggle" class="w-8 h-8 rounded-xl bg-slate-900 hover:bg-slate-800 text-xs border border-slate-800 flex items-center justify-center text-slate-300 transition" title="Alternar Efeitos Sonoros">
-          <span id="audio-icon">🔊</span>
+          <span id="audio-icon">ðŸ”Š</span>
         </button>
         <button onclick="sincronizarConcursos()" class="px-2.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 active:scale-95 text-emerald-400 text-xs border border-slate-800 font-bold flex items-center gap-1 shadow transition font-mono">
-          <span id="sync-icon">🔄</span> RESULTADOS
+          <span id="sync-icon">ðŸ”„</span> RESULTADOS
         </button>
       </div>
     </div>
 
-    <!-- Nível 3: As Abas de Navegação Integradas (Sem Scroll e Sem Colisão) -->
+    <!-- NÃ­vel 3: As Abas de NavegaÃ§Ã£o Integradas (Sem Scroll e Sem ColisÃ£o) -->
     <div class="px-2 py-1.5 max-w-lg lg:max-w-6xl xl:max-w-7xl mx-auto">
       <div class="grid grid-cols-7 gap-1 font-mono text-[8px] sm:text-[9px] md:text-xs">
         <button onclick="mudarAba('inicio')" id="tab-inicio" class="py-1.5 px-0.5 rounded-xl font-black transition bg-gradient-to-r from-cyan-500 to-teal-400 text-slate-950 shadow flex items-center justify-center gap-0.5">
-          <span class="truncate">Início</span>
+          <span class="truncate">InÃ­cio</span>
         </button>
         <button onclick="mudarAba('volante')" id="tab-volante" class="py-1.5 px-0.5 rounded-xl font-bold transition bg-slate-900 text-slate-400 border border-slate-800 hover:text-white flex items-center justify-center gap-0.5">
           <span class="truncate">Gerador</span>
@@ -490,13 +490,13 @@
           <span class="truncate">Fechamentos</span>
         </button>
         <button onclick="mudarAba('calor')" id="tab-calor" class="py-1.5 px-0.5 rounded-xl font-bold transition bg-slate-900 text-slate-400 border border-slate-800 hover:text-white flex items-center justify-center gap-0.5">
-          <span class="truncate">Estatísticas</span>
+          <span class="truncate">EstatÃ­sticas</span>
         </button>
         <button onclick="mudarAba('carteira')" id="tab-carteira" class="py-1.5 px-0.5 rounded-xl font-bold transition bg-slate-900 text-slate-400 border border-slate-800 hover:text-white flex items-center justify-center gap-0.5">
           <span class="truncate">Carteira</span>
         </button>
         <button onclick="mudarAba('bolao')" id="tab-bolao" class="py-1.5 px-0.5 rounded-xl font-bold transition bg-slate-900 text-slate-400 border border-slate-800 hover:text-white flex items-center justify-center gap-0.5">
-          <span class="truncate">Bolões</span>
+          <span class="truncate">BolÃµes</span>
         </button>
         <button onclick="mudarAba('admin')" id="tab-admin" class="hidden py-1.5 px-0.5 rounded-xl font-bold transition bg-amber-500/10 text-amber-400 border border-amber-500/30 hover:bg-amber-500/20 hover:text-amber-300 flex items-center justify-center gap-0.5" title="Painel Administrativo">
           <span class="truncate font-black">Admin</span>
@@ -505,10 +505,10 @@
     </div>
   </header>
 
-  <!-- Corpo Principal de Telas (Mobile: Coluna Única | Desktop: Centro de Comando Widescreen) -->
+  <!-- Corpo Principal de Telas (Mobile: Coluna Ãšnica | Desktop: Centro de Comando Widescreen) -->
   <main class="flex-1 max-w-lg lg:max-w-6xl xl:max-w-7xl mx-auto w-full p-3.5 pb-24 overflow-y-auto no-scrollbar space-y-4">
 
-    <!-- TELA 0: INÍCIO / APRESENTAÇÃO DE FEATURES & ONBOARDING -->
+    <!-- TELA 0: INÃCIO / APRESENTAÃ‡ÃƒO DE FEATURES & ONBOARDING -->
     <section id="view-inicio" class="space-y-4">
       <!-- HERO CARD -->
       <div class="bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 border border-cyan-800/60 rounded-3xl p-5 shadow-2xl space-y-4 font-sans relative overflow-hidden">
@@ -518,17 +518,17 @@
         <div class="text-center space-y-2">
           <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-950 border border-cyan-800 text-[10px] font-mono font-black text-cyan-300 tracking-wider uppercase">
             <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span>ANÁLISE E ORGANIZAÇÃO DE JOGOS</span>
+            <span>ANÃLISE E ORGANIZAÃ‡ÃƒO DE JOGOS</span>
           </div>
           <h1 class="text-xl sm:text-2xl font-black text-white tracking-tight leading-snug">
-            Monte seu próximo jogo com clareza
+            Monte seu prÃ³ximo jogo com clareza
           </h1>
           <p class="text-xs text-slate-300 leading-relaxed max-w-md mx-auto">
-            Gere combinações, monte seu volante e acompanhe seus bilhetes de Mega-Sena e Lotofácil em um só lugar. As análises ajudam a organizar escolhas, mas não preveem resultados.
+            Gere combinaÃ§Ãµes, monte seu volante e acompanhe seus bilhetes de Mega-Sena e LotofÃ¡cil em um sÃ³ lugar. As anÃ¡lises ajudam a organizar escolhas, mas nÃ£o preveem resultados.
           </p>
         </div>
 
-        <!-- BOTÕES DE AÇÃO RÁPIDA -->
+        <!-- BOTÃ•ES DE AÃ‡ÃƒO RÃPIDA -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1 font-sans">
           <button type="button" onclick="mudarAba('volante')" class="py-3 px-3 bg-gradient-to-r from-emerald-500 via-teal-400 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-black text-xs rounded-2xl shadow-lg shadow-emerald-500/20 active:scale-95 transition flex items-center justify-center gap-1.5 uppercase tracking-wider">
             Gerar um jogo
@@ -559,17 +559,17 @@
               <h3 class="text-xs font-black text-white">Gerador de jogos</h3>
             </div>
             <p class="text-[11px] text-slate-400 leading-relaxed">
-              Gere um jogo rapidamente ou monte suas próprias dezenas no volante.
+              Gere um jogo rapidamente ou monte suas prÃ³prias dezenas no volante.
             </p>
           </div>
 
           <!-- Feature 2: 6 Testes Orbitais -->
           <div class="p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800 hover:border-emerald-800/80 transition space-y-1.5">
             <div class="flex items-center gap-2">
-              <h3 class="text-xs font-black text-white">Análise do jogo</h3>
+              <h3 class="text-xs font-black text-white">AnÃ¡lise do jogo</h3>
             </div>
             <p class="text-[11px] text-slate-400 leading-relaxed">
-              Veja paridade, soma, distribuição e outros indicadores descritivos da combinação.
+              Veja paridade, soma, distribuiÃ§Ã£o e outros indicadores descritivos da combinaÃ§Ã£o.
             </p>
           </div>
 
@@ -579,24 +579,24 @@
               <h3 class="text-xs font-black text-white">Fechamentos</h3>
             </div>
             <p class="text-[11px] text-slate-400 leading-relaxed">
-              Transforme um conjunto maior de dezenas em combinações menores para comparar custo e cobertura.
+              Transforme um conjunto maior de dezenas em combinaÃ§Ãµes menores para comparar custo e cobertura.
             </p>
           </div>
 
-          <!-- Feature 4: Gestor de Bolões -->
+          <!-- Feature 4: Gestor de BolÃµes -->
           <div class="p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800 hover:border-amber-800/80 transition space-y-1.5">
             <div class="flex items-center gap-2">
-              <h3 class="text-xs font-black text-white">Carteira e bolões</h3>
+              <h3 class="text-xs font-black text-white">Carteira e bolÃµes</h3>
             </div>
             <p class="text-[11px] text-slate-400 leading-relaxed">
-              Salve bilhetes, organize concursos e calcule a divisão de cotas do seu bolão.
+              Salve bilhetes, organize concursos e calcule a divisÃ£o de cotas do seu bolÃ£o.
             </p>
           </div>
 
           <!-- Feature 5: Dezenas Fixas e Proibidas -->
           <div class="p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800 hover:border-cyan-800/80 transition space-y-1.5 sm:col-span-2">
             <div class="flex items-center gap-2">
-              <h3 class="text-xs font-black text-white">Preferências do volante</h3>
+              <h3 class="text-xs font-black text-white">PreferÃªncias do volante</h3>
             </div>
             <p class="text-[11px] text-slate-400 leading-relaxed">
               Marque dezenas fixas ou proibidas para que o gerador respeite suas escolhas.
@@ -608,14 +608,14 @@
       <!-- MODELO FREEMIUM EXPLICADO -->
       <div class="p-4 rounded-3xl bg-slate-950 border border-slate-800 space-y-3 font-sans">
         <div class="text-center space-y-1">
-          <span class="text-[10px] font-mono font-black text-amber-400 uppercase tracking-wider">COMECE SEM COMPLICAÇÃO</span>
+          <span class="text-[10px] font-mono font-black text-amber-400 uppercase tracking-wider">COMECE SEM COMPLICAÃ‡ÃƒO</span>
           <h3 class="text-sm font-black text-white">Escolha como usar</h3>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-center text-xs">
           <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
             <strong class="text-white text-xs block mt-1">Testar agora</strong>
-            <p class="text-[10px] text-slate-400 mt-1">Gere um jogo e conheça o volante sem cadastrar cartão.</p>
+            <p class="text-[10px] text-slate-400 mt-1">Gere um jogo e conheÃ§a o volante sem cadastrar cartÃ£o.</p>
           </div>
           <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
             <strong class="text-white text-xs block mt-1">Criar conta</strong>
@@ -623,13 +623,13 @@
           </div>
           <div class="p-2.5 rounded-xl bg-amber-950/40 border border-amber-500/50">
             <strong class="text-amber-300 text-xs block mt-1">Recursos extras</strong>
-            <p class="text-[10px] text-slate-300 mt-1">Veja opções adicionais de geração, fechamentos e análises.</p>
+            <p class="text-[10px] text-slate-300 mt-1">Veja opÃ§Ãµes adicionais de geraÃ§Ã£o, fechamentos e anÃ¡lises.</p>
           </div>
         </div>
 
         <div class="pt-2 text-center">
           <button type="button" onclick="mudarAba('volante')" class="w-full py-3 bg-gradient-to-r from-emerald-500 via-teal-400 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-black text-xs rounded-xl shadow-lg shadow-emerald-500/20 active:scale-95 transition font-mono uppercase tracking-wider">
-            🎯 ABRIR GERADOR
+            ðŸŽ¯ ABRIR GERADOR
           </button>
         </div>
       </div>
@@ -637,7 +637,9 @@
 
     <!-- TELA 1: GERADOR DE JOGOS (RESPONSIVO: MOBILE POCKET | DESKTOP COCKPIT DUAL-COLUMN) -->
     <section id="view-volante" class="hidden">
-      <div class="lg:grid lg:grid-cols-12 lg:gap-6 space-y-4 lg:space-y-0 items-start">
+      <!-- SUB-ABA 1: JOGO INDIVIDUAL -->
+      <div id="gerador-container-jogo">
+        <div class="lg:grid lg:grid-cols-12 lg:gap-6 space-y-4 lg:space-y-0 items-start">
         
         <!-- COLUNA 1 (DESKTOP ESQUERDA): GERADOR + VOLANTE DIGITAL -->
         <div class="lg:col-span-7 space-y-4">
@@ -647,75 +649,99 @@
         <div class="space-y-2">
           <div class="flex items-center justify-between gap-2">
             <span id="modalidade-label" class="text-xs font-black uppercase tracking-wider text-emerald-400">
-              🎯 GERADOR DE JOGOS
+              ðŸŽ¯ SEU JOGO
             </span>
             <div class="flex items-center gap-1.5">
-              <button onclick="salvarJogoNaCarteira()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-slate-950 text-xs font-black rounded-xl shadow flex items-center gap-1 active:scale-95 transition whitespace-nowrap">
-                <span>Salvar</span>
-              </button>
               <button onclick="limparSelecao()" class="px-2.5 py-1.5 bg-slate-800 text-slate-300 hover:text-white text-xs font-bold rounded-xl border border-slate-700 flex items-center gap-1 whitespace-nowrap">
                 <span>Limpar</span>
               </button>
             </div>
           </div>
-
-          <div class="flex items-center gap-2 flex-wrap font-mono">
-            <span class="px-2.5 py-0.5 rounded-lg bg-emerald-500/15 border border-emerald-500/35 text-emerald-400 font-black text-xs">
-              <span id="qtd-selecionadas">6</span> / <span id="max-selecao-label">20</span> dezenas
-            </span>
-            <span id="badge-custo-inline" class="px-2.5 py-0.5 rounded-lg bg-cyan-500/15 border border-cyan-500/35 text-cyan-300 font-bold text-xs">
-              R$ 6,00
-            </span>
-          </div>
         </div>
 
-        <!-- SELETOR DE QUANTIDADE DE NÚMEROS DO JOGO -->
-        <div class="pt-2.5 border-t border-slate-800/80">
-          <div class="flex justify-between items-center mb-1.5">
-            <span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider">Dezenas por aposta</span>
-            <span id="label-qtd-ativa" class="text-[10px] text-cyan-300 font-bold bg-cyan-950 px-2 py-0.5 rounded-md border border-cyan-800 font-mono">6 números</span>
+        <!-- DEFINIÃ‡Ã•ES PRIMEIRO: SELETOR DE DEZENAS E QUANTIDADE DE JOGOS -->
+        <div class="space-y-3 pt-1">
+          <!-- SELETOR DE QUANTIDADE DE NÃšMEROS DO JOGO -->
+          <div>
+            <div class="flex justify-between items-center mb-1.5">
+              <span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider">Dezenas por aposta</span>
+              <span id="label-qtd-ativa" class="text-[10px] text-cyan-300 font-bold bg-cyan-950 px-2 py-0.5 rounded-md border border-cyan-800 font-mono">6 nÃºmeros</span>
+            </div>
+            <div id="container-seletores-qtd" class="pb-1"></div>
           </div>
-          <div id="container-seletores-qtd" class="pb-1"></div>
-        </div>
 
-        <!-- SELETOR DE QUANTOS JOGOS GERAR (Ex: 1, 2, 3 ou 5 jogos de 6 números) -->
-        <div class="pt-2.5 border-t border-slate-800/80">
-          <div class="flex justify-between items-center mb-1.5">
-            <span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider">Quantidade de jogos</span>
-            <span id="label-qtd-jogos-ativa" class="text-[10px] text-emerald-300 font-bold bg-emerald-950 px-2 py-0.5 rounded-md border border-emerald-800 font-mono">1 jogo</span>
-          </div>
-          <div class="grid grid-cols-4 gap-1.5 text-center">
-            <button type="button" id="btn-qtd-jogos-1" onclick="setQtdJogosParaGerar(1)" class="py-2 rounded-xl text-xs font-black transition bg-emerald-600 text-slate-950 shadow">1 Jogo</button>
-            <button type="button" id="btn-qtd-jogos-2" onclick="setQtdJogosParaGerar(2)" class="py-2 rounded-xl text-xs font-bold transition bg-slate-950 text-slate-300 border border-slate-800 hover:text-white flex items-center justify-center gap-1">
-              <span>2 Jogos</span><span id="selo-pro-qtd-2" class="text-[9px] bg-amber-500 text-slate-950 px-1 rounded font-black">PRO</span>
-            </button>
-            <button type="button" id="btn-qtd-jogos-3" onclick="setQtdJogosParaGerar(3)" class="py-2 rounded-xl text-xs font-bold transition bg-slate-950 text-slate-300 border border-slate-800 hover:text-white flex items-center justify-center gap-1">
-              <span>3 Jogos</span><span id="selo-pro-qtd-3" class="text-[9px] bg-amber-500 text-slate-950 px-1 rounded font-black">PRO</span>
-            </button>
-            <button type="button" id="btn-qtd-jogos-5" onclick="setQtdJogosParaGerar(5)" class="py-2 rounded-xl text-xs font-bold transition bg-slate-950 text-slate-300 border border-slate-800 hover:text-white flex items-center justify-center gap-1">
-              <span>5 Jogos</span><span id="selo-pro-qtd-5" class="text-[9px] bg-amber-500 text-slate-950 px-1 rounded font-black">PRO</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- BANNER DE CONVERSÃO PLANO VIP PRO -->
-        <div id="banner-cta-pro-volante" onclick="abrirModalPaywall('banner_volante')" class="hidden p-2.5 rounded-2xl bg-gradient-to-r from-amber-950/70 via-slate-900 to-amber-950/70 border border-amber-500/70 cursor-pointer shadow-lg hover:border-amber-400 transition items-center justify-between gap-2 active:scale-98">
-          <div class="flex items-center gap-2">
-            <div>
-              <span class="text-[10px] uppercase font-black text-amber-400 tracking-wider block">RECURSOS EXTRAS</span>
-              <span class="text-[11px] text-slate-200 font-bold block">Gere mais jogos e salve mais bilhetes</span>
+          <!-- SELETOR DE QUANTOS JOGOS GERAR (Ex: 1, 2, 3 ou 5 jogos) -->
+          <div class="pt-2 border-t border-slate-800/80">
+            <div class="flex justify-between items-center mb-1.5">
+              <span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider">Quantidade de jogos</span>
+              <span id="label-qtd-jogos-ativa" class="text-[10px] text-emerald-300 font-bold bg-emerald-950 px-2 py-0.5 rounded-md border border-emerald-800 font-mono">1 jogo</span>
+            </div>
+            <div class="grid grid-cols-4 gap-1.5 text-center">
+              <button type="button" id="btn-qtd-jogos-1" onclick="setQtdJogosParaGerar(1)" class="py-2 rounded-xl text-xs font-black transition bg-emerald-600 text-slate-950 shadow">1 Jogo</button>
+              <button type="button" id="btn-qtd-jogos-2" onclick="setQtdJogosParaGerar(2)" class="py-2 rounded-xl text-xs font-bold transition bg-slate-950 text-slate-300 border border-slate-800 hover:text-white flex items-center justify-center gap-1">
+                <span>2 Jogos</span><span id="selo-pro-qtd-2" class="text-[9px] bg-amber-500 text-slate-950 px-1 rounded font-black">PRO</span>
+              </button>
+              <button type="button" id="btn-qtd-jogos-3" onclick="setQtdJogosParaGerar(3)" class="py-2 rounded-xl text-xs font-bold transition bg-slate-950 text-slate-300 border border-slate-800 hover:text-white flex items-center justify-center gap-1">
+                <span>3 Jogos</span><span id="selo-pro-qtd-3" class="text-[9px] bg-amber-500 text-slate-950 px-1 rounded font-black">PRO</span>
+              </button>
+              <button type="button" id="btn-qtd-jogos-5" onclick="setQtdJogosParaGerar(5)" class="py-2 rounded-xl text-xs font-bold transition bg-slate-950 text-slate-300 border border-slate-800 hover:text-white flex items-center justify-center gap-1">
+                <span>5 Jogos</span><span id="selo-pro-qtd-5" class="text-[9px] bg-amber-500 text-slate-950 px-1 rounded font-black">PRO</span>
+              </button>
             </div>
           </div>
-          <span class="px-2.5 py-1.5 bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 font-black text-[10px] rounded-xl shadow whitespace-nowrap">
-            VER OPÇÕES
-          </span>
+
+          <!-- PREFERÃŠNCIAS AVANÃ‡ADAS: FIXAS E PROIBIDAS (ACORDEON ANTES DE GERAR) -->
+          <div class="pt-2 border-t border-slate-800/80">
+            <details class="fluxo-preferencias bg-slate-950/70 p-2.5 rounded-2xl border border-slate-800/80">
+              <summary class="cursor-pointer text-xs font-bold text-slate-300 flex items-center justify-between select-none">
+                <span>Preferências avançadas · fixas e proibidas</span>
+              </summary>
+              <div class="pt-2 space-y-2 font-sans">
+                <div class="flex items-center justify-between gap-1 flex-wrap">
+                  <div class="flex items-center gap-1">
+                    <button type="button" id="btn-modo-normal" onclick="setModoToque('normal')" class="px-2 py-1 rounded-lg bg-cyan-500 text-slate-950 font-black text-[10px] border border-cyan-300 shadow">
+                      ðŸŽ¯ Normal
+                    </button>
+                    <button type="button" id="btn-modo-fixo" onclick="setModoToque('fixo')" class="px-2 py-1 rounded-lg bg-slate-900 text-slate-400 hover:text-white font-bold text-[10px] border border-slate-800">
+                      ðŸ“Œ Fixar
+                    </button>
+                    <button type="button" id="btn-modo-proibido" onclick="setModoToque('proibido')" class="px-2 py-1 rounded-lg bg-slate-900 text-slate-400 hover:text-white font-bold text-[10px] border border-slate-800">
+                      ðŸš« Proibir
+                    </button>
+                  </div>
+                  <button type="button" onclick="limparFixosEProibidos()" class="px-2 py-1 rounded-lg bg-slate-900 text-rose-400 hover:bg-rose-950/70 text-[10px] font-bold border border-rose-900/60 active:scale-95 transition flex items-center gap-1">
+                    Resetar
+                  </button>
+                </div>
+                <div id="painel-regras-ativas" class="text-[10px] text-slate-400 flex flex-wrap items-center gap-1.5 min-h-[18px]"></div>
+              </div>
+            </details>
+          </div>
         </div>
 
-        <!-- BOTÃO DE AÇÃO PRINCIPAL: IGNIÇÃO ORBITAL & FOGUETE -->
-        <div class="pt-1">
-          <button type="button" onclick="gerarApostaNasaComMatriz4x4()" class="w-full py-3.5 px-4 btn-rocket-launch text-slate-950 font-black text-sm rounded-2xl active:scale-95 transition flex items-center justify-center gap-2 font-sans tracking-wide cursor-pointer">
-            <span id="txt-btn-gerar-principal" class="tracking-wide">GERAR JOGO</span>
-          </button>
+        <!-- GRADE 2x2 DE AÃ‡Ã•ES PRINCIPAIS -->
+        <div class="pt-2 border-t border-slate-800/80">
+          <div class="grid grid-cols-2 gap-2">
+            <!-- BOTÃƒO 1: GERAR JOGO -->
+            <button type="button" onclick="gerarApostaNasaComMatriz4x4()" class="py-3 px-3 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-400 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-black text-xs sm:text-sm active:scale-95 transition flex items-center justify-center gap-1.5 shadow-lg shadow-emerald-500/25 cursor-pointer">
+              <span>ðŸŽ¯ Gerar Jogo</span>
+            </button>
+
+            <!-- BOTÃƒO 2: SALVAR JOGO (COM MODAL PROXIMO CONCURSO OU MEGA DA VIRADA) -->
+            <button type="button" onclick="abrirModalEscolhaSalvarJogo()" class="py-3 px-3 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-black text-xs sm:text-sm active:scale-95 transition flex items-center justify-center gap-1.5 shadow cursor-pointer">
+              <span>ðŸ’¾ Salvar Jogo</span>
+            </button>
+
+            <!-- BOTÃƒO 3: ENVIAR NO WHATSAPP -->
+            <button type="button" id="btn-whatsapp-lote" onclick="compartilharJogoGeradoWhatsapp()" class="py-2.5 px-3 rounded-2xl bg-slate-800 hover:bg-slate-700 text-emerald-300 font-bold text-xs border border-slate-700 active:scale-95 transition flex items-center justify-center gap-1.5 shadow cursor-pointer">
+              <span>ðŸ’¬ WhatsApp</span>
+            </button>
+
+            <!-- BOTÃƒO 4: BAIXAR PDF / IMPRIMIR -->
+            <button type="button" onclick="imprimirJogosVolante()" class="py-2.5 px-3 rounded-2xl bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold text-xs border border-slate-700 active:scale-95 transition flex items-center justify-center gap-1.5 shadow cursor-pointer">
+              <span>ðŸ“„ Baixar PDF</span>
+            </button>
+          </div>
         </div>
 
         <!-- SELETOR DE JOGOS GERADOS (QUANDO HOUVER MAIS DE 1 JOGO) -->
@@ -727,54 +753,30 @@
           <div id="lista-abas-jogos-gerados" class="flex gap-1.5 overflow-x-auto pb-1 no-scrollbar"></div>
         </div>
 
-        <!-- DEZENAS GERADAS / ATIVAS NO JOGO ATUAL -->
-        <div class="space-y-1.5 pt-1">
+        <!-- EXIBIÃ‡ÃƒO FLUIDA: NÃšMEROS GERADOS LOGO ACIMA DO VOLANTE -->
+        <div class="space-y-2 pt-2 border-t border-slate-800/80">
           <div class="flex justify-between items-center text-[11px]">
-            <span id="label-titulo-jogo-ativo" class="text-slate-400 font-bold">Toque numa bola para fixar (📌):</span>
-            <span id="custo-jogo-selecionado" class="text-emerald-400 font-black font-mono hidden">R$ 6,00 (1 aposta)</span>
+            <span id="label-titulo-jogo-ativo" class="text-slate-400 font-bold">NÃºmeros Gerados / Ativos:</span>
+            <button type="button" onclick="limparSelecao()" class="text-[11px] text-slate-400 hover:text-white transition flex items-center gap-1">
+              <span>Limpar dezenas marcadas â†º</span>
+            </button>
           </div>
           
-<div id="display-meu-jogo" class="flex flex-wrap gap-2 min-h-[54px] p-3 rounded-2xl bg-slate-950 border border-slate-800 items-center justify-center"></div>
-          <div id="planejar-mega-virada" class="hidden p-3 rounded-2xl border border-amber-700/60 bg-amber-950/20 space-y-1.5">
-            <label for="chk-mega-virada" class="flex min-h-11 items-center gap-2 text-sm font-bold text-amber-200 cursor-pointer">
-              <input id="chk-mega-virada" type="checkbox" onchange="window.atualizarModoMegaVirada?.()" class="w-5 h-5 accent-amber-400" />
-              Planejar jogo para a Mega da Virada 2026
-            </label>
-            <p class="text-xs leading-relaxed text-slate-300">Salva o palpite na sua carteira. O app não vende apostas; confirme data, concurso e registro nos canais oficiais da CAIXA.</p>
-          </div>
+          <div id="display-meu-jogo" class="flex flex-wrap gap-2 min-h-[54px] p-3 rounded-2xl bg-slate-950 border border-slate-800 items-center justify-center"></div>
 
-          <!-- Alerta Inteligente de Repetição / Jogo Já Jogado na Carteira -->
+          <!-- Alerta Inteligente de RepetiÃ§Ã£o / Jogo JÃ¡ Jogado na Carteira -->
           <div id="alerta-jogo-ja-jogado" class="hidden transition-all duration-300"></div>
 
-          <!-- Ações Rápidas do Jogo: Joguei Este Jogo, Salvar na Carteira & WhatsApp -->
-          <div class="space-y-2 pt-2">
-            <!-- Botão de Ação Primária em Destaque: Joguei este jogo -->
-            <button type="button" onclick="marcarComoJogadoProximoConcurso(); if(typeof tocarSomNasa === 'function') tocarSomNasa('sucesso');" class="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-400 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-black text-xs sm:text-sm active:scale-95 transition flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/25 cursor-pointer">
-              <span id="txt-btn-joguei-jogo">JOGUEI ESTE JOGO! (Salvar para o Próximo Sorteio)</span>
-            </button>
-
-            <!-- Ações Secundárias Limpas e Proporcionais -->
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-xs">
-              <button type="button" id="btn-whatsapp-lote" onclick="compartilharJogoGeradoWhatsapp()" class="py-2 px-2 rounded-xl bg-emerald-600/90 hover:bg-emerald-500 text-slate-950 font-bold active:scale-95 transition flex items-center justify-center gap-1 shadow">
-                <span id="txt-whatsapp-botao">WhatsApp</span>
-              </button>
-              <button type="button" onclick="salvarJogoAtivoNaCarteira(); if(typeof tocarSomNasa === 'function') tocarSomNasa('sucesso');" class="py-2 px-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-cyan-300 font-bold border border-slate-700 active:scale-95 transition flex items-center justify-center gap-1">
-                Salvar
-              </button>
-              <button hidden type="button" onclick="abrirSimuladorRetrospectivo()" class="py-2 px-2 rounded-xl bg-cyan-950 hover:bg-cyan-900 border border-cyan-800 text-cyan-300 font-bold active:scale-95 transition flex items-center justify-center gap-1" title="Simular acertos nos últimos concursos da Caixa">
-                Simular
-              </button>
-              <button type="button" onclick="imprimirJogosVolante()" class="py-2 px-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-amber-300 font-bold active:scale-95 transition flex items-center justify-center gap-1" title="Imprimir volante em A4 ou salvar como PDF">
-                PDF
-              </button>
-            </div>
+          <!-- Dicas e BotÃ£o de Troca Direta caso nÃ£o passe nos testes -->
+          <div id="card-sugestao-troca" class="hidden">
+            <div id="conteudo-sugestao-troca" class="text-xs text-slate-300 space-y-2 font-sans transition-all"></div>
           </div>
-
         </div>
+
       </div>
 
       <!-- VOLANTE DIGITAL INTERATIVO -->
-      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-4 space-y-3 font-sans">
+      <div id="card-volante-manual" class="bg-slate-900 border border-slate-800 rounded-3xl p-4 space-y-3 font-sans">
         <div class="flex flex-wrap justify-between items-center gap-2">
           <span id="volante-titulo-tipo" class="text-sm font-black text-white">Volante Mega-Sena (1 a 60)</span>
           <div id="volante-top-controls" class="flex items-center gap-2 flex-wrap">
@@ -785,46 +787,26 @@
           </div>
         </div>
 
-        <!-- BARRA DE MODO DE CALIBRAÇÃO (NORMAL, FIXAR, PROIBIR/EXCLUIR) -->
-        <div class="p-2 bg-slate-950 rounded-2xl border border-slate-800/80 flex flex-wrap items-center justify-between gap-2">
-          <div class="flex items-center gap-1">
-            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mr-1">Modo:</span>
-            <button type="button" id="btn-modo-normal" onclick="setModoToque('normal')" class="px-2.5 py-1 rounded-xl bg-cyan-500 text-slate-950 font-black text-[10px] border border-cyan-300 shadow">
-              🎯 Normal
-            </button>
-            <button type="button" id="btn-modo-fixo" onclick="setModoToque('fixo')" class="px-2.5 py-1 rounded-xl bg-slate-900 text-slate-400 hover:text-white font-bold text-[10px] border border-slate-800">
-              📌 Fixar
-            </button>
-            <button type="button" id="btn-modo-proibido" onclick="setModoToque('proibido')" class="px-2.5 py-1 rounded-xl bg-slate-900 text-slate-400 hover:text-white font-bold text-[10px] border border-slate-800">
-              🚫 Proibir
-            </button>
-          </div>
-          <button type="button" onclick="limparFixosEProibidos()" class="px-2.5 py-1 rounded-xl bg-slate-900 text-rose-400 hover:bg-rose-950/70 text-[10px] font-bold border border-rose-900/60 active:scale-95 transition ml-auto flex items-center gap-1" title="Liberar todos os números fixados e proibidos">
-            Resetar Regras
-          </button>
-        </div>
-
-        <!-- PAINEL DE TELEMETRIA: NÚMEROS FIXOS E PROIBIDOS ATIVOS -->
-        <div id="painel-regras-ativas" class="text-[10px] text-slate-400 flex flex-wrap items-center gap-1.5 px-1 min-h-[22px]"></div>
-
         <div id="volante-grid" class="grid grid-cols-10 gap-1 text-center"></div>
-        <div id="legenda-volante" class="grid grid-cols-4 gap-1 pt-2 border-t border-slate-800/80 text-[9px] text-center"></div>
+        
+        <!-- MINI LEGENDA FINA Q1 / Q2 / Q3 / Q4 -->
+        <div id="legenda-volante" class="grid grid-cols-4 gap-1.5 pt-2 border-t border-slate-800/80 text-[10px] text-center"></div>
       </div>
       </div> <!-- FIM COLUNA 1 -->
 
       <!-- COLUNA 2 (DESKTOP DIREITA): RADAR AO VIVO + TELEMETRIA + SIMULADOR -->
       <div class="lg:col-span-5 space-y-4 lg:sticky lg:top-24">
 
-      <!-- DIAGNÓSTICO AO VIVO DA MATRIZ 4x4 DE EQUILÍBRIO (COLAPSÁVEL) -->
+      <!-- DIAGNÃ“STICO AO VIVO DA MATRIZ 4x4 DE EQUILÃBRIO (COLAPSÃVEL) -->
       <div id="card-matriz-4x4-box" class="bg-gradient-to-br from-slate-900 to-slate-950 border border-cyan-800/60 rounded-2xl p-3.5 space-y-2.5 font-mono shadow-md">
         <div class="flex justify-between items-center cursor-pointer select-none" onclick="alternarCard('conteudo-matriz-vitorio', 'seta-matriz-vitorio')" title="Clique para abrir ou fechar este painel">
           <div class="flex items-center gap-1.5 flex-wrap">
-            <h3 class="text-xs font-black text-white font-sans uppercase">Distribuição no Volante (Sem Aglomeração)</h3>
-            <span id="vit-badge-matriz" class="text-[9px] px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-800 font-bold ml-1">Distribuição</span>
+            <h3 class="text-xs font-black text-white font-sans uppercase">DistribuiÃ§Ã£o no Volante (Sem AglomeraÃ§Ã£o)</h3>
+            <span id="vit-badge-matriz" class="text-[9px] px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-800 font-bold ml-1">DistribuiÃ§Ã£o</span>
           </div>
           <div class="flex items-center gap-1 text-cyan-400 text-xs font-bold">
             <span class="text-[10px] text-slate-400 font-sans hidden sm:inline">Expandir/Recolher</span>
-            <span id="seta-matriz-vitorio" class="text-sm">⯆</span>
+            <span id="seta-matriz-vitorio" class="text-sm">â¯†</span>
           </div>
         </div>
         
@@ -850,43 +832,40 @@
           </div>
 
           <div class="flex items-center justify-between text-xs pt-1.5 border-t border-slate-800/80">
-            <span class="text-slate-400 font-sans text-[11px]">Calibração da Matriz:</span>
+            <span class="text-slate-400 font-sans text-[11px]">CalibraÃ§Ã£o da Matriz:</span>
             <span id="vit-status-calibracao" class="px-2 py-0.5 rounded-md bg-emerald-950/80 text-emerald-300 border border-emerald-800/80 font-mono text-[10px] font-bold">
-              Distribuição do jogo
+              DistribuiÃ§Ã£o do jogo
             </span>
           </div>
         </div>
       </div>
 
-      <!-- RESUMO DA ANÁLISE DO JOGO -->
+      <!-- RESUMO DA ANÃLISE DO JOGO -->
       <div id="painel-score-telemetria" class="bg-gradient-to-br from-slate-900 via-slate-900 to-cyan-950/50 border border-cyan-800/60 rounded-3xl p-4 shadow-xl font-mono relative">
         <div class="flex justify-between items-center">
           <div>
             <span class="text-[9px] uppercase tracking-widest font-black text-cyan-400 block mb-0.5">RESUMO</span>
             <h2 class="text-sm font-black text-white font-sans">Indicadores do jogo</h2>
           </div>
-          <div hidden class="px-3 py-1.5 rounded-xl bg-slate-950 border border-cyan-400 items-baseline gap-1 shadow-lg shadow-cyan-500/20">
+          <div class="px-3 py-1.5 rounded-xl bg-slate-950 border border-cyan-400 flex items-baseline gap-1 shadow-lg shadow-cyan-500/20">
             <span id="score-numero" class="text-xl font-black text-cyan-300 leading-none">--</span>
             <span class="text-[10px] text-slate-400 font-bold">/100</span>
           </div>
         </div>
 
-        <div hidden class="w-full bg-slate-800 h-2 rounded-full overflow-hidden mt-3">
-          <div id="score-barra" class="bg-gradient-to-r from-teal-500 via-cyan-400 to-emerald-400 h-full rounded-full transition-all duration-700" style="width: 0%"></div>
-        </div>
         <p id="score-diagnostico-texto" class="text-[11px] text-slate-300 mt-2 leading-relaxed font-sans">
-          Análise do jogo: aguardando dezenas...
+          AnÃ¡lise do jogo: aguardando dezenas...
         </p>
       </div>
 
-      <!-- BATERIA DOS 6 TESTES ESTATÍSTICOS (COLAPSÁVEL) -->
+      <!-- BATERIA DOS 6 TESTES ESTATÃSTICOS (COLAPSÃVEL) -->
       <div id="card-bateria-testes" class="bg-slate-900/95 border border-slate-800 p-4 rounded-3xl space-y-3 font-mono shadow-xl">
         <div class="flex justify-between items-center cursor-pointer select-none" onclick="alternarCard('conteudo-bateria-testes', 'seta-bateria-testes')" title="Clique para abrir ou fechar os 6 testes">
           <div class="flex items-center gap-2">
             <div>
-              <span class="text-[9px] uppercase font-black text-cyan-400 tracking-wider block">VALIDAÇÃO MATEMÁTICA</span>
+              <span class="text-[9px] uppercase font-black text-cyan-400 tracking-wider block">VALIDAÃ‡ÃƒO MATEMÃTICA</span>
               <h3 class="text-xs font-bold uppercase text-white font-sans">
-                Bateria dos 6 Testes Estatísticos
+                Bateria dos 6 Testes EstatÃ­sticos
               </h3>
             </div>
           </div>
@@ -894,97 +873,115 @@
             <span id="badge-total-testes-ok" class="text-[10px] px-2 py-0.5 rounded font-bold bg-emerald-950 text-emerald-300 border border-emerald-800">
               6 indicadores
             </span>
-            <span id="seta-bateria-testes" class="text-cyan-400 text-sm font-bold">⯆</span>
+            <span id="seta-bateria-testes" class="text-cyan-400 text-sm font-bold">â¯†</span>
           </div>
         </div>
 
         <div id="conteudo-bateria-testes" class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs transition-all">
-          <!-- 1º TESTE (Livre no Plano Grátis) -->
+          <!-- 1Âº TESTE -->
           <div id="teste-card-1" class="p-2.5 bg-slate-950 rounded-xl border border-slate-800 space-y-1 relative">
             <div class="flex justify-between items-center">
-              <span class="text-[10px] font-bold text-slate-400 uppercase">1º Sem Sequências Viciadas</span>
-              <span id="badge-status-t1" class="text-[9px] px-1.5 py-0.5 rounded font-bold bg-emerald-950 text-emerald-400 border border-emerald-800">Na faixa comum</span>
+              <span class="text-[10px] font-bold text-slate-400 uppercase">1Âº Sem SequÃªncias Viciadas</span>
+              <div class="flex items-center gap-1">
+                <span id="badge-status-t1" class="text-[9px] px-1.5 py-0.5 rounded font-bold bg-emerald-950 text-emerald-400 border border-emerald-800">Na faixa comum</span>
+                <button type="button" onclick="abrirModalExplicacaoTeste(1)" class="w-4 h-4 rounded-full bg-slate-800 hover:bg-slate-700 text-cyan-300 font-bold text-[10px] inline-flex items-center justify-center transition cursor-pointer" title="Ver explicaÃ§Ã£o matemÃ¡tica deste teste">â„¹</button>
+              </div>
             </div>
             <strong id="val-t1" class="text-white text-xs font-bold block truncate">-</strong>
-            <p class="text-[10px] text-slate-400 leading-tight font-sans">Mostra se o jogo tem números em sequência. Isso não muda a chance de sair.</p>
+            <p class="text-[10px] text-slate-400 leading-tight font-sans">Mostra se o jogo tem nÃºmeros em sequÃªncia contÃ­nua (ex: 12-13-14-15).</p>
           </div>
 
-          <!-- 2º TESTE (PRO) -->
+          <!-- 2Âº TESTE -->
           <div id="teste-card-2" class="p-2.5 bg-slate-950 rounded-xl border border-slate-800 space-y-1 relative">
             <div class="flex justify-between items-center">
-              <span class="text-[10px] font-bold text-slate-400 uppercase">2º Espalhamento no Bilhete</span>
-              <span id="badge-status-t2" class="text-[9px] px-1.5 py-0.5 rounded font-bold bg-emerald-950 text-emerald-400 border border-emerald-800">Na faixa comum</span>
+              <span class="text-[10px] font-bold text-slate-400 uppercase">2Âº Espalhamento no Bilhete</span>
+              <div class="flex items-center gap-1">
+                <span id="badge-status-t2" class="text-[9px] px-1.5 py-0.5 rounded font-bold bg-emerald-950 text-emerald-400 border border-emerald-800">Na faixa comum</span>
+                <button type="button" onclick="abrirModalExplicacaoTeste(2)" class="w-4 h-4 rounded-full bg-slate-800 hover:bg-slate-700 text-cyan-300 font-bold text-[10px] inline-flex items-center justify-center transition cursor-pointer" title="Ver explicaÃ§Ã£o matemÃ¡tica deste teste">â„¹</button>
+              </div>
             </div>
             <strong id="val-t2" class="text-white text-xs font-bold block">0.000 bits</strong>
-            <p class="text-[10px] text-slate-400 leading-tight font-sans">Mostra como os números se espalham pelo cartão.</p>
+            <p class="text-[10px] text-slate-400 leading-tight font-sans">Mede a dispersÃ£o espacial e variedade de dezenas sem repetiÃ§Ã£o excessiva de colunas.</p>
           </div>
 
-          <!-- 3º TESTE (PRO) -->
+          <!-- 3Âº TESTE -->
           <div id="teste-card-3" class="p-2.5 bg-slate-950 rounded-xl border border-slate-800 space-y-1 relative">
             <div class="flex justify-between items-center">
-              <span class="text-[10px] font-bold text-slate-400 uppercase">3º Equilíbrio Espacial</span>
-              <span id="badge-status-t3" class="text-[9px] px-1.5 py-0.5 rounded font-bold bg-emerald-950 text-emerald-400 border border-emerald-800">Na faixa comum</span>
+              <span class="text-[10px] font-bold text-slate-400 uppercase">3Âº EquilÃ­brio Espacial</span>
+              <div class="flex items-center gap-1">
+                <span id="badge-status-t3" class="text-[9px] px-1.5 py-0.5 rounded font-bold bg-emerald-950 text-emerald-400 border border-emerald-800">Na faixa comum</span>
+                <button type="button" onclick="abrirModalExplicacaoTeste(3)" class="w-4 h-4 rounded-full bg-slate-800 hover:bg-slate-700 text-cyan-300 font-bold text-[10px] inline-flex items-center justify-center transition cursor-pointer" title="Ver explicaÃ§Ã£o matemÃ¡tica deste teste">â„¹</button>
+              </div>
             </div>
-            <strong id="val-t3" class="text-white text-xs font-bold block">χ² = 0.00</strong>
-            <p class="text-[10px] text-slate-400 leading-tight font-sans">Impede que todos os números fiquem amontoados em um único canto.</p>
+            <strong id="val-t3" class="text-white text-xs font-bold block">Ï‡Â² = 0.00</strong>
+            <p class="text-[10px] text-slate-400 leading-tight font-sans">Impede aglomeraÃ§Ã£o em um Ãºnico canto do volante (teste de aderÃªncia).</p>
           </div>
 
-          <!-- 4º TESTE (Livre no Plano Grátis) -->
+          <!-- 4Âº TESTE -->
           <div id="teste-card-4" class="p-2.5 bg-slate-950 rounded-xl border border-slate-800 space-y-1 relative">
             <div class="flex justify-between items-center">
-              <span class="text-[10px] font-bold text-slate-400 uppercase">4º Pares, Ímpares e Primos</span>
-              <span id="badge-status-t4" class="text-[9px] px-1.5 py-0.5 rounded font-bold bg-emerald-950 text-emerald-400 border border-emerald-800">Na faixa comum</span>
+              <span class="text-[10px] font-bold text-slate-400 uppercase">4Âº Pares, Ãmpares e Primos</span>
+              <div class="flex items-center gap-1">
+                <span id="badge-status-t4" class="text-[9px] px-1.5 py-0.5 rounded font-bold bg-emerald-950 text-emerald-400 border border-emerald-800">Na faixa comum</span>
+                <button type="button" onclick="abrirModalExplicacaoTeste(4)" class="w-4 h-4 rounded-full bg-slate-800 hover:bg-slate-700 text-cyan-300 font-bold text-[10px] inline-flex items-center justify-center transition cursor-pointer" title="Ver explicaÃ§Ã£o matemÃ¡tica deste teste">â„¹</button>
+              </div>
             </div>
             <strong id="val-t4" class="text-white text-xs font-bold block">-</strong>
-            <p class="text-[10px] text-slate-400 leading-tight font-sans">Mostra quantos números pares, ímpares e primos o jogo tem.</p>
+            <p class="text-[10px] text-slate-400 leading-tight font-sans">Avalia a paridade estatÃ­stica (mais de 80% dos sorteios tÃªm 3P/3I, 4P/2I ou 2P/4I).</p>
           </div>
 
-          <!-- 5º TESTE (PRO) -->
+          <!-- 5Âº TESTE -->
           <div id="teste-card-5" class="p-2.5 bg-slate-950 rounded-xl border border-slate-800 space-y-1 relative">
             <div class="flex justify-between items-center">
-              <span class="text-[10px] font-bold text-slate-400 uppercase">5º Soma Equilibrada</span>
-              <span id="badge-status-t5" class="text-[9px] px-1.5 py-0.5 rounded font-bold bg-emerald-950 text-emerald-400 border border-emerald-800">Na faixa comum</span>
+              <span class="text-[10px] font-bold text-slate-400 uppercase">5Âº Soma Equilibrada</span>
+              <div class="flex items-center gap-1">
+                <span id="badge-status-t5" class="text-[9px] px-1.5 py-0.5 rounded font-bold bg-emerald-950 text-emerald-400 border border-emerald-800">Na faixa comum</span>
+                <button type="button" onclick="abrirModalExplicacaoTeste(5)" class="w-4 h-4 rounded-full bg-slate-800 hover:bg-slate-700 text-cyan-300 font-bold text-[10px] inline-flex items-center justify-center transition cursor-pointer" title="Ver explicaÃ§Ã£o matemÃ¡tica deste teste">â„¹</button>
+              </div>
             </div>
             <strong id="val-t5" class="text-white text-xs font-bold block">Soma: 0</strong>
-            <p class="text-[10px] text-slate-400 leading-tight font-sans">Mostra a soma das dezenas em comparação com sorteios anteriores.</p>
+            <p class="text-[10px] text-slate-400 leading-tight font-sans">Verifica se a soma das dezenas fica na faixa gaussiana central (150 a 210 na Mega).</p>
           </div>
 
-          <!-- 6º TESTE (PRO) -->
+          <!-- 6Âº TESTE -->
           <div id="teste-card-6" class="p-2.5 bg-slate-950 rounded-xl border border-slate-800 space-y-1 relative">
             <div class="flex justify-between items-center">
-              <span class="text-[10px] font-bold text-slate-400 uppercase">6º Balanço por Quadrantes</span>
-              <span id="badge-status-t6" class="text-[9px] px-1.5 py-0.5 rounded font-bold bg-emerald-950 text-emerald-400 border border-emerald-800">Na faixa comum</span>
+              <span class="text-[10px] font-bold text-slate-400 uppercase">6Âº BalanÃ§o por Quadrantes</span>
+              <div class="flex items-center gap-1">
+                <span id="badge-status-t6" class="text-[9px] px-1.5 py-0.5 rounded font-bold bg-emerald-950 text-emerald-400 border border-emerald-800">Na faixa comum</span>
+                <button type="button" onclick="abrirModalExplicacaoTeste(6)" class="w-4 h-4 rounded-full bg-slate-800 hover:bg-slate-700 text-cyan-300 font-bold text-[10px] inline-flex items-center justify-center transition cursor-pointer" title="Ver explicaÃ§Ã£o matemÃ¡tica deste teste">â„¹</button>
+              </div>
             </div>
             <strong id="val-t6" class="text-white text-xs font-bold block truncate">-</strong>
-            <p class="text-[10px] text-slate-400 leading-tight font-sans">Distribui as dezenas proporcionalmente nos 4 cantos do volante.</p>
+            <p class="text-[10px] text-slate-400 leading-tight font-sans">Garante distribuiÃ§Ã£o equilibrada entre os 4 quadrantes (Q1, Q2, Q3, Q4) do volante.</p>
           </div>
         </div>
       </div>
 
-      <!-- DICAS PARA AJUSTAR CASO NÃO PASSE EM ALGUM TESTE (COLAPSÁVEL) -->
+      <!-- DICAS PARA AJUSTAR CASO NÃƒO PASSE EM ALGUM TESTE (COLAPSÃVEL) -->
       <div id="card-sugestao-troca" class="bg-gradient-to-br from-slate-900 via-slate-900 to-amber-950/30 border border-amber-800/50 rounded-3xl p-4 space-y-3 font-mono shadow-xl">
         <div class="flex justify-between items-center cursor-pointer select-none" onclick="alternarCard('conteudo-sugestao-troca', 'seta-sugestao-troca')" title="Clique para abrir ou fechar as dicas de troca">
           <div class="flex items-center gap-1.5">
             <h3 class="text-xs font-bold text-amber-400 uppercase tracking-wider font-sans">
-              Dicas de Ajuste & Substituição
+              Dicas de Ajuste & SubstituiÃ§Ã£o
             </h3>
           </div>
           <div class="flex items-center gap-2">
             <span class="text-[9px] text-amber-300 bg-amber-950 px-2 py-0.5 rounded border border-amber-800 font-bold">Gerador</span>
-            <span id="seta-sugestao-troca" class="text-amber-400 text-sm font-bold">⯆</span>
+            <span id="seta-sugestao-troca" class="text-amber-400 text-sm font-bold">â¯†</span>
           </div>
         </div>
         <div id="conteudo-sugestao-troca" class="text-xs text-slate-300 space-y-2 font-sans transition-all"></div>
       </div>
 
-      <!-- SIMULADOR DE DESEMPENHO HISTÓRICO INSTANTÂNEO (RETRO-TESTE) -->
+      <!-- SIMULADOR DE DESEMPENHO HISTÃ“RICO INSTANTÃ‚NEO (RETRO-TESTE) -->
       <div id="card-simulador-historico" hidden class="bg-gradient-to-br from-slate-900 via-slate-900 to-indigo-950/40 border border-indigo-800/50 rounded-3xl p-4 space-y-3 font-mono shadow-xl">
-        <div class="flex justify-between items-center cursor-pointer select-none" onclick="alternarCard('conteudo-simulador-historico', 'seta-simulador-historico')" title="Clique para abrir ou fechar a retro-conferência">
+        <div class="flex justify-between items-center cursor-pointer select-none" onclick="alternarCard('conteudo-simulador-historico', 'seta-simulador-historico')" title="Clique para abrir ou fechar a retro-conferÃªncia">
           <div class="flex items-center gap-1.5">
             <div>
               <span class="text-[9px] uppercase font-black text-indigo-400 tracking-wider block">RETRO-TESTE OFICIAL</span>
               <h3 class="text-xs font-bold text-white uppercase tracking-wider font-sans">
-                Simulador de Desempenho Histórico
+                Simulador de Desempenho HistÃ³rico
               </h3>
             </div>
           </div>
@@ -992,24 +989,93 @@
             <span id="badge-retro-resumo" class="text-[9px] text-indigo-300 bg-indigo-950 px-2 py-0.5 rounded border border-indigo-800 font-bold">
               --
             </span>
-            <span id="seta-simulador-historico" class="text-indigo-400 text-sm font-bold">⯆</span>
+            <span id="seta-simulador-historico" class="text-indigo-400 text-sm font-bold">â¯†</span>
           </div>
         </div>
         <div id="conteudo-simulador-historico" class="text-xs text-slate-300 space-y-2.5 font-sans transition-all">
           <p class="text-[11px] text-slate-300 leading-relaxed">
-            Testa este palpite ativo contra os últimos 50 concursos oficiais da Caixa para verificar se ele já teria pontuado ou gerado premiação no passado recente:
+            Testa este palpite ativo contra os Ãºltimos 50 concursos oficiais da Caixa para verificar se ele jÃ¡ teria pontuado ou gerado premiaÃ§Ã£o no passado recente:
           </p>
           <div id="grade-retro-resultados" class="grid grid-cols-3 gap-2 font-mono text-center">
             <!-- preenchido dinamicamente -->
           </div>
           <div id="detalhe-retro-melhor-sorteio" class="p-2 rounded-xl bg-slate-950 border border-slate-800 text-[11px] font-mono text-slate-300">
-            Aguardando seleção do jogo...
+            Aguardando seleÃ§Ã£o do jogo...
           </div>
         </div>
       </div>
 
-      </div> <!-- FIM COLUNA 2 -->
-      </div> <!-- FIM GRID DUAL-COLUMN VOLANTE -->
+      </div> <!-- FIM SUB-ABA 1 JOGO INDIVIDUAL (#gerador-container-jogo) -->
+
+      <!-- SUB-ABA 2: BOLÃƒO EM GRUPO -->
+      <div id="gerador-container-bolao" class="space-y-4" style="display: none;">
+        <div class="bg-gradient-to-br from-slate-900 via-slate-900 to-teal-950/60 border border-teal-800/60 rounded-3xl p-4 sm:p-5 shadow-2xl space-y-3">
+          <div class="flex justify-between items-start">
+            <div>
+              <span class="text-[10px] uppercase tracking-widest font-black text-teal-400 block mb-0.5 font-mono">GERADOR DE BOLÃ•ES E RATEIO</span>
+              <h2 class="text-base font-black text-white font-sans">Organizar BolÃ£o em Grupo</h2>
+            </div>
+            <span class="px-2.5 py-0.5 rounded-full bg-teal-500/15 border border-teal-500/35 text-teal-300 font-bold text-xs">
+              ðŸ‘¥ BolÃ£o Ativo
+            </span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed font-sans">
+            Configure o nÃºmero de participantes, dezenas e quantidade de jogos do bolÃ£o. Gere e distribua as cotas com 1 clique!
+          </p>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-4 sm:p-5 space-y-3.5 font-mono shadow-xl">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <div>
+              <label class="text-[10px] font-bold text-slate-400 uppercase block mb-1">Nome do BolÃ£o</label>
+              <input id="bolao-nome" type="text" value="" placeholder="Ex: BolÃ£o da Firma / FamÃ­lia" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-bold focus:outline-none focus:border-teal-500" />
+            </div>
+            <div>
+              <label class="text-[10px] font-bold text-slate-400 uppercase block mb-1">NÃºmero de Cotas (Pessoas)</label>
+              <input id="bolao-cotas" type="number" min="1" max="100" value="10" oninput="calcularRateioBolao()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-bold focus:outline-none focus:border-teal-500" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-3 gap-2 text-center text-xs pt-1">
+            <div class="p-2.5 bg-slate-950 rounded-xl border border-slate-800">
+              <span class="text-[10px] text-slate-400 block font-sans">Total Jogos</span>
+              <strong id="bolao-total-jogos" class="text-white text-xs block mt-0.5">R$ 0,00</strong>
+            </div>
+            <div class="p-2.5 bg-slate-950 rounded-xl border border-slate-800">
+              <span class="text-[10px] text-slate-400 block font-sans">Valor / Cota</span>
+              <strong id="bolao-valor-cota" class="text-teal-400 text-sm block mt-0.5">R$ 0,00</strong>
+            </div>
+            <div class="p-2.5 bg-slate-950 rounded-xl border border-slate-800">
+              <span class="text-[10px] text-slate-400 block font-sans">PrÃªmio / Cota</span>
+              <strong id="bolao-premio-cota" class="text-emerald-400 text-sm block mt-0.5">R$ 0,00</strong>
+            </div>
+          </div>
+
+          <!-- GRADE 2x2 DE AÃ‡Ã•ES DO BOLÃƒO -->
+          <div class="pt-2 border-t border-slate-800/80">
+            <div class="grid grid-cols-2 gap-2">
+              <button type="button" onclick="gerarJogosDoBolao()" class="py-3 px-3 rounded-2xl bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-400 hover:to-emerald-400 text-slate-950 font-black text-xs sm:text-sm active:scale-95 transition flex items-center justify-center gap-1.5 shadow-lg shadow-teal-500/25 cursor-pointer">
+                <span>ðŸŽ¯ Gerar Jogos</span>
+              </button>
+              <button type="button" onclick="salvarBolaoNaCarteira()" class="py-3 px-3 rounded-2xl bg-teal-600 hover:bg-teal-500 text-slate-950 font-black text-xs sm:text-sm active:scale-95 transition flex items-center justify-center gap-1.5 shadow cursor-pointer">
+                <span>ðŸ’¾ Salvar BolÃ£o</span>
+              </button>
+              <button type="button" onclick="exportarRelatorioBolaoZap()" class="py-2.5 px-3 rounded-2xl bg-slate-800 hover:bg-slate-700 text-emerald-300 font-bold text-xs border border-slate-700 active:scale-95 transition flex items-center justify-center gap-1.5 shadow cursor-pointer">
+                <span>ðŸ“² Enviar no Zap</span>
+              </button>
+              <button type="button" onclick="imprimirJogosVolante()" class="py-2.5 px-3 rounded-2xl bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold text-xs border border-slate-700 active:scale-95 transition flex items-center justify-center gap-1.5 shadow cursor-pointer">
+                <span>ðŸ“„ Imprimir A4</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="pt-2">
+            <button onclick="incluirJogoAtualNoBolao()" class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-cyan-300 font-bold text-xs rounded-xl border border-slate-700 transition flex items-center justify-center gap-1">
+              <span>+ Incluir jogo individual atual no bolÃ£o</span>
+            </button>
+          </div>
+        </div>
+      </div> <!-- FIM SUB-ABA 2 BOLÃƒO (#gerador-container-bolao) -->
     </section>
 
   <!-- TELA 4: CARTEIRA DE APOSTAS E RESULTADOS -->
@@ -1041,7 +1107,7 @@
             <strong id="banca-investido" class="text-rose-400 text-sm block mt-0.5">R$ 0,00</strong>
           </div>
           <div class="p-2.5 bg-slate-950 rounded-xl border border-slate-800">
-            <span class="text-[10px] text-slate-400 block font-sans">Total Prêmios</span>
+            <span class="text-[10px] text-slate-400 block font-sans">Total PrÃªmios</span>
             <strong id="banca-premios" class="text-emerald-400 text-sm block mt-0.5">R$ 0,00</strong>
           </div>
           <div class="p-2.5 bg-slate-950 rounded-xl border border-slate-800">
@@ -1051,18 +1117,18 @@
         </div>
       </div>
 
-      <!-- CARD CONCIERGE WHATSAPP Meu Volante PRO: ENVIE SEUS NÚMEROS DIRETO -->
+      <!-- CARD CONCIERGE WHATSAPP Meu Volante PRO: ENVIE SEUS NÃšMEROS DIRETO -->
       <div class="bg-gradient-to-r from-emerald-950/60 via-slate-900 to-teal-950/40 border border-emerald-500/50 rounded-2xl p-3.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-lg font-sans">
         <div class="space-y-0.5">
           <div class="flex items-center gap-2">
-            <span class="text-xs font-black text-white">Envie seus números pelo WhatsApp</span>
+            <span class="text-xs font-black text-white">Envie seus nÃºmeros pelo WhatsApp</span>
             <span class="px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-300 text-[9px] font-mono font-bold">Oficial</span>
           </div>
           <p class="text-[11px] text-slate-300 leading-snug">
-            Tem seus números em mãos ou foto do comprovante? Mande uma mensagem para o Meu Volante PRO e nós registramos para você na sua carteira com auditoria dos 6 testes!
+            Tem seus nÃºmeros em mÃ£os ou foto do comprovante? Mande uma mensagem para o Meu Volante PRO e nÃ³s registramos para vocÃª na sua carteira com auditoria dos 6 testes!
           </p>
         </div>
-        <button type="button" onclick="const t = 'Olá Meu Volante PRO! Gostaria de registrar os seguintes números na minha carteira:\n\n[Digite aqui suas dezenas ou envie a foto do bilhete]:'; if (typeof window.abrirWhatsApp === 'function') { window.abrirWhatsApp({ texto: t }); } else { window.location.href = 'whatsapp://send?text=' + encodeURIComponent(t); }" class="w-full sm:w-auto px-3.5 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 font-black text-xs shadow active:scale-95 transition flex items-center justify-center gap-1.5 whitespace-nowrap">
+        <button type="button" onclick="const t = 'OlÃ¡ Meu Volante PRO! Gostaria de registrar os seguintes nÃºmeros na minha carteira:\n\n[Digite aqui suas dezenas ou envie a foto do bilhete]:'; if (typeof window.abrirWhatsApp === 'function') { window.abrirWhatsApp({ texto: t }); } else { window.location.href = 'whatsapp://send?text=' + encodeURIComponent(t); }" class="w-full sm:w-auto px-3.5 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 font-black text-xs shadow active:scale-95 transition flex items-center justify-center gap-1.5 whitespace-nowrap">
           <span>Mandar pelo WhatsApp</span>
         </button>
       </div>
@@ -1073,28 +1139,28 @@
           <!-- Filtro de Modalidade -->
           <div class="flex items-center gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800 text-[10px] font-bold">
             <button type="button" onclick="setFiltroModalidadeCarteira('todas')" class="px-2.5 py-1 rounded-lg text-white bg-slate-800 transition">Todas</button>
-            <button type="button" onclick="setFiltroModalidadeCarteira('megasena')" class="px-2.5 py-1 rounded-lg text-emerald-400 hover:bg-slate-900 transition">🍀 Mega</button>
-            <button type="button" onclick="setFiltroModalidadeCarteira('lotofacil')" class="px-2.5 py-1 rounded-lg text-purple-400 hover:bg-slate-900 transition">🟣 Loto</button>
+            <button type="button" onclick="setFiltroModalidadeCarteira('megasena')" class="px-2.5 py-1 rounded-lg text-emerald-400 hover:bg-slate-900 transition">ðŸ€ Mega</button>
+            <button type="button" onclick="setFiltroModalidadeCarteira('lotofacil')" class="px-2.5 py-1 rounded-lg text-purple-400 hover:bg-slate-900 transition">ðŸŸ£ Loto</button>
           </div>
 
-          <!-- Modo de Exibição (Agrupado por Concurso vs Lista) -->
+          <!-- Modo de ExibiÃ§Ã£o (Agrupado por Concurso vs Lista) -->
           <div class="flex items-center gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800 text-[10px] font-bold">
-            <button type="button" onclick="alternarModoCarteira('agrupado')" class="px-2 py-1 rounded-lg text-cyan-300 bg-cyan-950 border border-cyan-800 transition" title="Por Concurso">📁 Concurso</button>
-            <button type="button" onclick="alternarModoCarteira('lista')" class="px-2 py-1 rounded-lg text-slate-400 hover:text-white transition" title="Lista Individual">📄 Lista</button>
+            <button type="button" onclick="alternarModoCarteira('agrupado')" class="px-2 py-1 rounded-lg text-cyan-300 bg-cyan-950 border border-cyan-800 transition" title="Por Concurso">ðŸ“ Concurso</button>
+            <button type="button" onclick="alternarModoCarteira('lista')" class="px-2 py-1 rounded-lg text-slate-400 hover:text-white transition" title="Lista Individual">ðŸ“„ Lista</button>
           </div>
         </div>
 
-        <!-- Filtro Rápido de Temporalidade (Todos, Próximo Sorteio, Histórico Arquivado) -->
+        <!-- Filtro RÃ¡pido de Temporalidade (Todos, PrÃ³ximo Sorteio, HistÃ³rico Arquivado) -->
         <div class="flex items-center gap-1.5 pt-0.5 text-[10px] font-bold">
           <span class="text-slate-500 text-[9px] uppercase tracking-wider font-mono mr-0.5">Exibir:</span>
           <button type="button" id="btn-filtro-tempo-todos" onclick="setFiltroTempoCarteira('todos')" class="px-2 py-0.5 rounded-lg bg-slate-800 text-cyan-300 border border-slate-700 transition">Todos</button>
-          <button type="button" id="btn-filtro-tempo-proximo" onclick="setFiltroTempoCarteira('proximo')" class="px-2 py-0.5 rounded-lg bg-slate-950 text-slate-400 hover:text-white border border-slate-800 transition">⏳ Próximo Sorteio</button>
-          <button type="button" id="btn-filtro-tempo-historico" onclick="setFiltroTempoCarteira('historico')" class="px-2 py-0.5 rounded-lg bg-slate-950 text-slate-400 hover:text-white border border-slate-800 transition">🏛️ Concursos Anteriores</button>
+          <button type="button" id="btn-filtro-tempo-proximo" onclick="setFiltroTempoCarteira('proximo')" class="px-2 py-0.5 rounded-lg bg-slate-950 text-slate-400 hover:text-white border border-slate-800 transition">â³ PrÃ³ximo Sorteio</button>
+          <button type="button" id="btn-filtro-tempo-historico" onclick="setFiltroTempoCarteira('historico')" class="px-2 py-0.5 rounded-lg bg-slate-950 text-slate-400 hover:text-white border border-slate-800 transition">ðŸ›ï¸ Concursos Anteriores</button>
         </div>
 
-        <!-- Busca Instantânea de Jogo ou Concurso -->
+        <!-- Busca InstantÃ¢nea de Jogo ou Concurso -->
         <div class="relative">
-          <input type="text" id="input-busca-carteira" oninput="filtrarCarteiraBusca(this.value)" placeholder="🔍 Buscar por concurso (#2788), data ou dezenas..." class="w-full px-3 py-1.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 font-sans">
+          <input type="text" id="input-busca-carteira" oninput="filtrarCarteiraBusca(this.value)" placeholder="ðŸ” Buscar por concurso (#2788), data ou dezenas..." class="w-full px-3 py-1.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 font-sans">
         </div>
       </div>
 
@@ -1109,10 +1175,10 @@
               Adicionar
             </button>
             <button type="button" onclick="exportarParaWhatsApp()" class="p-1.5 bg-slate-900 hover:bg-slate-800 text-emerald-400 border border-slate-800 rounded-xl text-xs active:scale-95 transition flex items-center justify-center" title="Compartilhar todas no WhatsApp">
-              📱
+              ðŸ“±
             </button>
             <button type="button" onclick="solicitarLimparCarteira()" class="p-1.5 bg-slate-900 hover:bg-slate-800 text-rose-400 border border-slate-800 rounded-xl text-xs active:scale-95 transition flex items-center justify-center" title="Limpar carteira">
-              🗑️
+              ðŸ—‘ï¸
             </button>
           </div>
         </div>
@@ -1122,7 +1188,7 @@
 
     </div> <!-- FIM SUB-ABA BILHETES -->
 
-    <!-- SUB-ABA 2: BOLÃO & COTAS (Injetado dinamicamente do #view-bolao) -->
+    <!-- SUB-ABA 2: BOLÃƒO & COTAS (Injetado dinamicamente do #view-bolao) -->
     <div id="carteira-subview-bolao" class="space-y-4 hidden"></div>
 
     <!-- SUB-ABA 3: SCANNER & FERRAMENTAS -->
@@ -1134,21 +1200,21 @@
           <div class="flex items-center gap-2">
             <div>
               <h3 class="text-xs sm:text-sm font-black text-white uppercase tracking-wider font-mono">Scanner & Importador de Apostas</h3>
-              <p class="text-[10px] text-slate-400">Cole mensagens do WhatsApp, palpites ou sequências. O concurso e dezenas são identificados na hora.</p>
+              <p class="text-[10px] text-slate-400">Cole mensagens do WhatsApp, palpites ou sequÃªncias. O concurso e dezenas sÃ£o identificados na hora.</p>
             </div>
           </div>
           <span class="px-2 py-0.5 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-800 text-[9px] font-mono font-bold">
-            ⚡ 1-Clique
+            âš¡ 1-Clique
           </span>
         </div>
 
         <div class="space-y-2.5">
-          <!-- Identificação do Concurso e Data (Auto ou Manual para Bilhetes Anteriores) -->
+          <!-- IdentificaÃ§Ã£o do Concurso e Data (Auto ou Manual para Bilhetes Anteriores) -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 bg-slate-950/90 p-2.5 rounded-2xl border border-slate-800 text-xs font-mono">
             <div>
               <div class="flex justify-between items-center mb-1">
                 <label for="input-import-concurso-manual" class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
-                  🎯 Concurso do Jogo
+                  ðŸŽ¯ Concurso do Jogo
                 </label>
                 <span class="text-[9px] text-cyan-400 font-sans">Atual ou Anterior</span>
               </div>
@@ -1162,7 +1228,7 @@
             <div>
               <div class="flex justify-between items-center mb-1">
                 <label for="input-import-data-manual" class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
-                  📅 Data do Sorteio
+                  ðŸ“… Data do Sorteio
                 </label>
                 <span class="text-[9px] text-slate-500 font-sans">Opcional</span>
               </div>
@@ -1184,19 +1250,19 @@
 
         <div id="container-sugestao-inteligente" class="hidden transition-all duration-300"></div>
 
-        <!-- Relatório do Scanner -->
+        <!-- RelatÃ³rio do Scanner -->
         <div id="resultado-scanner-lote" class="hidden space-y-2 pt-2 border-t border-slate-800">
           <div class="flex justify-between items-center text-xs">
             <span id="scanner-resumo-info" class="text-white font-bold">-</span>
             <button type="button" onclick="salvarAprovadasScannerNaCarteira()" class="text-emerald-400 text-[11px] font-bold underline">
-              💾 Salvar na Carteira
+              ðŸ’¾ Salvar na Carteira
             </button>
           </div>
           <div id="scanner-lista-auditoria" class="space-y-1.5 max-h-60 overflow-y-auto pr-1 no-scrollbar"></div>
         </div>
       </div>
 
-      <!-- PAINEL DE CALIBRAÇÃO INTELIGENTE DE PORTFÓLIO -->
+      <!-- PAINEL DE CALIBRAÃ‡ÃƒO INTELIGENTE DE PORTFÃ“LIO -->
       <div class="bg-gradient-to-br from-slate-900 via-slate-900 to-cyan-950/40 border border-cyan-800/60 rounded-2xl p-4 space-y-3 font-mono">
         <div class="flex justify-between items-center">
           <div>
@@ -1224,14 +1290,14 @@
         <p id="calibracao-diagnostico-txt" class="text-[11px] text-slate-300 leading-relaxed font-sans"></p>
 
         <button onclick="gerarProximoJogoCalibrado()" class="w-full py-2.5 bg-gradient-to-r from-cyan-600 via-teal-500 to-emerald-500 hover:from-cyan-500 hover:to-emerald-400 text-slate-950 font-black text-xs rounded-xl shadow transition active:scale-95 flex items-center justify-center gap-1.5 font-sans">
-          GERAR PRÓXIMO JOGO
+          GERAR PRÃ“XIMO JOGO
         </button>
       </div>
 
-      <!-- Ações Rápidas, Exportação e Backup JSON -->
+      <!-- AÃ§Ãµes RÃ¡pidas, ExportaÃ§Ã£o e Backup JSON -->
       <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3 font-mono">
         <h3 class="text-xs font-bold text-white uppercase tracking-wider font-sans">
-          Exportação Oficial & Backup em Nuvem
+          ExportaÃ§Ã£o Oficial & Backup em Nuvem
         </h3>
         <div class="grid grid-cols-2 gap-2 text-xs">
           <button onclick="copiarParaLoteriasCaixa()" class="py-2.5 bg-slate-800 hover:bg-slate-700 text-cyan-300 font-bold rounded-xl border border-slate-700 flex items-center justify-center gap-1.5 active:scale-95 transition">
@@ -1254,60 +1320,11 @@
 
   </section>
 
-    <!-- TELA 5: GERENCIADOR DE BOLÕES E RATEIO -->
-    <section id="view-bolao" class="space-y-4 hidden">
-      <div class="bg-gradient-to-br from-slate-900 via-slate-900 to-teal-950/60 border border-teal-800/60 rounded-3xl p-5 shadow-2xl space-y-3">
-        <div class="flex justify-between items-start">
-          <div>
-            <span class="text-[10px] uppercase tracking-widest font-black text-teal-400 block mb-0.5 font-mono">DIVISÃO E RATEIO DE COTAS</span>
-            <h2 class="text-base font-black text-white font-sans">Organizar um bolão</h2>
-          </div>
-          </div>
-        <p class="text-xs text-slate-300 leading-relaxed font-sans">
-          Monte os jogos do grupo, calcule o valor por cota e compartilhe um resumo.
-        </p>
-      </div>
+    <!-- TELA 5: GERENCIADOR DE BOLÃ•ES E RATEIO (Legado mantido para compatibilidade de rotas) -->
+    <section id="view-bolao" class="space-y-4 hidden"></section>
 
-      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3 font-mono">
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-          <div>
-            <label class="text-[10px] font-bold text-slate-400 uppercase block mb-1">Nome do Bolão</label>
-            <input id="bolao-nome" type="text" value="" placeholder="Ex: Bolão da família" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-bold focus:outline-none focus:border-teal-500" />
-          </div>
-          <div>
-            <label class="text-[10px] font-bold text-slate-400 uppercase block mb-1">Número de Cotas (Participantes)</label>
-            <input id="bolao-cotas" type="number" min="1" max="100" value="10" oninput="calcularRateioBolao()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-bold focus:outline-none focus:border-teal-500" />
-          </div>
-        </div>
-
-        <div class="grid grid-cols-3 gap-2 text-center text-xs pt-1">
-          <div class="p-2.5 bg-slate-950 rounded-xl border border-slate-800">
-            <span class="text-[10px] text-slate-400 block font-sans">Total Jogos</span>
-            <strong id="bolao-total-jogos" class="text-white text-xs block mt-0.5">R$ 0,00</strong>
-          </div>
-          <div class="p-2.5 bg-slate-950 rounded-xl border border-slate-800">
-            <span class="text-[10px] text-slate-400 block font-sans">Valor / Cota</span>
-            <strong id="bolao-valor-cota" class="text-teal-400 text-sm block mt-0.5">R$ 0,00</strong>
-          </div>
-          <div class="p-2.5 bg-slate-950 rounded-xl border border-slate-800">
-            <span class="text-[10px] text-slate-400 block font-sans">Prêmio / Cota</span>
-            <strong id="bolao-premio-cota" class="text-emerald-400 text-sm block mt-0.5">R$ 0,00</strong>
-          </div>
-        </div>
-
-        <div class="flex gap-2 pt-2">
-          <button onclick="incluirJogoAtualNoBolao()" class="flex-1 py-2.5 bg-teal-600 hover:bg-teal-500 text-slate-950 font-black text-xs rounded-xl shadow active:scale-95 transition flex items-center justify-center gap-1.5">
-            Incluir Bilhete Atual
-          </button>
-          <button onclick="exportarRelatorioBolaoZap()" class="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-black text-xs rounded-xl shadow active:scale-95 transition flex items-center justify-center gap-1.5">
-            Enviar resumo
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- TELA 6: FECHAMENTOS MATEMÁTICOS -->
-        <!-- TELA 2: MOTOR DE FECHAMENTOS COMBINATÓRIOS C(n, k) -->
+    <!-- TELA 6: FECHAMENTOS MATEMÃTICOS -->
+        <!-- TELA 2: MOTOR DE FECHAMENTOS COMBINATÃ“RIOS C(n, k) -->
     <section id="view-fechamentos" class="space-y-4 hidden font-mono">
       <div class="bg-slate-900 border border-cyan-800/60 rounded-3xl p-4 sm:p-5 shadow-2xl space-y-4">
         <div class="flex justify-between items-center pb-3 border-b border-slate-800">
@@ -1316,26 +1333,26 @@
               <h3 class="text-sm font-black text-white font-sans uppercase">Fechamentos de jogos</h3>
             </div>
             <p class="text-[11px] text-slate-400 font-sans mt-0.5">
-              Gere combinações a partir de um conjunto maior de dezenas e compare as opções.
+              Gere combinaÃ§Ãµes a partir de um conjunto maior de dezenas e compare as opÃ§Ãµes.
             </p>
           </div>
           <span class="px-2.5 py-1 rounded-xl bg-cyan-950 text-cyan-300 border border-cyan-800 text-[10px] font-bold uppercase tracking-wider">
-            ORGANIZAÇÃO
+            ORGANIZAÃ‡ÃƒO
           </span>
         </div>
 
-        <!-- AVISO LEGAL E CDC: Proteção contra litígios e expectativas irreais -->
+        <!-- AVISO LEGAL E CDC: ProteÃ§Ã£o contra litÃ­gios e expectativas irreais -->
         <div class="p-3 bg-amber-950/40 border border-amber-500/30 rounded-2xl text-[11px] text-amber-200/90 leading-relaxed font-sans space-y-1">
           <div class="font-black text-amber-300 flex items-center gap-1.5 text-xs">
             <span>Antes de usar</span>
           </div>
           <p>
-            Um fechamento só combina as dezenas que você escolheu. Não prevê sorteios nem garante prêmio.
+            Um fechamento sÃ³ combina as dezenas que vocÃª escolheu. NÃ£o prevÃª sorteios nem garante prÃªmio.
           </p>
         </div>
 
 
-        <!-- NOVO: OTIMIZADOR POR ORÇAMENTO (PLANEJADOR DE BANCA INTELIGENTE) -->
+        <!-- NOVO: OTIMIZADOR POR ORÃ‡AMENTO (PLANEJADOR DE BANCA INTELIGENTE) -->
         <div class="p-3.5 bg-gradient-to-r from-emerald-950/40 via-slate-950 to-slate-900 border border-emerald-500/40 rounded-2xl space-y-2">
           <div class="flex justify-between items-center">
             <div class="flex items-center gap-1.5 text-xs font-bold text-emerald-400 font-sans">
@@ -1355,7 +1372,7 @@
           </div>
         </div>
 
-        <!-- Seletor de Matriz Combinatória -->
+        <!-- Seletor de Matriz CombinatÃ³ria -->
         <div class="space-y-1.5">
           <label class="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">
             1. Escolha o formato
@@ -1373,22 +1390,22 @@
           </div>
           <div class="flex justify-between items-center gap-2">
             <span class="text-slate-400 text-[11px] shrink-0">Cobertura:</span>
-            <span id="matriz-info-garantia" class="text-emerald-400 font-black text-xs text-right">—</span>
+            <span id="matriz-info-garantia" class="text-emerald-400 font-black text-xs text-right">â€”</span>
           </div>
           <div class="flex justify-between items-center gap-2">
             <span class="text-slate-400 text-[11px]">Total de Apostas:</span>
-            <span id="matriz-info-jogos" class="text-cyan-300 font-black text-xs text-right">—</span>
+            <span id="matriz-info-jogos" class="text-cyan-300 font-black text-xs text-right">â€”</span>
           </div>
           <div class="flex flex-wrap justify-between items-center gap-2 pt-2 border-t border-slate-800/80">
-            <span class="text-amber-400 font-bold text-[10px] uppercase tracking-wider">Comparação:</span>
+            <span class="text-amber-400 font-bold text-[10px] uppercase tracking-wider">ComparaÃ§Ã£o:</span>
             <span id="matriz-info-economia" class="text-emerald-400 font-bold text-xs bg-emerald-950/80 px-2.5 py-1 rounded-lg border border-emerald-800">
-              —
+              â€”
             </span>
           </div>
         </div>
 
         <p class="fluxo-passo">3. Gere os jogos</p>
-        <!-- Botões de Ação para Gerar -->
+        <!-- BotÃµes de AÃ§Ã£o para Gerar -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
           <button type="button" onclick="executarDesdobramentoNasa('volante')" class="py-3 px-2 bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs rounded-xl border border-slate-700 active:scale-95 transition flex items-center justify-center gap-1.5">
             Usar minhas dezenas
@@ -1408,19 +1425,19 @@
           </div>
           <div class="flex flex-wrap gap-1.5">
             <button type="button" onclick="salvarTodosFechamento()" class="px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-black text-[11px] rounded-xl shadow flex items-center gap-1 active:scale-95 transition">
-              💾 Salvar Todos
+              ðŸ’¾ Salvar Todos
             </button>
             <button type="button" onclick="copiarFechamentoTxt()" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-cyan-300 font-bold text-[11px] rounded-xl border border-slate-700 flex items-center gap-1 active:scale-95 transition">
-              📋 Copiar TXT
+              ðŸ“‹ Copiar TXT
             </button>
             <button type="button" onclick="compartilharFechamentoWhatsapp()" class="px-2.5 py-1.5 bg-emerald-700 hover:bg-emerald-600 text-white font-bold text-[11px] rounded-xl flex items-center gap-1 active:scale-95 transition">
-              📱 WhatsApp
+              ðŸ“± WhatsApp
             </button>
-            <button hidden type="button" onclick="abrirSimuladorRetrospectivo()" class="px-2.5 py-1.5 bg-cyan-800 hover:bg-cyan-700 text-cyan-200 font-bold text-[11px] rounded-xl flex items-center gap-1 active:scale-95 transition" title="Simular acertos deste fechamento contra últimos concursos">
-              🔬 E se jogasse?
+            <button hidden type="button" onclick="abrirSimuladorRetrospectivo()" class="px-2.5 py-1.5 bg-cyan-800 hover:bg-cyan-700 text-cyan-200 font-bold text-[11px] rounded-xl flex items-center gap-1 active:scale-95 transition" title="Simular acertos deste fechamento contra Ãºltimos concursos">
+              ðŸ”¬ E se jogasse?
             </button>
             <button type="button" onclick="imprimirJogosVolante()" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-600/40 font-bold text-[11px] rounded-xl flex items-center gap-1 active:scale-95 transition" title="Imprimir volantes ou salvar como PDF">
-              🖨️ Imprimir / PDF
+              ðŸ–¨ï¸ Imprimir / PDF
             </button>
           </div>
         </div>
@@ -1429,18 +1446,18 @@
       </div>
     </section>
 
-    <!-- TELA 7: MAPA DE CALOR HISTÓRICO -->
+    <!-- TELA 7: MAPA DE CALOR HISTÃ“RICO -->
         <!-- TELA: MAPA DE CALOR & DEZENAS MAIS SORTEADAS -->
     <section id="view-calor" class="space-y-4 hidden">
       <div class="bg-gradient-to-br from-slate-900 via-slate-900 to-rose-950/40 border border-rose-800/60 rounded-3xl p-5 shadow-xl space-y-2 font-mono">
         <div class="flex justify-between items-start">
           <div>
-            <span class="text-[10px] uppercase tracking-widest font-black text-rose-400 block mb-0.5">FREQUÊNCIA ESTATÍSTICA HISTÓRICA</span>
-            <h2 class="text-base font-black text-white font-sans">📊 Estatísticas das dezenas</h2>
+            <span class="text-[10px] uppercase tracking-widest font-black text-rose-400 block mb-0.5">FREQUÃŠNCIA ESTATÃSTICA HISTÃ“RICA</span>
+            <h2 class="text-base font-black text-white font-sans">ðŸ“Š EstatÃ­sticas das dezenas</h2>
           </div>
           </div>
         <p class="text-xs text-slate-300 leading-relaxed font-sans">
-          Descubra quais dezenas saíram mais e quais estão há mais tempo sem sair nos últimos 500 concursos oficiais. O passado não muda a chance do próximo sorteio.
+          Descubra quais dezenas saÃ­ram mais e quais estÃ£o hÃ¡ mais tempo sem sair nos Ãºltimos 500 concursos oficiais. O passado nÃ£o muda a chance do prÃ³ximo sorteio.
         </p>
       </div>
 
@@ -1476,7 +1493,7 @@
           </span>
         </div>
         <p class="text-[11px] text-slate-300 font-sans leading-relaxed">
-          O Ciclo mede quantas dezenas já foram sorteadas nos últimos concursos e quais ainda faltam para que todas as dezenas possíveis tenham saído ao menos uma vez:
+          O Ciclo mede quantas dezenas jÃ¡ foram sorteadas nos Ãºltimos concursos e quais ainda faltam para que todas as dezenas possÃ­veis tenham saÃ­do ao menos uma vez:
         </p>
         <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-center">
           <div class="p-2 rounded-xl bg-slate-950 border border-slate-800">
@@ -1489,7 +1506,7 @@
           </div>
           <div class="p-2 rounded-xl bg-slate-950 border border-slate-800 col-span-2 sm:col-span-1 flex flex-col justify-center">
             <button type="button" onclick="incluirDezenasCicloNoJogo()" class="w-full py-1.5 bg-cyan-600 hover:bg-cyan-500 text-slate-950 font-black text-[10px] rounded-lg shadow transition active:scale-95">
-              🎯 Incluir no Volante
+              ðŸŽ¯ Incluir no Volante
             </button>
           </div>
         </div>
@@ -1499,22 +1516,22 @@
         </div>
       </div>
 
-      <!-- GRADE TÉRMICA COMPLETA -->
+      <!-- GRADE TÃ‰RMICA COMPLETA -->
       <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl space-y-3 font-mono">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
-            <h3 class="text-xs font-bold uppercase text-white font-sans">Grade Térmica Completa</h3>
-            <span class="text-[10px] text-slate-400 font-sans block">Clique em qualquer número para marcar ou desmarcar</span>
+            <h3 class="text-xs font-bold uppercase text-white font-sans">Grade TÃ©rmica Completa</h3>
+            <span class="text-[10px] text-slate-400 font-sans block">Clique em qualquer nÃºmero para marcar ou desmarcar</span>
           </div>
           <div class="flex flex-wrap items-center gap-1.5 text-[9px]">
-            <span class="text-rose-400 font-bold">🔥 Quente</span>
+            <span class="text-rose-400 font-bold">ðŸ”¥ Quente</span>
             <span class="text-slate-600">&bull;</span>
-            <span class="text-amber-400 font-bold">⚡ Média</span>
+            <span class="text-amber-400 font-bold">âš¡ MÃ©dia</span>
             <span class="text-slate-600">&bull;</span>
-            <span class="text-cyan-400 font-bold">❄️ Fria</span>
+            <span class="text-cyan-400 font-bold">â„ï¸ Fria</span>
             <span class="text-slate-600">&bull;</span>
             <span class="text-emerald-400 font-black px-1.5 py-0.5 rounded bg-emerald-950/80 border border-emerald-500/80 flex items-center gap-1 shadow-sm">
-              <span class="w-2 h-2 rounded-full bg-emerald-400 inline-block animate-pulse"></span> 🟢 Borda Verde: Seu Jogo Ativo
+              <span class="w-2 h-2 rounded-full bg-emerald-400 inline-block animate-pulse"></span> ðŸŸ¢ Borda Verde: Seu Jogo Ativo
             </span>
           </div>
         </div>
@@ -1524,12 +1541,12 @@
   
     <!-- ============================================================ -->
     <!-- TELA 7: PAINEL ADMINISTRATIVO    -->
-    <!-- Controle de Usuários, Assinaturas Recorrentes, Gateways/MRR -->
+    <!-- Controle de UsuÃ¡rios, Assinaturas Recorrentes, Gateways/MRR -->
     <!-- ============================================================ -->
     <section id="view-admin" class="space-y-6 hidden font-mono">
               <!-- Banner do administrador -->
       <div class="bg-gradient-to-r from-slate-900 via-amber-950/40 to-slate-900 border-2 border-amber-500/40 rounded-3xl p-4 sm:p-6 shadow-2xl relative overflow-hidden">
-        <div class="absolute -right-10 -bottom-10 opacity-10 text-9xl select-none pointer-events-none">👑</div>
+        <div class="absolute -right-10 -bottom-10 opacity-10 text-9xl select-none pointer-events-none">ðŸ‘‘</div>
         
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-4 border-b border-amber-500/30">
           <div>
@@ -1539,23 +1556,23 @@
               </h2>
             </div>
             <p class="text-xs text-slate-400 font-sans mt-0.5">
-              Usuários, acessos de teste, assinaturas e registros de auditoria.
+              UsuÃ¡rios, acessos de teste, assinaturas e registros de auditoria.
             </p>
           </div>
 
-          <!-- Status & Identificação Master -->
+          <!-- Status & IdentificaÃ§Ã£o Master -->
           <div class="flex flex-wrap items-center gap-2">
             <span class="px-2.5 py-1 bg-amber-500/20 text-amber-300 border border-amber-500/40 rounded-lg text-[10px] font-bold flex items-center gap-1.5">
               <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
               Administrador autorizado
             </span>
             <span class="px-2.5 py-1 bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 rounded-lg text-[10px] font-bold">
-              SESSÃO PROTEGIDA
+              SESSÃƒO PROTEGIDA
             </span>
           </div>
         </div>
 
-        <!-- Ações administrativas -->
+        <!-- AÃ§Ãµes administrativas -->
         <div class="mt-4 flex flex-wrap gap-2.5 items-center">
           <button onclick="abrirModalNovoUsuarioAdmin()" class="px-3.5 py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs rounded-xl shadow-lg transition flex items-center gap-1.5">
             Adicionar acesso de teste
@@ -1564,7 +1581,7 @@
             Processar evento
           </button>
           <button onclick="exportarBaseClientesCSV()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-xs rounded-xl transition flex items-center gap-1.5">
-            Exportar usuários (.CSV)
+            Exportar usuÃ¡rios (.CSV)
           </button>
           
         </div>
@@ -1576,7 +1593,7 @@
         <div class="bg-slate-900/90 border border-slate-800 hover:border-amber-500/40 rounded-2xl p-4 transition shadow-lg relative overflow-hidden">
           <div class="flex items-center justify-between text-slate-400 text-[11px] font-bold uppercase mb-1">
             <span>Receita recorrente</span>
-            <span id="kpi-admin-mrr-variacao" class="text-emerald-400 text-[10px]">● Ativo</span>
+            <span id="kpi-admin-mrr-variacao" class="text-emerald-400 text-[10px]">â— Ativo</span>
           </div>
           <div class="text-xl sm:text-2xl font-black text-white font-sans" id="kpi-admin-mrr">
             R$ 0,00
@@ -1593,7 +1610,7 @@
         <div class="bg-slate-900/90 border border-slate-800 hover:border-emerald-500/40 rounded-2xl p-4 transition shadow-lg">
           <div class="flex items-center justify-between text-slate-400 text-[11px] font-bold uppercase mb-1">
             <span>Acessos ativos</span>
-            <span class="text-emerald-400 text-[10px]">● Ativos</span>
+            <span class="text-emerald-400 text-[10px]">â— Ativos</span>
           </div>
           <div class="text-xl sm:text-2xl font-black text-emerald-400 font-sans" id="kpi-admin-total-vip">
             0 Assinantes
@@ -1601,18 +1618,18 @@
           <div class="text-[10px] text-slate-400 mt-1 flex justify-between">
             <span>Mensal: <b id="kpi-count-mensal" class="text-slate-200">0</b></span>
             <span>Anual: <b id="kpi-count-anual" class="text-slate-200">0</b></span>
-            <span>Bolão: <b id="kpi-count-bolao" class="text-slate-200">0</b></span>
+            <span>BolÃ£o: <b id="kpi-count-bolao" class="text-slate-200">0</b></span>
           </div>
           <div class="h-1 w-full bg-slate-800 rounded-full mt-2 overflow-hidden">
             <div id="kpi-admin-vip-bar" class="h-full bg-emerald-500 w-0 rounded-full"></div>
           </div>
         </div>
 
-        <!-- KPI 3: Taxa de Conversão -->
+        <!-- KPI 3: Taxa de ConversÃ£o -->
         <div class="bg-slate-900/90 border border-slate-800 hover:border-cyan-500/40 rounded-2xl p-4 transition shadow-lg">
           <div class="flex items-center justify-between text-slate-400 text-[11px] font-bold uppercase mb-1">
-            <span>Conversão</span>
-            <span class="text-cyan-400 text-[10px]">Free ➔ VIP</span>
+            <span>ConversÃ£o</span>
+            <span class="text-cyan-400 text-[10px]">Free âž” VIP</span>
           </div>
           <div class="text-xl sm:text-2xl font-black text-cyan-400 font-sans" id="kpi-admin-conversao">
             0,0%
@@ -1643,19 +1660,19 @@
         </div>
       </div>
 
-      <!-- Navegação Secundária do Painel Administrativo -->
+      <!-- NavegaÃ§Ã£o SecundÃ¡ria do Painel Administrativo -->
       <div class="flex border-b border-slate-800 gap-2 overflow-x-auto no-scrollbar">
         <button onclick="alternarSubAbaAdmin('usuarios')" id="subtab-admin-usuarios" class="pb-2.5 px-3 font-bold text-xs border-b-2 border-amber-400 text-amber-300 transition flex items-center gap-1.5 whitespace-nowrap">
-          Gestão de Usuários & VIPs
+          GestÃ£o de UsuÃ¡rios & VIPs
         </button>
         <button onclick="alternarSubAbaAdmin('telemetria')" id="subtab-admin-telemetria" class="pb-2.5 px-3 font-bold text-xs border-b-2 border-transparent text-slate-400 hover:text-white transition flex items-center gap-1.5 whitespace-nowrap">
           Telemetria & Jogos Globais
         </button>
         <button onclick="alternarSubAbaAdmin('feedbacks')" id="subtab-admin-feedbacks" class="pb-2.5 px-3 font-bold text-xs border-b-2 border-transparent text-slate-400 hover:text-white transition flex items-center gap-1.5 whitespace-nowrap">
-          Feedbacks & Sugestões (<span id="kpi-total-feedbacks-badge">0</span>)
+          Feedbacks & SugestÃµes (<span id="kpi-total-feedbacks-badge">0</span>)
         </button>
         <button onclick="alternarSubAbaAdmin('planos')" id="subtab-admin-planos" class="pb-2.5 px-3 font-bold text-xs border-b-2 border-transparent text-slate-400 hover:text-white transition flex items-center gap-1.5 whitespace-nowrap">
-          Planos & Precificação (A, B, C, D)
+          Planos & PrecificaÃ§Ã£o (A, B, C, D)
         </button>
         <button onclick="alternarSubAbaAdmin('gateways')" id="subtab-admin-gateways" class="pb-2.5 px-3 font-bold text-xs border-b-2 border-transparent text-slate-400 hover:text-white transition flex items-center gap-1.5 whitespace-nowrap">
           Gateways & Webhooks
@@ -1665,7 +1682,7 @@
         </button>
       </div>
 
-      <!-- SUB-SEÇÃO 1: GESTÃO DE USUÁRIOS E ASSINATURAS -->
+      <!-- SUB-SEÃ‡ÃƒO 1: GESTÃƒO DE USUÃRIOS E ASSINATURAS -->
       <div id="subsecao-admin-usuarios" class="space-y-4">
         <!-- Filtros e Barra de Pesquisa -->
         <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-3 sm:p-4 flex flex-col md:flex-row gap-3 justify-between items-stretch md:items-center">
@@ -1678,32 +1695,32 @@
               <option value="todos">Todos os Planos</option>
               <option value="pro">VIP Mensal (R$ 29,90)</option>
               <option value="anual">VIP Anual (R$ 197,00)</option>
-              <option value="bolao">Bolão Pro (R$ 59,90)</option>
-              <option value="free">Visitante / Grátis</option>
+              <option value="bolao">BolÃ£o Pro (R$ 59,90)</option>
+              <option value="free">Visitante / GrÃ¡tis</option>
               <option value="master">Master Founder</option>
             </select>
 
             <select id="filtro-status-usuario" onchange="filtrarTabelaUsuariosAdmin()" class="bg-slate-950 border border-slate-800 text-slate-300 text-xs rounded-xl px-3 py-2 font-mono focus:border-amber-400 focus:outline-none">
               <option value="todos">Todos os Status</option>
-              <option value="ativo">🟢 Ativos</option>
-              <option value="pendente">🟡 Pendentes</option>
-              <option value="bloqueado">🔴 Bloqueados</option>
-              <option value="expirado">⚪ Expirados</option>
+              <option value="ativo">ðŸŸ¢ Ativos</option>
+              <option value="pendente">ðŸŸ¡ Pendentes</option>
+              <option value="bloqueado">ðŸ”´ Bloqueados</option>
+              <option value="expirado">âšª Expirados</option>
             </select>
           </div>
         </div>
 
-        <!-- Tabela Responsiva de Usuários -->
+        <!-- Tabela Responsiva de UsuÃ¡rios -->
         <div class="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-xl">
           <div class="overflow-x-auto">
             <table class="w-full text-left text-xs font-mono">
               <thead class="bg-slate-950/80 border-b border-slate-800 text-slate-400 uppercase text-[10px]">
                 <tr>
-                  <th class="p-3.5">Cliente / Usuário</th>
+                  <th class="p-3.5">Cliente / UsuÃ¡rio</th>
                   <th class="p-3.5">Plano Contratado</th>
-                  <th class="p-3.5">Assinatura / Expiração</th>
+                  <th class="p-3.5">Assinatura / ExpiraÃ§Ã£o</th>
                   <th class="p-3.5">Status</th>
-                  <th class="p-3.5 text-right">Ações Administrativas</th>
+                  <th class="p-3.5 text-right">AÃ§Ãµes Administrativas</th>
                 </tr>
               </thead>
               <tbody id="tabela-usuarios-admin-body" class="divide-y divide-slate-800/60 text-slate-300">
@@ -1712,37 +1729,37 @@
             </table>
           </div>
 
-          <!-- Rodapé da Tabela com Resumo -->
+          <!-- RodapÃ© da Tabela com Resumo -->
           <div class="p-3 bg-slate-950/90 border-t border-slate-800 flex justify-between items-center text-[11px] text-slate-400">
             <span id="contador-usuarios-filtrados">Exibindo 0 clientes</span>
-            <span class="text-amber-400 font-bold">Base de Dados: Local + Sincronização em Nuvem</span>
+            <span class="text-amber-400 font-bold">Base de Dados: Local + SincronizaÃ§Ã£o em Nuvem</span>
           </div>
         </div>
       </div>
 
-      <!-- SUB-SEÇÃO FEEDBACKS & SUGESTÕES DOS TESTADORES VIP -->
+      <!-- SUB-SEÃ‡ÃƒO FEEDBACKS & SUGESTÃ•ES DOS TESTADORES VIP -->
       <div id="subsecao-admin-feedbacks" class="space-y-4 hidden font-sans">
-        <!-- KPIs de Avaliação -->
+        <!-- KPIs de AvaliaÃ§Ã£o -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex items-center justify-between shadow">
             <div>
-              <span class="text-[10px] text-slate-400 font-mono uppercase font-bold block">Satisfação Média</span>
-              <div class="text-2xl font-black text-amber-400 mt-0.5" id="kpi-media-feedbacks">5.0 ⭐</div>
-              <span class="text-[10px] text-slate-500">Avaliações recebidas dos testadores</span>
+              <span class="text-[10px] text-slate-400 font-mono uppercase font-bold block">SatisfaÃ§Ã£o MÃ©dia</span>
+              <div class="text-2xl font-black text-amber-400 mt-0.5" id="kpi-media-feedbacks">5.0 â­</div>
+              <span class="text-[10px] text-slate-500">AvaliaÃ§Ãµes recebidas dos testadores</span>
             </div>
             <div class="w-12 h-12 rounded-2xl bg-amber-950/60 border border-amber-500/40 flex items-center justify-center text-2xl">
-              ⭐
+              â­
             </div>
           </div>
 
           <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex items-center justify-between shadow">
             <div>
-              <span class="text-[10px] text-slate-400 font-mono uppercase font-bold block">Total de Sugestões</span>
+              <span class="text-[10px] text-slate-400 font-mono uppercase font-bold block">Total de SugestÃµes</span>
               <div class="text-2xl font-black text-cyan-400 mt-0.5" id="kpi-total-feedbacks">0</div>
               <span class="text-[10px] text-slate-500">Testadores participando ativamente</span>
             </div>
             <div class="w-12 h-12 rounded-2xl bg-cyan-950/60 border border-cyan-500/40 flex items-center justify-center text-2xl">
-              💬
+              ðŸ’¬
             </div>
           </div>
         </div>
@@ -1751,11 +1768,11 @@
         <div class="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-xl">
           <div class="p-3.5 bg-slate-950/80 border-b border-slate-800 flex justify-between items-center">
             <div>
-              <h4 class="text-xs font-black text-white uppercase font-mono">Sugestões e Avaliações Coletadas</h4>
-              <p class="text-[10px] text-slate-400 font-sans">Use o botão de resposta para conversar no WhatsApp com o testador</p>
+              <h4 class="text-xs font-black text-white uppercase font-mono">SugestÃµes e AvaliaÃ§Ãµes Coletadas</h4>
+              <p class="text-[10px] text-slate-400 font-sans">Use o botÃ£o de resposta para conversar no WhatsApp com o testador</p>
             </div>
             <button type="button" onclick="window.abrirModalFeedbackTestador()" class="px-3 py-1.5 rounded-xl bg-cyan-950 text-cyan-300 border border-cyan-800 text-[10px] font-bold hover:bg-cyan-900 transition">
-              ➕ Testar Formulário
+              âž• Testar FormulÃ¡rio
             </button>
           </div>
 
@@ -1765,15 +1782,15 @@
                 <tr>
                   <th class="p-3.5">Testador / Contato</th>
                   <th class="p-3.5">Nota</th>
-                  <th class="p-3.5">Sugestão / Feedback</th>
+                  <th class="p-3.5">SugestÃ£o / Feedback</th>
                   <th class="p-3.5">Data</th>
-                  <th class="p-3.5 text-right">Ação</th>
+                  <th class="p-3.5 text-right">AÃ§Ã£o</th>
                 </tr>
               </thead>
               <tbody id="lista-feedbacks-admin-body" class="divide-y divide-slate-800/60 text-slate-300">
                 <tr>
                   <td colspan="5" class="p-6 text-center text-slate-500 font-sans">
-                    Carregando avaliações dos testadores...
+                    Carregando avaliaÃ§Ãµes dos testadores...
                   </td>
                 </tr>
               </tbody>
@@ -1782,16 +1799,16 @@
         </div>
       </div>
 
-      <!-- SUB-SEÇÃO TELEMETRIA & JOGOS GLOBAIS DOS USUÁRIOS -->
+      <!-- SUB-SEÃ‡ÃƒO TELEMETRIA & JOGOS GLOBAIS DOS USUÃRIOS -->
       <div id="subsecao-admin-telemetria" class="space-y-4 hidden font-sans"></div>
 
-      <!-- SUB-SEÇÃO 2: REGRAS E MATRIZ DE PLANOS (A, B, C, D) -->
+      <!-- SUB-SEÃ‡ÃƒO 2: REGRAS E MATRIZ DE PLANOS (A, B, C, D) -->
       <div id="subsecao-admin-planos" class="space-y-4 hidden">
         <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 shadow-xl space-y-4">
           <div class="flex justify-between items-center border-b border-slate-800 pb-3">
             <div>
               <h3 class="text-base font-black text-white font-sans uppercase">Matriz de Planos, Limites e Paywalls Oficiais</h3>
-              <p class="text-xs text-slate-400 font-sans mt-0.5">Diferenciação clara e irrefutável dos recursos liberados para publicação na Google Play Store</p>
+              <p class="text-xs text-slate-400 font-sans mt-0.5">DiferenciaÃ§Ã£o clara e irrefutÃ¡vel dos recursos liberados para publicaÃ§Ã£o na Google Play Store</p>
             </div>
             <span class="px-2.5 py-1 bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 rounded-lg text-[10px] font-bold">
               ESTRUTURA APROVADA
@@ -1804,22 +1821,22 @@
               <div>
                 <div class="flex justify-between items-center">
                   <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-800 text-slate-300">PLANO A</span>
-                  <span class="text-xs font-bold text-slate-400">Degustação</span>
+                  <span class="text-xs font-bold text-slate-400">DegustaÃ§Ã£o</span>
                 </div>
-                <h4 class="text-lg font-black text-white font-sans mt-2">Visitante Grátis</h4>
+                <h4 class="text-lg font-black text-white font-sans mt-2">Visitante GrÃ¡tis</h4>
                 <div class="text-2xl font-black text-slate-300 font-sans mt-1">R$ 0,00</div>
                 <ul class="text-[11px] text-slate-400 space-y-1.5 mt-3 pt-3 border-t border-slate-800">
-                  <li class="flex items-center gap-1.5 text-slate-300"><span>✓</span> 1 palpite por geração</li>
-                  <li class="flex items-center gap-1.5 text-slate-300"><span>✓</span> Fechamento básico (até 16 dezenas)</li>
-                  <li class="flex items-center gap-1.5 text-slate-300"><span>✓</span> Visualização do concurso atual</li>
-                  <li class="flex items-center gap-1.5 text-red-400"><span>✕</span> Simulador travado em 10 concursos</li>
-                  <li class="flex items-center gap-1.5 text-red-400"><span>✕</span> Sem geração em lote (máx 1 jogo)</li>
-                  <li class="flex items-center gap-1.5 text-red-400"><span>✕</span> Sem scanner em massa</li>
-                  <li class="flex items-center gap-1.5 text-red-400"><span>✕</span> Sem exportação PDF oficial Caixa</li>
+                  <li class="flex items-center gap-1.5 text-slate-300"><span>âœ“</span> 1 palpite por geraÃ§Ã£o</li>
+                  <li class="flex items-center gap-1.5 text-slate-300"><span>âœ“</span> Fechamento bÃ¡sico (atÃ© 16 dezenas)</li>
+                  <li class="flex items-center gap-1.5 text-slate-300"><span>âœ“</span> VisualizaÃ§Ã£o do concurso atual</li>
+                  <li class="flex items-center gap-1.5 text-red-400"><span>âœ•</span> Simulador travado em 10 concursos</li>
+                  <li class="flex items-center gap-1.5 text-red-400"><span>âœ•</span> Sem geraÃ§Ã£o em lote (mÃ¡x 1 jogo)</li>
+                  <li class="flex items-center gap-1.5 text-red-400"><span>âœ•</span> Sem scanner em massa</li>
+                  <li class="flex items-center gap-1.5 text-red-400"><span>âœ•</span> Sem exportaÃ§Ã£o PDF oficial Caixa</li>
                 </ul>
               </div>
               <div class="text-[10px] text-slate-500 bg-slate-900 p-2 rounded-xl text-center">
-                Funil de atração e retenção orgânica
+                Funil de atraÃ§Ã£o e retenÃ§Ã£o orgÃ¢nica
               </div>
             </div>
 
@@ -1831,14 +1848,14 @@
                   <span class="text-xs font-bold text-emerald-400">Mais Vendido</span>
                 </div>
                 <h4 class="text-lg font-black text-white font-sans mt-2">VIP Mensal</h4>
-                <div class="text-2xl font-black text-emerald-400 font-sans mt-1">R$ 29,90 <span class="text-xs text-slate-500">/mês</span></div>
+                <div class="text-2xl font-black text-emerald-400 font-sans mt-1">R$ 29,90 <span class="text-xs text-slate-500">/mÃªs</span></div>
                 <ul class="text-[11px] text-slate-300 space-y-1.5 mt-3 pt-3 border-t border-slate-800">
-                  <li class="flex items-center gap-1.5"><span>✓</span> Palpites quânticos <b>ilimitados</b></li>
-                  <li class="flex items-center gap-1.5"><span>✓</span> Fechamentos C(n,k) até 22 dezenas</li>
-                  <li class="flex items-center gap-1.5"><span>✓</span> Simulador financeiro com ROI real</li>
-                  <li class="flex items-center gap-1.5"><span>✓</span> Scanner em lote (até 50 bilhetes)</li>
-                  <li class="flex items-center gap-1.5"><span>✓</span> Impressão oficial e exportação WhatsApp</li>
-                  <li class="flex items-center gap-1.5 text-slate-500"><span>✕</span> Sem calibração 1-clique IA</li>
+                  <li class="flex items-center gap-1.5"><span>âœ“</span> Palpites quÃ¢nticos <b>ilimitados</b></li>
+                  <li class="flex items-center gap-1.5"><span>âœ“</span> Fechamentos C(n,k) atÃ© 22 dezenas</li>
+                  <li class="flex items-center gap-1.5"><span>âœ“</span> Simulador financeiro com ROI real</li>
+                  <li class="flex items-center gap-1.5"><span>âœ“</span> Scanner em lote (atÃ© 50 bilhetes)</li>
+                  <li class="flex items-center gap-1.5"><span>âœ“</span> ImpressÃ£o oficial e exportaÃ§Ã£o WhatsApp</li>
+                  <li class="flex items-center gap-1.5 text-slate-500"><span>âœ•</span> Sem calibraÃ§Ã£o 1-clique IA</li>
                 </ul>
               </div>
               <div class="text-[10px] text-emerald-400/90 bg-emerald-950/30 p-2 rounded-xl text-center border border-emerald-900/40">
@@ -1858,14 +1875,14 @@
                 </div>
                 <h4 class="text-lg font-black text-white font-sans mt-2">VIP Anual</h4>
                 <div class="text-2xl font-black text-amber-400 font-sans mt-1">R$ 197,00 <span class="text-xs text-slate-500">/ano</span></div>
-                <div class="text-[10px] text-amber-300 font-bold">Equivale a R$ 16,41/mês (45% OFF)</div>
+                <div class="text-[10px] text-amber-300 font-bold">Equivale a R$ 16,41/mÃªs (45% OFF)</div>
                 <ul class="text-[11px] text-slate-200 space-y-1.5 mt-3 pt-3 border-t border-slate-800">
-                  <li class="flex items-center gap-1.5 text-amber-300 font-bold"><span>★</span> Tudo do Plano VIP Mensal</li>
-                  <li class="flex items-center gap-1.5"><span>✓</span> <b>Auto-Calibração IA com 1 clique</b></li>
-                  <li class="flex items-center gap-1.5"><span>✓</span> Matriz 4x4 + 6 testes de telemetria</li>
-                  <li class="flex items-center gap-1.5"><span>✓</span> Acesso antecipado a novas loterias</li>
-                  <li class="flex items-center gap-1.5"><span>✓</span> Suporte VIP direto via WhatsApp</li>
-                  <li class="flex items-center gap-1.5"><span>✓</span> Backup dos jogos em Nuvem</li>
+                  <li class="flex items-center gap-1.5 text-amber-300 font-bold"><span>â˜…</span> Tudo do Plano VIP Mensal</li>
+                  <li class="flex items-center gap-1.5"><span>âœ“</span> <b>Auto-CalibraÃ§Ã£o IA com 1 clique</b></li>
+                  <li class="flex items-center gap-1.5"><span>âœ“</span> Matriz 4x4 + 6 testes de telemetria</li>
+                  <li class="flex items-center gap-1.5"><span>âœ“</span> Acesso antecipado a novas loterias</li>
+                  <li class="flex items-center gap-1.5"><span>âœ“</span> Suporte VIP direto via WhatsApp</li>
+                  <li class="flex items-center gap-1.5"><span>âœ“</span> Backup dos jogos em Nuvem</li>
                 </ul>
               </div>
               <div class="text-[10px] text-amber-300 bg-amber-950/40 p-2 rounded-xl text-center border border-amber-500/40 font-bold">
@@ -1880,25 +1897,25 @@
                   <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-purple-950 text-purple-300 border border-purple-800">PLANO D</span>
                   <span class="text-xs font-bold text-purple-400">Sindicato</span>
                 </div>
-                <h4 class="text-lg font-black text-white font-sans mt-2">Bolão Pro</h4>
-                <div class="text-2xl font-black text-purple-400 font-sans mt-1">R$ 59,90 <span class="text-xs text-slate-500">/mês</span></div>
+                <h4 class="text-lg font-black text-white font-sans mt-2">BolÃ£o Pro</h4>
+                <div class="text-2xl font-black text-purple-400 font-sans mt-1">R$ 59,90 <span class="text-xs text-slate-500">/mÃªs</span></div>
                 <ul class="text-[11px] text-slate-300 space-y-1.5 mt-3 pt-3 border-t border-slate-800">
-                  <li class="flex items-center gap-1.5 text-purple-300 font-bold"><span>★</span> Tudo do Plano Anual Elite</li>
-                  <li class="flex items-center gap-1.5"><span>✓</span> Módulo Completo de Gestão de Bolões</li>
-                  <li class="flex items-center gap-1.5"><span>✓</span> Rateio automático de cotas financeiras</li>
-                  <li class="flex items-center gap-1.5"><span>✓</span> Envio de comprovantes aos cotistas via Zap</li>
-                  <li class="flex items-center gap-1.5"><span>✓</span> Fechamentos pesados de até 25 dezenas</li>
+                  <li class="flex items-center gap-1.5 text-purple-300 font-bold"><span>â˜…</span> Tudo do Plano Anual Elite</li>
+                  <li class="flex items-center gap-1.5"><span>âœ“</span> MÃ³dulo Completo de GestÃ£o de BolÃµes</li>
+                  <li class="flex items-center gap-1.5"><span>âœ“</span> Rateio automÃ¡tico de cotas financeiras</li>
+                  <li class="flex items-center gap-1.5"><span>âœ“</span> Envio de comprovantes aos cotistas via Zap</li>
+                  <li class="flex items-center gap-1.5"><span>âœ“</span> Fechamentos pesados de atÃ© 25 dezenas</li>
                 </ul>
               </div>
               <div class="text-[10px] text-purple-400 bg-purple-950/30 p-2 rounded-xl text-center border border-purple-900/40">
-                Ideal para lotéricas e organizadores
+                Ideal para lotÃ©ricas e organizadores
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- SUB-SEÇÃO 3: GATEWAYS DE PAGAMENTO & WEBHOOKS -->
+      <!-- SUB-SEÃ‡ÃƒO 3: GATEWAYS DE PAGAMENTO & WEBHOOKS -->
       <div id="subsecao-admin-gateways" class="space-y-4 hidden">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <!-- Gateway 1: Mercado Pago / PIX -->
@@ -1906,14 +1923,14 @@
             <div class="flex justify-between items-center border-b border-slate-800 pb-3">
               <div class="flex items-center gap-2">
                 <div>
-                  <h4 class="text-sm font-bold text-white font-sans">Mercado Pago / PIX Instantâneo</h4>
+                  <h4 class="text-sm font-bold text-white font-sans">Mercado Pago / PIX InstantÃ¢neo</h4>
                   <span class="text-[10px] text-emerald-400 font-mono">Status: Conectado & Operando</span>
                 </div>
               </div>
               <span class="px-2 py-0.5 bg-emerald-500/20 text-emerald-400 rounded text-[10px] font-bold">ATIVO</span>
             </div>
             <p class="text-xs text-slate-400 font-sans">
-              Liberação automática de acesso VIP em menos de 3 segundos após a confirmação do PIX através do Webhook oficial.
+              LiberaÃ§Ã£o automÃ¡tica de acesso VIP em menos de 3 segundos apÃ³s a confirmaÃ§Ã£o do PIX atravÃ©s do Webhook oficial.
             </p>
             <div class="bg-slate-950 p-2.5 rounded-xl text-[10px] text-slate-400 font-mono space-y-1">
               <div><b>Endpoint Webhook:</b> <span class="text-slate-300">https://api.loteriasnasa.pro/webhooks/mercadopago</span></div>
@@ -1933,7 +1950,7 @@
               <span class="px-2 py-0.5 bg-cyan-500/20 text-cyan-400 rounded text-[10px] font-bold">HOMOLOGADO</span>
             </div>
             <p class="text-xs text-slate-400 font-sans">
-              Cobrança recorrente nativa gerenciada pelo Google no Android. Reduz atrito de digitação de cartão para os usuários móveis.
+              CobranÃ§a recorrente nativa gerenciada pelo Google no Android. Reduz atrito de digitaÃ§Ã£o de cartÃ£o para os usuÃ¡rios mÃ³veis.
             </p>
             <div class="bg-slate-950 p-2.5 rounded-xl text-[10px] text-slate-400 font-mono space-y-1">
               <div><b>SKU Mensal:</b> <span class="text-slate-300">loterias_nasa_vip_monthly_2990</span></div>
@@ -1947,13 +1964,13 @@
               <div class="flex items-center gap-2">
                 <div>
                   <h4 class="text-sm font-bold text-white font-sans">Stripe Recurring Billing</h4>
-                  <span class="text-[10px] text-purple-400 font-mono">Status: Pronto para Cartões Internacionais</span>
+                  <span class="text-[10px] text-purple-400 font-mono">Status: Pronto para CartÃµes Internacionais</span>
                 </div>
               </div>
               <span class="px-2 py-0.5 bg-purple-500/20 text-purple-400 rounded text-[10px] font-bold">PRONTO</span>
             </div>
             <p class="text-xs text-slate-400 font-sans">
-              Checkout transparente com suporte a Apple Pay, Google Pay e cartões de crédito com renovação automática de assinatura.
+              Checkout transparente com suporte a Apple Pay, Google Pay e cartÃµes de crÃ©dito com renovaÃ§Ã£o automÃ¡tica de assinatura.
             </p>
           </div>
 
@@ -1969,20 +1986,20 @@
               <span class="px-2 py-0.5 bg-amber-500/20 text-amber-400 rounded text-[10px] font-bold">INTEGRADO</span>
             </div>
             <p class="text-xs text-slate-400 font-sans">
-              Se desejar vender a assinatura através de infoproduto com afiliados, o webhook recebe a aprovação e libera o plano no mesmo segundo.
+              Se desejar vender a assinatura atravÃ©s de infoproduto com afiliados, o webhook recebe a aprovaÃ§Ã£o e libera o plano no mesmo segundo.
             </p>
           </div>
         </div>
       </div>
 
-      <!-- SUB-SEÇÃO 4: RELATÓRIO EXECUTIVO DO ESPECIALISTA DE LANÇAMENTO -->
+      <!-- SUB-SEÃ‡ÃƒO 4: RELATÃ“RIO EXECUTIVO DO ESPECIALISTA DE LANÃ‡AMENTO -->
       <div id="subsecao-admin-relatorio" class="space-y-4 hidden">
         <div class="bg-slate-900 border-2 border-cyan-800/60 rounded-3xl p-5 shadow-2xl space-y-5">
           <div class="border-b border-slate-800 pb-4 flex justify-between items-start">
             <div>
-              <span class="text-[10px] font-bold text-cyan-400 uppercase tracking-widest block font-mono">Documento Estratégico Oficial</span>
-              <h3 class="text-lg font-black text-white font-sans mt-1">PARECER DO ESPECIALISTA EM LANÇAMENTO DO PRODUTO</h3>
-              <p class="text-xs text-slate-400 font-sans mt-0.5">Destinatário: <b>Equipe responsável pelo Meu Volante PRO</b></p>
+              <span class="text-[10px] font-bold text-cyan-400 uppercase tracking-widest block font-mono">Documento EstratÃ©gico Oficial</span>
+              <h3 class="text-lg font-black text-white font-sans mt-1">PARECER DO ESPECIALISTA EM LANÃ‡AMENTO DO PRODUTO</h3>
+              <p class="text-xs text-slate-400 font-sans mt-0.5">DestinatÃ¡rio: <b>Equipe responsÃ¡vel pelo Meu Volante PRO</b></p>
             </div>
             <span class="px-3 py-1 bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 rounded-xl text-xs font-bold font-mono">
               VEREDITO: GO FOR LAUNCH (9.8/10)
@@ -1991,49 +2008,49 @@
 
           <div class="space-y-3 text-xs text-slate-300 font-sans leading-relaxed">
             <p>
-                Após análise técnica minuciosa da versão consolidada do <b>Meu Volante PRO</b>, este parecer resume os pontos necessários para uma publicação responsável na <b>Google Play Store</b>.
+                ApÃ³s anÃ¡lise tÃ©cnica minuciosa da versÃ£o consolidada do <b>Meu Volante PRO</b>, este parecer resume os pontos necessÃ¡rios para uma publicaÃ§Ã£o responsÃ¡vel na <b>Google Play Store</b>.
             </p>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-3 my-3">
               <div class="bg-slate-950 p-3.5 rounded-2xl border border-slate-800">
                 <div class="text-emerald-400 font-bold text-sm font-mono mb-1">1. Usabilidade & Estabilidade</div>
                 <p class="text-[11px] text-slate-400">
-                  Header unificado sem qualquer sobreposição ao rolar a página. 0 erros no console, áudio sintetizado em Web Audio API e suporte total a PWA offline.
+                  Header unificado sem qualquer sobreposiÃ§Ã£o ao rolar a pÃ¡gina. 0 erros no console, Ã¡udio sintetizado em Web Audio API e suporte total a PWA offline.
                 </p>
               </div>
 
               <div class="bg-slate-950 p-3.5 rounded-2xl border border-slate-800">
-                <div class="text-amber-400 font-bold text-sm font-mono mb-1">2. Monetização & Paywalls</div>
+                <div class="text-amber-400 font-bold text-sm font-mono mb-1">2. MonetizaÃ§Ã£o & Paywalls</div>
                 <p class="text-[11px] text-slate-400">
-                  O funil de vendas está calibrado: o visitante gratuito experimenta o motor combinatório, mas ao tentar gerar em massa ou escanear lotes é conduzido de forma natural aos Planos B e C.
+                  O funil de vendas estÃ¡ calibrado: o visitante gratuito experimenta o motor combinatÃ³rio, mas ao tentar gerar em massa ou escanear lotes Ã© conduzido de forma natural aos Planos B e C.
                 </p>
               </div>
 
               <div class="bg-slate-950 p-3.5 rounded-2xl border border-slate-800">
                 <div class="text-purple-400 font-bold text-sm font-mono mb-1">3. Controle Central do CEO</div>
                 <p class="text-[11px] text-slate-400">
-                  O senhor possui agora controle absoluto e em tempo real sobre cada cliente, concedendo ou revogando licenças VIP manualmente com 1 clique.
+                  O senhor possui agora controle absoluto e em tempo real sobre cada cliente, concedendo ou revogando licenÃ§as VIP manualmente com 1 clique.
                 </p>
               </div>
             </div>
 
             <p class="text-xs text-slate-400">
-              <b>Recomendação de Precificação Oficial:</b> Fixar o <b>Plano B (VIP Mensal) a R$ 29,90/mês</b> e o <b>Plano C (VIP Anual Elite) a R$ 197,00/ano</b>. Isso garante um MRR previsível e um alto fluxo de caixa antecipado no plano anual.
+              <b>RecomendaÃ§Ã£o de PrecificaÃ§Ã£o Oficial:</b> Fixar o <b>Plano B (VIP Mensal) a R$ 29,90/mÃªs</b> e o <b>Plano C (VIP Anual Elite) a R$ 197,00/ano</b>. Isso garante um MRR previsÃ­vel e um alto fluxo de caixa antecipado no plano anual.
             </p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- MODAL: CADASTRAR / LIBERAR NOVO USUÁRIO (AÇÃO DO CEO) -->
+    <!-- MODAL: CADASTRAR / LIBERAR NOVO USUÃRIO (AÃ‡ÃƒO DO CEO) -->
     <div id="modal-novo-usuario-admin" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center p-4">
       <div class="bg-slate-900 border-2 border-amber-500/50 rounded-3xl max-w-sm w-full p-5 space-y-3.5 shadow-2xl relative max-h-[90vh] overflow-y-auto">
-        <button onclick="fecharModalNovoUsuarioAdmin()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg font-bold">✕</button>
+        <button onclick="fecharModalNovoUsuarioAdmin()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg font-bold">âœ•</button>
 
         <div class="flex items-center gap-2 border-b border-slate-800 pb-3">
           <div>
             <h3 class="text-sm font-black text-white font-sans uppercase">Cadastrar / Liberar Acesso Manual</h3>
-            <p class="text-[10px] text-slate-400 font-sans">Conceda licença VIP para um novo cliente ou parceiro</p>
+            <p class="text-[10px] text-slate-400 font-sans">Conceda licenÃ§a VIP para um novo cliente ou parceiro</p>
           </div>
         </div>
 
@@ -2049,7 +2066,7 @@
               <input type="tel" id="admin-user-telefone" placeholder="Ex: (11) 99999-9999" class="w-full px-3 py-2 bg-slate-950 border border-emerald-500/50 rounded-xl text-emerald-400 font-bold placeholder-slate-600 focus:border-emerald-400 focus:outline-none font-sans">
             </div>
             <div>
-              <label class="text-[10px] text-slate-400 uppercase font-bold block mb-1">Código VIP Personalizado</label>
+              <label class="text-[10px] text-slate-400 uppercase font-bold block mb-1">CÃ³digo VIP Personalizado</label>
               <input type="text" id="admin-user-codigo-vip" required placeholder="Ex: CODIGO123" class="w-full px-3 py-2 bg-slate-950 border border-amber-500/50 rounded-xl text-amber-300 font-bold uppercase placeholder-slate-600 focus:border-amber-400 focus:outline-none font-mono">
             </div>
           </div>
@@ -2061,29 +2078,29 @@
 
           <div class="grid grid-cols-2 gap-2">
             <div>
-              <label class="text-[10px] text-slate-400 uppercase font-bold block mb-1">Plano Atribuído</label>
+              <label class="text-[10px] text-slate-400 uppercase font-bold block mb-1">Plano AtribuÃ­do</label>
               <select id="admin-user-plano" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-amber-300 font-bold focus:border-amber-400 focus:outline-none">
                 <option value="pro">VIP Mensal (R$ 29,90)</option>
                 <option value="anual">VIP Anual Elite (R$ 197,00)</option>
-                <option value="bolao">Bolão Pro Sindicato (R$ 59,90)</option>
-                <option value="free">Visitante Grátis</option>
-                <option value="master">Master Vitalício</option>
+                <option value="bolao">BolÃ£o Pro Sindicato (R$ 59,90)</option>
+                <option value="free">Visitante GrÃ¡tis</option>
+                <option value="master">Master VitalÃ­cio</option>
               </select>
             </div>
 
             <div>
               <label class="text-[10px] text-slate-400 uppercase font-bold block mb-1">Validade do Acesso</label>
               <select id="admin-user-dias" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white focus:border-amber-400 focus:outline-none">
-                <option value="30">30 Dias (1 Mês)</option>
+                <option value="30">30 Dias (1 MÃªs)</option>
                 <option value="90">90 Dias (Trimestral)</option>
                 <option value="365" selected>365 Dias (1 Ano)</option>
-                <option value="9999">Vitalício (Ilimitado)</option>
+                <option value="9999">VitalÃ­cio (Ilimitado)</option>
               </select>
             </div>
           </div>
 
           <div>
-            <label class="text-[10px] text-slate-400 uppercase font-bold block mb-1">Observações Internas (Opcional)</label>
+            <label class="text-[10px] text-slate-400 uppercase font-bold block mb-1">ObservaÃ§Ãµes Internas (Opcional)</label>
             <input type="text" id="admin-user-obs" placeholder="Ex: Pagou via PIX manual no WhatsApp" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white placeholder-slate-600 focus:border-amber-400 focus:outline-none">
           </div>
 
@@ -2102,18 +2119,18 @@
     <!-- MODAL: SIMULAR WEBHOOK DE PAGAMENTO -->
     <div id="modal-simular-webhook" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center p-4">
       <div class="bg-slate-900 border-2 border-emerald-500/50 rounded-3xl max-w-sm w-full p-5 space-y-3.5 shadow-2xl relative font-mono max-h-[90vh] overflow-y-auto">
-        <button onclick="fecharModalSimularWebhook()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg font-bold">✕</button>
+        <button onclick="fecharModalSimularWebhook()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg font-bold">âœ•</button>
 
         <div class="flex items-center gap-2 border-b border-slate-800 pb-3">
           <div>
             <h3 class="text-sm font-black text-emerald-400 font-sans uppercase">Simulador de Webhook de Pagamento</h3>
-            <p class="text-[10px] text-slate-400 font-sans">Teste o fluxo de aprovação automática e atualização de MRR</p>
+            <p class="text-[10px] text-slate-400 font-sans">Teste o fluxo de aprovaÃ§Ã£o automÃ¡tica e atualizaÃ§Ã£o de MRR</p>
           </div>
         </div>
 
         <div class="space-y-3 text-xs">
           <div>
-            <label class="text-[10px] text-slate-400 uppercase font-bold block mb-1">Selecionar Usuário para Receber Pagamento</label>
+            <label class="text-[10px] text-slate-400 uppercase font-bold block mb-1">Selecionar UsuÃ¡rio para Receber Pagamento</label>
             <select id="webhook-user-select" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white focus:border-emerald-400 focus:outline-none">
               <!-- Preenchido via script -->
             </select>
@@ -2124,7 +2141,7 @@
               <label class="text-[10px] text-slate-400 uppercase font-bold block mb-1">Gateway</label>
               <select id="webhook-gateway" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white focus:border-emerald-400 focus:outline-none">
                 <option value="mercadopago">Mercado Pago (PIX)</option>
-                <option value="stripe">Stripe (Cartão)</option>
+                <option value="stripe">Stripe (CartÃ£o)</option>
                 <option value="googleplay">Google Play Billing</option>
                 <option value="kiwify">Kiwify</option>
               </select>
@@ -2135,16 +2152,16 @@
               <select id="webhook-plano" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-emerald-300 font-bold focus:border-emerald-400 focus:outline-none">
                 <option value="pro">VIP Mensal (R$ 29,90)</option>
                 <option value="anual">VIP Anual (R$ 197,00)</option>
-                <option value="bolao">Bolão Pro (R$ 59,90)</option>
+                <option value="bolao">BolÃ£o Pro (R$ 59,90)</option>
               </select>
             </div>
           </div>
 
           <div>
-            <label class="text-[10px] text-slate-400 uppercase font-bold block mb-1">Status da Transação</label>
+            <label class="text-[10px] text-slate-400 uppercase font-bold block mb-1">Status da TransaÃ§Ã£o</label>
             <select id="webhook-status" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-emerald-400 font-bold focus:border-emerald-400 focus:outline-none">
-              <option value="approved">🟢 payment.approved (Aprovado Instantaneamente)</option>
-              <option value="refunded">🔴 payment.refunded (Reembolsado / Cancelado)</option>
+              <option value="approved">ðŸŸ¢ payment.approved (Aprovado Instantaneamente)</option>
+              <option value="refunded">ðŸ”´ payment.refunded (Reembolsado / Cancelado)</option>
             </select>
           </div>
 
@@ -2158,18 +2175,18 @@
     </div>
 
   
-    <!-- Rodapé Legal migrado para o Menu de Conta/Configurações (Clean UI) -->
+    <!-- RodapÃ© Legal migrado para o Menu de Conta/ConfiguraÃ§Ãµes (Clean UI) -->
 
   
     <!-- MODAL DE TERMOS DE USO & COMPLIANCE LGPD -->
     <div id="modal-termos-lgpd" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center p-4">
       <div class="bg-slate-900 border-2 border-slate-700 rounded-3xl max-w-2xl w-full max-h-[85vh] flex flex-col p-5 sm:p-6 shadow-2xl relative font-sans">
-        <button onclick="fecharModalTermosLGPD()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg font-bold">✕</button>
+        <button onclick="fecharModalTermosLGPD()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg font-bold">âœ•</button>
 
         <div class="flex items-center gap-2 border-b border-slate-800 pb-3">
           <div>
-            <h3 class="text-sm sm:text-base font-black text-white uppercase" id="titulo-modal-termos">Termos de Uso & Proteção de Dados (LGPD)</h3>
-            <p class="text-[11px] text-slate-400">Transparência jurídica, jogo responsável e controle de seus dados</p>
+            <h3 class="text-sm sm:text-base font-black text-white uppercase" id="titulo-modal-termos">Termos de Uso & ProteÃ§Ã£o de Dados (LGPD)</h3>
+            <p class="text-[11px] text-slate-400">TransparÃªncia jurÃ­dica, jogo responsÃ¡vel e controle de seus dados</p>
           </div>
         </div>
 
@@ -2180,19 +2197,19 @@
           <button onclick="trocarAbaTermos('direitos')" id="tab-modal-direitos" class="pb-2 px-2.5 font-bold border-b-2 border-transparent text-slate-400 hover:text-white">Seus Dados (Art. 18)</button>
         </div>
 
-        <!-- Conteúdo Rolável -->
+        <!-- ConteÃºdo RolÃ¡vel -->
         <div class="overflow-y-auto py-4 space-y-4 text-xs text-slate-300 leading-relaxed pr-2 font-sans flex-1" id="conteudo-modal-termos">
           <!-- Injetado dinamicamente -->
         </div>
 
-        <!-- Rodapé do Modal com Botões de Ação -->
+        <!-- RodapÃ© do Modal com BotÃµes de AÃ§Ã£o -->
         <div class="border-t border-slate-800 pt-3 flex flex-wrap justify-between items-center gap-2 text-xs">
           <div class="flex gap-2">
             <button onclick="exportarDadosPessoaisLGPD()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-cyan-800 rounded-xl font-mono text-[10px] transition">
-              📥 Exportar Meus Dados (.JSON)
+              ðŸ“¥ Exportar Meus Dados (.JSON)
             </button>
             <button onclick="solicitarExclusaoContaLGPD()" class="px-3 py-1.5 bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 border border-rose-800/60 rounded-xl font-mono text-[10px] transition">
-              🗑️ Excluir Todos Meus Dados
+              ðŸ—‘ï¸ Excluir Todos Meus Dados
             </button>
           </div>
           <button onclick="fecharModalTermosLGPD()" class="px-4 py-1.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black rounded-xl transition">
@@ -2207,19 +2224,19 @@
 
   </main>
 
-  <script src="./js/app.js?v=20261103.40"></script>
-  <link rel="stylesheet" href="./css/fluxo-jogo.css?v=20261103.40" />
-  <script src="./js/cadastro.js?v=20261103.40" defer></script>
-  <script src="./js/eventos.js?v=20261103.40" defer></script>
-  <script src="./js/migrar-app.js?v=20261103.40" defer></script>
-  <script src="./js/instalar.js?v=20261103.40" defer></script>
-  <script src="./js/painel-dono.js?v=20261103.40" defer></script>
-  <script src="./js/vip.js?v=20261103.40" defer></script>
-  <script src="./js/conta.js?v=20261103.40" defer></script>
-  <script src="./js/gastos.js?v=20261103.40" defer></script>
-  <script src="./js/ritual.js?v=20261103.40" defer></script>
-  <script src="./js/fluxo-jogo.js?v=20261103.40" defer></script>
-  <script src="./js/boas-vindas.js?v=20261103.40" defer></script>
-  <script src="js/whatsapp-share.js?v=20261103.40"></script>
+  <script src="./js/app.js?v=20261103.41"></script>
+  <link rel="stylesheet" href="./css/fluxo-jogo.css?v=20261103.41" />
+  <script src="./js/cadastro.js?v=20261103.41" defer></script>
+  <script src="./js/eventos.js?v=20261103.41" defer></script>
+  <script src="./js/migrar-app.js?v=20261103.41" defer></script>
+  <script src="./js/instalar.js?v=20261103.41" defer></script>
+  <script src="./js/painel-dono.js?v=20261103.41" defer></script>
+  <script src="./js/vip.js?v=20261103.41" defer></script>
+  <script src="./js/conta.js?v=20261103.41" defer></script>
+  <script src="./js/gastos.js?v=20261103.41" defer></script>
+  <script src="./js/ritual.js?v=20261103.41" defer></script>
+  <script src="./js/fluxo-jogo.js?v=20261103.41" defer></script>
+  <script src="./js/boas-vindas.js?v=20261103.41" defer></script>
+  <script src="js/whatsapp-share.js?v=20261103.41"></script>
 </body>
 </html>

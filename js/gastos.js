@@ -170,26 +170,12 @@ function renderizarRevisaoDoJogo() {
     display.after(revisao);
   }
 
+  // O usuário solicitou remover a poluição de chance e custo do topo da tela GERAR
+  revisao.style.display = 'none';
+
   const modalidade = typeof modalidadeAtual !== 'undefined' ? modalidadeAtual : 'megasena';
   const regra = JOGOS_REGRAS[modalidade];
   const dezenas = dezenasAtuais();
-  if (dezenas.length < regra.sorteadas) {
-    revisao.innerHTML = `<p>Marque pelo menos ${regra.sorteadas} dezenas.</p>`;
-    return;
-  }
-
-  const custo = custoDoJogo(modalidade, dezenas.length);
-  const principal = chancesDoJogo(modalidade, dezenas.length)[0];
-  const orcamento = obterOrcamento();
-  const gastoMes = (resumoPorMes()[mesAtual()] || { gasto: 0 }).gasto;
-  const avisos = [];
-  if (orcamento && gastoMes + custo > orcamento) avisos.push(`Este jogo passa ${formatarBRL(gastoMes + custo - orcamento)} do seu limite do mês.`);
-  if (modalidade === 'megasena' && dezenas.every((d) => d <= 31)) avisos.push('Só dezenas até 31 lembram datas. Se ganhar, talvez divida o prêmio com mais gente. Sua chance não muda.');
-
-  revisao.innerHTML = `
-    <div class="revisao-linha"><span>Chance de ${principal.nome.toLowerCase()}</span><strong>1 em ${principal.umEm.toLocaleString('pt-BR')}</strong></div>
-    <div class="revisao-linha"><span>Custo</span><strong>${formatarBRL(custo)}</strong></div>
-    ${avisos.map((a) => `<p class="revisao-aviso">${a}</p>`).join('')}`;
 
   const tabela = document.getElementById('tabela-chances');
   if (tabela) {

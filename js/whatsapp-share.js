@@ -208,6 +208,74 @@ function marcarComoJogadoProximoConcurso() {
   }
 }
 
+function abrirModalEscolhaSalvarJogo() {
+  const mod = typeof modalidadeAtual !== 'undefined' ? modalidadeAtual : 'megasena';
+  
+  // Se for Lotofácil, salva direto para o próximo concurso
+  if (mod !== 'megasena') {
+    salvarJogoAtivoNaCarteira();
+    return;
+  }
+
+  // Se já existe modal aberto, não duplica
+  if (document.getElementById('modal-escolha-salvar-jogo')) return;
+
+  const fundo = document.createElement('div');
+  fundo.id = 'modal-escolha-salvar-jogo';
+  fundo.className = 'folha-fundo';
+  fundo.setAttribute('role', 'dialog');
+  fundo.setAttribute('aria-modal', 'true');
+  fundo.innerHTML = `
+    <div class="folha bg-slate-900 border border-slate-700 rounded-3xl p-5 max-w-sm mx-auto space-y-4">
+      <div class="flex justify-between items-center pb-2 border-b border-slate-800">
+        <h3 class="text-base font-black text-white font-sans">Salvar Jogo na Carteira</h3>
+        <button type="button" class="btn-fechar-modal-salvar text-slate-400 hover:text-white text-lg font-bold">✕</button>
+      </div>
+      <p class="text-xs text-slate-300 leading-relaxed font-sans">
+        Onde você deseja registrar este palpite gerado?
+      </p>
+      <div class="space-y-2.5">
+        <button type="button" id="btn-salvar-regular" class="w-full p-3.5 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-slate-950 font-black text-xs active:scale-95 transition flex items-center justify-between shadow">
+          <div class="text-left">
+            <strong class="block text-sm">Próximo Concurso Regular</strong>
+            <span class="text-[10px] text-slate-900 font-bold font-mono">Concurso Oficial CAIXA</span>
+          </div>
+          <span class="text-lg">🎯</span>
+        </button>
+
+        <button type="button" id="btn-salvar-virada" class="w-full p-3.5 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-black text-xs active:scale-95 transition flex items-center justify-between shadow">
+          <div class="text-left">
+            <strong class="block text-sm">Mega da Virada 2026</strong>
+            <span class="text-[10px] text-slate-900 font-bold font-mono">Sorteio Especial de Fim de Ano</span>
+          </div>
+          <span class="text-lg">✨</span>
+        </button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(fundo);
+  const fechar = () => fundo.remove();
+  fundo.querySelector('.btn-fechar-modal-salvar').addEventListener('click', fechar);
+  fundo.addEventListener('click', (e) => { if (e.target === fundo) fechar(); });
+
+  fundo.querySelector('#btn-salvar-regular').addEventListener('click', () => {
+    fechar();
+    const chk = document.getElementById('chk-mega-virada');
+    if (chk) chk.checked = false;
+    marcarComoJogadoProximoConcurso();
+  });
+
+  fundo.querySelector('#btn-salvar-virada').addEventListener('click', () => {
+    fechar();
+    const chk = document.getElementById('chk-mega-virada');
+    if (chk) chk.checked = true;
+    salvarJogoAtivoNaCarteira();
+    if (chk) chk.checked = false; // Restaura estado regular
+  });
+}
+window.abrirModalEscolhaSalvarJogo = abrirModalEscolhaSalvarJogo;
+
 function salvarJogoAtivoNaCarteira() {
   if (typeof window.exigirLeadAntesDeSalvar === 'function' && !window.exigirLeadAntesDeSalvar()) {
     return;
