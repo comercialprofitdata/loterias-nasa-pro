@@ -167,7 +167,7 @@ function renderizarRevisaoDoJogo() {
   if (!revisao) {
     revisao = document.createElement('div');
     revisao.id = 'revisao-jogo';
-    display.after(revisao);
+    // display.after(revisao);
   }
 
   const modalidade = typeof modalidadeAtual !== 'undefined' ? modalidadeAtual : 'megasena';
