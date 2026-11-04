@@ -84,7 +84,6 @@ function renderizarNaProxima() {
       </div>
     </div>`;
 }
-}
 
 function revelarProximoResultado() {
   const bilhete = bilhetesParaRevelar()[0];
