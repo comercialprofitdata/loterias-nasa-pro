@@ -107,26 +107,47 @@ function calcularContagemRegressiva(modalidade, agora = new Date()) {
   const cfg = SORTEIOS_CALENDARIO[modalidade];
   if (!cfg) return '—';
 
+  // Verifica se temos informação oficial do próximo sorteio sincronizado
+  let infoSincronizada = null;
+  try {
+    const salvos = obterSorteiosSalvos();
+    if (salvos && salvos[modalidade]) {
+      infoSincronizada = salvos[modalidade];
+    }
+  } catch (_) {}
+
+  let dataAlvoOficial = null;
+  if (infoSincronizada?.dataBR) {
+    const m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(String(infoSincronizada.dataBR).trim());
+    if (m) {
+      dataAlvoOficial = new Date(Number(m[3]), Number(m[2]) - 1, Number(m[1]), cfg.hora, 0, 0);
+    }
+  }
+
   const alvoHoje = new Date(agora);
   alvoHoje.setHours(cfg.hora, 0, 0, 0);
 
   const hojeEhDiaDeSorteio = cfg.dias.includes(agora.getDay());
+  const sorteioHojeJaFoi = dataAlvoOficial
+    ? (dataAlvoOficial.toDateString() !== agora.toDateString() && dataAlvoOficial > agora)
+    : false;
 
-  // Se hoje é dia de sorteio e estamos no período de apuração (entre 20h00 e 21h59)
-  if (hojeEhDiaDeSorteio && agora >= alvoHoje && agora.getHours() < 22) {
+  // Se hoje é dia de sorteio, o próximo concurso NÃO é em data futura e estamos entre 20h00 e 21h59
+  if (hojeEhDiaDeSorteio && !sorteioHojeJaFoi && agora >= alvoHoje && agora.getHours() < 22) {
     return 'Em apuração...';
   }
 
-  const alvo = new Date(agora);
-  alvo.setHours(cfg.hora, 0, 0, 0);
-
-  if (!(hojeEhDiaDeSorteio && agora < alvo)) {
-    for (let i = 1; i <= 7; i++) {
-      const candidato = new Date(agora);
-      candidato.setDate(candidato.getDate() + i);
-      if (cfg.dias.includes(candidato.getDay())) {
-        alvo.setTime(candidato.setHours(cfg.hora, 0, 0, 0));
-        break;
+  const alvo = dataAlvoOficial && dataAlvoOficial > agora ? new Date(dataAlvoOficial) : new Date(agora);
+  if (!dataAlvoOficial || dataAlvoOficial <= agora) {
+    alvo.setHours(cfg.hora, 0, 0, 0);
+    if (!(hojeEhDiaDeSorteio && agora < alvo)) {
+      for (let i = 1; i <= 7; i++) {
+        const candidato = new Date(agora);
+        candidato.setDate(candidato.getDate() + i);
+        if (cfg.dias.includes(candidato.getDay())) {
+          alvo.setTime(candidato.setHours(cfg.hora, 0, 0, 0));
+          break;
+        }
       }
     }
   }
@@ -239,10 +260,10 @@ function salvarUltimoSorteio(dados) {
 
 function obterSorteiosSalvos() {
   try {
+    if (typeof localStorage === 'undefined') return null;
     const salvos = localStorage.getItem('sorteios_ultima_sincronizacao');
     return salvos ? JSON.parse(salvos) : null;
   } catch (err) {
-    console.warn('Não foi possível ler sorteios salvos:', err);
     return null;
   }
 }
@@ -274,6 +295,7 @@ async function sincronizarSorteiosReais({ silencioso = false } = {}) {
           dados.megasena.premio = mega.premioProximo;
           dados.megasena.concurso = mega.proximoConcurso;
           if (mega.dataProximo) {
+            dados.megasena.dataBR = mega.dataProximo;
             const rotulo = formatarDataProximoCaixa(mega.dataProximo, 'megasena');
             if (rotulo) dados.megasena.dia = rotulo;
           }
@@ -282,6 +304,7 @@ async function sincronizarSorteiosReais({ silencioso = false } = {}) {
           dados.lotofacil.premio = loto.premioProximo;
           dados.lotofacil.concurso = loto.proximoConcurso;
           if (loto.dataProximo) {
+            dados.lotofacil.dataBR = loto.dataProximo;
             const rotulo = formatarDataProximoCaixa(loto.dataProximo, 'lotofacil');
             if (rotulo) dados.lotofacil.dia = rotulo;
           }

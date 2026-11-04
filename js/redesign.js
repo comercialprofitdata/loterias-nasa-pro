@@ -1451,14 +1451,18 @@ function atualizarProvaDosFatosRedesign() {
     `;
   }
 
-  // 2. Lista dos outros 49 sorteios oficiais
+  // 2. Lista dos outros 49 sorteios oficiais (iniciando a partir do penúltimo para não repetir o destaque)
   let aprovadosCount = 0;
-  const cardsHtml = ultimos50.map((c, index) => {
+  // O último (índice 0) já é computado na nota média geral
+  const avaliacaoPrimeiro = typeof avaliarJogo === 'function' ? avaliarJogo([...ultimos50[0].dezenas].sort((a,b)=>a-b), mod) : { aprovadosCount: 6 };
+  if (avaliacaoPrimeiro.aprovadosCount >= 5) aprovadosCount++;
+
+  const sorteiosAnteriores = ultimos50.slice(1);
+  const cardsHtml = sorteiosAnteriores.map((c) => {
     const ordenado = [...c.dezenas].sort((a,b) => a - b);
     const avaliacao = typeof avaliarJogo === 'function' ? avaliarJogo(ordenado, mod) : { score: null, aprovadosCount: 0 };
     if (avaliacao.aprovadosCount >= 5) aprovadosCount++;
 
-    // Se for o primeiro (já em destaque acima), marca discretamente ou lista todos para consulta completa
     const bolinhasHtml = ordenado.map(d => `
       <span class="w-5 h-5 rounded-md ${mod === 'megasena' ? 'bg-emerald-950 text-emerald-400 border border-emerald-800' : 'bg-purple-950 text-purple-400 border border-purple-800'} font-black text-[9px] flex items-center justify-center font-mono">
         ${String(d).padStart(2, '0')}
@@ -1466,14 +1470,13 @@ function atualizarProvaDosFatosRedesign() {
     `).join('');
 
     return `
-      <div class="group p-2.5 rounded-2xl bg-white dark:bg-slate-950 hover:bg-slate-50 dark:hover:bg-slate-900 border ${index === 0 ? 'border-emerald-500/50 bg-emerald-950/10' : 'border-slate-200 dark:border-slate-800/80'} hover:border-cyan-500/60 cursor-pointer active:scale-[0.98] transition flex items-center justify-between gap-2 shadow-sm"
+      <div class="group p-2.5 rounded-2xl bg-white dark:bg-slate-950 hover:bg-slate-50 dark:hover:bg-slate-900 border border-slate-200 dark:border-slate-800/80 hover:border-cyan-500/60 cursor-pointer active:scale-[0.98] transition flex items-center justify-between gap-2 shadow-sm"
            onclick="carregarConcursoHistoricoNoVolante(${c.concurso}, '${mod}')"
            title="Toque para carregar o Concurso #${c.concurso} no Volante e ver os 6 testes">
         <div class="space-y-1">
           <div class="flex items-center gap-1.5 flex-wrap">
             <span class="font-bold text-slate-900 dark:text-white text-[11px] font-mono">#${c.concurso}</span>
             <span class="text-[9px] text-slate-500 dark:text-slate-400 font-mono">${c.data || ''}</span>
-            ${index === 0 ? '<span class="text-[8px] font-mono font-bold px-1 py-0.2 rounded bg-emerald-500 text-slate-950">Mais recente</span>' : ''}
             <span class="text-[8px] font-mono font-bold px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-cyan-950/70 dark:text-cyan-300 dark:border-cyan-800/60 group-hover:bg-cyan-500 group-hover:text-slate-950 transition">
               🎯 Testar no Volante ↗
             </span>

@@ -35,7 +35,10 @@ function renderizarNaProxima() {
     cartao.innerHTML = `
       <div class="gastos-topo">
         <div><span class="gastos-rotulo">Resultado disponível</span><strong>${revelar.length} ${revelar.length === 1 ? 'jogo' : 'jogos'} para ver</strong></div>
-        <button type="button" class="ritual-ver" onclick="revelarProximoResultado()">Ver resultado</button>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <button type="button" class="ritual-ver" onclick="revelarProximoResultado()">Ver resultado</button>
+          <button type="button" class="gastos-editar" onclick="typeof irParaCarteiraSubAba === 'function' ? irParaCarteiraSubAba('bilhetes') : mudarAba('carteira')">Ver carteira</button>
+        </div>
       </div>`;
     return;
   }
@@ -50,7 +53,10 @@ function renderizarNaProxima() {
         <strong>${mesmoConcurso} ${mesmoConcurso === 1 ? 'jogo' : 'jogos'}</strong>
         <p class="gastos-nota">${jogo} ${String(primeiro.concursoAlvo || '')}${primeiro.data ? ` • ${primeiro.data}` : ''}</p>
       </div>
-      <button type="button" class="gastos-editar" onclick="mudarAba('carteira')">Ver jogos</button>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button type="button" class="ritual-ver" onclick="typeof conferirTodosBilhetesSalvos === 'function' ? conferirTodosBilhetesSalvos() : null">Conferir</button>
+        <button type="button" class="gastos-editar" onclick="typeof irParaCarteiraSubAba === 'function' ? irParaCarteiraSubAba('bilhetes') : mudarAba('carteira')">Ver carteira</button>
+      </div>
     </div>`;
 }
 
