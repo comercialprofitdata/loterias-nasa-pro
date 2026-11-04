@@ -15,8 +15,8 @@ function bilhetesAguardando() {
 }
 
 function renderizarNaProxima() {
-  const painelGastos = document.getElementById('painel-gastos-inicio');
-  if (!painelGastos) return;
+  const containerHero = document.querySelector('.nasa-jackpot-hero');
+  if (!containerHero) return;
   let cartao = document.getElementById('cartao-na-proxima');
   const revelar = bilhetesParaRevelar();
   const aguardando = bilhetesAguardando();
@@ -28,7 +28,7 @@ function renderizarNaProxima() {
     cartao = document.createElement('div');
     cartao.id = 'cartao-na-proxima';
     cartao.className = 'gastos-painel';
-    painelGastos.before(cartao);
+    containerHero.after(cartao);
   }
 
   if (revelar.length) {

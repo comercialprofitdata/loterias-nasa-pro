@@ -104,16 +104,10 @@ function htmlHistoricoMensal() {
 }
 
 function renderizarGastos() {
-  const hero = document.getElementById('home-btn-hero-primary')?.parentElement;
-  if (hero) {
-    let painel = document.getElementById('painel-gastos-inicio');
-    if (!painel) {
-      painel = document.createElement('div');
-      painel.id = 'painel-gastos-inicio';
-      painel.className = 'gastos-painel';
-      hero.after(painel);
-    }
-    painel.innerHTML = htmlPainelGastos();
+  // O limite mensal foi movido para a tela Carteira conforme solicitado pelo usuário
+  const painelInicio = document.getElementById('painel-gastos-inicio');
+  if (painelInicio) {
+    painelInicio.remove();
   }
 
   const lista = document.getElementById('total-bilhetes-salvos');

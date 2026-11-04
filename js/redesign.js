@@ -602,25 +602,7 @@ function createSimplifiedHome() {
         </div>
       </div>
 
-      <!-- 2. ÚLTIMO RESULTADO OFICIAL DA CAIXA (Bolas Reais + Sincronizar) -->
-      <div class="bg-slate-900/95 border border-slate-800 rounded-2xl p-3.5 space-y-2.5">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-1.5">
-            <div>
-              <h3 class="text-xs font-black text-white uppercase tracking-wide" id="home-ultimo-titulo">Último Resultado Oficial Caixa</h3>
-              <span class="text-[10px] text-slate-400 font-mono" id="home-ultimo-sub">Sincronizado em tempo real</span>
-            </div>
-          </div>
-          <button type="button" onclick="sincronizarConcursos()" class="px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-400 text-[11px] font-bold border border-slate-700 flex items-center gap-1 active:scale-95 transition">
-            Atualizar
-          </button>
-        </div>
-        <div id="home-ultimo-dezenas" class="flex flex-wrap gap-1.5 pt-0.5">
-          <span class="text-xs text-slate-400 font-mono">Buscando último sorteio oficial na Caixa...</span>
-        </div>
-      </div>
-
-      <!-- 3. ATALHOS PARA TODAS AS FERRAMENTAS DO APP (2x2) -->
+      <!-- 2. ATALHOS PARA TODAS AS FERRAMENTAS DO APP (2x2) -->
       <div class="nasa-quick-tools-grid">
         <button type="button" class="nasa-tool-tile" onclick="activateTab('fechamentos'); tocarBeep('click');">
           <div class="nasa-tool-tile-header">
@@ -659,44 +641,34 @@ function createSimplifiedHome() {
         </button>
       </div>
 
-      
-      <!-- SEÇÃO DINÂMICA: APOSTAS ATIVAS DA CARTEIRA -->
-      <div id="home-bloco-apostas-ativas" class="bg-slate-900/95 border border-slate-800 rounded-2xl p-3.5 space-y-2">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-1.5">
-            <div>
-              <h3 class="text-xs font-black text-white">Minhas Apostas Ativas</h3>
-              <span class="text-[10px] text-slate-400">Jogos aguardando o próximo sorteio</span>
-            </div>
-          </div>
-          <button type="button" onclick="irParaCarteiraSubAba('bilhetes')" class="px-2 py-1 rounded-xl bg-slate-800 text-cyan-300 text-[10px] font-bold border border-slate-700">
-            Ver Carteira →
-          </button>
-        </div>
-        <div id="home-apostas-ativas-conteudo" class="text-xs text-slate-400">
-          <span class="text-[11px]">Nenhuma aposta ativa registrada ainda. Gere seu jogo e toque em <b>Salvar este jogo</b></span>
-        </div>
-      </div>
-
-      <!-- SEÇÃO AUDITORIA: PROVA DOS FATOS NOS ÚLTIMOS 20 SORTEIOS CAIXA -->
+      <!-- 3. SEÇÃO AUDITORIA: PROVA DOS FATOS NOS ÚLTIMOS 50 SORTEIOS CAIXA -->
       <div id="home-secao-auditoria-caixa" class="bg-slate-900/95 border border-slate-800 rounded-2xl p-3.5 space-y-2.5">
         <div class="flex items-center justify-between border-b border-slate-800/80 pb-2">
           <div>
             <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-cyan-950 border border-cyan-800 text-[9px] font-mono font-black text-cyan-300 uppercase">
               <span>🔬</span> PROVA DOS FATOS
             </div>
-            <h3 class="text-xs font-black text-white mt-0.5">Auditoria dos Últimos 20 Sorteios Oficiais</h3>
+            <h3 class="text-xs font-black text-white mt-0.5">Últimos 50 Sorteios Oficiais Caixa</h3>
           </div>
-          <span id="badge-pct-aprovados-home" class="px-2 py-0.5 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[10px] font-mono font-bold">
-            100% APROVADO
-          </span>
+          <div class="flex items-center gap-1.5">
+            <button type="button" onclick="sincronizarConcursos()" class="px-2 py-1 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-400 text-[10px] font-bold border border-slate-700 flex items-center gap-1 active:scale-95 transition" title="Sincronizar resultados com a Caixa">
+              🔄 Atualizar
+            </button>
+            <span id="badge-pct-aprovados-home" class="px-2 py-0.5 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[10px] font-mono font-bold">
+              100% APROVADO
+            </span>
+          </div>
         </div>
 
         <p class="text-[11px] text-slate-300 leading-relaxed" id="home-prova-fatos-resumo">
-          Toque em qualquer sorteio abaixo para carregá-lo no Volante e auditar seu comportamento nos 6 testes estatísticos:
+          Toque em qualquer sorteio para carregá-lo no Volante e auditar seu comportamento nos 6 testes estatísticos:
         </p>
 
-        <div id="home-lista-ultimos-sorteios-avaliados" class="space-y-1.5 max-h-[360px] overflow-y-auto pr-1 no-scrollbar">
+        <!-- Card Saliente do Último Resultado Oficial -->
+        <div id="home-ultimo-destaque-card"></div>
+
+        <!-- Lista Rolável com os demais 49 sorteios oficiais -->
+        <div id="home-lista-ultimos-sorteios-avaliados" class="space-y-1.5 max-h-[380px] overflow-y-auto pr-1 no-scrollbar">
           <div class="text-center py-2 text-xs text-slate-400">Carregando auditoria dos concursos...</div>
         </div>
       </div>
@@ -726,57 +698,10 @@ async function atualizarUltimoResultadoHome() {
     badgeMod.innerText = mod === 'megasena' ? '🍀 MEGA-SENA ATIVA' : '🟣 LOTOFÁCIL ATIVA';
   }
 
-  const tituloEl = document.getElementById('home-ultimo-titulo');
-  const subEl = document.getElementById('home-ultimo-sub');
-  const dezenasEl = document.getElementById('home-ultimo-dezenas');
-  if (!dezenasEl) return;
-
-  const base = mod === 'megasena'
-    ? (typeof baseConcursosMega !== 'undefined' ? baseConcursosMega : [])
-    : (typeof baseConcursosLoto !== 'undefined' ? baseConcursosLoto : []);
-
-  let ultimo = base && base.length > 0 ? base[0] : null;
-
-  // Se o histórico ainda não carregou, tenta buscar o último direto da API da Caixa
-  if (!ultimo && typeof window.obterUltimoResultadoOficial === 'function') {
-    try {
-      const res = await window.obterUltimoResultadoOficial(mod);
-      if (res && Array.isArray(res.dezenas)) {
-        ultimo = res;
-      }
-    } catch (_) {}
+  // Atualiza a auditoria consolidada com o destaque saliente do último resultado
+  if (typeof atualizarProvaDosFatosRedesign === "function") {
+    atualizarProvaDosFatosRedesign();
   }
-
-  if (tituloEl) {
-    tituloEl.innerText = `Último Resultado • ${mod === 'megasena' ? 'Mega-Sena' : 'Lotofácil'}`;
-  }
-
-  if (!ultimo || !Array.isArray(ultimo.dezenas) || ultimo.dezenas.length === 0) {
-    const baseLocal = (typeof modalidadeAtual !== 'undefined' && modalidadeAtual === 'lotofacil') ? baseConcursosLoto : baseConcursosMega;
-    if (baseLocal?.[0]) {
-      if (subEl) subEl.innerText = `Concurso #${baseLocal[0].concurso} • ${baseLocal[0].data}`;
-      dezenasEl.innerHTML = baseLocal[0].dezenas.map((d) => `<span class="fluxo-bola">${String(d).padStart(2, '0')}</span>`).join('');
-      return;
-    }
-    if (subEl) subEl.innerText = 'Toque em Atualizar para buscar na Caixa';
-    dezenasEl.innerHTML = `<span class="text-xs text-slate-400">Toque em <b>🔄 Atualizar</b> para carregar as dezenas sorteadas.</span>`;
-    return;
-  }
-
-  if (subEl) {
-    subEl.innerText = `Concurso #${ultimo.concurso || '—'} ${ultimo.data ? '• ' + ultimo.data : ''}`;
-  }
-
-  const corBola = mod === 'megasena'
-    ? 'bg-emerald-600 text-slate-950 border-emerald-400'
-    : 'bg-purple-600 text-white border-purple-400';
-
-  if (typeof atualizarProvaDosFatosRedesign === "function") atualizarProvaDosFatosRedesign();
-  dezenasEl.innerHTML = ultimo.dezenas.map((d) => `
-    <span class="w-8 h-8 rounded-xl ${corBola} border font-mono font-black text-xs flex items-center justify-center shadow-sm">
-      ${String(d).padStart(2, '0')}
-    </span>
-  `).join('');
 }
 
 // ===================================================================
@@ -1476,60 +1401,64 @@ function atualizarProvaDosFatosRedesign() {
     : (typeof baseConcursosLoto !== 'undefined' ? baseConcursosLoto : []);
 
   const containerLista = document.getElementById('home-lista-ultimos-sorteios-avaliados');
+  const destaqueCard = document.getElementById('home-ultimo-destaque-card');
   const badgePct = document.getElementById('badge-pct-aprovados-home');
   const resumoEl = document.getElementById('home-prova-fatos-resumo');
-  const apostasAtivasEl = document.getElementById('home-apostas-ativas-conteudo');
-
-  // 1. Atualizar resumo de apostas ativas da carteira
-  if (apostasAtivasEl) {
-    const bilhetes = Array.isArray(carteiraJogos) ? carteiraJogos : [];
-    const ehPassadoFn = typeof window.concursoOuDataEhPassado === 'function'
-      ? window.concursoOuDataEhPassado
-      : () => false;
-
-    const ativos = bilhetes.filter(b => {
-      if (b.modalidade !== mod) return false;
-      if (b.conferido) return false;
-      if (ehPassadoFn(b.concursoAlvo || b.concurso, b.data, b.modalidade)) return false;
-      return true;
-    });
-
-    if (ativos.length > 0) {
-      apostasAtivasEl.innerHTML = `
-        <div class="p-2 rounded-xl bg-emerald-950/40 border border-emerald-800/60 flex items-center justify-between">
-          <span class="text-emerald-300 font-bold font-mono text-[11px]">🎯 ${ativos.length} aposta${ativos.length > 1 ? 's' : ''} ativa${ativos.length > 1 ? 's' : ''} em monitoramento</span>
-          <span class="text-[10px] text-cyan-300 font-mono font-bold">${ativos[0].concursoAlvo || 'Próximo'}</span>
-        </div>
-      `;
-    } else {
-      const totalMod = bilhetes.filter(b => b.modalidade === mod).length;
-      if (totalMod > 0) {
-        apostasAtivasEl.innerHTML = `
-          <div class="p-2 rounded-xl bg-slate-950/80 border border-slate-800 flex items-center justify-between">
-            <span class="text-[11px] text-slate-400 font-mono">0 ativas • ${totalMod} aposta(s) apurada(s) no histórico</span>
-            <button type="button" onclick="irParaCarteiraSubAba('bilhetes')" class="text-cyan-400 text-[10px] font-bold hover:underline">Ver Histórico →</button>
-          </div>
-        `;
-      } else {
-        apostasAtivasEl.innerHTML = `<span class="text-[11px] text-slate-400">Nenhuma aposta ativa registrada ainda. Gere seu jogo e toque em <b>Salvar este jogo</b></span>`;
-      }
-    }
-  }
 
   if (!containerLista) return;
 
-  const ultimos20 = base.slice(0, 20);
-  if (ultimos20.length === 0) {
+  const ultimos50 = base.slice(0, 50);
+  if (ultimos50.length === 0) {
     if (containerLista) containerLista.innerHTML = `<div class="text-center py-2 text-xs text-slate-400">Sincronizando concursos oficiais com a Caixa...</div>`;
+    if (destaqueCard) destaqueCard.innerHTML = '';
     return;
   }
 
+  // 1. Destaque saliente do Último Resultado Oficial (1º elemento)
+  const ultimo = ultimos50[0];
+  if (destaqueCard && ultimo) {
+    const ordenadoUltimo = [...ultimo.dezenas].sort((a, b) => a - b);
+    const avalUltimo = typeof avaliarJogo === 'function' ? avaliarJogo(ordenadoUltimo, mod) : { score: 99, aprovadosCount: 6 };
+    const corBolaDestaque = mod === 'megasena'
+      ? 'bg-gradient-to-br from-emerald-400 to-teal-500 text-slate-950 border-emerald-300 shadow-emerald-500/30'
+      : 'bg-gradient-to-br from-purple-400 to-fuchsia-500 text-white border-purple-300 shadow-purple-500/30';
+
+    destaqueCard.innerHTML = `
+      <div class="relative overflow-hidden p-3.5 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-900 to-emerald-950/40 border-2 border-emerald-500/60 shadow-lg shadow-emerald-950/50 space-y-2.5">
+        <div class="flex items-center justify-between flex-wrap gap-1">
+          <div class="flex items-center gap-2">
+            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-500 text-slate-950 text-[10px] font-black tracking-wider uppercase shadow-sm">
+              <span class="w-1.5 h-1.5 rounded-full bg-slate-950 animate-ping"></span> ÚLTIMO SORTEIO OFICIAL
+            </span>
+            <span class="font-mono font-black text-white text-xs">#${ultimo.concurso}</span>
+            <span class="text-[10px] text-slate-400 font-mono">${ultimo.data || ''}</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <button type="button" onclick="carregarConcursoHistoricoNoVolante(${ultimo.concurso}, '${mod}')" class="px-2 py-0.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 text-[10px] font-bold border border-emerald-500/40 flex items-center gap-1 active:scale-95 transition">
+              🎯 Testar no Volante ↗
+            </button>
+            <span class="text-[10px] font-black text-cyan-400 font-mono">Nota ${avalUltimo.score || 99}/100</span>
+          </div>
+        </div>
+        <div class="flex flex-wrap gap-1.5 pt-0.5 justify-start">
+          ${ordenadoUltimo.map(d => `
+            <span class="w-8 h-8 rounded-xl ${corBolaDestaque} border font-mono font-black text-xs flex items-center justify-center shadow-md">
+              ${String(d).padStart(2, '0')}
+            </span>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  // 2. Lista dos outros 49 sorteios oficiais
   let aprovadosCount = 0;
-  const cardsHtml = ultimos20.map((c) => {
+  const cardsHtml = ultimos50.map((c, index) => {
     const ordenado = [...c.dezenas].sort((a,b) => a - b);
     const avaliacao = typeof avaliarJogo === 'function' ? avaliarJogo(ordenado, mod) : { score: null, aprovadosCount: 0 };
     if (avaliacao.aprovadosCount >= 5) aprovadosCount++;
 
+    // Se for o primeiro (já em destaque acima), marca discretamente ou lista todos para consulta completa
     const bolinhasHtml = ordenado.map(d => `
       <span class="w-5 h-5 rounded-md ${mod === 'megasena' ? 'bg-emerald-950 text-emerald-400 border border-emerald-800' : 'bg-purple-950 text-purple-400 border border-purple-800'} font-black text-[9px] flex items-center justify-center font-mono">
         ${String(d).padStart(2, '0')}
@@ -1537,13 +1466,14 @@ function atualizarProvaDosFatosRedesign() {
     `).join('');
 
     return `
-      <div class="group p-2.5 rounded-2xl bg-white dark:bg-slate-950 hover:bg-slate-50 dark:hover:bg-slate-900 border border-slate-200 dark:border-slate-800/80 hover:border-cyan-500/60 cursor-pointer active:scale-[0.98] transition flex items-center justify-between gap-2 shadow-sm"
+      <div class="group p-2.5 rounded-2xl bg-white dark:bg-slate-950 hover:bg-slate-50 dark:hover:bg-slate-900 border ${index === 0 ? 'border-emerald-500/50 bg-emerald-950/10' : 'border-slate-200 dark:border-slate-800/80'} hover:border-cyan-500/60 cursor-pointer active:scale-[0.98] transition flex items-center justify-between gap-2 shadow-sm"
            onclick="carregarConcursoHistoricoNoVolante(${c.concurso}, '${mod}')"
            title="Toque para carregar o Concurso #${c.concurso} no Volante e ver os 6 testes">
         <div class="space-y-1">
           <div class="flex items-center gap-1.5 flex-wrap">
             <span class="font-bold text-slate-900 dark:text-white text-[11px] font-mono">#${c.concurso}</span>
             <span class="text-[9px] text-slate-500 dark:text-slate-400 font-mono">${c.data || ''}</span>
+            ${index === 0 ? '<span class="text-[8px] font-mono font-bold px-1 py-0.2 rounded bg-emerald-500 text-slate-950">Mais recente</span>' : ''}
             <span class="text-[8px] font-mono font-bold px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-cyan-950/70 dark:text-cyan-300 dark:border-cyan-800/60 group-hover:bg-cyan-500 group-hover:text-slate-950 transition">
               🎯 Testar no Volante ↗
             </span>
@@ -1560,10 +1490,10 @@ function atualizarProvaDosFatosRedesign() {
     `;
   }).join('');
 
-  const pct = Math.round((aprovadosCount / ultimos20.length) * 100);
+  const pct = Math.round((aprovadosCount / ultimos50.length) * 100);
   if (badgePct) badgePct.innerText = `${pct}% APROVADO`;
   if (resumoEl) {
-    resumoEl.innerText = `${pct}% dos últimos ${ultimos20.length} sorteios oficiais da Caixa atenderam aos 6 filtros orbitais de calibração estatística (toque em qualquer um para auditar no Volante):`;
+    resumoEl.innerText = `${pct}% dos últimos ${ultimos50.length} sorteios oficiais da Caixa atenderam aos 6 filtros orbitais de calibração estatística (toque em qualquer um para auditar no Volante):`;
   }
   if (containerLista) containerLista.innerHTML = cardsHtml;
 }

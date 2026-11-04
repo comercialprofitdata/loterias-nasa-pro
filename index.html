@@ -9,7 +9,7 @@
       if ('caches' in window) {
         caches.keys().then(function(names) {
           names.forEach(function(name) {
-            if (!name.includes('v20261103.34')) {
+            if (!name.includes('v20261103.36')) {
               caches.delete(name);
             }
           });
