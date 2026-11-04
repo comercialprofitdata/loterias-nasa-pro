@@ -3,8 +3,8 @@
 // EstratÃ©gia: Cache-First para assets estÃ¡ticos, Network-First para dados
 // =========================================================================
 
-const CACHE_NAME = 'loterias-nasa-pro-v20261103.41';
-const CACHE_STATIC = 'nasa-static-v20261103.41';
+const CACHE_NAME = 'loterias-nasa-pro-v20261103.42';
+const CACHE_STATIC = 'nasa-static-v20261103.42';
 
 // Assets crÃ­ticos para funcionamento offline
 const ASSETS_TO_CACHE = [

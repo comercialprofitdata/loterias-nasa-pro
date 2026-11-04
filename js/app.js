@@ -116,8 +116,8 @@
     let audioAtivo = true;
 
     // Bilhete padrão de demonstração
-    let meuJogoMega = [11, 15, 20, 21, 38, 48];
-    let meuJogoLoto = [1, 2, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 22, 24, 25];
+    let meuJogoMega = [];
+    let meuJogoLoto = [];
     let fixosMega = [], proibidosMega = [];
     let fixosLoto = [], proibidosLoto = [];
     let jogosFechamentoGerados = [];
@@ -6026,6 +6026,7 @@ function abrirModalDialog(msg, callback) {
     window.abrirApostaIncompletaNoVolante = abrirApostaIncompletaNoVolante;
     window.mudarAba = mudarAba;
     window.renderizarVolante = renderizarVolante;
+    window.limparSelecao = limparSelecao;
     window.atualizarDisplayJogo = atualizarDisplayJogo;
     window.setJogoAtual = setJogoAtual;
     window.getJogoAtual = getJogoAtual;
