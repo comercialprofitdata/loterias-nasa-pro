@@ -50,6 +50,9 @@ document.addEventListener('DOMContentLoaded', function () {
   sincronizarHeaderStatusUsuario();
   atualizarUltimoResultadoHome();
   inicializarPerfilExperiencia();
+  if (typeof renderizarNaProxima === 'function') {
+    renderizarNaProxima();
+  }
 
   activateTab('home');
   console.log('✅ Meu Volante PRO Mobile 3.0 pronto.');
