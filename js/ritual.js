@@ -5,13 +5,17 @@
 // é revelado dezena a dezena, com o mesmo cuidado se houve prêmio ou não.
 
 function bilhetesParaRevelar() {
-  return (Array.isArray(carteiraJogos) ? carteiraJogos : [])
-    .filter((b) => b.conferido && !b.revelado && (b.dezenasSorteadas || []).length);
+  const lista = (Array.isArray(window.carteiraJogos) && window.carteiraJogos.length)
+    ? window.carteiraJogos
+    : (Array.isArray(carteiraJogos) ? carteiraJogos : []);
+  return lista.filter((b) => b.conferido && !b.revelado && (b.dezenasSorteadas || []).length);
 }
 
 function bilhetesAguardando() {
-  return (Array.isArray(carteiraJogos) ? carteiraJogos : [])
-    .filter((b) => !b.conferido && !window.concursoOuDataEhPassado?.(b.concursoAlvo, b.data, b.modalidade));
+  const lista = (Array.isArray(window.carteiraJogos) && window.carteiraJogos.length)
+    ? window.carteiraJogos
+    : (Array.isArray(carteiraJogos) ? carteiraJogos : []);
+  return lista.filter((b) => !b.conferido && !window.concursoOuDataEhPassado?.(b.concursoAlvo, b.data, b.modalidade));
 }
 
 function renderizarNaProxima() {
@@ -27,30 +31,27 @@ function renderizarNaProxima() {
   if (!cartao) {
     cartao = document.createElement('div');
     cartao.id = 'cartao-na-proxima';
-    cartao.className = 'bg-slate-900/95 border border-slate-800 rounded-2xl p-3.5 shadow-md font-sans';
     containerHero.after(cartao);
-  } else {
-    cartao.className = 'bg-slate-900/95 border border-slate-800 rounded-2xl p-3.5 shadow-md font-sans';
   }
+  cartao.className = 'p-3 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-900 to-emerald-950/40 border border-emerald-500/30 shadow-lg font-sans';
 
   if (revelar.length) {
+    const txtJogos = `${revelar.length} ${revelar.length === 1 ? 'jogo' : 'jogos'}`;
     cartao.innerHTML = `
-      <div class="flex items-center justify-between gap-3 flex-wrap sm:flex-nowrap">
-        <div class="space-y-0.5">
-          <span class="text-[10px] uppercase font-mono tracking-wider font-bold text-emerald-400 flex items-center gap-1.5">
-            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            Resultado disponível
-          </span>
-          <div class="text-sm sm:text-base font-black text-white font-mono leading-none">
-            ${revelar.length} ${revelar.length === 1 ? 'jogo para conferir' : 'jogos para conferir'}
+      <div class="flex items-center justify-between gap-2.5">
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
+          <div class="truncate">
+            <span class="text-xs font-bold text-white tracking-tight">Resultado disponível</span>
+            <span class="ml-1.5 px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[11px] font-mono font-black">${txtJogos}</span>
           </div>
         </div>
-        <div class="flex items-center gap-2 shrink-0">
-          <button type="button" class="px-3 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-slate-950 font-black text-xs font-mono shadow-md shadow-emerald-500/20 active:scale-95 transition flex items-center gap-1 ritual-ver" onclick="revelarProximoResultado()">
-            Ver resultado →
+        <div class="flex items-center gap-1.5 shrink-0">
+          <button type="button" class="py-2 px-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-slate-950 font-black text-xs font-mono shadow-md shadow-emerald-500/20 active:scale-95 transition flex items-center gap-1 ritual-ver" onclick="revelarProximoResultado()">
+            Ver resultado
           </button>
-          <button type="button" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 font-bold text-xs font-mono active:scale-95 transition" onclick="typeof irParaCarteiraSubAba === 'function' ? irParaCarteiraSubAba('bilhetes') : mudarAba('carteira')">
-            Ver carteira
+          <button type="button" class="py-2 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-xs font-mono active:scale-95 transition" onclick="typeof irParaCarteiraSubAba === 'function' ? irParaCarteiraSubAba('bilhetes') : mudarAba('carteira')">
+            Carteira
           </button>
         </div>
       </div>`;
@@ -60,27 +61,29 @@ function renderizarNaProxima() {
   const primeiro = aguardando[0];
   const mesmoConcurso = aguardando.filter((b) => b.concursoAlvo === primeiro.concursoAlvo && b.modalidade === primeiro.modalidade).length;
   const jogo = primeiro.modalidade === 'lotofacil' ? 'Lotofácil' : 'Mega-Sena';
+  const txtAguardando = `${mesmoConcurso} ${mesmoConcurso === 1 ? 'jogo' : 'jogos'}`;
+
+  cartao.className = 'p-3 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-900 to-cyan-950/40 border border-cyan-500/30 shadow-lg font-sans';
   cartao.innerHTML = `
-    <div class="flex items-center justify-between gap-3 flex-wrap sm:flex-nowrap">
-      <div class="space-y-0.5">
-        <span class="text-[10px] uppercase font-mono tracking-wider font-bold text-cyan-400 flex items-center gap-1.5">
-          <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
-          Apostas em monitoramento
-        </span>
-        <div class="text-sm sm:text-base font-black text-white font-mono leading-none">
-          ${mesmoConcurso} ${mesmoConcurso === 1 ? 'jogo aguardando' : 'jogos aguardando'}
+    <div class="flex items-center justify-between gap-2.5">
+      <div class="flex items-center gap-2 min-w-0">
+        <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 shrink-0"></span>
+        <div class="truncate">
+          <span class="text-xs font-bold text-white tracking-tight">Monitoramento</span>
+          <span class="ml-1.5 px-2 py-0.5 rounded-md bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 text-[11px] font-mono font-black">${txtAguardando}</span>
+          <span class="text-[10px] text-slate-400 font-mono hidden sm:inline ml-1">(${jogo})</span>
         </div>
-        <p class="text-[11px] text-slate-400 font-mono mt-0.5">${jogo} ${String(primeiro.concursoAlvo || '')}${primeiro.data ? ` • ${primeiro.data}` : ''}</p>
       </div>
-      <div class="flex items-center gap-2 shrink-0">
-        <button type="button" class="px-3 py-2 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/40 font-bold text-xs font-mono active:scale-95 transition flex items-center gap-1 ritual-ver" onclick="typeof conferirTodosBilhetesSalvos === 'function' ? conferirTodosBilhetesSalvos() : null">
+      <div class="flex items-center gap-1.5 shrink-0">
+        <button type="button" class="py-2 px-3 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/40 font-black text-xs font-mono active:scale-95 transition flex items-center gap-1 ritual-ver" onclick="typeof conferirTodosBilhetesSalvos === 'function' ? conferirTodosBilhetesSalvos() : null">
           ⚡ Conferir
         </button>
-        <button type="button" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 font-bold text-xs font-mono active:scale-95 transition" onclick="typeof irParaCarteiraSubAba === 'function' ? irParaCarteiraSubAba('bilhetes') : mudarAba('carteira')">
-          Ver carteira
+        <button type="button" class="py-2 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-xs font-mono active:scale-95 transition" onclick="typeof irParaCarteiraSubAba === 'function' ? irParaCarteiraSubAba('bilhetes') : mudarAba('carteira')">
+          Carteira
         </button>
       </div>
     </div>`;
+}
 }
 
 function revelarProximoResultado() {
