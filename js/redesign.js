@@ -714,15 +714,27 @@ function configurarSubAbasGerar() {
   const secVolante = document.getElementById('view-volante');
   if (!secVolante || document.getElementById('nasa-seg-gerar')) return;
 
+  // Localiza os cartões reais dentro da coluna 1 (sem sobrescrever o container grid desktop)
+  const col1 = secVolante.querySelector('.lg\\:col-span-7') || secVolante;
+  const col1Cards = col1 ? Array.from(col1.children).filter((c) => c.tagName === 'DIV') : [];
+  if (col1Cards[0] && !col1Cards[0].id) col1Cards[0].id = 'card-gerador-rapido';
+  if (col1Cards[1] && !col1Cards[1].id) col1Cards[1].id = 'card-volante-manual';
+
   const segBar = document.createElement('div');
   segBar.id = 'nasa-seg-gerar';
-  segBar.className = 'w-full flex rounded-2xl bg-slate-900 border border-slate-800 p-1 font-mono text-xs shadow-lg mb-3';
+  segBar.className = 'nasa-segmented-bar';
   segBar.innerHTML = `
-    <button type="button" id="seg-gerar-jogo" class="flex-1 py-2.5 px-3 rounded-xl font-black text-center transition flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-cyan-500 text-slate-950 shadow-md" onclick="alternarSubAbaGerar('jogo')">
-      <span>🎲</span> Jogo Individual
+    <button type="button" id="seg-gerar-rapido" class="nasa-seg-btn active" onclick="alternarSubAbaGerar('rapido')">
+      <span>Gerar</span>
     </button>
-    <button type="button" id="seg-gerar-bolao" class="flex-1 py-2.5 px-3 rounded-xl font-bold text-center text-slate-400 hover:text-white transition flex items-center justify-center gap-2" onclick="alternarSubAbaGerar('bolao')">
-      <span>👥</span> Bolão em Grupo
+    <button type="button" id="seg-gerar-volante" class="nasa-seg-btn" onclick="alternarSubAbaGerar('volante')">
+      <span>Volante</span>
+    </button>
+    <button type="button" id="seg-gerar-testes" class="nasa-seg-btn" onclick="alternarSubAbaGerar('testes')">
+      <span>Testes (<span id="seg-badge-testes-count">6/6</span>)</span>
+    </button>
+    <button type="button" id="seg-gerar-todos" class="nasa-seg-btn" onclick="alternarSubAbaGerar('todos')" title="Mostrar tudo na mesma tela">
+      <span>Tudo</span>
     </button>
   `;
 
@@ -731,32 +743,74 @@ function configurarSubAbasGerar() {
 }
 
 function alternarSubAbaGerar(modo) {
-  subAbaGerarAtiva = modo === 'bolao' ? 'bolao' : 'jogo';
+  subAbaGerarAtiva = modo;
   if (typeof tocarBeep === 'function') tocarBeep('click');
   aplicarVisibilidadeSubAbaGerar();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function aplicarVisibilidadeSubAbaGerar() {
-  if (subAbaGerarAtiva !== 'bolao') subAbaGerarAtiva = 'jogo';
-  const btnJogo = document.getElementById('seg-gerar-jogo');
-  const btnBolao = document.getElementById('seg-gerar-bolao');
-  if (btnJogo) {
-    btnJogo.className = subAbaGerarAtiva === 'jogo'
-      ? 'flex-1 py-2.5 px-3 rounded-xl font-black text-center transition flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-cyan-500 text-slate-950 shadow-md'
-      : 'flex-1 py-2.5 px-3 rounded-xl font-bold text-center text-slate-400 hover:text-white transition flex items-center justify-center gap-2';
-  }
-  if (btnBolao) {
-    btnBolao.className = subAbaGerarAtiva === 'bolao'
-      ? 'flex-1 py-2.5 px-3 rounded-xl font-black text-center transition flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-cyan-500 text-slate-950 shadow-md'
-      : 'flex-1 py-2.5 px-3 rounded-xl font-bold text-center text-slate-400 hover:text-white transition flex items-center justify-center gap-2';
+  subAbaGerarAtiva = 'todos';
+  ['rapido', 'volante', 'testes', 'todos'].forEach((m) => {
+    const btn = document.getElementById(`seg-gerar-${m}`);
+    if (btn) btn.classList.toggle('active', m === subAbaGerarAtiva);
+  });
+
+  const cardGerador = document.getElementById('card-gerador-rapido');
+  const cardVolante = document.getElementById('card-volante-manual');
+  const cardMatriz = document.getElementById('card-matriz-4x4-box');
+  const cardScore = document.getElementById('painel-score-telemetria');
+  const cardTestes = document.getElementById('card-bateria-testes');
+  const cardSugestao = document.getElementById('card-sugestao-troca');
+  const cardRetro = document.getElementById('card-simulador-historico');
+
+  const mostrar = (el, visivel) => {
+    if (!el) return;
+    el.style.display = visivel && !el.hidden ? '' : 'none';
+  };
+
+  // No desktop widescreen (>= 1024px), cockpit completo: exibe ambas as colunas sem esconder nada
+  if (window.innerWidth >= 1024) {
+    [cardGerador, cardVolante, cardMatriz, cardScore, cardTestes, cardSugestao, cardRetro].forEach((el) => mostrar(el, true));
+    return;
   }
 
-  const gridJogo = document.getElementById('gerador-container-jogo');
-  const containerBolao = document.getElementById('gerador-container-bolao');
-  if (gridJogo && containerBolao) {
-    gridJogo.style.display = subAbaGerarAtiva === 'jogo' ? '' : 'none';
-    containerBolao.style.display = subAbaGerarAtiva === 'bolao' ? '' : 'none';
+  if (subAbaGerarAtiva === 'rapido') {
+    mostrar(cardGerador, true);
+    mostrar(cardScore, true);
+    mostrar(cardSugestao, true);
+    mostrar(cardVolante, false);
+    mostrar(cardMatriz, false);
+    mostrar(cardTestes, true);
+    mostrar(cardRetro, false);
+  } else if (subAbaGerarAtiva === 'volante') {
+    mostrar(cardGerador, false);
+    mostrar(cardVolante, true);
+    mostrar(cardScore, true);
+    mostrar(cardSugestao, true);
+    mostrar(cardMatriz, true);
+    mostrar(cardTestes, true);
+    mostrar(cardRetro, false);
+    // Garante que a bateria dos 6 testes e a matriz comecem abertas
+    const elBat = document.getElementById('conteudo-bateria-testes');
+    if (elBat) elBat.classList.remove('hidden');
+    const elMat = document.getElementById('conteudo-matriz-vitorio');
+    if (elMat) elMat.classList.remove('hidden');
+  } else if (subAbaGerarAtiva === 'testes') {
+    mostrar(cardGerador, false);
+    mostrar(cardVolante, false);
+    mostrar(cardScore, true);
+    mostrar(cardTestes, true);
+    mostrar(cardSugestao, true);
+    mostrar(cardMatriz, true);
+    mostrar(cardRetro, true);
+    ['conteudo-bateria-testes', 'conteudo-matriz-vitorio', 'conteudo-simulador-historico'].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) el.classList.remove('hidden');
+    });
+  } else {
+    // 'todos'
+    [cardGerador, cardVolante, cardMatriz, cardScore, cardTestes, cardSugestao, cardRetro].forEach((el) => mostrar(el, true));
   }
 }
 

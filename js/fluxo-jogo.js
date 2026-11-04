@@ -381,10 +381,10 @@ function iniciarFluxoJogo() {
   }
   ajustarCarteira();
   document.getElementById('nasa-seg-gerar')?.classList.add('hidden');
-  // montarCardDoJogo();
-  // montarBotaoSalvar();
-  // montarVolante();
-  // montarIndicadores();
+  montarCardDoJogo();
+  montarBotaoSalvar();
+  montarVolante();
+  montarIndicadores();
 }
 
 document.addEventListener('DOMContentLoaded', () => setTimeout(iniciarFluxoJogo, 0));
