@@ -1,12 +1,12 @@
-﻿// =========================================================================
-// MEU VOLANTE PRO â€” SERVICE WORKER v1.0
-// EstratÃ©gia: Cache-First para assets estÃ¡ticos, Network-First para dados
+// =========================================================================
+// MEU VOLANTE PRO — SERVICE WORKER v1.0
+// Estratégia: Cache-First para assets estáticos, Network-First para dados
 // =========================================================================
 
-const CACHE_NAME = 'loterias-nasa-pro-v20261103.42';
-const CACHE_STATIC = 'nasa-static-v20261103.42';
+const CACHE_NAME = 'loterias-nasa-pro-v20261103.44';
+const CACHE_STATIC = 'nasa-static-v20261103.44';
 
-// Assets crÃ­ticos para funcionamento offline
+// Assets críticos para funcionamento offline
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -64,12 +64,12 @@ const ASSETS_TO_CACHE = [
 ];
 
 // =========================================================================
-// INSTALL: PrÃ©-cacheia todos os assets crÃ­ticos
+// INSTALL: Pré-cacheia todos os assets críticos
 // =========================================================================
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_STATIC).then((cache) => {
-      // Tenta cachear assets crÃ­ticos, ignora falhas individuais
+      // Tenta cachear assets críticos, ignora falhas individuais
       return Promise.allSettled(
         ASSETS_TO_CACHE.map(url =>
           cache.add(url).catch(() => console.warn('[SW] Falha ao cachear:', url))
@@ -102,15 +102,15 @@ self.addEventListener('activate', (event) => {
 });
 
 // =========================================================================
-// FETCH: EstratÃ©gia Cache-First para assets, Network-First para APIs externas
+// FETCH: Estratégia Cache-First para assets, Network-First para APIs externas
 // =========================================================================
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
 
-  // Ignora requisiÃ§Ãµes de extensÃµes de navegador
+  // Ignora requisições de extensões de navegador
   if (!event.request.url.startsWith('http')) return;
 
-  // Para APIs externas (Caixa, etc.) â€” Network-First com fallback
+  // Para APIs externas (Caixa, etc.) — Network-First com fallback
   const isApiRequest = url.hostname !== self.location.hostname &&
     !url.hostname.includes('cdn.tailwindcss.com') &&
     !url.hostname.includes('fonts.googleapis.com') &&
@@ -124,7 +124,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Para HTML/CSS/JS locais â€” Network-First com fallback para cache (garante atualizaÃ§Ã£o imediata no celular)
+  // Para HTML/CSS/JS locais — Network-First com fallback para cache (garante atualização imediata no celular)
   const isLocalCode = url.hostname === self.location.hostname || url.hostname.includes('github.io');
   if (isLocalCode && !url.pathname.endsWith('.png')) {
     event.respondWith(
@@ -146,7 +146,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Para imagens e CDNs â€” Cache-First com atualizaÃ§Ã£o em background
+  // Para imagens e CDNs — Cache-First com atualização em background
   event.respondWith(
     caches.open(CACHE_STATIC).then((cache) => {
       return cache.match(event.request).then((cachedResponse) => {
@@ -159,7 +159,7 @@ self.addEventListener('fetch', (event) => {
           })
           .catch(() => cachedResponse);
 
-        // Retorna cache imediatamente se disponÃ­vel; atualiza em background
+        // Retorna cache imediatamente se disponível; atualiza em background
         return cachedResponse || fetchPromise;
       });
     })
@@ -171,9 +171,9 @@ self.addEventListener('fetch', (event) => {
 // =========================================================================
 self.addEventListener('push', (event) => {
   const data = event.data ? event.data.json() : {};
-  const title = data.title || 'ðŸŽ¯ Meu Volante PRO';
+  const title = data.title || '🎯 Meu Volante PRO';
   const options = {
-    body: data.body || 'Novo resultado disponÃ­vel!',
+    body: data.body || 'Novo resultado disponível!',
     icon: './icon-192.png',
     badge: './icon-192.png',
     tag: 'nasa-loterias-notification',
@@ -195,4 +195,4 @@ self.addEventListener('notificationclick', (event) => {
   );
 });
 
-console.log('[SW] Meu Volante PRO Service Worker v1.0 â€” Operacional!');
+console.log('[SW] Meu Volante PRO Service Worker v1.0 — Operacional!');

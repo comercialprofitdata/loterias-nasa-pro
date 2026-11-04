@@ -57,11 +57,12 @@ test('tentar remover uma dezena que não está selecionada não altera o estado'
 });
 
 test('a sugestão de troca fica junto da grade e preferências avançadas organizadas', () => {
-  const html = fs.readFileSync('index.html', 'utf8');
+  const fluxo = fs.readFileSync('js/fluxo-jogo.js', 'utf8');
   const css = fs.readFileSync('css/fluxo-jogo.css', 'utf8');
 
-  assert.match(html, /id="card-sugestao-troca"/);
-  assert.match(html, /Preferências avançadas · fixas e proibidas/);
+  assert.match(fluxo, /grade\.before\(sugestao\)/);
+  assert.match(fluxo, /gaveta\.open = true/);
+  assert.match(fluxo, /Preferências avançadas · fixas e proibidas/);
   assert.match(css, /#volante-titulo-tipo \{ font-size: 12px/);
   assert.match(fs.readFileSync('js/app.js', 'utf8'), /Aplicar troca recomendada/);
 });
