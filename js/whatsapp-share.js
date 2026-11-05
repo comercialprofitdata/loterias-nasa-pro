@@ -66,42 +66,71 @@ function obterInfoProximoSorteio(modalidade) {
   const mod = modalidade || (typeof modalidadeAtual !== 'undefined' ? modalidadeAtual : 'megasena');
   let proximoNumero = null;
   let proximaData = null;
+  let diaSemanaRotulo = null;
 
-  if (mod === 'megasena' && typeof baseConcursosMega !== 'undefined' && baseConcursosMega.length > 0) {
-    const ultimo = baseConcursosMega[0];
-    proximoNumero = ultimo.proximoConcurso || (ultimo.concurso + 1);
-    proximaData = ultimo.dataProximo || null;
-  } else if (mod === 'lotofacil' && typeof baseConcursosLoto !== 'undefined' && baseConcursosLoto.length > 0) {
-    const ultimo = baseConcursosLoto[0];
-    proximoNumero = ultimo.proximoConcurso || (ultimo.concurso + 1);
-    proximaData = ultimo.dataProximo || null;
+  // 1. Tenta buscar do cache de sorteios reais sincronizados da Caixa/Supabase
+  if (typeof obterSorteiosSalvos === 'function') {
+    const salvos = obterSorteiosSalvos();
+    if (salvos && salvos[mod]) {
+      const item = salvos[mod];
+      if (item.concurso) proximoNumero = item.concurso;
+      if (item.dataBR) proximaData = item.dataBR;
+      if (item.dia) diaSemanaRotulo = item.dia;
+    }
   }
 
-  // Valida se proximaData ainda está no futuro ou é hoje
+  // 2. Se não tiver no cache, busca do histórico de concursos carregados
+  if (!proximoNumero) {
+    if (mod === 'megasena' && typeof baseConcursosMega !== 'undefined' && baseConcursosMega.length > 0) {
+      const ultimo = baseConcursosMega[0];
+      proximoNumero = ultimo.proximoConcurso || (ultimo.concurso + 1);
+      if (!proximaData) proximaData = ultimo.dataProximo || null;
+    } else if (mod === 'lotofacil' && typeof baseConcursosLoto !== 'undefined' && baseConcursosLoto.length > 0) {
+      const ultimo = baseConcursosLoto[0];
+      proximoNumero = ultimo.proximoConcurso || (ultimo.concurso + 1);
+      if (!proximaData) proximaData = ultimo.dataProximo || null;
+    }
+  }
+
+  // 3. Validação com o calendário oficial determinístico (com base no horário limite de apostas 20h)
+  let calc = null;
+  if (typeof calcularProximoSorteio === 'function') {
+    calc = calcularProximoSorteio(mod);
+  }
+
   if (proximaData) {
     const partes = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(String(proximaData).trim());
     if (partes) {
       const [, dia, mes, ano] = partes;
       const alvo = new Date(Number(ano), Number(mes) - 1, Number(dia), 20, 0, 0);
       if (alvo.getTime() <= Date.now()) {
-        proximaData = null; // A data gravada no registro anterior já passou!
+        // A data gravada no registro anterior já encerrou apostas / já passou!
+        proximaData = null;
+        diaSemanaRotulo = null;
+        if (proximoNumero) proximoNumero++;
       }
     }
   }
 
-  // Fallback para data calculada se não tiver vindo da Caixa ainda
-  if (!proximaData) {
-    if (typeof calcularProximoSorteio === 'function') {
-      const calc = calcularProximoSorteio(mod);
-      proximaData = calc.dataBR || calc.dia;
-    } else {
-      proximaData = 'Próximo Sorteio Oficial';
-    }
+  // Aplica o cálculo oficial determinístico se necessário
+  if (!proximaData && calc) {
+    proximaData = calc.dataBR;
+    diaSemanaRotulo = calc.dia;
+  }
+
+  // Monta descrição completa e amigável: Ex: "Amanhã (Quinta-feira, 05/11 às 20h)" ou "Hoje (Quarta-feira, 04/11 às 20h)"
+  let dataFormatadaCompleta = proximaData || 'Próximo Sorteio Oficial';
+  if (diaSemanaRotulo && proximaData) {
+    const dataCurta = proximaData.substring(0, 5);
+    dataFormatadaCompleta = diaSemanaRotulo.includes(dataCurta)
+      ? diaSemanaRotulo + ' às 20h'
+      : diaSemanaRotulo + ' • ' + proximaData + ' às 20h';
   }
 
   return {
-    concurso: proximoNumero ? `#${proximoNumero}` : 'Próximo Oficial',
-    data: proximaData
+    concurso: proximoNumero ? ('#' + proximoNumero) : 'Próximo Oficial',
+    data: dataFormatadaCompleta,
+    dataSimples: proximaData || ''
   };
 }
 
