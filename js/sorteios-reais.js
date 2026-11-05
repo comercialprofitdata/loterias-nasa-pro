@@ -37,10 +37,11 @@ function formatarDataProximoCaixa(dataProximoBR, modalidade = null, agora = new 
   if (Number.isNaN(data.getTime())) return null;
 
   // Ajuste determinístico para Mega-Sena: sorteios regulares ocorrem às Terças (2), Quintas (4) e Sábados (6).
-  // A API da Caixa aos domingos costuma enviar temporariamente segunda-feira (1).
+  // Se a Caixa retornar Domingo (0), Segunda (1) ou Quarta (3), corrige para o próximo sorteio válido!
   if (modalidade === 'megasena') {
     if (data.getDay() === 0) data.setDate(data.getDate() + 2); // Domingo -> Terça
     else if (data.getDay() === 1) data.setDate(data.getDate() + 1); // Segunda -> Terça
+    else if (data.getDay() === 3) data.setDate(data.getDate() + 1); // Quarta -> Quinta
   }
 
   const hoje = new Date(agora);
@@ -295,8 +296,17 @@ async function sincronizarSorteiosReais({ silencioso = false } = {}) {
           dados.megasena.premio = mega.premioProximo;
           dados.megasena.concurso = mega.proximoConcurso;
           if (mega.dataProximo) {
-            dados.megasena.dataBR = mega.dataProximo;
-            const rotulo = formatarDataProximoCaixa(mega.dataProximo, 'megasena');
+            let dataAjustadaMega = mega.dataProximo;
+            const pm = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(String(mega.dataProximo).trim());
+            if (pm) {
+              const dt = new Date(Number(pm[3]), Number(pm[2]) - 1, Number(pm[1]));
+              if (dt.getDay() === 0) dt.setDate(dt.getDate() + 2);
+              else if (dt.getDay() === 1) dt.setDate(dt.getDate() + 1);
+              else if (dt.getDay() === 3) dt.setDate(dt.getDate() + 1);
+              dataAjustadaMega = dt.toLocaleDateString('pt-BR');
+            }
+            dados.megasena.dataBR = dataAjustadaMega;
+            const rotulo = formatarDataProximoCaixa(dataAjustadaMega, 'megasena');
             if (rotulo) dados.megasena.dia = rotulo;
           }
         }
