@@ -28,12 +28,9 @@
       if (numConc <= ultimo || base.some(c => Number(c.concurso) === numConc)) {
         return true;
       }
-      // Se o concurso é MAIOR que o último concurso apurado (ex: #3081 > #3080),
-      // este concurso é FUTURO e AINDA NÃO FOI APURADO! Nunca marcar como passado!
-      return false;
     }
 
-    // 2. Se não temos o concurso na base mas temos data: verifica se a data passou
+    // 2. Se a data é passada (antes de agora ou passou das 20h)
     if (data) {
       const partes = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(String(data).trim());
       if (partes) {
@@ -197,13 +194,6 @@
         && String(b.concursoAlvo || '').trim().toLowerCase() === 'mega da virada 2026';
       let conc = ehPlanoMegaVirada ? 'Mega da Virada 2026' : (b.concursoAlvo || b.concurso || 'Próximo');
       let data = ehPlanoMegaVirada ? 'Data oficial a confirmar' : (b.data || 'Sem data');
-
-      // Se for concurso futuro da Mega-Sena (ex: #3081) com data errada de quarta-feira (04/11/2026), corrige para quinta (05/11/2026)
-      if (mod === 'megasena' && numConc === 3081 && (data === '04/11/2026' || b.data === '04/11/2026')) {
-        data = '05/11/2026';
-        b.data = '05/11/2026';
-        houveCorrecaoData = true;
-      }
 
       // REGRA MESTRA: A data de um sorteio é única por concurso na Caixa!
       // Se o concurso existe na base oficial (ex: #3077 é 28/10/2026),
