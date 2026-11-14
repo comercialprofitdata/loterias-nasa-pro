@@ -436,15 +436,15 @@
       if (mod === 'megasena') {
         btnMega.className = 'px-3 py-1 rounded-lg text-xs font-black transition bg-emerald-600 text-slate-950 shadow';
         btnLoto.className = 'px-3 py-1 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition';
-        labelTopo.className = 'text-xs font-black uppercase tracking-wider text-emerald-400 block font-mono';
-        labelTopo.innerText = '🎯 Seu jogo';
+        if (labelTopo) labelTopo.className = 'text-xs font-black uppercase tracking-wider text-emerald-400 block font-mono';
+        if (labelTopo) labelTopo.innerText = '🎯 Seu jogo';
       
       carregarOpcoesFechamento();
     } else {
         btnLoto.className = 'px-3 py-1 rounded-lg text-xs font-black transition bg-purple-600 text-white shadow';
         btnMega.className = 'px-3 py-1 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition';
-        labelTopo.className = 'text-xs font-black uppercase tracking-wider text-purple-400 block font-mono';
-        labelTopo.innerText = '🟣 Seu jogo';
+        if (labelTopo) labelTopo.className = 'text-xs font-black uppercase tracking-wider text-purple-400 block font-mono';
+        if (labelTopo) labelTopo.innerText = '🟣 Seu jogo';
       }
 
       renderizarTelaCompleta();
@@ -629,6 +629,12 @@
       toast(`Dezena ${String(num).padStart(2,'0')} liberada dos proibidos!`, "🔓");
     }
 
+    // Escreve num elemento só se ele existir: um campo ausente não pode travar a tela.
+    function definirTextoSeguro(id, texto) {
+      const el = document.getElementById(id);
+      if (el) el.innerText = texto;
+    }
+
     function renderizarTelaCompleta() {
       renderizarSeletoresQtd();
       atualizarControlesQtdApostas();
@@ -652,7 +658,7 @@
       container.innerHTML = '';
 
       const qtdAtiva = modalidadeAtual === 'megasena' ? qtdDesejadaMega : qtdDesejadaLoto;
-      labelAtiva.innerText = `${qtdAtiva} números`;
+      if (labelAtiva) labelAtiva.innerText = `${qtdAtiva} números`;
 
       const select = document.createElement('select');
       select.id = 'select-qtd-dezenas';
@@ -729,9 +735,9 @@
           qCounts[q] = (qCounts[q] || 0) + 1;
         });
 
-        grid.className = 'grid grid-cols-10 gap-1 text-center font-mono';
-        document.getElementById('volante-titulo-tipo').innerText = 'Volante Mega-Sena (1 a 60)';
-        document.getElementById('legenda-volante').innerHTML = `
+        grid.className = 'grid grid-cols-10 classic-10x6 gap-1 text-center font-mono';
+        definirTextoSeguro('volante-titulo-tipo', 'Volante Mega-Sena (1 a 60)');
+        (document.getElementById('legenda-volante') || {}).innerHTML = `
           <div class="legenda-quad-box q1" title="Quadrante 1 (Noroeste): Linhas 1 a 3, Colunas 1 a 5 (15 dezenas)">
             <span class="legenda-quad-title">Q1 Top-Esq</span>
             <span class="legenda-quad-count">${qCounts.Q1} no jogo</span>
@@ -760,8 +766,8 @@
         });
 
         grid.className = 'grid grid-cols-5 gap-1.5 text-center max-w-xs mx-auto font-mono';
-        document.getElementById('volante-titulo-tipo').innerText = 'Volante Lotofácil (5x5)';
-        document.getElementById('legenda-volante').innerHTML = `
+        definirTextoSeguro('volante-titulo-tipo', 'Volante Lotofácil (5x5)');
+        (document.getElementById('legenda-volante') || {}).innerHTML = `
           <div class="col-span-2 legenda-quad-box q4" title="Moldura Externa: 16 dezenas de contorno">
             <span class="legenda-quad-title">Moldura (16 dezenas)</span>
             <span class="legenda-quad-count">${molduraCount} no jogo</span>
@@ -896,13 +902,13 @@
       const config = getConfigAtual();
       const display = document.getElementById('display-meu-jogo');
       
-      document.getElementById('qtd-selecionadas').innerText = jogo.length;
-      document.getElementById('max-selecao-label').innerText = config.maxDezenas;
+      definirTextoSeguro('qtd-selecionadas', jogo.length);
+      definirTextoSeguro('max-selecao-label', config.maxDezenas);
 
       display.innerHTML = '';
       if (jogo.length === 0) {
         display.innerHTML = '<span class="text-slate-500 text-xs italic px-1 font-mono">Nenhum número selecionado.</span>';
-        document.getElementById('custo-jogo-selecionado').innerText = formatarReais(0);
+        definirTextoSeguro('custo-jogo-selecionado', formatarReais(0));
         return;
       }
 
@@ -957,9 +963,9 @@
         const k = modalidadeAtual === 'megasena' ? 6 : 15;
         const totalApostas = combinacao(jogo.length, k);
         const custo = totalApostas * config.precoBase;
-        document.getElementById('custo-jogo-selecionado').innerText = `${formatarReais(custo)} (${totalApostas} aposta${totalApostas > 1 ? 's' : ''})`;
+        definirTextoSeguro('custo-jogo-selecionado', `${formatarReais(custo)} (${totalApostas} aposta${totalApostas > 1 ? 's' : ''})`);
       } else {
-        document.getElementById('custo-jogo-selecionado').innerText = `Mínimo de ${config.minDezenas} dezenas`;
+        definirTextoSeguro('custo-jogo-selecionado', `Mínimo de ${config.minDezenas} dezenas`);
       }
 
       verificarJogoNaCarteira(jogo, modalidadeAtual);

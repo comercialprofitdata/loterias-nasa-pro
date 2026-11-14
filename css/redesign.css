@@ -749,9 +749,10 @@ html.lotofacil-mode .nasa-live-pill {
 
 /* ========== ERGONOMIA DO VOLANTE MOBILE (BOLAS GRANDES 44PX+) ========== */
 @media (max-width: 640px) {
+  /* O volante da Mega tem sempre 10 colunas, como o de papel, com ou sem a classe. */
   #volante-grid.grid-cols-10:not(.classic-10x6) {
-    grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
-    gap: 0.4rem !important;
+    grid-template-columns: repeat(10, minmax(0, 1fr)) !important;
+    gap: 0.22rem !important;
   }
 
   #volante-grid.grid-cols-10.classic-10x6 {
@@ -765,7 +766,7 @@ html.lotofacil-mode .nasa-live-pill {
     max-width: 100% !important;
   }
 
-  #volante-grid:not(.classic-10x6) .volante-btn {
+  #volante-grid.grid-cols-5 .volante-btn {
     min-height: 44px !important;
     height: 44px !important;
     font-size: 0.88rem !important;
@@ -774,7 +775,7 @@ html.lotofacil-mode .nasa-live-pill {
     padding: 0 !important;
   }
 
-  #volante-grid.classic-10x6 .volante-btn {
+  #volante-grid.grid-cols-10 .volante-btn {
     min-height: 34px !important;
     height: 34px !important;
     font-size: 0.7rem !important;
