@@ -148,3 +148,45 @@ Com a estabilidade do sistema restaurada, os seguintes itens seguem na fila para
 3. **Escopo Fechado:** Não alterar arquivos ou funcionalidades fora do pedido explícito da mensagem. Se o pedido for sobre "data no WhatsApp", não tocar no layout da "Carteira".
 4. **Sempre rodar `npm test` antes de qualquer commit.** Todos os 40 testes unitários devem passar sem regressões.
 5. **Atualizar este documento (`HISTORICO_MEMORIA_PROJETO.md`) a cada ciclo de desenvolvimento importante.**
+
+---
+
+## 6. CICLO DE 14/11/2026 — TELA GERAR REFEITA E BOLÃO NOVO
+
+Antes de mexer, três análises só de leitura (engenharia, jogador/UX e dados) mapearam a tela e as causas das quebras de 04/11.
+
+### Por que quebrou em 04/11 (verificado no código e no Git)
+- A tela Gerar é remontada em tempo de execução por `js/fluxo-jogo.js`. Editar só o `index.html` quebra o app.
+- As 10 colunas dependiam de `montarVolante()` rodar até o fim. Com a função desligada, o CSS levava o volante a 6 colunas.
+- O Gerar travava porque três campos foram apagados do HTML e o código escrevia neles sem checar.
+- O Bolão sumia por um `</div>` a menos, que o deixou dentro do painel do Jogo.
+
+### O que foi entregue (commits `3ad5209` e `52df275`)
+- **Blindagem:** `classic-10x6` no HTML, no `app.js` e no CSS; campos ausentes não travam mais; `tests/blindagem.test.mjs` barra volante fora de 10 colunas, campo removido, id repetido, `<div>` desbalanceado e acento corrompido.
+- **Aba Jogo:** definições no topo (dezenas com preço, quantidade de jogos, preferências avançadas), card 2x2 (Gerar, Salvar, WhatsApp, PDF), números e volante no mesmo card, "Limpar dezenas" discreto, legenda Q1 a Q4, indicadores agrupados.
+- **Chance e custo** saíram de cima do jogo. O preço aparece em cada opção do seletor de dezenas; a tabela de chances fica dentro dos indicadores.
+- **Salvar:** na Mega-Sena abre a escolha "Próximo concurso" ou "Mega da Virada 2026". Os dois ficam em grupos separados na Carteira.
+- **Indicadores:** selos "Comum" e "Incomum" em cor neutra, nota explicativa ao tocar, textos sem promessa de vantagem.
+- **Troca de dezena:** `sugerirTroca` testa todas as trocas de uma dezena e só propõe a que reduz os indicadores incomuns sem criar outro; respeita fixas e proibidas; destaca a dezena no volante. O aviso antigo ficava invisível por um `display:none` deixado pelas sub-abas de `redesign.js`.
+- **Aba Bolão (`js/bolao.js`):** jogos próprios, cotas, participantes, pagamentos, avisos das regras do Bolão CAIXA e três textos para o grupo. Guardado no aparelho (`localStorage`, chave `meu_volante_boloes`); ao salvar, os jogos vão para a Carteira com `bolaoId` e `custoProprio` (só a parte de quem usa o app entra nos gastos).
+- **Testes:** 58 passando (`npm run ci`).
+
+### Fatos conferidos em 14/11/2026 (não afirmar de memória)
+- Medição com as regras do próprio app: 61,6% dos 500 sorteios reais da Mega passam nos seis indicadores; 60,5% de 1.000.000 de jogos aleatórios também. Os indicadores descrevem o jogo e não indicam chance.
+- Bolão CAIXA, lido em loterias.caixa.gov.br: Mega-Sena com mínimo de R$ 18,00 e cota a partir de R$ 7,00, de 2 a 100 cotas, até 10 apostas com a mesma quantidade de números; Lotofácil com mínimo de R$ 14,00 e cota a partir de R$ 4,50, de 2 a 7 cotas com 15 números; tarifa de serviço de até 35% da cota. A tabela completa está em `REGRAS_CAIXA`, em `js/bolao.js`.
+- A página da Caixa não informa data, hora nem número do concurso da Mega da Virada 2026. O app mostra "Data oficial a confirmar".
+
+### Decisões tomadas neste ciclo, para o dono revisar
+- Aviso de jogo incomum em âmbar, sem vermelho.
+- Plano grátis: 1 bolão com até 3 jogos; PRO: até 10 jogos por bolão.
+- A folha de salvar e os textos do bolão mostram só o número do concurso, sem data (ver pendência do calendário).
+
+### Pendências abertas
+- **Calendário de sorteios:** `obterInfoProximoSorteio` devolveu "Terça (17/11) • 15/11/2026 às 20h", duas datas diferentes no mesmo texto. Há notícia de que os sorteios de sábado passaram para domingo às 11h; não foi conferido na Caixa.
+- **Cache:** o `index.html` (linha 12) apaga, a cada abertura, todo cache cujo nome não contém `v20261104.02`. Isso inclui o cache atual do app.
+- **Tela inicial:** "92% aprovado" conta 5 de 6 indicadores; "100% APROVADO" e "Nota 99/100" são textos fixos em `js/redesign.js`.
+- **Bolão antigo:** o HTML e as funções antigas (`calcularRateioBolao`, texto "COMPROVANTE OFICIAL") continuam no código, sem acesso pela tela.
+- **Bolão:** não sincroniza entre aparelhos; falta anexar foto do bilhete e mostrar o resultado por cota depois do sorteio.
+
+### Regra 4 atualizada
+Rodar `npm run ci` antes de qualquer commit. São 58 testes.
