@@ -61,8 +61,9 @@ test('a sugestão de troca fica junto da grade e preferências avançadas organi
   const css = fs.readFileSync('css/fluxo-jogo.css', 'utf8');
 
   assert.match(fluxo, /grade\.before\(sugestao\)/);
-  assert.match(fluxo, /gaveta\.open = true/);
+  assert.match(fluxo, /card\.prepend\(\.\.\.\[titulo, abas, display, alerta\]/);
+  assert.match(fluxo, /acoes\.append\(btnGerar\)/);
   assert.match(fluxo, /Preferências avançadas · fixas e proibidas/);
   assert.match(css, /#volante-titulo-tipo \{ font-size: 12px/);
-  assert.match(fs.readFileSync('js/app.js', 'utf8'), /Aplicar troca recomendada/);
+  assert.match(fs.readFileSync('js/app.js', 'utf8'), /Trocar \$\{dois\(sugestao\.sai\)\} por/);
 });

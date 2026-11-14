@@ -27,6 +27,8 @@ function custoDoJogo(modalidade, qtdDezenas) {
 }
 
 function custoDoBilhete(bilhete) {
+  // Jogo de bolão: conta só a parte de quem usa o app.
+  if (typeof bilhete.custoProprio === 'number') return bilhete.custoProprio;
   return custoDoJogo(bilhete.modalidade, (bilhete.dezenas || []).length);
 }
 window.custoDoBilhete = custoDoBilhete;
@@ -174,12 +176,12 @@ function renderizarRevisaoDoJogo() {
   const regra = JOGOS_REGRAS[modalidade];
   const dezenas = dezenasAtuais();
   if (dezenas.length < regra.sorteadas) {
+    revisao.hidden = false;
     revisao.innerHTML = `<p>Marque pelo menos ${regra.sorteadas} dezenas.</p>`;
     return;
   }
 
   const custo = custoDoJogo(modalidade, dezenas.length);
-  const principal = chancesDoJogo(modalidade, dezenas.length)[0];
   const orcamento = obterOrcamento();
   const gastoMes = (resumoPorMes()[mesAtual()] || { gasto: 0 }).gasto;
   const avisos = [];
@@ -187,9 +189,8 @@ function renderizarRevisaoDoJogo() {
   if (modalidade === 'megasena' && dezenas.every((d) => d <= 31)) avisos.push('Só dezenas até 31 lembram datas. Se ganhar, talvez divida o prêmio com mais gente. Sua chance não muda.');
 
   revisao.innerHTML = `
-    <div class="revisao-linha"><span>Chance de ${principal.nome.toLowerCase()}</span><strong>1 em ${principal.umEm.toLocaleString('pt-BR')}</strong></div>
-    <div class="revisao-linha"><span>Custo</span><strong>${formatarBRL(custo)}</strong></div>
-    ${avisos.map((a) => `<p class="revisao-aviso">${a}</p>`).join('')}`;
+${avisos.map((a) => `<p class="revisao-aviso">${a}</p>`).join('')}`;
+  revisao.hidden = avisos.length === 0;
 
   const tabela = document.getElementById('tabela-chances');
   if (tabela) {

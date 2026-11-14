@@ -385,7 +385,7 @@
 
       // Registrar Service Worker com Verificação Imediata de Atualizações
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js?v=20261103.40', { scope: './' })
+        navigator.serviceWorker.register('./sw.js?v=20261114.01', { scope: './' })
           .then((reg) => {
             console.log('[Meu Volante PRO] Service Worker registrado. Verificando atualizações...');
             reg.update(); // força verificação no servidor imediatamente
@@ -513,9 +513,7 @@
       
       const txtBtn = document.getElementById('txt-btn-gerar-principal');
       if (txtBtn) {
-        txtBtn.innerText = qtd === 1 
-          ? 'GERAR APOSTA (MATRIZ 4x4 + 6 TESTES)' 
-          : `GERAR ${qtd} APOSTAS (MATRIZ 4x4 + 6 TESTES)`;
+        txtBtn.innerText = qtd === 1 ? 'Gerar jogo' : `Gerar ${qtd} jogos`;
       }
       toast(`Configurado para gerar ${qtd} jogo${qtd > 1 ? 's' : ''}!`, "🎯");
     }
@@ -667,7 +665,8 @@
       for (let q = config.minDezenas; q <= config.maxDezenas; q++) {
         const option = document.createElement('option');
         option.value = String(q);
-        option.textContent = `${q} números`;
+        const apostasDaOpcao = combinacao(q, modalidadeAtual === 'megasena' ? 6 : 15);
+        option.textContent = `${q} números · ${formatarReais(apostasDaOpcao * config.precoBase)}`;
         option.selected = q === qtdAtiva;
         select.appendChild(option);
       }
@@ -739,19 +738,19 @@
         definirTextoSeguro('volante-titulo-tipo', 'Volante Mega-Sena (1 a 60)');
         (document.getElementById('legenda-volante') || {}).innerHTML = `
           <div class="legenda-quad-box q1" title="Quadrante 1 (Noroeste): Linhas 1 a 3, Colunas 1 a 5 (15 dezenas)">
-            <span class="legenda-quad-title">Q1 Top-Esq</span>
+            <span class="legenda-quad-title">Q1</span>
             <span class="legenda-quad-count">${qCounts.Q1} no jogo</span>
           </div>
           <div class="legenda-quad-box q2" title="Quadrante 2 (Nordeste): Linhas 1 a 3, Colunas 6 a 10 (15 dezenas)">
-            <span class="legenda-quad-title">Q2 Top-Dir</span>
+            <span class="legenda-quad-title">Q2</span>
             <span class="legenda-quad-count">${qCounts.Q2} no jogo</span>
           </div>
           <div class="legenda-quad-box q3" title="Quadrante 3 (Sudoeste): Linhas 4 a 6, Colunas 1 a 5 (15 dezenas)">
-            <span class="legenda-quad-title">Q3 Base-Esq</span>
+            <span class="legenda-quad-title">Q3</span>
             <span class="legenda-quad-count">${qCounts.Q3} no jogo</span>
           </div>
           <div class="legenda-quad-box q4" title="Quadrante 4 (Sudeste): Linhas 4 a 6, Colunas 6 a 10 (15 dezenas)">
-            <span class="legenda-quad-title">Q4 Base-Dir</span>
+            <span class="legenda-quad-title">Q4</span>
             <span class="legenda-quad-count">${qCounts.Q4} no jogo</span>
           </div>
         `;
@@ -1500,7 +1499,8 @@ function gerarPalpiteInteligente() {
 
     function rotuloIndicadores(analise) {
       if (analise?.testes?.[0]?.s === 'Informativo') return 'indicadores descritivos';
-      return `${analise?.aprovadosCount ?? 0}/6 na faixa comum`;
+      const comuns = analise?.aprovadosCount ?? 0;
+      return comuns === 6 ? '6 comuns' : `${comuns} comuns · ${6 - comuns} ${comuns === 5 ? 'incomum' : 'incomuns'}`;
     }
     window.rotuloIndicadores = rotuloIndicadores;
 
@@ -1702,8 +1702,10 @@ function gerarPalpiteInteligente() {
       if (n < config.minDezenas) {
         if (elScoreNum) elScoreNum.innerText = '--';
         if (elScoreBarra) elScoreBarra.style.width = '0%';
-        if (elScoreDiag) elScoreDiag.innerText = `Selecione pelo menos ${config.minDezenas} números para calibrar os instrumentos de voo.`;
-        if (elSugestao) elSugestao.innerHTML = '<span class="text-slate-500 italic font-mono text-xs">Complete o bilhete para receber telemetria de troca e calibração.</span>';
+        if (elScoreDiag) elScoreDiag.innerText = `Marque pelo menos ${config.minDezenas} dezenas para ver os indicadores.`;
+        if (elSugestao) elSugestao.innerHTML = '';
+        window.jogoTemIndicadorIncomum = false;
+        marcarDezenaSugerida(null);
         for (let t = 1; t <= 6; t++) {
           const el = document.getElementById(`val-t${t}`);
           if (el) el.innerText = '-';
@@ -1743,24 +1745,25 @@ function gerarPalpiteInteligente() {
         if (elVal) elVal.innerText = t.v;
         const badge = document.getElementById(`badge-status-t${idx+1}`);
         if (badge) {
-          badge.innerText = t.s;
+          // Selo neutro: os indicadores descrevem o jogo, não dizem se ele é bom ou ruim.
+          badge.innerText = t.s === 'Alerta' ? 'Incomum' : (t.s === 'Informativo' ? 'Informativo' : 'Comum');
           badge.className = t.s !== 'Alerta' 
-            ? 'text-[9px] px-1.5 py-0.5 rounded font-mono font-bold bg-emerald-950 text-emerald-400 border border-emerald-800' 
-            : 'text-[9px] px-1.5 py-0.5 rounded font-mono font-bold bg-rose-950 text-rose-400 border border-rose-800 animate-pulse';
+            ? 'text-[9px] px-1.5 py-0.5 rounded font-mono font-bold bg-slate-900 text-slate-300 border border-slate-700' 
+            : 'text-[9px] px-1.5 py-0.5 rounded font-mono font-bold bg-amber-950 text-amber-300 border border-amber-700';
         }
       });
 
       if (badgeTotal) {
         badgeTotal.innerText = rotuloIndicadores(analise);
         badgeTotal.className = analise.aprovadosCount === 6 
-          ? 'text-[10px] px-2 py-0.5 rounded font-mono font-bold bg-emerald-950 text-emerald-300 border border-emerald-800' 
+          ? 'text-[10px] px-2 py-0.5 rounded font-mono font-bold bg-slate-900 text-slate-300 border border-slate-700' 
           : 'text-[10px] px-2 py-0.5 rounded font-mono font-bold bg-amber-950 text-amber-300 border border-amber-800';
       }
 
       if (elScoreNum) elScoreNum.innerText = analise.score;
       if (elScoreBarra) elScoreBarra.style.width = `${analise.score}%`;
       if (elScoreDiag) {
-        elScoreDiag.innerHTML = 'Indicadores descritivos: não alteram a chance de nenhuma combinação.';
+        elScoreDiag.innerHTML = 'Estes indicadores só descrevem o seu jogo. Nenhum deles muda a chance de ganhar: toda combinação tem a mesma chance.';
       }
 
       if (modalidadeAtual === 'megasena') {
@@ -2050,129 +2053,110 @@ function gerarPalpiteInteligente() {
       toast(`${loteApostasGeradas.length} apostas copiadas para a Área de Transferência!`, "📋");
     }
 
-    function gerarRecomendacaoTrocaMega(jogo, qCount, zscore, maxSeq = 1, maxRepFinal = 1, finaisCount = {}, dezenasEmDatas = 0, analise = null) {
+    // Nomes e motivos dos seis indicadores, na ordem em que avaliarJogo os devolve.
+    const INDICADORES_MEGA = [
+      { nome: 'Sequências e finais iguais', motivo: 'para desfazer a sequência ou os finais repetidos' },
+      { nome: 'Espalhamento no volante', motivo: 'para espalhar o jogo por mais linhas e colunas' },
+      { nome: 'Dezenas por linha', motivo: 'para não deixar tantas dezenas na mesma linha' },
+      { nome: 'Pares, ímpares e primos', motivo: 'para misturar pares, ímpares e primos' },
+      { nome: 'Soma das dezenas', motivo: 'para aproximar a soma da faixa mais comum' },
+      { nome: 'Quadrantes', motivo: 'para tirar o excesso de um quadrante' }
+    ];
+
+    /**
+     * Procura a troca de uma dezena que deixa o jogo com menos indicadores
+     * incomuns sem tornar incomum nenhum que já era comum. Nunca tira uma
+     * dezena fixa nem põe uma proibida. Devolve null se o jogo já é comum e
+     * { sai: null } se nenhuma troca única serve.
+     */
+    function sugerirTroca(jogo, fixos = [], proibidos = [], modalidade = 'megasena') {
+      const incomuns = (lista) => avaliarJogo(lista, modalidade).testes.map(t => t.s === 'Alerta');
+      const antes = incomuns(jogo);
+      const totalAntes = antes.filter(Boolean).length;
+      if (totalAntes === 0) return null;
+
+      let melhor = null;
+      for (const sai of jogo) {
+        if (fixos.includes(sai)) continue;
+        for (let entra = 1; entra <= 60; entra++) {
+          if (jogo.includes(entra) || proibidos.includes(entra)) continue;
+          const depois = incomuns(jogo.filter(n => n !== sai).concat(entra).sort((a, b) => a - b));
+          if (depois.some((incomum, i) => incomum && !antes[i])) continue;
+          const total = depois.filter(Boolean).length;
+          if (total >= totalAntes) continue;
+          const candidato = { sai, entra, total, distancia: Math.abs(entra - sai), resolvido: antes.findIndex((era, i) => era && !depois[i]) };
+          const ganha = !melhor
+            || candidato.total < melhor.total
+            || (candidato.total === melhor.total && candidato.distancia < melhor.distancia)
+            || (candidato.total === melhor.total && candidato.distancia === melhor.distancia && candidato.sai < melhor.sai)
+            || (candidato.total === melhor.total && candidato.distancia === melhor.distancia && candidato.sai === melhor.sai && candidato.entra < melhor.entra);
+          if (ganha) melhor = candidato;
+        }
+      }
+      return { ...(melhor || { sai: null, entra: null }), antes };
+    }
+    window.sugerirTroca = sugerirTroca;
+
+    // Destaca, no volante e no resumo, a dezena que a sugestão propõe trocar.
+    function marcarDezenaSugerida(dezena) {
+      window.dezenaSugeridaParaSair = dezena || null;
+      const alvo = dezena ? String(dezena).padStart(2, '0') : null;
+      document.querySelectorAll('#volante-grid .volante-btn, #display-meu-jogo button').forEach((botao) => {
+        botao.classList.toggle('dezena-sugerida', Boolean(alvo) && botao.textContent.trim().startsWith(alvo));
+      });
+      document.getElementById('fluxo-gaveta-indicadores')?.classList.toggle('tem-incomum', Boolean(window.jogoTemIndicadorIncomum));
+    }
+    window.marcarDezenaSugerida = marcarDezenaSugerida;
+
+    function gerarRecomendacaoTrocaMega(jogo) {
       const container = document.getElementById('conteudo-sugestao-troca');
       if (!container) return;
 
-      const pares = jogo.filter(x => x % 2 === 0).length;
-      const impares = jogo.length - pares;
-      const primos = jogo.filter(x => MEGA_CONFIG.primos.includes(x)).length;
-
-      const setores = [
-        { q: 'Q1', nums: [1,2,3,4,5,11,12,13,14,15,21,22,23,24,25], count: qCount.Q1 },
-        { q: 'Q2', nums: [6,7,8,9,10,16,17,18,19,20,26,27,28,29,30], count: qCount.Q2 },
-        { q: 'Q3', nums: [31,32,33,34,35,41,42,43,44,45,51,52,53,54,55], count: qCount.Q3 },
-        { q: 'Q4', nums: [36,37,38,39,40,46,47,48,49,50,56,57,58,59,60], count: qCount.Q4 }
-      ].sort((a,b)=>b.count - a.count);
-
-      let sai = null, entra = null, motivo = '', testeAfetado = '';
-
-      // 1. REGRA DE PARIDADE: 6P/0I ou 0P/6I
-      if (pares === 6) {
-        sai = jogo.filter(x => x % 2 === 0).pop();
-        entra = [3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53].find(x => !jogo.includes(x)) || 37;
-        motivo = 'Equilibrar paridade: trocar uma dezena par por uma ímpar/prima (6 pares ocorrem em apenas 1,1% dos sorteios).';
-        testeAfetado = '4º Paridade & Primos';
-      } else if (pares === 0) {
-        sai = jogo.filter(x => x % 2 !== 0).pop();
-        entra = [10, 14, 18, 24, 38, 42, 54].find(x => !jogo.includes(x)) || 24;
-        motivo = 'Equilibrar paridade: trocar uma dezena ímpar por uma dezena par (6 ímpares ocorrem em apenas 1,2% dos sorteios).';
-        testeAfetado = '4º Paridade & Primos';
-      }
-      // 2. REGRA DE NÚMEROS PRIMOS: 0 Primos
-      else if (primos === 0) {
-        sai = jogo.filter(x => !MEGA_CONFIG.primos.includes(x)).pop();
-        entra = [7, 11, 17, 23, 29, 41, 47, 53].find(x => !jogo.includes(x)) || 17;
-        motivo = 'Adicionar dezena prima: em mais de 83% dos concursos históricos há entre 1 e 3 números primos.';
-        testeAfetado = '4º Paridade & Primos';
-      }
-      // 3. REGRA DE SEQUÊNCIAS CONSECUTIVAS LONGAS
-      else if (maxSeq >= 3) {
-        for (let i = 1; i < jogo.length - 1; i++) {
-          if (jogo[i] === jogo[i-1] + 1 && jogo[i+1] === jogo[i] + 1) {
-            sai = jogo[i];
-            entra = [7, 18, 24, 38, 45, 56].find(x => !jogo.includes(x) && x !== sai - 1 && x !== sai + 1) || 28;
-            motivo = 'Quebrar sequência de 3 números consecutivos.';
-            testeAfetado = '1º Seq & Finais';
-            break;
-          }
-        }
-      }
-      // 4. REGRA DE FINAIS REPETIDOS NA MESMA COLUNA VERTICAL
-      else if (maxRepFinal >= 3) {
-        const finalViciado = parseInt(Object.keys(finaisCount).find(k => finaisCount[k] === maxRepFinal));
-        sai = jogo.filter(x => x % 10 === finalViciado).pop();
-        entra = [11, 24, 35, 48, 52].find(x => !jogo.includes(x) && x % 10 !== finalViciado) || 18;
-        motivo = `Descongestionar coluna vertical: trocar final repetido (${finalViciado}) para dispersar o jogo no volante.`;
-        testeAfetado = '1º Seq & Finais';
-      }
-      // 5. REGRA ANTI-MANADA: Todas as dezenas em datas (<= 31)
-      else if (dezenasEmDatas >= jogo.length && jogo.length >= 6) {
-        sai = Math.max(...jogo);
-        entra = [38, 42, 48, 52, 56].find(x => !jogo.includes(x)) || 48;
-        motivo = 'Proteger prêmio individual: adicionar dezena acima de 31 para escapar da manada de aniversários.';
-        testeAfetado = 'Anti-Manada';
-      }
-      // 6. REGRA SETORIAL DOS QUADRANTES
-      else if (setores[0].count >= 3 && setores[3].count === 0) {
-        sai = jogo.filter(n => setores[0].nums.includes(n)).pop();
-        entra = setores[3].nums.filter(n => !jogo.includes(n))[0];
-        motivo = `Equilibrar distribuição espacial nos quadrantes (${setores[0].q} com ${setores[0].count} dezenas e ${setores[3].q} vazio).`;
-        testeAfetado = '6º Hipergeométrica';
-      }
-      // 7. REGRA DE SOMA FORA DO CENTRO DA CURVA NORMAL
-      else if (Math.abs(zscore) > 1.6) {
-        if (zscore > 1.6) {
-          sai = Math.max(...jogo);
-          entra = [14, 18, 23, 27].find(x => !jogo.includes(x)) || 18;
-          motivo = 'Reduz a soma para perto da faixa mais comum, de 150 a 210.';
-        } else {
-          sai = Math.min(...jogo);
-          entra = [38, 42, 47, 53].find(x => !jogo.includes(x)) || 42;
-          motivo = 'Aumenta a soma para perto da faixa mais comum, de 150 a 210.';
-        }
-        testeAfetado = '5º Curva Normal da Soma';
-      }
-
-      // CRITICAL GATE: Se não passou nos 6 testes, NUNCA dizer 100% nominal!
-      const aprovados = analise ? analise.aprovadosCount : (sai ? 5 : 6);
-      if (aprovados < 6 && !sai) {
-        sai = jogo[jogo.length - 1];
-        entra = [18, 27, 35, 42, 53].find(x => !jogo.includes(x)) || 33;
-        motivo = 'Aproxima o jogo da faixa comum dos 6 indicadores.';
-        testeAfetado = 'Calibração Geral';
-      }
-
-      if (sai && entra && aprovados < 6) {
-        container.innerHTML = `
-          <div class="p-3.5 bg-slate-950 rounded-2xl border border-amber-500/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3 font-mono shadow-lg shadow-amber-950/30">
-            <div>
-              <div class="flex items-center gap-2 text-xs font-bold text-white flex-wrap">
-                
-                <span class="text-[10px] px-1.5 py-0.5 rounded bg-rose-950 text-rose-300 border border-rose-800 font-mono font-bold">${testeAfetado}</span>
-                <span class="text-rose-300">Sai ${String(sai).padStart(2,'0')}</span>
-                <span class="text-slate-500 font-sans" aria-hidden="true">→</span>
-                <span class="text-emerald-300">Entra ${String(entra).padStart(2,'0')}</span>
-              </div>
-              <p class="text-[11px] text-slate-300 mt-1 font-sans leading-snug">${motivo}</p>
-            </div>
-            <button type="button" onclick="aplicarSubstituicao(${sai}, ${entra})" class="px-3.5 py-2 bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 active:scale-95 text-slate-950 font-black text-xs rounded-xl shadow-lg shadow-emerald-500/20 whitespace-nowrap transition flex items-center gap-1.5 self-start sm:self-center">
-              Aplicar troca recomendada
-            </button>
-          </div>
-        `;
-      } else {
+      const sugestao = sugerirTroca([...jogo].sort((a, b) => a - b), getFixos(), getProibidos(), 'megasena');
+      window.jogoTemIndicadorIncomum = Boolean(sugestao);
+      if (!sugestao) {
         container.innerHTML = '';
+        marcarDezenaSugerida(null);
+        return;
       }
+
+      const nomes = INDICADORES_MEGA.filter((_, i) => sugestao.antes[i]).map(i => i.nome.toLowerCase());
+      const aviso = `Este jogo foge do comum em: ${nomes.join(', ')}. A chance de ganhar é a mesma.`;
+      const dois = (n) => String(n).padStart(2, '0');
+
+      if (sugestao.sai === null) {
+        container.innerHTML = `
+          <div class="p-3 bg-slate-950 rounded-2xl border border-amber-700/60 font-sans">
+            <p class="text-xs text-slate-200 leading-snug">${aviso}</p>
+            <p class="text-xs text-slate-400 mt-1 leading-snug">Trocar uma dezena só não muda isso. Se quiser, gere outro jogo ou marque outras dezenas no volante.</p>
+          </div>`;
+        marcarDezenaSugerida(null);
+        return;
+      }
+
+      container.innerHTML = `
+        <div class="p-3 bg-slate-950 rounded-2xl border border-amber-700/60 flex flex-col gap-2.5 font-sans">
+          <div>
+            <p class="text-xs text-slate-200 leading-snug">${aviso}</p>
+            <p class="text-xs text-slate-400 mt-1 leading-snug">Se quiser, troque o ${dois(sugestao.sai)} pelo ${dois(sugestao.entra)} ${INDICADORES_MEGA[sugestao.resolvido].motivo}.</p>
+          </div>
+          <button type="button" onclick="aplicarSubstituicao(${sugestao.sai}, ${sugestao.entra})" class="px-3.5 py-2 bg-amber-400 hover:bg-amber-300 active:scale-95 text-slate-950 font-black text-xs rounded-xl whitespace-nowrap transition self-start">
+            Trocar ${dois(sugestao.sai)} por ${dois(sugestao.entra)}
+          </button>
+        </div>`;
+      marcarDezenaSugerida(sugestao.sai);
     }
 
     function gerarRecomendacaoTrocaLoto(jogo, molduraCount) {
       const container = document.getElementById('conteudo-sugestao-troca');
+      window.jogoTemIndicadorIncomum = false;
+      marcarDezenaSugerida(null);
+      if (!container) return;
       let sai = null, entra = null, motivo = '';
       if (molduraCount > 11) {
         sai = jogo.filter(x => LOTO_CONFIG.moldura.includes(x)).pop();
         entra = LOTO_CONFIG.miolo.filter(x => !jogo.includes(x))[0];
-        motivo = `Ajustar para a proporção ideal de Moldura (9 a 11 números).`;
+        motivo = 'Deixa a moldura com até 11 dezenas, como na maioria das combinações. Não muda a chance de ganhar.';
       }
 
       if (sai && entra) {
@@ -2187,12 +2171,12 @@ function gerarPalpiteInteligente() {
               <p class="text-[11px] text-slate-400 mt-1 font-sans">${motivo}</p>
             </div>
             <button type="button" onclick="aplicarSubstituicao(${sai}, ${entra})" class="px-3 py-1.5 bg-purple-600 hover:bg-purple-500 active:scale-95 text-white font-bold text-xs rounded-lg shadow whitespace-nowrap transition">
-              Aplicar troca recomendada
+              Trocar ${String(sai).padStart(2,'0')} por ${String(entra).padStart(2,'0')}
             </button>
           </div>
         `;
       } else {
-        container.innerHTML = `<div class="p-2.5 bg-slate-950 rounded-xl border border-emerald-800/40 text-emerald-400 font-semibold text-xs font-mono">✓ Bilhete da Lotofácil perfeitamente balanceado.</div>`;
+        container.innerHTML = '';
       }
     }
 
