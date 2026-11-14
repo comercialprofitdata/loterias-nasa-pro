@@ -649,7 +649,7 @@ function createSimplifiedHome() {
         <div class="flex items-center justify-between border-b border-slate-800/80 pb-2">
           <div>
             <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-cyan-950 border border-cyan-800 text-[9px] font-mono font-black text-cyan-300 uppercase">
-              <span>🔬</span> PROVA DOS FATOS
+              ÚLTIMOS SORTEIOS
             </div>
             <h3 class="text-xs font-black text-white mt-0.5">Últimos 50 Sorteios Oficiais Caixa</h3>
           </div>
@@ -658,13 +658,13 @@ function createSimplifiedHome() {
               🔄 Atualizar
             </button>
             <span id="badge-pct-aprovados-home" class="px-2 py-0.5 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[10px] font-mono font-bold">
-              100% APROVADO
+              —
             </span>
           </div>
         </div>
 
         <p class="text-[11px] text-slate-300 leading-relaxed" id="home-prova-fatos-resumo">
-          Toque em qualquer sorteio para carregá-lo no Volante e auditar seu comportamento nos 6 testes estatísticos:
+          Toque em qualquer sorteio para vê-lo no volante com os 6 indicadores:
         </p>
 
         <!-- Card Saliente do Último Resultado Oficial -->
@@ -1421,7 +1421,7 @@ function atualizarProvaDosFatosRedesign() {
   const ultimo = ultimos50[0];
   if (destaqueCard && ultimo) {
     const ordenadoUltimo = [...ultimo.dezenas].sort((a, b) => a - b);
-    const avalUltimo = typeof avaliarJogo === 'function' ? avaliarJogo(ordenadoUltimo, mod) : { score: 99, aprovadosCount: 6 };
+    const avalUltimo = typeof avaliarJogo === 'function' ? avaliarJogo(ordenadoUltimo, mod) : { aprovadosCount: null };
     const corBolaDestaque = mod === 'megasena'
       ? 'bg-gradient-to-br from-emerald-400 to-teal-500 text-slate-950 border-emerald-300 shadow-emerald-500/30'
       : 'bg-gradient-to-br from-purple-400 to-fuchsia-500 text-white border-purple-300 shadow-purple-500/30';
@@ -1440,7 +1440,7 @@ function atualizarProvaDosFatosRedesign() {
             <button type="button" onclick="carregarConcursoHistoricoNoVolante(${ultimo.concurso}, '${mod}')" class="px-2 py-0.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 text-[10px] font-bold border border-emerald-500/40 flex items-center gap-1 active:scale-95 transition">
               🎯 Testar no Volante ↗
             </button>
-            <span class="text-[10px] font-black text-cyan-400 font-mono">Nota ${avalUltimo.score || 99}/100</span>
+            <span class="text-[10px] font-bold text-slate-300 font-mono">${mod === 'megasena' && avalUltimo.aprovadosCount !== null ? `${avalUltimo.aprovadosCount}/6 comuns` : ''}</span>
           </div>
         </div>
         <div class="flex flex-wrap gap-1.5 pt-0.5 justify-start">
@@ -1457,14 +1457,14 @@ function atualizarProvaDosFatosRedesign() {
   // 2. Lista dos outros 49 sorteios oficiais (iniciando a partir do penúltimo para não repetir o destaque)
   let aprovadosCount = 0;
   // O último (índice 0) já é computado na nota média geral
-  const avaliacaoPrimeiro = typeof avaliarJogo === 'function' ? avaliarJogo([...ultimos50[0].dezenas].sort((a,b)=>a-b), mod) : { aprovadosCount: 6 };
-  if (avaliacaoPrimeiro.aprovadosCount >= 5) aprovadosCount++;
+  const avaliacaoPrimeiro = typeof avaliarJogo === 'function' ? avaliarJogo([...ultimos50[0].dezenas].sort((a,b)=>a-b), mod) : { aprovadosCount: 0 };
+  if (avaliacaoPrimeiro.aprovadosCount === 6) aprovadosCount++;
 
   const sorteiosAnteriores = ultimos50.slice(1);
   const cardsHtml = sorteiosAnteriores.map((c) => {
     const ordenado = [...c.dezenas].sort((a,b) => a - b);
     const avaliacao = typeof avaliarJogo === 'function' ? avaliarJogo(ordenado, mod) : { score: null, aprovadosCount: 0 };
-    if (avaliacao.aprovadosCount >= 5) aprovadosCount++;
+    if (avaliacao.aprovadosCount === 6) aprovadosCount++;
 
     const bolinhasHtml = ordenado.map(d => `
       <span class="w-5 h-5 rounded-md ${mod === 'megasena' ? 'bg-emerald-950 text-emerald-400 border border-emerald-800' : 'bg-purple-950 text-purple-400 border border-purple-800'} font-black text-[9px] flex items-center justify-center font-mono">
@@ -1489,17 +1489,23 @@ function atualizarProvaDosFatosRedesign() {
           </div>
         </div>
         <div class="text-right shrink-0">
-          <div class="text-[10px] font-black text-cyan-600 dark:text-cyan-400 font-mono">Nota ${avaliacao.score || 95}/100</div>
-          <span class="text-[9px] font-bold text-emerald-600 dark:text-emerald-400">✓ ${avaliacao.aprovadosCount || 6}/6 OK</span>
+          <span class="text-[9px] font-bold text-slate-500 dark:text-slate-300">${mod === 'megasena' ? `${avaliacao.aprovadosCount}/6 comuns` : ''}</span>
         </div>
       </div>
     `;
   }).join('');
 
-  const pct = Math.round((aprovadosCount / ultimos50.length) * 100);
-  if (badgePct) badgePct.innerText = `${pct}% APROVADO`;
+  // Conta só o que foi medido: sorteios com os 6 indicadores na faixa comum.
+  // Na Lotofácil os indicadores são informativos, então não há contagem.
+  const mega = mod === 'megasena';
+  if (badgePct) {
+    badgePct.innerText = mega ? `${aprovadosCount} de ${ultimos50.length}` : '';
+    badgePct.classList.toggle('hidden', !mega);
+  }
   if (resumoEl) {
-    resumoEl.innerText = `${pct}% dos últimos ${ultimos50.length} sorteios oficiais da Caixa atenderam aos 6 filtros orbitais de calibração estatística (toque em qualquer um para auditar no Volante):`;
+    resumoEl.innerText = mega
+      ? `${aprovadosCount} dos últimos ${ultimos50.length} sorteios tiveram os 6 indicadores na faixa comum. Jogos escolhidos ao acaso dão quase o mesmo resultado: os indicadores descrevem o jogo, não preveem sorteio. Toque num sorteio para vê-lo no volante:`
+      : 'Toque em qualquer sorteio para vê-lo no volante:';
   }
   if (containerLista) containerLista.innerHTML = cardsHtml;
 }

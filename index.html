@@ -6,15 +6,6 @@
     try {
       localStorage.removeItem('loterias_nasa_historico_v2');
       localStorage.removeItem('loterias_nasa_historico');
-      if ('caches' in window) {
-        caches.keys().then(function(names) {
-          names.forEach(function(name) {
-            if (!name.includes('v20261104.02')) {
-              caches.delete(name);
-            }
-          });
-        });
-      }
     } catch (_) {}
   </script>
   <script src="./js/error-trap.js?v=20261114.01"></script>
