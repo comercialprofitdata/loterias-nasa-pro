@@ -279,7 +279,8 @@ function salvarJogoAtivoNaCarteira() {
         score: aposta.analise?.score || score,
         concursoAlvo: infoSorteio.concurso,
         status: infoSorteio.status,
-        tipo: infoSorteio.tipo
+        tipo: infoSorteio.tipo,
+        dataRegistro: new Date().toISOString()
       });
     });
 
@@ -310,7 +311,8 @@ function salvarJogoAtivoNaCarteira() {
     score: score,
     concursoAlvo: infoSorteio.concurso,
     status: infoSorteio.status,
-    tipo: infoSorteio.tipo
+    tipo: infoSorteio.tipo,
+    dataRegistro: new Date().toISOString()
   };
 
   carteiraJogos.unshift(novoBilhete);
@@ -339,23 +341,17 @@ function compartilharJogoGeradoWhatsapp() {
     
     let linhasJogos = loteApostasGeradas.map((ap, i) => {
       const dezenas = ap.dezenas.map(d => String(d).padStart(2, '0')).join(' - ');
-      const scoreIndividual = ap.analise?.score || score;
-      return `🎲 *Jogo #${i + 1}* (Nota ${scoreIndividual}/100):\n👉 *${dezenas}*`;
+      return `🎲 *Jogo #${i + 1}:*\n👉 *${dezenas}*`;
     }).join('\n\n');
 
     const textoLote = 
 `🎯 *${totalJogos} JOGOS GERADOS • ${nomeDestino.toUpperCase()}*
-🎯 *Concurso Alvo:* ${infoSorteio.concurso} (${infoSorteio.data})
+🎯 *Concurso Alvo:* ${infoSorteio.concurso}${infoSorteio.rotulo ? ` (${infoSorteio.rotulo})` : ''}
 Sorteios são aleatórios: nenhum jogo tem mais chance que outro.${avisoPlanejamento}
 
 ${linhasJogos}
 
-🔬 *Critérios de Calibração:*
-• Sem sequências longas viciadas
-• Dezenas bem espalhadas no volante
-• Equilíbrio estatístico de pares e ímpares
-
-*Meu Volante PRO* — Monte e audite seus jogos:
+*Meu Volante PRO* — Organize e confira seus jogos:
 👉 https://loterias.pd.dev.br/`;
 
     window.abrirWhatsApp({ texto: textoLote });
@@ -374,19 +370,13 @@ ${linhasJogos}
 
   const textoUnico = 
 `🎯 *JOGO GERADO • ${nomeDestino.toUpperCase()}*
-🎯 *Concurso Alvo:* ${infoSorteio.concurso} (${infoSorteio.data})
-📊 *Nota de Equilíbrio:* ${score}/100 (6 de 6 Testes OK)
-${avisoPlanejamento}
+🎯 *Concurso Alvo:* ${infoSorteio.concurso}${infoSorteio.rotulo ? ` (${infoSorteio.rotulo})` : ''}
+Sorteios são aleatórios: nenhum jogo tem mais chance que outro.${avisoPlanejamento}
 
 🎯 *Dezenas:*
 👉 *${dezenasFormatadas}*
 
-🔬 *Distribuição:*
-• Sem sequências longas viciadas
-• Dezenas bem espalhadas no volante
-• Proporção ideal de pares e ímpares
-
-*Meu Volante PRO* — Monte e audite seus jogos:
+*Meu Volante PRO* — Organize e confira seus jogos:
 👉 https://loterias.pd.dev.br/`;
 
     window.abrirWhatsApp({ texto: textoUnico });

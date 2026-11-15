@@ -451,7 +451,7 @@
     let totalGanho = 0;
     listaOriginal.forEach(b => {
       const custoPadrao = b.modalidade === 'lotofacil' ? 3.5 : 6.0;
-      totalGasto += Number(b.custo || custoPadrao);
+      totalGasto += typeof window.custoDoBilhete === 'function' ? window.custoDoBilhete(b) : Number(b.custo || custoPadrao);
       totalGanho += Number(b.premioGanho || 0);
     });
 

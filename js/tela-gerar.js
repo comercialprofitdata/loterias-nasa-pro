@@ -65,6 +65,19 @@ function abrirNotaIndicador(numero) {
 }
 window.abrirNotaIndicador = abrirNotaIndicador;
 
+document.addEventListener('keydown', (evento) => {
+  if (evento.key === 'Escape') {
+    const folhas = document.querySelectorAll('.folha-fundo');
+    folhas[folhas.length - 1]?.remove();
+    return;
+  }
+  const card = evento.target.closest?.('[id^="teste-card-"]');
+  if (card && (evento.key === 'Enter' || evento.key === ' ')) {
+    evento.preventDefault();
+    abrirNotaIndicador(Number(card.id.replace('teste-card-', '')));
+  }
+});
+
 // Tocar num indicador abre a nota. Indicador travado do plano grátis segue abrindo os planos.
 document.addEventListener('click', (evento) => {
   const card = evento.target.closest?.('[id^="teste-card-"]');
@@ -84,8 +97,14 @@ function alternarAbaGerar(aba) {
 }
 window.alternarAbaGerar = alternarAbaGerar;
 
+let abrindoBolao = false;
 function abrirBolaoNoGerar() {
-  if (typeof mudarAba === 'function') mudarAba('volante');
+  abrindoBolao = true;
+  try {
+    if (typeof mudarAba === 'function') mudarAba('volante');
+  } finally {
+    abrindoBolao = false;
+  }
   alternarAbaGerar('bolao');
   window.scrollTo(0, 0);
 }
@@ -94,6 +113,20 @@ window.abrirBolaoNoGerar = abrirBolaoNoGerar;
 // O bolão saiu da Carteira: os atalhos antigos passam a abrir Gerar > Bolão.
 document.addEventListener('DOMContentLoaded', () => setTimeout(() => {
   document.getElementById('seg-cart-bolao')?.classList.add('hidden');
+  const mudarAbaAnterior = window.mudarAba;
+  if (typeof mudarAbaAnterior === 'function') {
+    window.mudarAba = function (aba, ...resto) {
+      const retorno = mudarAbaAnterior.call(this, aba, ...resto);
+      if (aba === 'volante' && !abrindoBolao) alternarAbaGerar('jogo');
+      return retorno;
+    };
+  }
+  // Indicadores tocáveis também pelo teclado e pelo leitor de tela.
+  document.querySelectorAll('[id^="teste-card-"]').forEach((card) => {
+    card.setAttribute('role', 'button');
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('aria-label', `Entender o indicador ${card.id.replace('teste-card-', '')}`);
+  });
   const alternarCarteira = window.alternarSubAbaCarteira;
   if (typeof alternarCarteira === 'function') {
     window.alternarSubAbaCarteira = function (modo, ...resto) {

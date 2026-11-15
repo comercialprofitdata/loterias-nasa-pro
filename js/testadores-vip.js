@@ -61,7 +61,7 @@
                 <div id="barra-progresso-testadores" class="bg-gradient-to-r from-emerald-500 to-teal-400 h-full w-0 transition-all duration-500"></div>
               </div>
               <p class="text-[10px] text-slate-500 mt-2">
-                O Google exige 20 testadores participando por 14 dias para liberar o app na Play Store.
+                Antes do lançamento, o app passa por um teste com um grupo de pessoas usando por 14 dias.
               </p>
             </div>
 
@@ -176,7 +176,7 @@
   window.compartilharConviteTestadoresWhatsApp = function () {
     const texto = 
       `*Convite Exclusivo - Meu Volante PRO*\n\n` +
-      `Fui convidado para o grupo pioneiro de 20 testadores do *Meu Volante PRO* antes do lançamento na Google Play Store!\n\n` +
+      `Fui convidado para o grupo de testadores do *Meu Volante PRO* antes do lançamento na Google Play Store!\n\n` +
       `Se você aposta na Mega-Sena ou Lotofácil e quer testar as matrizes gratuitamente, garanta uma das 20 vagas:\n` +
       `${window.location.origin}${window.location.pathname}?programa=testadores`;
 

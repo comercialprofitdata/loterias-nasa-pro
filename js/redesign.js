@@ -1603,8 +1603,8 @@ const PERFIS_CONFIG = {
   },
   cientifico: {
     id: 'cientifico',
-    nome: 'Científico & Auditor',
-    nomeCurto: 'Científico',
+    nome: 'Detalhado',
+    nomeCurto: 'Detalhado',
     icon: '🔬',
     tag: 'DETALHADO',
     cor: 'cyan',
@@ -1762,9 +1762,9 @@ function abrirModalSeletorPerfil({ onboarding = false } = {}) {
         <div onclick="selecionarModoExperiencia('cientifico')" class="p-3 rounded-2xl bg-slate-950 hover:bg-slate-900 border ${modoAtivo === 'cientifico' ? 'border-cyan-400 bg-cyan-950/20 ring-1 ring-cyan-400/50' : 'border-cyan-500/30'} cursor-pointer transition active:scale-[0.98] space-y-1">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
-              <span class="text-xs font-black text-white">Científico & Auditor</span>
+              <span class="text-xs font-black text-white">Detalhado</span>
             </div>
-            <span class="text-[9px] font-mono font-bold px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-800">TELEMETRIA TOTAL</span>
+            <span class="text-[9px] font-mono font-bold px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-800">TUDO ABERTO</span>
           </div>
           <p class="text-[11px] text-slate-400 leading-snug">
             Últimos sorteios da Caixa e os 6 indicadores do jogo abertos e detalhados.
@@ -1854,7 +1854,9 @@ function renderizarPalpiteExpressHome() {
   `).join('');
 
   if (scoreBadge) {
-    scoreBadge.innerText = `NOTA ${palpiteExpressAtual.analise?.score || 99}/100`;
+    const comuns = palpiteExpressAtual.analise?.aprovadosCount;
+    scoreBadge.innerText = palpiteExpressAtual.modalidade === 'megasena' && typeof comuns === 'number' ? `${comuns}/6 comuns` : '';
+    scoreBadge.classList.toggle('hidden', !scoreBadge.innerText);
   }
 }
 

@@ -109,6 +109,8 @@
     let qtdDesejadaLoto = 15;
     let qtdApostasDesejada = 3;
     let loteApostasGeradas = [];
+    let loteModalidade = null;
+    let indiceLoteAtivo = 0;
     let loteDetalhesAbertos = {};
     let carteiraDetalhesAbertos = {};
     let jogoAuditoriaAtivo = null;
@@ -385,7 +387,7 @@
 
       // Registrar Service Worker com Verificação Imediata de Atualizações
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js?v=20261115.01', { scope: './' })
+        navigator.serviceWorker.register('./sw.js?v=20261115.02', { scope: './' })
           .then((reg) => {
             console.log('[Meu Volante PRO] Service Worker registrado. Verificando atualizações...');
             reg.update(); // força verificação no servidor imediatamente
@@ -896,7 +898,31 @@
       toast('🎁 Jogo de Cortesia ativado! Todas as dezenas foram 100% reveladas.', '🎉');
     }
 
+    /**
+     * Mantém o lote de jogos gerados coerente com o jogo da tela. Sem isso,
+     * Salvar, WhatsApp e PDF usavam o lote antigo depois de o usuário limpar
+     * o volante e marcar outro jogo, ou de trocar de loteria.
+     */
+    function sincronizarLoteComJogoNaTela() {
+      if (!Array.isArray(loteApostasGeradas) || loteApostasGeradas.length <= 1) return;
+      const descartar = () => {
+        loteApostasGeradas = [];
+        indiceLoteAtivo = 0;
+        renderizarAbasJogosGeradosTela1();
+      };
+      if (loteModalidade && loteModalidade !== modalidadeAtual) { descartar(); return; }
+      const atual = [...getJogoAtual()].sort((a, b) => a - b);
+      if (!atual.length) { descartar(); return; }
+      const chave = atual.join('-');
+      const idx = loteApostasGeradas.findIndex(a => [...a.dezenas].sort((x, y) => x - y).join('-') === chave);
+      if (idx !== -1) { indiceLoteAtivo = idx; return; }
+      if (atual.length >= getConfigAtual().minDezenas && loteApostasGeradas[indiceLoteAtivo]) {
+        loteApostasGeradas[indiceLoteAtivo] = { ...loteApostasGeradas[indiceLoteAtivo], dezenas: atual, analise: avaliarJogo(atual, modalidadeAtual) };
+      }
+    }
+
     function atualizarDisplayJogo() {
+      sincronizarLoteComJogoNaTela();
       const jogo = getJogoAtual();
       const config = getConfigAtual();
       const display = document.getElementById('display-meu-jogo');
@@ -1746,15 +1772,16 @@ function gerarPalpiteInteligente() {
         const badge = document.getElementById(`badge-status-t${idx+1}`);
         if (badge) {
           // Selo neutro: os indicadores descrevem o jogo, não dizem se ele é bom ou ruim.
-          badge.innerText = t.s === 'Alerta' ? 'Incomum' : (t.s === 'Informativo' ? 'Informativo' : 'Comum');
-          badge.className = t.s !== 'Alerta' 
+          const soInforma = t.s === 'Informativo' || (modalidadeAtual === 'megasena' && n !== 6);
+          badge.innerText = soInforma ? 'Informativo' : (t.s === 'Alerta' ? 'Incomum' : 'Comum');
+          badge.className = soInforma || t.s !== 'Alerta' 
             ? 'text-[9px] px-1.5 py-0.5 rounded font-mono font-bold bg-slate-900 text-slate-300 border border-slate-700' 
             : 'text-[9px] px-1.5 py-0.5 rounded font-mono font-bold bg-amber-950 text-amber-300 border border-amber-700';
         }
       });
 
       if (badgeTotal) {
-        badgeTotal.innerText = rotuloIndicadores(analise);
+        badgeTotal.innerText = modalidadeAtual === 'megasena' && n !== 6 ? 'indicadores descritivos' : rotuloIndicadores(analise);
         badgeTotal.className = analise.aprovadosCount === 6 
           ? 'text-[10px] px-2 py-0.5 rounded font-mono font-bold bg-slate-900 text-slate-300 border border-slate-700' 
           : 'text-[10px] px-2 py-0.5 rounded font-mono font-bold bg-amber-950 text-amber-300 border border-amber-800';
@@ -1801,10 +1828,10 @@ function gerarPalpiteInteligente() {
           const colunas = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].sort(() => 0.5 - Math.random()).slice(0, 4);
           const subgrid16 = [];
           linhas.forEach(l => colunas.forEach(c => subgrid16.push((l - 1) * 10 + c)));
-          const disponiveis = subgrid16.filter(n => !proibidos.includes(n));
-          while (dezenas.size < k && disponiveis.length > 0) {
-            const rand = disponiveis[Math.floor(Math.random() * disponiveis.length)];
-            dezenas.add(rand);
+          // Sorteia sem repetir dentro do subgrid; o que faltar vem do volante inteiro abaixo.
+          const livres = subgrid16.filter(n => !proibidos.includes(n) && !dezenas.has(n));
+          while (dezenas.size < k && livres.length > 0) {
+            dezenas.add(livres.splice(Math.floor(Math.random() * livres.length), 1)[0]);
           }
         }
 
@@ -1865,6 +1892,8 @@ function gerarPalpiteInteligente() {
       }
 
       loteApostasGeradas = apostas;
+      loteModalidade = modalidadeAtual;
+      indiceLoteAtivo = 0;
 
       // Carrega automaticamente a 1ª aposta no volante
       setJogoAtual([...apostas[0].dezenas]);
@@ -2112,6 +2141,14 @@ function gerarPalpiteInteligente() {
       const container = document.getElementById('conteudo-sugestao-troca');
       if (!container) return;
 
+      // Os limites foram feitos para 6 dezenas: com mais, quase todo jogo pareceria incomum.
+      if (jogo.length !== 6) {
+        window.jogoTemIndicadorIncomum = false;
+        container.innerHTML = '';
+        marcarDezenaSugerida(null);
+        return;
+      }
+
       const sugestao = sugerirTroca([...jogo].sort((a, b) => a - b), getFixos(), getProibidos(), 'megasena');
       window.jogoTemIndicadorIncomum = Boolean(sugestao);
       if (!sugestao) {
@@ -2154,8 +2191,8 @@ function gerarPalpiteInteligente() {
       if (!container) return;
       let sai = null, entra = null, motivo = '';
       if (molduraCount > 11) {
-        sai = jogo.filter(x => LOTO_CONFIG.moldura.includes(x)).pop();
-        entra = LOTO_CONFIG.miolo.filter(x => !jogo.includes(x))[0];
+        sai = jogo.filter(x => LOTO_CONFIG.moldura.includes(x) && !getFixos().includes(x)).pop();
+        entra = LOTO_CONFIG.miolo.find(x => !jogo.includes(x) && !getProibidos().includes(x));
         motivo = 'Deixa a moldura com até 11 dezenas, como na maioria das combinações. Não muda a chance de ganhar.';
       }
 

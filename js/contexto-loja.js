@@ -16,9 +16,12 @@
  */
 function rodandoComoAppDaLoja() {
   try {
-    // Grava na sessão: o referrer se perde ao voltar do login ou recarregar.
+    // Grava na sessão e no aparelho: o referrer se perde ao recarregar, voltar do
+    // login ou abrir uma página numa aba nova (privacidade, exclusão de conta).
+    // Efeito colateral aceito: o Chrome do mesmo aparelho também deixa de vender.
     if (document.referrer.startsWith('android-app://')) {
       sessionStorage.setItem('nasa_modo_loja', '1');
+      localStorage.setItem('nasa_modo_loja', '1');
       return true;
     }
 
@@ -30,7 +33,7 @@ function rodandoComoAppDaLoja() {
       return true;
     }
 
-    return sessionStorage.getItem('nasa_modo_loja') === '1';
+    return sessionStorage.getItem('nasa_modo_loja') === '1' || localStorage.getItem('nasa_modo_loja') === '1';
   } catch {
     return false;
   }
@@ -70,6 +73,10 @@ function ocultarVendaExterna() {
     .modo-loja #banner-cta-pro-volante,
     .modo-loja .modal-upgrade-plan-card:not(.modal-upgrade-plan-slate),
     .modo-loja .science-lock-overlay,
+    .modo-loja #nasa-top-vip-btn,
+    .modo-loja [id^="selo-pro-qtd"],
+    .modo-loja #cartao-planos,
+    .modo-loja #drawer-ver-planos,
     .modo-loja [data-venda-externa] {
       display: none !important;
     }
@@ -93,6 +100,19 @@ function ocultarVendaExterna() {
   }
 
   if (typeof aplicarGateCientificoNasa === 'function') aplicarGateCientificoNasa();
+
+  // O login, o cupom e a assinatura voltam o plano para 'free' e chamam
+  // atualizarVisualPlano. No app da loja tudo fica liberado, então o plano é
+  // refeito como 'pro' antes de cada atualização.
+  const atualizarOriginal = window.atualizarVisualPlano;
+  if (typeof atualizarOriginal === 'function') {
+    window.atualizarVisualPlano = function (...args) {
+      if (typeof planoUsuario !== 'undefined') planoUsuario = 'pro';
+      if (typeof usuarioSessao !== 'undefined' && usuarioSessao) usuarioSessao.plano = 'pro';
+      return atualizarOriginal.apply(this, args);
+    };
+    window.atualizarVisualPlano();
+  }
 
   console.log('📱 Modo loja: venda externa desativada');
 }
@@ -140,6 +160,7 @@ window.contextoLoja = {
   },
   desligar: () => {
     sessionStorage.removeItem('nasa_modo_loja');
+    localStorage.removeItem('nasa_modo_loja');
     location.reload();
   }
 };

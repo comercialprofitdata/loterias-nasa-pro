@@ -74,6 +74,8 @@ function montarCardDoJogo() {
   if (btnPdf) {
     btnPdf.className = 'fluxo-acao';
     btnPdf.textContent = 'PDF';
+    btnPdf.removeAttribute('onclick');
+    btnPdf.addEventListener('click', imprimirJogoDaTela);
     acoes.append(btnPdf);
   }
   card.after(acoes);
@@ -82,6 +84,21 @@ function montarCardDoJogo() {
   blocoGerar?.classList.add('hidden');
   blocoJogo.classList.add('hidden');
   return card;
+}
+
+/** PDF do que está na tela: o lote gerado ou o jogo único, nunca jogos de outra aba. */
+function imprimirJogoDaTela() {
+  const jogo = typeof getJogoAtual === 'function' ? getJogoAtual() : [];
+  const minimo = typeof getConfigAtual === 'function' ? getConfigAtual().minDezenas : 6;
+  if (jogo.length < minimo) {
+    window.toast?.(`Faltam ${minimo - jogo.length} dezenas para completar o jogo.`, '⚠️');
+    return;
+  }
+  const jogos = typeof loteApostasGeradas !== 'undefined' && loteApostasGeradas.length > 1
+    ? loteApostasGeradas.map((a) => a.dezenas)
+    : [[...jogo].sort((a, b) => a - b)];
+  const virada = Boolean(window.estaPlanejandoMegaVirada?.());
+  window.imprimirJogosVolante?.(jogos, modalidadeAtual, virada ? { planejamento: true, titulo: 'Mega da Virada 2026' } : {});
 }
 
 /** Folha para escolher o sorteio do jogo: concurso regular ou Mega da Virada. */
@@ -141,19 +158,32 @@ function montarBotaoSalvar() {
     if (modalidadeAtual !== 'megasena') destinoVirada = false;
   };
 
+  // O mesmo jogo (ou lote) não é salvo duas vezes, mesmo depois de trocar de jogo ou de loteria e voltar.
+  const assinaturaDoJogo = () => {
+    const lote = typeof loteApostasGeradas !== 'undefined' && loteApostasGeradas.length > 1
+      ? loteApostasGeradas.map((a) => a.dezenas.join('-')).join('|')
+      : (typeof getJogoAtual === 'function' ? [...getJogoAtual()].sort((a, b) => a - b).join('-') : '');
+    return `${modalidadeAtual}:${lote}`;
+  };
+  const salvos = new Map();
+
   const salvarNoDestino = (destino) => {
-    destinoVirada = destino === 'virada';
     const salvar = () => {
+      destinoVirada = destino === 'virada';
       const antes = carteiraJogos.length;
       if (destinoVirada) window.salvarJogoAtivoNaCarteira?.();
       else marcarComoJogadoProximoConcurso();
       if (carteiraJogos.length > antes) {
         salvo = true;
+        salvos.set(assinaturaDoJogo(), destino);
         document.getElementById('txt-btn-joguei-jogo').textContent = 'Salvo · ver na Carteira';
+      } else {
+        destinoVirada = false;
       }
     };
-    window.salvarDepoisDoCadastro?.(salvar);
-    salvar();
+    // Sem conta, o cadastro abre e o jogo é salvo assim que a conta for criada.
+    if (window.exigirLeadAntesDeSalvar?.() === false) window.salvarDepoisDoCadastro?.(salvar);
+    else salvar();
   };
 
   botao.addEventListener('click', () => {
@@ -172,11 +202,15 @@ function montarBotaoSalvar() {
   });
 
   const display = document.getElementById('display-meu-jogo');
+  let ultimaAssinatura = null;
   new MutationObserver(() => {
-    salvo = false;
-    destinoVirada = false;
+    const atual = assinaturaDoJogo();
+    if (atual === ultimaAssinatura) return;
+    ultimaAssinatura = atual;
+    salvo = salvos.has(atual);
+    destinoVirada = salvos.get(atual) === 'virada';
     const rotulo = document.getElementById('txt-btn-joguei-jogo');
-    if (rotulo) rotulo.textContent = 'Salvar jogo';
+    if (rotulo) rotulo.textContent = salvo ? 'Salvo · ver na Carteira' : 'Salvar jogo';
     display.classList.remove('fluxo-pulso');
     void display.offsetWidth;
     display.classList.add('fluxo-pulso');
@@ -207,6 +241,9 @@ function montarVolante() {
     ajuda.className = 'gastos-nota';
     ajuda.textContent = 'Escolha Fixar ou Proibir e toque nas dezenas do volante. Volte para Normal para marcar o jogo.';
     preferencias.append(resumo, ajuda, modos, regras);
+    preferencias.addEventListener('toggle', () => {
+      if (!preferencias.open && typeof modoToque !== 'undefined' && modoToque !== 'normal') setModoToque('normal');
+    });
     (definicoes || card).append(preferencias);
     const atualizarResumo = () => {
       const fixas = typeof getFixos === 'function' ? getFixos().length : 0;
@@ -274,6 +311,16 @@ function montarVolante() {
     limparJogo.className = 'fluxo-link fluxo-limpar';
     limparJogo.textContent = 'Limpar dezenas';
     grade.after(limparJogo);
+  }
+
+  const desenharVolante = window.renderizarVolante;
+  if (typeof desenharVolante === 'function') {
+    window.renderizarVolante = function (...args) {
+      const retorno = desenharVolante.apply(this, args);
+      const dezena = window.dezenaSugeridaParaSair;
+      if (dezena && typeof getJogoAtual === 'function' && getJogoAtual().includes(dezena)) window.marcarDezenaSugerida?.(dezena);
+      return retorno;
+    };
   }
 
   if (typeof renderizarVolante === 'function') renderizarVolante();

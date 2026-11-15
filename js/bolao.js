@@ -147,14 +147,14 @@
     return ehPro() ? 10 : LIMITE_GRATIS.jogos;
   }
 
-  function gerarJogos(bolao, quantidade) {
+  function gerarJogos(bolao, quantidade, manter = false) {
     if (!ehPro() && quantidade > LIMITE_GRATIS.jogos) {
       window.abrirModalPaywall?.('multi_jogos');
       return;
     }
-    const jogos = [];
+    const jogos = manter ? bolao.jogos.slice(0, quantidade) : [];
     const rascunho = { ...bolao, jogos };
-    for (let i = 0; i < quantidade; i++) {
+    while (jogos.length < quantidade) {
       const jogo = gerarUmJogo(rascunho);
       if (!jogo) {
         aviso('Não há dezenas suficientes para gerar os jogos. Revise as fixas e proibidas na aba Jogo.');
@@ -176,6 +176,18 @@
     return { concurso: info.concurso || 'Próximo', data: info.data || '', rotulo, virada: false };
   }
 
+  function apagarDaNuvem(ids) {
+    if (!ids.length) return;
+    try {
+      const cliente = typeof obterClienteSupabase === 'function' ? obterClienteSupabase() : null;
+      if (!cliente) return;
+      cliente.auth.getSession().then(({ data }) => {
+        const uid = data?.session?.user?.id;
+        if (uid) cliente.from('carteira_apostas').delete().eq('user_id', uid).in('bilhete_id', ids.map(String)).then();
+      });
+    } catch { /* sem conta, só o aparelho tem os jogos */ }
+  }
+
   /** Leva os jogos do bolão para a Carteira, no concurso certo, trocando os que já tinham ido. */
   function salvarNaCarteira(bolao) {
     if (!bolao.jogos.length) { aviso('Gere os jogos do bolão antes de salvar.'); return; }
@@ -183,6 +195,7 @@
     if (!Array.isArray(carteiraJogos)) return;
 
     const outros = carteiraJogos.filter((b) => b.bolaoId !== bolao.id);
+    apagarDaNuvem(carteiraJogos.filter((b) => b.bolaoId === bolao.id).map((b) => b.id));
     if (!ehPro() && outros.length + bolao.jogos.length > 10) {
       window.abrirModalPaywall?.('carteira_limite');
       return;
@@ -429,6 +442,20 @@
   }
   window.renderizarBolao = renderizar;
 
+  let ponteiroAbaixo = false;
+  let redesenhoPendente = false;
+  document.addEventListener('pointerdown', () => { ponteiroAbaixo = true; }, true);
+  document.addEventListener('pointerup', () => {
+    ponteiroAbaixo = false;
+    if (!redesenhoPendente) return;
+    redesenhoPendente = false;
+    setTimeout(renderizar, 0);
+  }, true);
+  const redesenhar = () => {
+    if (ponteiroAbaixo) redesenhoPendente = true;
+    else renderizar();
+  };
+
   function aoMudar(evento) {
     const alvo = evento.target;
     const bolao = bolaoAtivo();
@@ -437,7 +464,7 @@
     if (alvo.dataset.campoGeral === 'ativo') {
       ativoId = Number(alvo.value);
     } else if (alvo.dataset.campoGeral === 'qtd-jogos') {
-      gerarJogos(bolao, Number(alvo.value));
+      gerarJogos(bolao, Number(alvo.value), true);
       return;
     } else if (alvo.dataset.campo) {
       const campo = alvo.dataset.campo;
@@ -460,7 +487,7 @@
       return;
     }
     gravar();
-    renderizar();
+    redesenhar();
   }
 
   function aoClicar(evento) {
