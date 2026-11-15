@@ -96,7 +96,7 @@ function mostrarCheckoutReal(planId) {
         <input id="checkout-cpf" type="text" inputmode="numeric" maxlength="14" placeholder="000.000.000-00"
                style="width:100%; box-sizing:border-box; padding:0.65rem 0.75rem; background:rgba(2,6,23,0.8); border:1px solid rgba(71,85,105,0.8); border-radius:0.6rem; color:white; outline:none; font-size:0.85rem;" />
         <p style="font-size:0.65rem; color:#64748b; margin:0.35rem 0 0; line-height:1.3;">
-          Exigido pelo Asaas, que processa o pagamento.
+          Exigido pelo Asaas, que processa o pagamento. Vendido por VBJ Soluções Empresariais Inteligentes LTDA, CNPJ 59.474.673/0001-26.
         </p>
       </div>
 
