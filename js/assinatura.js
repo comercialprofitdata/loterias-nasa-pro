@@ -175,7 +175,7 @@ async function mostrarCancelamentoNoMenu() {
   const { data: sessao } = await cliente.auth.getSession();
   if (!sessao?.session?.user) return;
   const { data } = await cliente.from('subscriptions').select('provider_subscription_id')
-    .eq('user_id', sessao.session.user.id).eq('status', 'active').like('provider_subscription_id', 'sub_%').limit(1);
+    .eq('user_id', sessao.session.user.id).in('status', ['active', 'past_due']).like('provider_subscription_id', 'sub_%').limit(1);
   if (!data?.length) return;
   const botao = document.createElement('button');
   botao.type = 'button';

@@ -38,7 +38,7 @@ serve(async (req) => {
     .select("id, provider_subscription_id, valid_until")
     .eq("user_id", sessao.user.id)
     .eq("provider", "asaas")
-    .eq("status", "active")
+    .in("status", ["active", "past_due"])
     .like("provider_subscription_id", "sub_%")
   if (error) return responder({ erro: "falha ao consultar assinatura" }, 500)
   if (!assinaturas?.length) return responder({ erro: "nenhuma assinatura ativa" }, 404)

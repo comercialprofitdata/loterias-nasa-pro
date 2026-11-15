@@ -100,6 +100,25 @@ async function aplicarPromoLancamento(idAssinatura: string, pagoEm: string) {
   return true
 }
 
+/** Apaga a assinatura no Asaas para não gerar novas cobranças. Falha só fica registrada. */
+async function apagarAssinaturaNoAsaas(idAssinatura: string, motivo: string) {
+  if (!idAssinatura?.startsWith("sub_")) return
+  try {
+    const resposta = await fetch(`${Deno.env.get("ASAAS_API_URL")}/subscriptions/${idAssinatura}`, {
+      method: "DELETE",
+      headers: { access_token: Deno.env.get("ASAAS_API_KEY") ?? "", "User-Agent": "MeuVolantePRO" }
+    })
+    if (!resposta.ok && resposta.status !== 404) console.error(`Asaas recusou apagar ${idAssinatura} (${motivo}):`, resposta.status)
+  } catch (erro) {
+    console.error(`Erro ao apagar assinatura ${idAssinatura} (${motivo}):`, erro)
+  }
+}
+
+/** Erro de dado que nunca vai se resolver sozinho: responder 500 só travaria a fila do Asaas. */
+function erroPermanente(codigo?: string) {
+  return Boolean(codigo) && (codigo!.startsWith("22") || codigo!.startsWith("23"))
+}
+
 async function tratarFimDaAssinatura(idAssinatura: string) {
   // O período já pago continua valendo até o fim da validade.
   const { error } = await admin
@@ -195,12 +214,14 @@ serve(async (req) => {
   // Conta já excluída: guarda a cobrança sem dono em vez de travar a fila.
   if (erroCobranca?.code === "23503") {
     ;({ error: erroCobranca } = await admin.from("cobrancas").upsert({ ...linha, user_id: null }, { onConflict: "id" }))
+    if (pagamento.subscription) await apagarAssinaturaNoAsaas(pagamento.subscription, "conta excluída")
     if (!erroCobranca) return json({ ok: true, aviso: "usuario_excluido" })
   }
 
   if (erroCobranca) {
-    console.error("Erro ao gravar cobrança:", erroCobranca.message)
-    // 500 faz o Asaas reenviar depois, o que é o comportamento desejado.
+    console.error("Erro ao gravar cobrança:", erroCobranca.code, erroCobranca.message)
+    if (erroPermanente(erroCobranca.code)) return json({ ok: false, aviso: "erro_permanente", codigo: erroCobranca.code })
+    // Erro passageiro: 500 faz o Asaas reenviar depois.
     return json({ erro: "falha ao gravar" }, 500)
   }
 
@@ -212,7 +233,11 @@ serve(async (req) => {
 
   const idAssinatura = pagamento.subscription ?? pagamento.id
 
-  if (liberaAcesso) {
+  // A mesma fatura já liberou o acesso (CONFIRMED seguido de RECEIVED, ou evento repetido):
+  // não recalcula a validade, para não encurtar a promoção nem o período.
+  const jaLiberada = Boolean(existente && LIBERAM_ACESSO.has(existente.status))
+
+  if (liberaAcesso && !jaLiberada) {
     // Só a primeira fatura da assinatura entra na promoção.
     let promo = false
     if (plano === "mensal" && pagamento.subscription && !assinaturaAtual) {
@@ -232,7 +257,14 @@ serve(async (req) => {
         provider_subscription_id: idAssinatura,
         plan_code: plano,
         status: "active",
-        valid_until: validadeDoPlano(plano, pagoEm, promo),
+        // Validade nunca diminui: soma a partir do fim do período atual, se ele ainda vale.
+        valid_until: validadeDoPlano(
+          plano,
+          assinaturaAtual?.valid_until && new Date(assinaturaAtual.valid_until) > new Date(pagoEm)
+            ? assinaturaAtual.valid_until
+            : pagoEm,
+          promo
+        ),
         updated_at: new Date().toISOString()
       },
       { onConflict: "provider_subscription_id" }
@@ -252,10 +284,14 @@ serve(async (req) => {
   let atualizacao: Record<string, unknown> | null = null
   if (novoStatus === "estornada") {
     atualizacao = { status: "canceled", valid_until: new Date().toISOString() }
+    if (pagamento.subscription) await apagarAssinaturaNoAsaas(pagamento.subscription, "estorno")
   } else if (novoStatus === "vencida" || novoStatus === "cancelada") {
     // Fatura antiga não derruba quem ainda está dentro do período pago.
     const aindaPago = assinaturaAtual?.valid_until && new Date(assinaturaAtual.valid_until) > new Date()
     if (!aindaPago) atualizacao = { status: novoStatus === "vencida" ? "past_due" : "canceled" }
+    if (novoStatus === "vencida" && pagamento.subscription && !assinaturaAtual) {
+      await apagarAssinaturaNoAsaas(pagamento.subscription, "primeira fatura não paga")
+    }
   }
 
   if (atualizacao) {
