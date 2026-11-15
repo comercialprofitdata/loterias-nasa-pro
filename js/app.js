@@ -385,7 +385,7 @@
 
       // Registrar Service Worker com Verificação Imediata de Atualizações
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js?v=20261114.01', { scope: './' })
+        navigator.serviceWorker.register('./sw.js?v=20261115.01', { scope: './' })
           .then((reg) => {
             console.log('[Meu Volante PRO] Service Worker registrado. Verificando atualizações...');
             reg.update(); // força verificação no servidor imediatamente
@@ -2768,7 +2768,7 @@ function gerarPalpiteInteligente() {
       }
 
       if (!dataFinal) {
-        dataFinal = typeof obterInfoProximoSorteio === 'function' ? obterInfoProximoSorteio(mod).data : new Date().toLocaleDateString('pt-BR');
+        dataFinal = typeof obterInfoProximoSorteio === 'function' ? obterInfoProximoSorteio(mod).data : '—';
       }
       if (!concFinal) {
         concFinal = typeof obterInfoProximoSorteio === 'function' ? obterInfoProximoSorteio(mod).concurso : 'Oficial';
@@ -4533,7 +4533,7 @@ function abrirModalDialog(msg, callback) {
       }
 
       if (!dataFinal) {
-        dataFinal = typeof obterInfoProximoSorteio === 'function' ? obterInfoProximoSorteio(mod).data : new Date().toLocaleDateString('pt-BR');
+        dataFinal = typeof obterInfoProximoSorteio === 'function' ? obterInfoProximoSorteio(mod).data : '—';
       }
       if (!concFinal) {
         concFinal = typeof obterInfoProximoSorteio === 'function' ? obterInfoProximoSorteio(mod).concurso : 'Oficial';

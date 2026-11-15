@@ -36,12 +36,8 @@ function formatarDataProximoCaixa(dataProximoBR, modalidade = null, agora = new 
   const data = new Date(Number(m[3]), Number(m[2]) - 1, Number(m[1]));
   if (Number.isNaN(data.getTime())) return null;
 
-  // Ajuste determinístico para Mega-Sena: sorteios regulares ocorrem às Terças (2), Quintas (4) e Sábados (6).
-  // A API da Caixa aos domingos costuma enviar temporariamente segunda-feira (1).
-  if (modalidade === 'megasena') {
-    if (data.getDay() === 0) data.setDate(data.getDate() + 2); // Domingo -> Terça
-    else if (data.getDay() === 1) data.setDate(data.getDate() + 1); // Segunda -> Terça
-  }
+  // A data da Caixa vale como veio. Desde 19/07/2026 há sorteio no domingo, às 11h;
+  // empurrar domingo para terça fazia o app mostrar duas datas diferentes.
 
   const hoje = new Date(agora);
   hoje.setHours(0, 0, 0, 0);
@@ -53,9 +49,9 @@ function formatarDataProximoCaixa(dataProximoBR, modalidade = null, agora = new 
   if (diffDias === 0) {
     // Se a data da Caixa for hoje, mas o horário limite (20h) já passou:
     // O concurso do dia já encerrou apostas e está em apuração/sorteando.
-    const horaLimite = SORTEIOS_CALENDARIO[modalidade]?.hora ?? 20;
+    const horaLimite = data.getDay() === 0 ? 11 : (SORTEIOS_CALENDARIO[modalidade]?.hora ?? 20);
     if (agora.getHours() >= horaLimite) {
-      if (agora.getHours() < 22) {
+      if (agora.getHours() < horaLimite + 2) {
         return `Hoje (${diaSemana}) • Em apuração`;
       }
       return `Encerrado (${diaSemana})`;
@@ -204,7 +200,8 @@ function atualizarSorteiosUI(dados, origem = 'calculado') {
 
     document.querySelectorAll(`.${classeConcurso}`).forEach((el) => {
       const prefixo = info.concurso ? `Conc. ${info.concurso} • ` : '';
-      el.innerText = `${prefixo}${info.dia} ${info.hora}`;
+      // Com a data da Caixa não há hora confiável para mostrar (domingo é às 11h).
+      el.innerText = info.dataOficial ? `${prefixo}${info.dia}` : `${prefixo}${info.dia} ${info.hora}`;
     });
 
     document.querySelectorAll(`.js-${chave}-countdown`).forEach((el) => {
@@ -242,6 +239,8 @@ function mesclarDadosServidor(linhas, agora = new Date()) {
     if (!base[chave]) return;
     base[chave].premio = linha.premio_estimado ?? null;
     base[chave].concurso = linha.proximo_concurso ?? null;
+    // Este caminho traz o número do concurso, mas não a data: ela segue sendo estimativa.
+    base[chave].dataOficial = false;
   });
 
   return base;
@@ -296,6 +295,7 @@ async function sincronizarSorteiosReais({ silencioso = false } = {}) {
           dados.megasena.concurso = mega.proximoConcurso;
           if (mega.dataProximo) {
             dados.megasena.dataBR = mega.dataProximo;
+            dados.megasena.dataOficial = true;
             const rotulo = formatarDataProximoCaixa(mega.dataProximo, 'megasena');
             if (rotulo) dados.megasena.dia = rotulo;
           }
@@ -305,6 +305,7 @@ async function sincronizarSorteiosReais({ silencioso = false } = {}) {
           dados.lotofacil.concurso = loto.proximoConcurso;
           if (loto.dataProximo) {
             dados.lotofacil.dataBR = loto.dataProximo;
+            dados.lotofacil.dataOficial = true;
             const rotulo = formatarDataProximoCaixa(loto.dataProximo, 'lotofacil');
             if (rotulo) dados.lotofacil.dia = rotulo;
           }

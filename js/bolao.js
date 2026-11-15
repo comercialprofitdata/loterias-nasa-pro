@@ -172,7 +172,7 @@
       return { concurso: DESTINO_VIRADA, data: 'Data oficial a confirmar', rotulo: DESTINO_VIRADA, virada: true };
     }
     const info = typeof obterInfoProximoSorteio === 'function' ? obterInfoProximoSorteio(bolao.modalidade) : {};
-    const rotulo = info.concurso ? `Concurso ${info.concurso}` : 'Próximo concurso';
+    const rotulo = [info.concurso ? `Concurso ${info.concurso}` : null, info.rotulo || null].filter(Boolean).join(' · ') || 'Próximo concurso';
     return { concurso: info.concurso || 'Próximo', data: info.data || '', rotulo, virada: false };
   }
 

@@ -97,7 +97,7 @@ function abrirDestinoDoJogo(aoEscolher) {
     `${dezenas} dezenas`,
     custo === null ? null : custo.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
   ].filter(Boolean).join(' · ');
-  const proximo = info.concurso ? `Concurso ${info.concurso}` : '—';
+  const proximo = [info.concurso ? `Concurso ${info.concurso}` : null, info.rotulo || null].filter(Boolean).join(' · ') || '—';
 
   const fundo = document.createElement('div');
   fundo.className = 'folha-fundo';

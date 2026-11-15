@@ -1894,7 +1894,7 @@ function salvarPalpiteExpressHome() {
     aprovadosCount: palpiteExpressAtual.analise?.aprovadosCount || 6,
     concurso: concAlvo || 'Próximo',
     concursoAlvo: concAlvo || 'Próximo',
-    data: dataAlvo || new Date().toLocaleDateString('pt-BR'),
+    data: dataAlvo || '—',
     dataCriacao: new Date().toISOString(),
     conferido: false
   };

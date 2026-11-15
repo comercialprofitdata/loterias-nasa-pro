@@ -62,76 +62,80 @@ window.abrirWhatsApp = window.dispararWhatsApp = function ({ fone = '', texto = 
   window.open(webUrl, '_blank', 'noopener,noreferrer');
 };
 
+/**
+ * Concurso e data do próximo sorteio. A data só vem de fonte oficial (Caixa);
+ * sem ela, devolve '—' em vez de calcular por calendário. `data` é sempre
+ * dd/mm/aaaa ou '—', que é o formato que a Carteira e a conferência esperam.
+ */
 function obterInfoProximoSorteio(modalidade) {
   const mod = modalidade || (typeof modalidadeAtual !== 'undefined' ? modalidadeAtual : 'megasena');
+  const ehDataBR = (texto) => /^\d{2}\/\d{2}\/\d{4}$/.test(String(texto || '').trim());
   let proximoNumero = null;
   let proximaData = null;
-  let diaSemanaRotulo = null;
 
-  // 1. Tenta buscar do cache de sorteios reais sincronizados da Caixa/Supabase
+  // 1. Sorteios sincronizados da Caixa.
   if (typeof obterSorteiosSalvos === 'function') {
-    const salvos = obterSorteiosSalvos();
-    if (salvos && salvos[mod]) {
-      const item = salvos[mod];
-      if (item.concurso) proximoNumero = item.concurso;
-      if (item.dataBR) proximaData = item.dataBR;
-      if (item.dia) diaSemanaRotulo = item.dia;
-    }
+    const item = obterSorteiosSalvos()?.[mod];
+    if (item?.concurso) proximoNumero = Number(item.concurso);
+    if (item?.dataOficial === true && ehDataBR(item.dataBR)) proximaData = String(item.dataBR).trim();
   }
 
-  // 2. Se não tiver no cache, busca do histórico de concursos carregados
+  // 2. Sem sincronização: o último concurso conhecido aponta o seguinte.
   if (!proximoNumero) {
-    if (mod === 'megasena' && typeof baseConcursosMega !== 'undefined' && baseConcursosMega.length > 0) {
-      const ultimo = baseConcursosMega[0];
-      proximoNumero = ultimo.proximoConcurso || (ultimo.concurso + 1);
-      if (!proximaData) proximaData = ultimo.dataProximo || null;
-    } else if (mod === 'lotofacil' && typeof baseConcursosLoto !== 'undefined' && baseConcursosLoto.length > 0) {
-      const ultimo = baseConcursosLoto[0];
-      proximoNumero = ultimo.proximoConcurso || (ultimo.concurso + 1);
-      if (!proximaData) proximaData = ultimo.dataProximo || null;
+    const base = mod === 'megasena'
+      ? (typeof baseConcursosMega !== 'undefined' ? baseConcursosMega : [])
+      : (typeof baseConcursosLoto !== 'undefined' ? baseConcursosLoto : []);
+    const ultimo = base?.[0];
+    if (ultimo) {
+      proximoNumero = Number(ultimo.proximoConcurso || (ultimo.concurso + 1));
+      if (ehDataBR(ultimo.dataProximo)) proximaData = String(ultimo.dataProximo).trim();
     }
   }
 
-  // 3. Validação com o calendário oficial determinístico (com base no horário limite de apostas 20h)
-  let calc = null;
-  if (typeof calcularProximoSorteio === 'function') {
-    calc = calcularProximoSorteio(mod);
-  }
-
+  // 3. Data que já passou é informação velha: não serve nem a data nem o número.
+  let rotulo = '';
   if (proximaData) {
-    const partes = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(String(proximaData).trim());
-    if (partes) {
-      const [, dia, mes, ano] = partes;
-      const alvo = new Date(Number(ano), Number(mes) - 1, Number(dia), 20, 0, 0);
-      if (alvo.getTime() <= Date.now()) {
-        // A data gravada no registro anterior já encerrou apostas / já passou!
-        proximaData = null;
-        diaSemanaRotulo = null;
-        if (proximoNumero) proximoNumero++;
-      }
+    const [dia, mes, ano] = proximaData.split('/').map(Number);
+    const alvo = new Date(ano, mes - 1, dia);
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
+    if (alvo.getTime() < hoje.getTime()) {
+      proximaData = null;
+      proximoNumero = null;
+    } else {
+      const dias = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+      rotulo = `${dias[alvo.getDay()]}, ${proximaData}`;
     }
-  }
-
-  // Aplica o cálculo oficial determinístico se necessário
-  if (!proximaData && calc) {
-    proximaData = calc.dataBR;
-    diaSemanaRotulo = calc.dia;
-  }
-
-  // Monta descrição completa e amigável: Ex: "Amanhã (Quinta-feira, 05/11 às 20h)" ou "Hoje (Quarta-feira, 04/11 às 20h)"
-  let dataFormatadaCompleta = proximaData || 'Próximo Sorteio Oficial';
-  if (diaSemanaRotulo && proximaData) {
-    const dataCurta = proximaData.substring(0, 5);
-    dataFormatadaCompleta = diaSemanaRotulo.includes(dataCurta)
-      ? diaSemanaRotulo + ' às 20h'
-      : diaSemanaRotulo + ' • ' + proximaData + ' às 20h';
   }
 
   return {
     concurso: proximoNumero ? ('#' + proximoNumero) : 'Próximo Oficial',
-    data: dataFormatadaCompleta,
-    dataSimples: proximaData || ''
+    data: proximaData || '—',
+    dataSimples: proximaData || '',
+    rotulo
   };
+}
+
+/** Jogos salvos antes desta correção podem ter duas datas no mesmo texto. Fica só a data oficial. */
+function corrigirDatasDosJogosSalvos() {
+  if (typeof carteiraJogos === 'undefined' || !Array.isArray(carteiraJogos)) return 0;
+  let corrigidos = 0;
+  carteiraJogos.forEach((bilhete) => {
+    const texto = String(bilhete.data || '');
+    if (!texto || /^\d{2}\/\d{2}\/\d{4}$/.test(texto) || texto === '—' || texto === 'Data oficial a confirmar') return;
+    if (!/ • | às \d/.test(texto)) return;
+    const achada = /(\d{2}\/\d{2}\/\d{4})/.exec(texto);
+    bilhete.data = achada ? achada[1] : '—';
+    corrigidos++;
+  });
+  if (corrigidos && typeof salvarCarteiraStorage === 'function') salvarCarteiraStorage();
+  return corrigidos;
+}
+window.corrigirDatasDosJogosSalvos = corrigirDatasDosJogosSalvos;
+if (typeof document !== 'undefined') {
+  document.addEventListener('DOMContentLoaded', () => setTimeout(() => {
+    if (corrigirDatasDosJogosSalvos() && typeof atualizarPainelCarteira === 'function') atualizarPainelCarteira();
+  }, 1500));
 }
 
 function obterDestinoJogo(modalidade) {
