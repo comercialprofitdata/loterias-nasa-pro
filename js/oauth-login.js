@@ -192,6 +192,9 @@ function loginComMeta() {
 // CARREGAR SDKs
 // ===================================================================
 document.addEventListener('DOMContentLoaded', () => {
+  // Só carrega os SDKs de login social quando eles estão ligados (LGPD: nada de terceiros à toa).
+  const configLogin = window.NASA_SUPABASE_CONFIG || {};
+  if (!configLogin.googleEnabled && !configLogin.metaEnabled) return;
   const googleScript = document.createElement('script');
   googleScript.src = 'https://accounts.google.com/gsi/client';
   googleScript.async = true;

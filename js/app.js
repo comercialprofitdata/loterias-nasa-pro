@@ -429,7 +429,7 @@
 
       // Registrar Service Worker com Verificação Imediata de Atualizações
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js?v=20261115.07', { scope: './' })
+        navigator.serviceWorker.register('./sw.js?v=20261115.08', { scope: './' })
           .then((reg) => {
             console.log('[Meu Volante PRO] Service Worker registrado. Verificando atualizações...');
             reg.update(); // força verificação no servidor imediatamente
@@ -892,6 +892,10 @@
           fixos.splice(fixos.indexOf(num), 1);
           toast(`Dezena ${String(num).padStart(2,'0')} desmarcada de fixa.`, "📌");
         } else {
+          if (!jogo.includes(num) && jogo.length >= getConfigAtual().maxDezenas) {
+            toast(`O jogo pode ter no máximo ${getConfigAtual().maxDezenas} dezenas.`, '⚠️');
+            return;
+          }
           fixos.push(num);
           if (proibidos.includes(num)) proibidos.splice(proibidos.indexOf(num), 1);
           if (!jogo.includes(num)) jogo.push(num);
@@ -915,6 +919,9 @@
         } else if (jogo.includes(num)) {
           jogo = jogo.filter(n => n !== num);
           if (fixos.includes(num)) fixos.splice(fixos.indexOf(num), 1);
+        } else if (jogo.length >= getConfigAtual().maxDezenas) {
+          toast(`O jogo pode ter no máximo ${getConfigAtual().maxDezenas} dezenas.`, '⚠️');
+          return;
         } else {
           jogo.push(num);
         }
@@ -1359,7 +1366,7 @@ function gerarPalpiteInteligente() {
           if (dentroPadrao79) {
             elStatus.innerHTML = `<span class="text-emerald-300 font-bold">Distribuição: ${r} linhas e ${c} colunas</span>`;
           } else if (aglomerado) {
-            elStatus.innerHTML = `<span class="text-rose-400 font-bold">⚠️ Risco: Aglomeração em poucas linhas/colunas</span>`;
+            elStatus.innerHTML = `<span class="text-amber-300 font-bold">Dezenas concentradas em poucas linhas ou colunas</span>`;
           } else {
             elStatus.innerHTML = `<span class="text-amber-300 font-bold">⚖️ Dispersão máxima (1 dezena por linha/coluna)</span>`;
           }
@@ -1374,11 +1381,11 @@ function gerarPalpiteInteligente() {
         if (elLinhas) elLinhas.innerText = `${linhasSet.size} de 5 Linhas`;
         if (elColunas) elColunas.innerText = `${colunasSet.size} de 5 Colunas`;
         if (elArea) elArea.innerText = `${moldura} Moldura / ${miolo} Miolo`;
-        if (elVazios) elVazios.innerText = (moldura >= 9 && moldura <= 11) ? '✅ Proporção Áurea (10/5 ou 9/6)' : '⚠️ Proporção Desbalanceada';
+        if (elVazios) elVazios.innerText = `${moldura} na moldura · ${jogo.length - moldura} no miolo`;
 
         if (elBadge) {
           const ideal = moldura >= 9 && moldura <= 11 && linhasSet.size === 5 && colunasSet.size === 5;
-          elBadge.innerText = ideal ? '✅ 82% Padrão Ouro' : '⚠️ Fora do Padrão';
+          elBadge.innerText = ideal ? 'Moldura comum' : 'Moldura incomum';
           elBadge.className = ideal 
             ? 'text-[9px] px-2 py-0.5 rounded bg-purple-950 text-purple-300 border border-purple-700 font-bold ml-1'
             : 'text-[9px] px-2 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-800 font-bold ml-1';

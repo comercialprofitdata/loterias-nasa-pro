@@ -119,7 +119,9 @@ function avaliarBilhete(bilhete, resultado) {
     dezenasSorteadas: sorteadas,
     concursoConferido: resultado.concurso,
     premioGanho: faixa ? premioTotalDoBilhete(bilhete, resultado, acertos, faixas) : 0,
-    status: faixa ? faixa.rotulo : `${acertos} acertos (Não premiado)`,
+    status: faixa
+      ? (premioTotalDoBilhete(bilhete, resultado, acertos, faixas) > 0 ? faixa.rotulo : `${faixa.rotulo} · prêmio a confirmar na CAIXA`)
+      : `${acertos} acertos (Não premiado)`,
     premiado: Boolean(faixa)
   };
 }

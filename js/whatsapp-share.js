@@ -86,7 +86,11 @@ function obterInfoProximoSorteio(modalidade) {
       ? (typeof baseConcursosMega !== 'undefined' ? baseConcursosMega : [])
       : (typeof baseConcursosLoto !== 'undefined' ? baseConcursosLoto : []);
     const ultimo = base?.[0];
-    if (ultimo) {
+    const partesUltimo = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(String(ultimo?.data || '').trim());
+    const diasDesdeUltimo = partesUltimo
+      ? (new Date().getTime() - new Date(Number(partesUltimo[3]), Number(partesUltimo[2]) - 1, Number(partesUltimo[1])).getTime()) / 86400000
+      : Infinity;
+    if (ultimo && diasDesdeUltimo <= 4) {
       proximoNumero = Number(ultimo.proximoConcurso || (ultimo.concurso + 1));
       if (ehDataBR(ultimo.dataProximo)) proximaData = String(ultimo.dataProximo).trim();
     }
@@ -155,11 +159,22 @@ window.obterDestinoJogo = obterDestinoJogo;
  * Registra o jogo (ou lote de jogos) com status ativo para o próximo concurso oficial
  * Permite que o apostador aperte "JOGUEI ESTE JOGO!" na hora que apostou na lotérica/app
  */
+/** Sem o número do próximo concurso o jogo nunca seria conferido: avisa e tenta buscar de novo. */
+function proximoConcursoConhecido(modalidade) {
+  const info = obterInfoProximoSorteio(modalidade);
+  if (/^#\d+$/.test(info.concurso)) return true;
+  if (typeof toast === 'function') toast('Não consegui confirmar o próximo concurso com a CAIXA agora. Confira a internet e tente de novo em instantes.', '⚠️');
+  window.sincronizarSorteiosReais?.({ silencioso: true });
+  return false;
+}
+window.proximoConcursoConhecido = proximoConcursoConhecido;
+
 function marcarComoJogadoProximoConcurso() {
   if (window.estaPlanejandoMegaVirada?.()) {
     salvarJogoAtivoNaCarteira();
     return;
   }
+  if (!proximoConcursoConhecido(typeof modalidadeAtual !== 'undefined' ? modalidadeAtual : 'megasena')) return;
   if (typeof window.exigirLeadAntesDeSalvar === 'function' && !window.exigirLeadAntesDeSalvar()) {
     return;
   }

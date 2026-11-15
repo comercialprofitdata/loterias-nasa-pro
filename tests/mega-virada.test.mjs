@@ -73,5 +73,5 @@ test('compartilhamento e impressão mantêm o aviso de que o planejamento não �
   assert.match(carteira, /Palpites planejados/);
   assert.match(impressao, /contexto\.planejamento/);
   assert.match(impressao, /não é comprovante nem registro de aposta oficial/);
-  assert.match(impressao, /'Palpites' : 'Apostas'/);
+  assert.ok(impressao.includes("contexto.planejamento ? (jogos.length === 1 ? 'palpite' : 'palpites')"));
 });

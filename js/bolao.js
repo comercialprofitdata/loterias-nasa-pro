@@ -191,6 +191,7 @@
   /** Leva os jogos do bolão para a Carteira, no concurso certo, trocando os que já tinham ido. */
   function salvarNaCarteira(bolao) {
     if (!bolao.jogos.length) { aviso('Gere os jogos do bolão antes de salvar.'); return; }
+    if (!(bolao.modalidade === 'megasena' && bolao.destino === 'virada') && window.proximoConcursoConhecido && !window.proximoConcursoConhecido(bolao.modalidade)) return;
     if (typeof window.exigirLeadAntesDeSalvar === 'function' && !window.exigirLeadAntesDeSalvar()) return;
     if (!Array.isArray(carteiraJogos)) return;
 
@@ -441,7 +442,15 @@
         </div>`;
       return;
     }
+    // Guarda o campo em que a pessoa está digitando para devolver o cursor depois do redesenho.
+    const ativo = document.activeElement;
+    const seletorAtivo = ativo && painel.contains(ativo)
+      ? (ativo.dataset.pessoa !== undefined
+        ? `[data-pessoa="${ativo.dataset.pessoa}"][data-pessoa-campo="${ativo.dataset.pessoaCampo}"]`
+        : (ativo.dataset.campo ? `[data-campo="${ativo.dataset.campo}"]` : null))
+      : null;
     painel.innerHTML = htmlBolao(bolao);
+    if (seletorAtivo) painel.querySelector(seletorAtivo)?.focus();
   }
   window.renderizarBolao = renderizar;
 

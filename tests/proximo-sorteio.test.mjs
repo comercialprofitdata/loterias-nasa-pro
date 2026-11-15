@@ -43,10 +43,15 @@ test('sem data oficial, o app mostra o concurso e nenhuma data', () => {
   assert.equal(info.rotulo, '');
 });
 
-test('sem sincronização, o concurso vem do último conhecido e a data fica em branco', () => {
-  const info = infoCom({ baseMega: [{ concurso: 3085 }], agora: sabado });
+test('sem sincronização, o concurso vem do último conhecido recente e a data fica em branco', () => {
+  const info = infoCom({ baseMega: [{ concurso: 3085, data: '12/11/2026' }], agora: sabado });
   assert.equal(info.concurso, '#3086');
   assert.equal(info.data, '—');
+});
+
+test('base de concursos velha ou sem data não serve para adivinhar o próximo concurso', () => {
+  assert.equal(infoCom({ baseMega: [{ concurso: 3081, data: '04/11/2026' }], agora: sabado }).concurso, 'Próximo Oficial');
+  assert.equal(infoCom({ baseMega: [{ concurso: 3085 }], agora: sabado }).concurso, 'Próximo Oficial');
 });
 
 test('data oficial que já passou não é usada, e o número do concurso não é adivinhado', () => {

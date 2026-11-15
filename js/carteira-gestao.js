@@ -729,7 +729,7 @@
               <span class="px-1.5 py-0.5 rounded text-[9px] font-black ${isMega ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-purple-500/20 text-purple-400 border border-purple-500/30'}">${(b.modalidade || 'megasena').toUpperCase()}</span>
               ${b.concursoAlvo ? `<span class="linha-acertos-rotulo text-[10px] font-bold">${b.concursoAlvo}</span>` : ''}
               <span class="linha-sem-acerto text-[10px]">📅 ${b.data || 'Oficial'}</span>
-              ${b.concursoAlvo === 'Mega da Virada 2026' ? '<span class="text-amber-200 text-[9px] font-bold">Palpite, não aposta oficial</span>' : b.premioGanho > 0 ? `<span class="status-badge-premiado text-[10px] px-1.5 py-0.5 rounded font-black">🏆 +${fmtBRL(b.premioGanho)}</span>` : foiConferido ? `<span class="linha-sem-acerto text-[10px]">${acertos || 0} acertos</span>` : '<span class="linha-sem-acerto text-[9px]">Pendente</span>'}
+              ${b.concursoAlvo === 'Mega da Virada 2026' ? '<span class="text-amber-200 text-[9px] font-bold">Palpite, não aposta oficial</span>' : b.premioGanho > 0 ? `<span class="status-badge-premiado text-[10px] px-1.5 py-0.5 rounded font-black">🏆 +${fmtBRL(b.premioGanho)}</span>` : foiConferido ? `<span class="linha-sem-acerto text-[10px]">${/a confirmar/.test(b.status || '') ? b.status : `${acertos || 0} acertos`}</span>` : '<span class="linha-sem-acerto text-[9px]">Pendente</span>'}
             </div>
             <div class="flex flex-wrap gap-1">
               ${b.dezenas.map(d => {

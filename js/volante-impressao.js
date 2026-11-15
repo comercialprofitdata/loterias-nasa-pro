@@ -150,7 +150,7 @@
         <div class="header-doc">
           <h2 style="margin: 0; font-size: 18px; letter-spacing: 1px;">MEU VOLANTE PRO — ESPELHO DE VOLANTES</h2>
           <p style="margin: 3px 0 0; font-size: 11px; color: #444;">
-            Modalidade: <strong>${nomeMod}</strong> | Lote: <strong>${jogos.length} ${contexto.planejamento ? 'Palpites' : 'Apostas'}</strong> | Emissão: ${dataHoje} às ${horaHoje}
+            Modalidade: <strong>${nomeMod}</strong> | Jogos: <strong>${jogos.length} ${contexto.planejamento ? (jogos.length === 1 ? 'palpite' : 'palpites') : (jogos.length === 1 ? 'jogo' : 'jogos')}</strong> | Emissão: ${dataHoje} às ${horaHoje}
           </p>
         </div>
 
@@ -172,7 +172,7 @@
         <div class="footer-nota">
           ${contexto.planejamento
             ? 'Palpite de planejamento do Meu Volante PRO. Este documento não é comprovante nem registro de aposta oficial. Confirme a data, o concurso e a disponibilidade das apostas nos canais oficiais da CAIXA.'
-            : 'Documento gerado pelo sistema estatístico Meu Volante PRO. Utilize este espelho para passar as apostas nos volantes oficiais da Caixa ou direto no terminal lotérico. Não possui valor fiscal até validação na Casa Lotérica.'}
+            : 'Espelho dos seus jogos, gerado pelo Meu Volante PRO. Não é aposta nem comprovante: para apostar, marque os jogos nos volantes oficiais da CAIXA ou no terminal da lotérica. Nenhum jogo tem mais chance que outro.'}
         </div>
 
         <script>

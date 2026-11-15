@@ -525,16 +525,29 @@ function trocarIconesNavegacao() {
 function ligarBotaoVoltar() {
   const original = window.mudarAba;
   let vindoDoHistorico = false;
+  let ignorarProximoVoltar = false;
   window.mudarAba = function (aba, ...resto) {
     const retorno = original.call(this, aba, ...resto);
     window.scrollTo(0, 0);
-    if (!vindoDoHistorico && history.state?.aba !== aba) history.pushState({ aba }, '');
+    if (!vindoDoHistorico) {
+      // Histórico de uma camada só: qualquer aba volta para a Início, e a Início sai do app.
+      const atual = history.state?.aba;
+      if (aba === 'inicio') {
+        if (atual && atual !== 'inicio') { ignorarProximoVoltar = true; history.back(); }
+      } else if (!atual || atual === 'inicio') {
+        history.pushState({ aba }, '');
+      } else if (atual !== aba) {
+        history.replaceState({ aba }, '');
+      }
+    }
     return retorno;
   };
 
   const fecharAberto = () => {
     const folha = document.querySelector('.folha-fundo');
     if (folha) { folha.remove(); return true; }
+    const menu = document.getElementById('nasa-profile-drawer-backdrop');
+    if (menu?.classList.contains('open')) { window.fecharDrawerPerfil?.(); return 'menu'; }
     const modal = [...document.querySelectorAll('.fixed.inset-0')]
       .find((m) => !m.dataset.obrigatorio && !m.classList.contains('hidden') && getComputedStyle(m).display !== 'none');
     if (!modal) return false;
@@ -543,9 +556,32 @@ function ligarBotaoVoltar() {
     return true;
   };
 
+  // O menu lateral ganha uma entrada no histórico, para o Voltar fechá-lo em qualquer tela.
+  const abrirMenu = window.abrirDrawerPerfil;
+  if (typeof abrirMenu === 'function') {
+    window.abrirDrawerPerfil = function (...args) {
+      const retorno = abrirMenu.apply(this, args);
+      if (!history.state?.menu) history.pushState({ aba: abaAtual, menu: true }, '');
+      return retorno;
+    };
+  }
+  const fecharMenu = window.fecharDrawerPerfil;
+  if (typeof fecharMenu === 'function') {
+    window.fecharDrawerPerfil = function (...args) {
+      const retorno = fecharMenu.apply(this, args);
+      // Fechado pelo X ou por um item do menu: a entrada vira a da tela atual.
+      if (history.state?.menu) history.replaceState({ aba: abaAtual }, '');
+      return retorno;
+    };
+  }
+
   history.replaceState({ aba: 'inicio' }, '');
   window.addEventListener('popstate', (evento) => {
-    if (fecharAberto()) {
+    if (ignorarProximoVoltar) { ignorarProximoVoltar = false; return; }
+    const fechou = fecharAberto();
+    // O menu tem a própria entrada no histórico: fechá-lo já consumiu o Voltar.
+    if (fechou === 'menu') return;
+    if (fechou) {
       history.pushState({ aba: abaAtual }, '');
       return;
     }

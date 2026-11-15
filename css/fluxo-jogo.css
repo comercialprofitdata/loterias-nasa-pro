@@ -293,3 +293,4 @@ main [class*="text-[8px]"], main [class*="text-[9px]"], main [class*="text-[10px
 .fluxo-card-volante #revisao-jogo { padding: 0; }
 .fluxo-card-volante #legenda-volante { padding-top: 10px; }
 .bolao-duas select, .bolao-tres select, .bolao-tres input { font-size: 14px; padding: 0 8px; }
+#toast { pointer-events: none !important; }

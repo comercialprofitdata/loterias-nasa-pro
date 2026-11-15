@@ -27,6 +27,8 @@ function custoDoJogo(modalidade, qtdDezenas) {
 }
 
 function custoDoBilhete(bilhete) {
+  // Palpite da Mega da Virada é planejamento, não gasto: a Carteira já o mostra assim.
+  if (bilhete.tipo === 'mega_virada_2026' || bilhete.concursoAlvo === 'Mega da Virada 2026') return 0;
   // Jogo de bolão: conta só a parte de quem usa o app.
   if (typeof bilhete.custoProprio === 'number') return bilhete.custoProprio;
   return custoDoJogo(bilhete.modalidade, (bilhete.dezenas || []).length);
