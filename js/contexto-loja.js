@@ -74,6 +74,7 @@ function ocultarVendaExterna() {
     .modo-loja .modal-upgrade-plan-card:not(.modal-upgrade-plan-slate),
     .modo-loja .science-lock-overlay,
     .modo-loja #nasa-top-vip-btn,
+    .modo-loja .vip-link,
     .modo-loja [id^="selo-pro-qtd"],
     .modo-loja #cartao-planos,
     .modo-loja #drawer-ver-planos,

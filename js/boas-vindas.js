@@ -43,7 +43,7 @@ function abrirBoasVindas() {
         ${atual.confirmar ? `
           <label class="bv-idade">
             <input type="checkbox" id="bv-maior-idade" />
-            <span>Tenho 18 anos ou mais e li os <a href="privacidade.html" target="_blank" rel="noopener">termos e a privacidade</a>.</span>
+            <span>Tenho 18 anos ou mais e li os <a href="termos.html" target="_blank" rel="noopener">termos de uso</a> e a <a href="privacidade.html" target="_blank" rel="noopener">política de privacidade</a>.</span>
           </label>` : ''}
         <div class="bv-pontos" aria-hidden="true">
           ${BOAS_VINDAS_PASSOS.map((_, i) => `<i class="${i === passo ? 'ativo' : ''}"></i>`).join('')}

@@ -34,7 +34,7 @@ window.pedirContaParaComprar = pedirContaParaComprar;
 
 function retomarCompra() {
   const plano = sessionStorage.getItem('meu_volante_plano_pendente');
-  if (!plano) return;
+  if (!plano || window.contextoLoja?.ativo?.()) return;
   sessionStorage.removeItem('meu_volante_plano_pendente');
   setTimeout(() => {
     window.abrirModalUpgrade?.('retomar');

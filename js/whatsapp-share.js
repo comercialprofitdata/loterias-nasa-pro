@@ -206,7 +206,7 @@ function marcarComoJogadoProximoConcurso() {
     if (typeof renderizarCockpitInicioApostador === 'function') renderizarCockpitInicioApostador();
 
     if (typeof toast === 'function') {
-      toast(`🎉 ${totalJogos} jogos registrados para o concurso ${infoSorteio.concurso}!`, '✅');
+      toast(`${totalJogos} jogos salvos na Carteira para o concurso ${infoSorteio.concurso}. Isto não é uma aposta.`, '✅');
     }
     return;
   }
@@ -237,7 +237,7 @@ function marcarComoJogadoProximoConcurso() {
   if (typeof renderizarCockpitInicioApostador === 'function') renderizarCockpitInicioApostador();
 
   if (typeof toast === 'function') {
-    toast(`🎉 Jogo registrado com sucesso para o concurso ${infoSorteio.concurso}!`, '✅');
+    toast(`Jogo salvo na Carteira para o concurso ${infoSorteio.concurso}. Isto não é uma aposta.`, '✅');
   }
 }
 

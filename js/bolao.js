@@ -267,7 +267,7 @@
       const cotas = Number(p.cotas) || 0;
       linhas.push(`${p.pagou ? '✅' : '⏳'} ${p.nome} · ${cotas} ${cotas === 1 ? 'cota' : 'cotas'} · ${reais(cotas * r.valorCota)}`);
     });
-    linhas.push('', `Recebido: ${reais(r.recebido)} de ${reais(r.total)}`, `Cotas distribuídas: ${r.distribuidas} de ${r.cotas}`, '', RODAPE);
+    linhas.push('', `Marcado como pago: ${reais(r.recebido)} de ${reais(r.total)}`, `Cotas distribuídas: ${r.distribuidas} de ${r.cotas}`, '', RODAPE);
     return linhas.join('\n');
   }
 
@@ -385,8 +385,9 @@
         <div class="bolao-numeros">
           <div><span>Total dos jogos</span><strong>${reais(r.total)}</strong></div>
           <div><span>Valor por cota</span><strong>${bolao.jogos.length ? reais(r.valorCota) : '—'}</strong></div>
-          <div><span>Recebido</span><strong>${reais(r.recebido)}</strong></div>
+          <div><span>Marcado como pago</span><strong>${reais(r.recebido)}</strong></div>
         </div>
+        <p class="gastos-nota">O app só anota quem pagou. Ele não recebe, não guarda e não transfere dinheiro.</p>
         ${avisos.map((a) => `<p class="revisao-aviso">${esc(a)}</p>`).join('')}
         ${bolao.modo === 'caixa' ? `<p class="gastos-nota">A lotérica pode cobrar tarifa de serviço de até 35% por cota. <a href="${regra.link}" target="_blank" rel="noopener">Regras do Bolão CAIXA</a></p>` : '<p class="gastos-nota">Sem registro na lotérica, o bilhete é de quem o tem em mãos. Combine tudo por escrito e envie a foto do bilhete ao grupo.</p>'}
       </div>
@@ -420,7 +421,7 @@
             <button type="button" class="fluxo-link" data-acao="remover-pessoa" data-indice="${i}" aria-label="Remover ${esc(p.nome)}">Remover</button>
           </div>`).join('')}
         <button type="button" class="fluxo-acao" data-acao="nova-pessoa">Adicionar participante</button>
-        ${bolao.participantes.length ? `<p class="gastos-nota">Faltam ${reais(r.falta)} para fechar o valor dos jogos.</p>` : ''}
+        ${bolao.participantes.length ? `<p class="gastos-nota">Faltam ${reais(r.falta)} marcados como pagos para cobrir os jogos.</p>` : ''}
       </div>
 
       <button type="button" class="fluxo-link" data-acao="excluir">Excluir este bolão</button>`;

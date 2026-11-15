@@ -199,7 +199,7 @@ function criarSidebarDesktop() {
       <div class="sidebar-lottery-header">
         <span class="sidebar-live-indicator"></span>
         <span id="sidebar-lottery-name" class="font-bold text-[11px] text-emerald-400">MEGA-SENA</span>
-        <span class="text-[9px] text-slate-400 font-mono ml-auto" id="sidebar-lottery-time">20h</span>
+        <span class="text-[9px] text-slate-400 font-mono ml-auto" id="sidebar-lottery-time"></span>
       </div>
       <div class="sidebar-lottery-prize js-mega-premio" id="sidebar-lottery-prize">—</div>
       <div class="sidebar-lottery-footer">
@@ -536,7 +536,7 @@ function createSimplifiedHome() {
             <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
             <span id="home-active-mod-badge">MEGA-SENA ATIVA</span>
           </span>
-          <span class="nasa-countdown-badge js-megasena-countdown" id="home-active-countdown">Sorteio às 20h</span>
+          <span class="nasa-countdown-badge js-megasena-countdown" id="home-active-countdown">—</span>
         </div>
 
         <!-- Dupla de Cards: Toque para alternar entre Mega-Sena e Lotofácil -->
@@ -651,7 +651,7 @@ function createSimplifiedHome() {
             <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-cyan-950 border border-cyan-800 text-[9px] font-mono font-black text-cyan-300 uppercase">
               ÚLTIMOS SORTEIOS
             </div>
-            <h3 class="text-xs font-black text-white mt-0.5">Últimos 50 Sorteios Oficiais Caixa</h3>
+            <h3 class="text-xs font-black text-white mt-0.5">Últimos 50 resultados (fonte: CAIXA)</h3>
           </div>
           <div class="flex items-center gap-1.5">
             <button type="button" onclick="sincronizarConcursos()" class="px-2 py-1 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-400 text-[10px] font-bold border border-slate-700 flex items-center gap-1 active:scale-95 transition" title="Sincronizar resultados com a Caixa">
@@ -1118,7 +1118,7 @@ function criarDrawerPerfilConfig() {
         </button>
 
         <div class="text-[10px] text-slate-500 text-center pt-2 font-mono">
-          <span>🔞 +18 • Aposte com responsabilidade</span>
+          <span>Só para maiores de 18 anos • Loteria é jogo de azar</span>
         </div>
       </div>
     </div>

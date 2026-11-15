@@ -130,7 +130,7 @@ function abrirDestinoDoJogo(aoEscolher) {
       <button type="button" class="folha-opcao folha-opcao-virada" data-destino="virada">
         <strong>Mega da Virada 2026</strong><span>Fica separado dos concursos normais na Carteira</span>
       </button>
-      <p>O app guarda o seu jogo, mas não registra apostas. Aposte na lotérica ou nos canais oficiais da CAIXA.</p>
+      <p>O app guarda o seu jogo, mas não faz nem registra apostas. Apostas só valem nos canais oficiais da CAIXA.</p>
       <button type="button" class="folha-sair">Cancelar</button>
     </div>`;
   document.body.appendChild(fundo);

@@ -536,7 +536,7 @@
             <div class="space-y-1">
               <h4 class="text-sm font-black text-white">Sua carteira está pronta</h4>
               <p class="text-xs text-slate-400 max-w-xs mx-auto leading-relaxed">
-                Você ainda não tem apostas registradas. Gere um jogo ou cole suas apostas para começar.
+                Você ainda não tem jogos salvos. Gere um jogo ou cole seus jogos para começar.
               </p>
             </div>
             <div class="flex flex-wrap justify-center gap-2 pt-2">
@@ -636,7 +636,7 @@
             ${aberto && g.dezenasSorteadas && g.dezenasSorteadas.length > 0 ? `
               <div class="sorteio-oficial-faixa px-3 py-2 flex items-center justify-between gap-2 flex-wrap border-b">
                 <span class="sorteio-oficial-rotulo text-[10px] font-mono font-black uppercase tracking-wider flex items-center gap-1.5">
-                  Sorteio Oficial Caixa:
+                  Resultado (fonte: CAIXA):
                 </span>
                 <div class="flex items-center gap-1 flex-wrap">
                   ${g.dezenasSorteadas.map(d => `<span class="sorteio-bola-dezena w-6 h-6 rounded-md font-black text-[10px] font-mono flex items-center justify-center border shadow-sm">${String(d).padStart(2,'0')}</span>`).join('')}

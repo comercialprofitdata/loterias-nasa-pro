@@ -133,32 +133,18 @@ function calcularContagemRegressiva(modalidade, agora = new Date()) {
     return 'Em apuração...';
   }
 
-  const alvo = dataAlvoOficial && dataAlvoOficial > agora ? new Date(dataAlvoOficial) : new Date(agora);
-  if (!dataAlvoOficial || dataAlvoOficial <= agora) {
-    alvo.setHours(cfg.hora, 0, 0, 0);
-    if (!(hojeEhDiaDeSorteio && agora < alvo)) {
-      for (let i = 1; i <= 7; i++) {
-        const candidato = new Date(agora);
-        candidato.setDate(candidato.getDate() + i);
-        if (cfg.dias.includes(candidato.getDay())) {
-          alvo.setTime(candidato.setHours(cfg.hora, 0, 0, 0));
-          break;
-        }
-      }
-    }
-  }
-
-  const diffMs = alvo - agora;
-  if (diffMs <= 0) return 'Sorteando...';
-
-  const horas = Math.floor(diffMs / 3_600_000);
-  const minutos = Math.floor((diffMs % 3_600_000) / 60_000);
-
-  if (horas >= 24) {
-    const dias = Math.floor(horas / 24);
-    return `${dias}d ${horas % 24}h`;
-  }
-  return horas > 0 ? `${horas}h ${minutos}min` : `${minutos}min`;
+  // Sem hora oficial confirmada para todos os dias (domingo é às 11h, terça e quinta
+  // a partir das 21h na Mega), a contagem fala em dias e só com a data da Caixa.
+  if (!dataAlvoOficial) return '—';
+  const hoje = new Date(agora);
+  hoje.setHours(0, 0, 0, 0);
+  const diaDoSorteio = new Date(dataAlvoOficial);
+  diaDoSorteio.setHours(0, 0, 0, 0);
+  const dias = Math.round((diaDoSorteio - hoje) / 86400000);
+  if (dias < 0) return '—';
+  if (dias === 0) return 'Sorteio hoje';
+  if (dias === 1) return 'Sorteio amanhã';
+  return `Sorteio em ${dias} dias`;
 }
 
 function formatarPremio(valor) {
@@ -201,7 +187,8 @@ function atualizarSorteiosUI(dados, origem = 'calculado') {
     document.querySelectorAll(`.${classeConcurso}`).forEach((el) => {
       const prefixo = info.concurso ? `Conc. ${info.concurso} • ` : '';
       // Com a data da Caixa não há hora confiável para mostrar (domingo é às 11h).
-      el.innerText = info.dataOficial ? `${prefixo}${info.dia}` : `${prefixo}${info.dia} ${info.hora}`;
+      // Dia só com a data da Caixa; sem ela, só o número do concurso.
+      el.innerText = info.dataOficial ? `${prefixo}${info.dia}` : (info.concurso ? `Conc. ${info.concurso}` : '—');
     });
 
     document.querySelectorAll(`.js-${chave}-countdown`).forEach((el) => {

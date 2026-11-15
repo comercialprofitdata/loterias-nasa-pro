@@ -42,6 +42,8 @@ async function obterSessaoSupabase() {
 }
 
 function mostrarCheckoutReal(planId) {
+  // No app da Google Play nunca há checkout, por nenhum caminho.
+  if (window.contextoLoja?.ativo?.()) return;
   const plano = CHECKOUT_PLANOS[planId];
   if (!plano) return;
 

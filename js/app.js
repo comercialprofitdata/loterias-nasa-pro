@@ -429,7 +429,7 @@
 
       // Registrar Service Worker com Verificação Imediata de Atualizações
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js?v=20261115.05', { scope: './' })
+        navigator.serviceWorker.register('./sw.js?v=20261115.06', { scope: './' })
           .then((reg) => {
             console.log('[Meu Volante PRO] Service Worker registrado. Verificando atualizações...');
             reg.update(); // força verificação no servidor imediatamente
@@ -2301,14 +2301,14 @@ function gerarPalpiteInteligente() {
 
     function exportarRelatorioBolaoZap() {
       if (carteiraJogos.length === 0) { toast("Nenhum bilhete cadastrado para o bolão!", "⚠️"); tocarBeep('alert'); return; }
-      const nome = document.getElementById('bolao-nome')?.value || 'Bolão Oficial';
+      const nome = document.getElementById('bolao-nome')?.value || 'Bolão';
       const cotas = Math.max(1, parseInt(document.getElementById('bolao-cotas')?.value || 10, 10));
 
       let totalGasto = 0;
       carteiraJogos.forEach(b => totalGasto += b.custo || 0);
       const valorCota = formatarReais(totalGasto / cotas);
 
-      let txt = `🎟️ *COMPROVANTE OFICIAL: ${nome.toUpperCase()}*\n`;
+      let txt = `🎟️ *RESUMO DO BOLÃO: ${nome.toUpperCase()}* (não é comprovante da CAIXA)\n`;
       txt += `━━━━━━━━━━━━━━━━━━━━\n`;
       txt += `👥 *Total de Cotas:* ${cotas} participantes\n`;
       txt += `💵 *Investimento por Cota:* ${valorCota}\n`;
@@ -4223,7 +4223,7 @@ function abrirModalDialog(msg, callback) {
           k: 15,
           jogos: 16,
           garantia: '15 Pontos (apenas se as 15 sorteadas estiverem no grupo)',
-          economia: 'Desdobramento oficial de 16 números em 16 bilhetes simples',
+          economia: 'Desdobramento de 16 números em 16 apostas simples',
           // Exclui cada uma das 16 posições uma por vez
           linhas: Array.from({length: 16}, (_, i) => {
             const linha = [];
@@ -4418,14 +4418,14 @@ function abrirModalDialog(msg, callback) {
       let msg = `🎯 *Meu Volante PRO — Fechamento Combinatório*\n`;
       msg += `🎯 *Modalidade:* ${modalidadeAtual.toUpperCase()}\n`;
       msg += `📊 *Total de Apostas:* ${jogosFechamentoGerados.length} (${custo})\n`;
-      msg += `📐 *Cobertura Combinatória:* Matriz Otimizada C(n,k)\n\n`;
+      msg += `📐 *Fechamento:* combinações das dezenas escolhidas (não garante prêmio)\n\n`;
       jogosFechamentoGerados.slice(0, 10).forEach((j, idx) => {
         msg += `Jogo #${idx + 1}: ${j.map(d=>String(d).padStart(2,'0')).join(' ')}\n`;
       });
       if (jogosFechamentoGerados.length > 10) {
         msg += `... e mais ${jogosFechamentoGerados.length - 10} jogos.\n`;
       }
-      msg += `\nGerado com inteligência espacial no Meu Volante PRO.`;
+      msg += `\nOrganizado no Meu Volante PRO. Nenhum jogo tem mais chance que outro.`;
       window.abrirWhatsApp({ texto: msg });
     }
 
