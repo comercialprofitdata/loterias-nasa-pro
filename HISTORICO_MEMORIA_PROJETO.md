@@ -219,3 +219,28 @@ Três auditorias só de leitura (qualidade, calendário e Google Play) revisaram
 
 ### Regra 4 atualizada
 Rodar `npm run ci` antes de qualquer commit. São 65 testes.
+
+---
+
+## 8. CICLO DE 15/11/2026 (NOITE) — AUDITORIA FINAL: "FUNCIONA COM 1.000 PAGANTES?"
+
+Quatro auditorias só de leitura: escala e infraestrutura, pagamentos/segurança/LGPD, jornada completa no celular, e produto/jurídico/operação.
+
+### Corrigido no código e publicado (commits e5db662 a b48db7b)
+- **Segurança:** link `?sync=` malicioso rodava JavaScript no site (podia ler sessão e CPF). Agora todo dado de fora passa por `sanearBilhete` e o link pede confirmação. Modo loja só pelo pacote oficial.
+- **Compra:** checkout mostra renovação, cancelamento e arrependimento de 7 dias, com aceite; páginas `termos-de-compra.html` e `termos.html`.
+- **Escala:** histórico de 300 concursos não é baixado a cada abertura; carteira sincroniza sem ressuscitar jogo apagado nem sobrescrever mudanças; assinante não vira grátis quando o servidor oscila; supabase-js fixado em 2.119.0.
+- **Jornada:** jogo não é salvo sem número de concurso; volante para em 20 dezenas; Voltar do Android corrigido; palpite da Mega da Virada não conta como gasto; sena com prêmio desconhecido aparece "a confirmar".
+- **Google Play e lei:** textos de "registrado", "oficial", "nota", "padrão ouro", "quentes/frias" e horário inventado removidos; exclusão de conta descrita como pedido concluído em até 30 dias.
+- **Webhook do Asaas** (`b48db7b`, **só vale depois de publicar no Supabase**): apaga assinatura no Asaas em estorno, conta excluída e primeira fatura vencida; promoção e validade não encurtam; erro permanente não trava a fila.
+
+### Descoberto e que só o dono resolve
+- **Supabase em produção incompleto:** `sorteios_cache`, `concursos_historico`, `fetch-sorteios` e `fetch-resultado` respondem 404. Não se sabe quais SQL foram aplicados.
+- **E-mail:** o SMTP embutido do Supabase manda 2 e-mails por hora. Sem SMTP próprio, cadastro e recuperação de senha falham no primeiro dia.
+- **Plano gratuito do Supabase:** sem backup; 5 GB de tráfego e 500 MB de banco.
+- **GitHub Pages:** os termos do GitHub não permitem hospedar negócio online; migrar para Cloudflare Pages.
+- **Pendências legais:** CNPJ e endereço nos termos de compra; advogado para o modo "uma pessoa aposta por todos" do bolão, marcas CAIXA/Mega-Sena/Lotofácil, encarregado LGPD e termos finais.
+- **Códigos VIP antigos** estão no histórico público do Git.
+
+### Regra 4 atualizada
+Rodar `npm run ci` antes de qualquer commit. São 66 testes.
