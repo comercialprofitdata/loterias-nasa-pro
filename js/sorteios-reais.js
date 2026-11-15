@@ -99,21 +99,21 @@ function calcularProximoSorteio(modalidade, agora = new Date()) {
  * que nunca mudava e ficava incorreto para todo mundo que não abrisse o
  * app exatamente no minuto em que aquele texto foi escrito.
  */
-function calcularContagemRegressiva(modalidade, agora = new Date()) {
+function calcularContagemRegressiva(modalidade, agora = new Date(), infoAtual = null) {
   const cfg = SORTEIOS_CALENDARIO[modalidade];
   if (!cfg) return '—';
 
-  // Verifica se temos informação oficial do próximo sorteio sincronizado
-  let infoSincronizada = null;
-  try {
-    const salvos = obterSorteiosSalvos();
-    if (salvos && salvos[modalidade]) {
-      infoSincronizada = salvos[modalidade];
-    }
-  } catch (_) {}
+  // Usa o dado que a tela acabou de receber; sem ele, o último salvo. Só vale data oficial da CAIXA.
+  let infoSincronizada = infoAtual || null;
+  if (!infoSincronizada) {
+    try {
+      const salvos = obterSorteiosSalvos();
+      if (salvos && salvos[modalidade]) infoSincronizada = salvos[modalidade];
+    } catch (_) {}
+  }
 
   let dataAlvoOficial = null;
-  if (infoSincronizada?.dataBR) {
+  if (infoSincronizada?.dataOficial === true && infoSincronizada?.dataBR) {
     const m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(String(infoSincronizada.dataBR).trim());
     if (m) {
       dataAlvoOficial = new Date(Number(m[3]), Number(m[2]) - 1, Number(m[1]), cfg.hora, 0, 0);
@@ -192,7 +192,7 @@ function atualizarSorteiosUI(dados, origem = 'calculado') {
     });
 
     document.querySelectorAll(`.js-${chave}-countdown`).forEach((el) => {
-      el.innerText = calcularContagemRegressiva(chave);
+      el.innerText = calcularContagemRegressiva(chave, new Date(), info);
     });
   });
 
