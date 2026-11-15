@@ -210,10 +210,13 @@ function atualizarSorteiosUI(dados, origem = 'calculado') {
   });
 
   document.querySelectorAll('.js-sorteios-sync').forEach((el) => {
-    const hora = new Date().toLocaleTimeString('pt-BR');
+    const quando = dados?.atualizadoEm ? new Date(dados.atualizadoEm) : null;
+    const rotulo = quando && !Number.isNaN(quando.getTime())
+      ? quando.toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })
+      : '—';
     el.innerText = origem === 'servidor'
-      ? `Atualizado às ${hora}`
-      : `Calendário local • ${hora}`;
+      ? `Atualizado em ${rotulo}`
+      : 'Prêmio indisponível no momento';
     el.classList.remove('hidden');
   });
 }
@@ -241,7 +244,11 @@ function mesclarDadosServidor(linhas, agora = new Date()) {
     base[chave].concurso = linha.proximo_concurso ?? null;
     // Este caminho traz o número do concurso, mas não a data: ela segue sendo estimativa.
     base[chave].dataOficial = false;
+    if (linha.data_atualizacao && (!base.servidorAtualizadoEm || linha.data_atualizacao > base.servidorAtualizadoEm)) {
+      base.servidorAtualizadoEm = linha.data_atualizacao;
+    }
   });
+  if (base.servidorAtualizadoEm) base.atualizadoEm = base.servidorAtualizadoEm;
 
   return base;
 }

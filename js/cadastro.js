@@ -96,7 +96,11 @@ async function criarConta(evento) {
     options: { data: { full_name: nome, phone: celular.valor }, emailRedirectTo: `${window.location.origin}/` }
   });
   if (error || data?.user?.identities?.length === 0) {
-    toast(error ? 'Não foi possível criar a conta. Confira os dados.' : 'Este e-mail já tem conta. Toque em Entrar.', '⚠️');
+    const excesso = error && (error.status === 429 || /rate limit|too many/i.test(error.message || ''));
+    toast(excesso
+      ? 'Muita gente se cadastrando agora. Tente de novo em alguns minutos; seus dados estão certos.'
+      : (error ? 'Não foi possível criar a conta. Confira os dados.' : 'Este e-mail já tem conta. Toque em Entrar.'), '⚠️');
+    window.registrarEvento?.(excesso ? 'cadastro_limite_email' : 'cadastro_falhou');
     return;
   }
   const consentimentoEm = new Date().toISOString();

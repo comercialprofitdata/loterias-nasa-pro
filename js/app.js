@@ -429,7 +429,7 @@
 
       // Registrar Service Worker com Verificação Imediata de Atualizações
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js?v=20261115.04', { scope: './' })
+        navigator.serviceWorker.register('./sw.js?v=20261115.05', { scope: './' })
           .then((reg) => {
             console.log('[Meu Volante PRO] Service Worker registrado. Verificando atualizações...');
             reg.update(); // força verificação no servidor imediatamente
@@ -3022,8 +3022,21 @@ function gerarPalpiteInteligente() {
       }).join('');
     }
 
+    // Ids apagados neste aparelho: a sincronização não os traz de volta e os apaga na nuvem.
+    const CHAVE_APAGADOS = 'meu_volante_bilhetes_apagados';
+    function lerApagados() {
+      try { return new Set(JSON.parse(localStorage.getItem(CHAVE_APAGADOS) || '[]').map(String)); } catch (_) { return new Set(); }
+    }
+    function marcarApagados(ids) {
+      const conjunto = lerApagados();
+      ids.forEach((id) => conjunto.add(String(id)));
+      try { localStorage.setItem(CHAVE_APAGADOS, JSON.stringify([...conjunto].slice(-2000))); } catch (_) {}
+    }
+    window.marcarBilhetesApagados = marcarApagados;
+
     function removerBilheteCarteira(id) {
       if (typeof tocarBeep === 'function') tocarBeep('click');
+      marcarApagados([id]);
       const listaBase = (Array.isArray(window.carteiraJogos) && window.carteiraJogos.length > 0)
         ? window.carteiraJogos
         : (Array.isArray(carteiraJogos) ? carteiraJogos : []);
@@ -3131,7 +3144,9 @@ function gerarPalpiteInteligente() {
         const { data: apostasNuvem, error } = await cliente
           .from('carteira_apostas')
           .select('*')
-          .eq('user_id', accountId);
+          .eq('user_id', accountId)
+          .order('created_at', { ascending: false })
+          .range(0, 999);
 
         if (error) {
           console.warn('[Banco] Erro ao consultar carteira_apostas:', error);
@@ -3141,13 +3156,20 @@ function gerarPalpiteInteligente() {
           return;
         }
 
-        let local = Array.isArray(window.carteiraJogos) ? window.carteiraJogos : (JSON.parse(localStorage.getItem('loterias_carteira_db') || '[]'));
+        let local = Array.isArray(window.carteiraJogos) ? [...window.carteiraJogos] : sanearListaDeBilhetes(JSON.parse(localStorage.getItem('loterias_carteira_db') || '[]'));
         const mapExistentes = new Map();
         local.forEach(b => mapExistentes.set(String(b.id), b));
+        const apagados = lerApagados();
+        const apagarNaNuvem = [];
+        const vindosDaNuvem = [];
 
         let novasDaNuvem = 0;
         (apostasNuvem || []).forEach(remota => {
           const idStr = String(remota.bilhete_id);
+          if (apagados.has(idStr)) {
+            apagarNaNuvem.push(idStr);
+            return;
+          }
           if (!mapExistentes.has(idStr)) {
             const doServidor = sanearBilhete({
               id: remota.bilhete_id,
@@ -3164,15 +3186,19 @@ function gerarPalpiteInteligente() {
               dataRegistro: remota.data_registro
             });
             if (!doServidor) return;
-            local.push(doServidor);
-            mapExistentes.set(idStr, local[local.length - 1]);
+            vindosDaNuvem.push(doServidor);
+            mapExistentes.set(idStr, doServidor);
             novasDaNuvem++;
           }
         });
 
         // 2. Envia apostas locais que ainda não subiram para a nuvem
         const idsRemotos = new Set((apostasNuvem || []).map(r => String(r.bilhete_id)));
-        const pendentesNuvem = local.filter(b => !idsRemotos.has(String(b.id)));
+        if (apagarNaNuvem.length) {
+          const { error: erroApagar } = await cliente.from('carteira_apostas').delete().eq('user_id', accountId).in('bilhete_id', apagarNaNuvem);
+          if (erroApagar) console.warn('[Banco] Erro ao apagar jogos removidos:', erroApagar);
+        }
+        const pendentesNuvem = local.filter(b => !idsRemotos.has(String(b.id)) && !apagados.has(String(b.id)));
 
         if (pendentesNuvem.length > 0) {
           const payload = pendentesNuvem.map(b => ({
@@ -3196,6 +3222,11 @@ function gerarPalpiteInteligente() {
           }
         }
 
+        // A lista pode ter mudado enquanto a nuvem respondia: junta sobre a atual.
+        const atual = Array.isArray(window.carteiraJogos) ? window.carteiraJogos : local;
+        const idsAtuais = new Set(atual.map(b => String(b.id)));
+        const apagadosAgora = lerApagados();
+        local = atual.concat(vindosDaNuvem.filter(b => !idsAtuais.has(String(b.id)) && !apagadosAgora.has(String(b.id))));
         carteiraJogos = local;
         window.carteiraJogos = local;
         const chaveAtiva = obterChaveStorageCarteira();
@@ -4918,7 +4949,13 @@ function abrirModalDialog(msg, callback) {
       if (erroAssinatura) console.warn('Não foi possível confirmar o plano da conta:', erroAssinatura.message);
 
       const vip = window.obterVipAtivo?.();
-      const ehPro = Boolean(assinatura) || Boolean(vip);
+      let ehPro = Boolean(assinatura) || Boolean(vip);
+      if (erroAssinatura && !ehPro) {
+        try {
+          const cache = JSON.parse(localStorage.getItem('nasa_assinatura_cache') || 'null');
+          if (cache?.ehPro && Date.now() - cache.verificadoEm < 6 * 60 * 60 * 1000) ehPro = true;
+        } catch (_) { /* cache ilegível */ }
+      }
       usuarioSessao = {
         nome: perfil?.display_name || usuario.user_metadata?.full_name || usuario.email?.split('@')[0] || 'Usuário',
         email: usuario.email || '',

@@ -56,8 +56,14 @@ function normalizarConcurso(dados, modalidade) {
   };
 }
 
+const cacheUltimoEm = new Map();
+const VALIDADE_ULTIMO_MS = 5 * 60 * 1000;
+
 async function buscarConcursoCaixa(modalidade, concurso = null) {
   const chave = `${modalidade}|${concurso ?? 'ultimo'}`;
+  if (!concurso && cacheCaixa.has(chave) && Date.now() - (cacheUltimoEm.get(chave) || 0) > VALIDADE_ULTIMO_MS) {
+    cacheCaixa.delete(chave);
+  }
   if (cacheCaixa.has(chave)) return cacheCaixa.get(chave);
   if (requisicoesEmAndamento.has(chave)) return requisicoesEmAndamento.get(chave);
 
@@ -85,6 +91,7 @@ async function buscarConcursoCaixa(modalidade, concurso = null) {
       if (resultado && !concurso && resultado.proximoConcurso) {
         try {
           const proxRes = await fetch(`${CAIXA_API.base}/${modalidade}/${resultado.proximoConcurso}`, {
+            signal: controle.signal,
             headers: { Accept: 'application/json' }
           });
           if (proxRes.ok) {
@@ -99,6 +106,7 @@ async function buscarConcursoCaixa(modalidade, concurso = null) {
       // Cacheia tanto o último quanto os passados nesta sessão para evitar rate-limit da Caixa
       if (resultado) {
         cacheCaixa.set(chave, resultado);
+        if (!concurso) cacheUltimoEm.set(chave, Date.now());
         cacheCaixa.set(`${modalidade}|${resultado.concurso}`, resultado);
       }
 

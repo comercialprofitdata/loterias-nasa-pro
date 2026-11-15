@@ -195,7 +195,9 @@
     if (!Array.isArray(carteiraJogos)) return;
 
     const outros = carteiraJogos.filter((b) => b.bolaoId !== bolao.id);
-    apagarDaNuvem(carteiraJogos.filter((b) => b.bolaoId === bolao.id).map((b) => b.id));
+    const antigos = carteiraJogos.filter((b) => b.bolaoId === bolao.id).map((b) => b.id);
+    window.marcarBilhetesApagados?.(antigos);
+    apagarDaNuvem(antigos);
     if (!ehPro() && outros.length + bolao.jogos.length > 10) {
       window.abrirModalPaywall?.('carteira_limite');
       return;

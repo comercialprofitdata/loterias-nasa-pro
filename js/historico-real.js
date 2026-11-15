@@ -188,6 +188,7 @@ async function carregarHistoricoReal({ silencioso = true } = {}) {
       if (cache && silencioso) {
         aplicarHistorico(cache);
         rerenderizarAnalises();
+        return true;
       }
 
   // 2. Tenta buscar o histórico completo no Supabase
