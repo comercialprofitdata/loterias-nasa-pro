@@ -7,14 +7,15 @@
 
 **Descrição completa:**
 
-Organize seus jogos de Mega-Sena e Lotofácil em um só lugar, com dados oficiais e matemática de verdade.
+Organize seus jogos de Mega-Sena e Lotofácil em um só lugar, com resultados oficiais e contas exatas.
 
 O QUE VOCÊ PODE FAZER
 • Salvar jogos e ver o resultado de cada um.
 • Definir um limite mensal e acompanhar quanto registrou em jogos.
 • Ver a chance exata e o custo de cada jogo antes de decidir.
 • Gerar uma combinação aleatória ou escolher suas dezenas.
-• Calcular as cotas de um bolão e enviar um resumo ao grupo.
+• Organizar um bolão: jogos, cotas e quem já pagou, com resumo pronto para o grupo. O app não recebe nem movimenta dinheiro.
+• Separar os palpites da Mega da Virada dos concursos normais.
 • Consultar estatísticas dos últimos 500 concursos.
 
 ANTES DE USAR
@@ -30,7 +31,7 @@ Uso exclusivo para maiores de 18 anos. Jogue com responsabilidade e só com um v
 - **E-mail de suporte:** contato@pd.dev.br
 
 ## Imagens
-Pasta `marketing/play/`: ícone de 512 px, destaque de 1024 x 500 e capturas de celular.
+Pasta `marketing/play/`: ícone de 512 px, destaque de 1024 x 500 e 6 capturas de celular (1082 x 1922), refeitas em 15/11/2026 como no app da loja: Gerar, Início, resultado, Carteira, estatísticas e bolão.
 
 ## Rascunho das declarações (confirmar no Console)
 - **Categoria:** Ferramentas ou Produtividade, sem usar "Jogos".
@@ -43,6 +44,7 @@ Pasta `marketing/play/`: ícone de 512 px, destaque de 1024 x 500 e capturas de 
 | Dado | Coleta | Finalidade | Obrigatório |
 |---|---|---|---|
 | Nome | Sim | Conta | Sim |
+| IDs de usuário (identificador da conta) | Sim | Conta, sincronização dos jogos | Sim |
 | E-mail | Sim | Conta, contato | Sim |
 | Celular | Sim | Conta, contato | Sim |
 | Interações no app e identificador aleatório do aparelho | Sim | Análise, correção de falhas | Sim |
@@ -51,4 +53,10 @@ Pasta `marketing/play/`: ícone de 512 px, destaque de 1024 x 500 e capturas de 
 Dados em trânsito usam HTTPS. O usuário pode pedir a exclusão pela página acima, mas o fluxo completo ainda precisa de teste e das tabelas no banco.
 
 ## Acesso para a análise da Google
-O app exige cadastro simples, sem senha. Instrução para o revisor: preencher nome, e-mail e celular válidos, e confirmar os 18 anos.
+O cadastro pede nome, e-mail, celular e senha, e pode exigir a confirmação do e-mail. O revisor não consegue confirmar um e-mail, então é preciso **criar antes uma conta de teste já confirmada** e informar no Console (Conteúdo do app > Acesso ao app):
+
+- E-mail: (conta de teste criada pelo dono)
+- Senha: (senha dessa conta)
+- Instrução: "Na primeira tela, confirme ter 18 anos ou mais. Toque em Entrar e use o e-mail e a senha acima. Todos os recursos ficam liberados no app da loja; o app não vende nada dentro dele."
+
+No app aberto pela loja não há preços, planos nem link de pagamento (modo loja em `js/contexto-loja.js`).

@@ -190,3 +190,32 @@ Antes de mexer, três análises só de leitura (engenharia, jogador/UX e dados) 
 
 ### Regra 4 atualizada
 Rodar `npm run ci` antes de qualquer commit. São 58 testes.
+
+---
+
+## 7. CICLO DE 15/11/2026 — AUDITORIAS E PREPARAÇÃO PARA A GOOGLE PLAY
+
+Três auditorias só de leitura (qualidade, calendário e Google Play) revisaram o que foi feito em 14/11.
+
+### Corrigido e publicado
+- **Datas do próximo sorteio** (`78e1a43`): o app empurrava domingo para terça e juntava duas datas ("Terça (17/11) • 15/11/2026 às 20h"). Desde 19/07/2026 a Caixa sorteia no domingo às 11h. Agora só vale a data oficial da Caixa; sem ela, aparece só o número do concurso. Jogos salvos com duas datas se corrigem ao abrir o app.
+- **Cache** (`a5e7f57`): o `index.html` apagava o cache do app a cada abertura.
+- **Tela inicial** (`a5e7f57`): saíram "100% APROVADO", "Nota 99/100" e "6/6 OK" fixos.
+- **Auditoria de qualidade** (`f6823b9`): gerar com 17 dezenas ou mais travava o app; salvar usava o lote antigo; o mesmo jogo podia ser salvo duas vezes; bolão salvo de novo duplicava na nuvem; voltar ao Gerar deixava a aba Bolão aberta; outros itens menores.
+- **Google Play** (`f6823b9`): modo loja persistente no aparelho; plano liberado mesmo depois do login; sem selos PRO, chip de plano, botão de testadores, "Conhecer recursos" e atalho para o portal de apostas no app da loja; textos de "nota", "calibração", "ciência" e "viciadas" removidos.
+- Capturas da loja refeitas como no app da loja, com uma do bolão. Política de privacidade nomeia a VBJ Soluções Empresariais Inteligentes LTDA.
+
+### Fatos conferidos (fontes oficiais, 15/11/2026)
+- **Teste fechado:** a página oficial (support.google.com/googleplay/android-developer/answer/14151465) exige **12 testadores por 14 dias** só para contas **pessoais** criadas depois de 13/11/2023. A conta é de organização (VBJ Soluções); conferir no Painel do Console se a exigência aparece. O número "20 testadores" das seções 1 e 4 está desatualizado.
+- **API alvo:** app novo precisa mirar API 36. O pacote `android/MeuVolantePRO-v6.aab` (versionCode 6, targetSdk 36) foi gerado em 15/11/2026 e assinado com a chave de upload.
+- **Pagamentos:** não há exceção oficial ao Play Billing para o Brasil. O app da loja não pode mostrar preço nem levar a pagamento externo.
+- **Gradle no Windows:** não compila em pasta com acento ("Vitório PC"). Copiar `android/` para uma pasta sem acento antes de rodar `gradlew bundleRelease`.
+
+### Pendências
+- **Dono, no Play Console:** ativar o Play App Signing e copiar a SHA-256 da chave de assinatura para o `.well-known/assetlinks.json` (sem isso o app abre com barra de endereço); criar uma conta de teste confirmada para o revisor; responder classificação de conteúdo, público-alvo (só 18+, "Restrict Minor Access") e Segurança dos dados (tabela em `marketing/ficha-google-play.md`).
+- **Contagem regressiva** da tela inicial ainda conta até as 20h, mesmo no domingo.
+- **Calendários fixos** em `js/sorteios-reais.js`, `js/caixa-api.js` e `supabase/functions/fetch-resultado` não têm domingo.
+- **Bolão na nuvem:** `custoProprio`, `bolaoId` e `tipo` não sobem para o Supabase (precisa de colunas novas).
+
+### Regra 4 atualizada
+Rodar `npm run ci` antes de qualquer commit. São 65 testes.

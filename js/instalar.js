@@ -22,7 +22,8 @@ window.addEventListener('appinstalled', () => {
 function appJaInstalado() {
   return window.matchMedia('(display-mode: standalone)').matches
     || window.navigator.standalone === true
-    || document.referrer.startsWith('android-app://');
+    || document.referrer.startsWith('android-app://')
+    || Boolean(window.contextoLoja?.ativo?.());
 }
 
 function ehIphone() {
