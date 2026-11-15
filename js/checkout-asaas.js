@@ -3,9 +3,9 @@
 // ===================================================================
 
 const CHECKOUT_PLANOS = {
-  avulso: { nome: 'Passe de 15 dias', preco: 'R$ 5,90', periodo: 'pagamento único' },
-  mensal: { nome: 'Mensal', preco: 'R$ 12,90', periodo: 'por mês' },
-  anual: { nome: 'Anual', preco: 'R$ 97', periodo: 'por ano · equivale a R$ 8,08/mês' }
+  avulso: { nome: 'Passe de 15 dias', preco: 'R$ 5,90', periodo: 'pagamento único', renovacao: 'Pagamento único. Não renova sozinho: o acesso termina depois de 15 dias.' },
+  mensal: { nome: 'Mensal', preco: 'R$ 12,90', periodo: 'por mês', renovacao: 'Renova todo mês até você cancelar. No Pix chega uma nova cobrança a cada mês; no cartão, a cobrança é automática.' },
+  anual: { nome: 'Anual', preco: 'R$ 97', periodo: 'por ano · equivale a R$ 8,08/mês', renovacao: 'Renova todo ano até você cancelar. No Pix chega uma nova cobrança a cada ano; no cartão, a cobrança é automática.' }
 };
 
 /** Valida CPF pelos dígitos verificadores, para não criar cliente inválido no gateway. */
@@ -65,7 +65,7 @@ function mostrarCheckoutReal(planId) {
   const content = modal?.querySelector('.modal-upgrade-content');
   if (!content) return;
 
-  const nomeSugerido = (typeof usuarioSessao !== 'undefined' && usuarioSessao?.nome) || '';
+  const nomeSugerido = String((typeof usuarioSessao !== 'undefined' && usuarioSessao?.nome) || '').replace(/[<>"'`&]/g, '');
 
   content.innerHTML = `
     <!-- Top Bar -->
@@ -104,6 +104,15 @@ function mostrarCheckoutReal(planId) {
         <label><input type="radio" name="checkout-metodo" value="CREDIT_CARD" /><span>Cartão</span></label>
       </div>
       <p class="gastos-nota" id="checkout-nota-metodo">O QR Code aparece aqui mesmo, e a liberação é automática.</p>
+
+      <div style="margin-top:0.75rem; font-size:0.75rem; line-height:1.45; color:#cbd5e1;">
+        <p style="margin:0 0 0.4rem;">${plano.renovacao} Cancele quando quiser no menu da sua conta; o acesso continua até o fim do período pago.</p>
+        <p style="margin:0 0 0.6rem;">Arrependeu? Em até 7 dias da compra devolvemos o valor inteiro, pelo mesmo meio de pagamento.</p>
+        <label style="display:flex; gap:0.5rem; align-items:flex-start; min-height:44px; cursor:pointer;">
+          <input id="checkout-aceite" type="checkbox" style="width:20px; height:20px; flex-shrink:0; margin-top:2px; accent-color:#10b981;" />
+          <span>Li e aceito os <a href="./termos-de-compra.html" target="_blank" rel="noopener" style="color:#34d399; text-decoration:underline;">termos de compra</a>.</span>
+        </label>
+      </div>
 
       <div id="checkout-erro" style="display:none; background:rgba(248,113,113,0.12); border:1px solid rgba(248,113,113,0.4); border-radius:0.75rem; padding:0.65rem; margin-top:0.65rem; font-size:0.75rem; color:#fca5a5;"></div>
 
@@ -160,6 +169,11 @@ async function iniciarPagamento(planId) {
 
   if (!cpfValido(cpf)) {
     mostrarErroCheckout('CPF inválido. Confira os números.');
+    return;
+  }
+
+  if (!document.getElementById('checkout-aceite')?.checked) {
+    mostrarErroCheckout('Marque que leu e aceita os termos de compra.');
     return;
   }
 

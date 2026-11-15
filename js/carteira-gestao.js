@@ -171,8 +171,9 @@
       const chave = obterChaveCarteiraAtiva();
       const bruto = localStorage.getItem(chave);
       if (bruto) {
-        const dados = JSON.parse(bruto);
-        if (Array.isArray(dados)) {
+        const bruto2 = JSON.parse(bruto);
+        if (Array.isArray(bruto2)) {
+          const dados = typeof window.sanearListaDeBilhetes === 'function' ? window.sanearListaDeBilhetes(bruto2) : bruto2;
           window.carteiraJogos = dados;
           return dados;
         }
@@ -794,7 +795,8 @@
       }).join(''));
       const arr = JSON.parse(json);
       if (!Array.isArray(arr)) return [];
-      return arr.map(c => ({
+      const sanear = typeof window.sanearBilhete === 'function' ? window.sanearBilhete : (b) => b;
+      return arr.slice(0, 200).map(c => sanear({
         id: c.id || (Date.now() + Math.floor(Math.random() * 1000)),
         modalidade: c.m === 'l' ? 'lotofacil' : 'megasena',
         nome: (c.m === 'l' ? 'Lotofácil' : 'Mega-Sena') + ' • ' + ((c.d && c.d.length) || 6) + ' Dezenas',
@@ -804,7 +806,7 @@
         score: Number(c.s || 98),
         registradoComoJogado: Boolean(c.j),
         dataRegistro: new Date().toISOString()
-      }));
+      })).filter(Boolean);
     } catch (e) {
       console.error('[Sync] Erro ao descompactar carteira:', e);
       return [];
@@ -814,9 +816,8 @@
   window.gerarLinkSincronizacaoCarteira = function () {
     const lista = window.carteiraJogos || [];
     const b64 = window.compactarCarteiraBase64(lista);
-    const cupom = (window.usuarioSessao && window.usuarioSessao.cupomAtivo) || localStorage.getItem('loterias_nasa_vip_cupom') || 'VIPVITORIO';
     const baseUrl = `${window.location.origin}${window.location.pathname}`;
-    return `${baseUrl}?sync=${b64}&vip=${encodeURIComponent(cupom)}`;
+    return `${baseUrl}?sync=${b64}`;
   };
 
   window.enviarSincronizacaoWhatsApp = function () {
@@ -835,7 +836,7 @@
       `📦 *Total de Jogos Salvos:* ${total} bilhete(s)\n\n` +
       `👉 *Abra este link no seu outro celular para carregar todos os seus jogos instantaneamente:*\n` +
       `${link}\n\n` +
-      `Ao abrir o link no seu outro celular, todos os seus jogos e seu acesso VIP serão ativados automaticamente! 🎯`;
+      `Ao abrir o link no outro celular, confirme para carregar os jogos.`;
 
     if (typeof window.abrirWhatsApp === 'function') {
       window.abrirWhatsApp({ texto: texto });
@@ -867,7 +868,8 @@
     const assinaturas = new Set(local.map(b => `${b.modalidade}_${b.concursoAlvo || ''}_${(b.dezenas || []).slice().sort((a,b)=>a-b).join('-')}`));
     let novos = 0;
 
-    jogos.forEach(j => {
+    const sanear = typeof window.sanearBilhete === 'function' ? window.sanearBilhete : (b) => b;
+    jogos.map(sanear).filter(Boolean).forEach(j => {
       const sig = `${j.modalidade}_${j.concursoAlvo || ''}_${(j.dezenas || []).slice().sort((a,b)=>a-b).join('-')}`;
       if (!assinaturas.has(sig)) {
         local.unshift(j);
@@ -894,7 +896,9 @@
       const syncVal = params.get('sync') || params.get('carteira') || params.get('jogos');
       if (syncVal) {
         const jogos = window.descompactarCarteiraBase64(syncVal);
-        if (jogos && jogos.length > 0) {
+        // Tira o parâmetro do endereço para não importar de novo ao recarregar.
+        try { history.replaceState(history.state, '', window.location.pathname); } catch (_) {}
+        if (jogos && jogos.length > 0 && window.confirm(`Carregar ${jogos.length} ${jogos.length === 1 ? 'jogo recebido' : 'jogos recebidos'} por link neste aparelho? Só aceite links que você mesmo enviou.`)) {
           window.importarJogosSincronizados(jogos, true);
         }
       }

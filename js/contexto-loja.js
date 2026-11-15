@@ -19,7 +19,7 @@ function rodandoComoAppDaLoja() {
     // Grava na sessão e no aparelho: o referrer se perde ao recarregar, voltar do
     // login ou abrir uma página numa aba nova (privacidade, exclusão de conta).
     // Efeito colateral aceito: o Chrome do mesmo aparelho também deixa de vender.
-    if (document.referrer.startsWith('android-app://')) {
+    if (document.referrer.startsWith('android-app://br.dev.pd.meuvolante')) {
       sessionStorage.setItem('nasa_modo_loja', '1');
       localStorage.setItem('nasa_modo_loja', '1');
       return true;
@@ -154,10 +154,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 window.contextoLoja = {
   ativo: () => MODO_LOJA,
-  forcar: () => {
-    sessionStorage.setItem('nasa_modo_loja', '1');
-    location.reload();
-  },
   desligar: () => {
     sessionStorage.removeItem('nasa_modo_loja');
     localStorage.removeItem('nasa_modo_loja');

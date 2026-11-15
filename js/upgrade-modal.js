@@ -154,6 +154,8 @@ function generateUpgradeModalHTML() {
           <span>🔒 Checkout Seguro Asaas</span>
           <span>•</span>
           <span>🛡️ Cancele a qualquer momento</span>
+          <span>•</span>
+          <a href="./termos-de-compra.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">Termos de compra e reembolso</a>
         </div>
       </div>
     </div>

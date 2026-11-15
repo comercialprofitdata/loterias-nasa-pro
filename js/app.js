@@ -4,6 +4,47 @@
       return formatadorMoeda.format(valor);
     }
 
+    // Todo texto que entra na carteira vindo de fora do app (link de sincronização,
+    // nuvem, backup) perde os caracteres que poderiam virar HTML ou JavaScript nas
+    // telas que montam a carteira com innerHTML. Dezenas viram números válidos.
+    function limparTextoRecursivo(valor, profundidade = 0) {
+      if (typeof valor === 'string') return valor.replace(/[<>"'`\\&]/g, '').slice(0, 200);
+      if (typeof valor === 'number') return Number.isFinite(valor) ? valor : 0;
+      if (typeof valor === 'boolean' || valor === null || valor === undefined) return valor;
+      if (profundidade > 4) return undefined;
+      if (Array.isArray(valor)) return valor.slice(0, 500).map((v) => limparTextoRecursivo(v, profundidade + 1));
+      if (typeof valor === 'object') {
+        const limpo = {};
+        Object.keys(valor).slice(0, 60).forEach((chave) => {
+          if (/^[A-Za-z0-9_]{1,40}$/.test(chave)) limpo[chave] = limparTextoRecursivo(valor[chave], profundidade + 1);
+        });
+        return limpo;
+      }
+      return undefined;
+    }
+
+    function sanearBilhete(bilhete) {
+      if (!bilhete || typeof bilhete !== 'object' || Array.isArray(bilhete)) return null;
+      const limpo = limparTextoRecursivo(bilhete);
+      limpo.modalidade = limpo.modalidade === 'lotofacil' ? 'lotofacil' : 'megasena';
+      const maximo = limpo.modalidade === 'lotofacil' ? 25 : 60;
+      limpo.dezenas = [...new Set((Array.isArray(limpo.dezenas) ? limpo.dezenas : [])
+        .map(Number).filter((n) => Number.isInteger(n) && n >= 1 && n <= maximo))].slice(0, 20);
+      if (!/^[A-Za-z0-9_.-]{1,40}$/.test(String(limpo.id ?? ''))) limpo.id = Date.now() + Math.floor(Math.random() * 100000);
+      ['premioGanho', 'custo', 'custoProprio'].forEach((campo) => {
+        if (limpo[campo] !== undefined) limpo[campo] = Number(limpo[campo]) || 0;
+      });
+      if (Array.isArray(limpo.dezenasSorteadas)) limpo.dezenasSorteadas = limpo.dezenasSorteadas.map(Number).filter(Number.isInteger);
+      return limpo;
+    }
+
+    function sanearListaDeBilhetes(lista) {
+      return (Array.isArray(lista) ? lista : []).map(sanearBilhete).filter(Boolean);
+    }
+    window.sanearBilhete = sanearBilhete;
+    window.sanearListaDeBilhetes = sanearListaDeBilhetes;
+    window.limparTextoRecursivo = limparTextoRecursivo;
+
     // Protocolo e Utilitário Universal de Abertura do WhatsApp
     // Garante que no celular abra diretamente o aplicativo nativo (whatsapp://) e não caia na página de download
     if (typeof window.normalizarTelefoneWhatsapp !== 'function') {
@@ -214,6 +255,7 @@
           carteiraJogos = [];
         }
       }
+      carteiraJogos = sanearListaDeBilhetes(carteiraJogos);
       window.carteiraJogos = carteiraJogos;
       if (typeof atualizarPainelCarteira === 'function') atualizarPainelCarteira();
     }
@@ -387,7 +429,7 @@
 
       // Registrar Service Worker com Verificação Imediata de Atualizações
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js?v=20261115.03', { scope: './' })
+        navigator.serviceWorker.register('./sw.js?v=20261115.04', { scope: './' })
           .then((reg) => {
             console.log('[Meu Volante PRO] Service Worker registrado. Verificando atualizações...');
             reg.update(); // força verificação no servidor imediatamente
@@ -3107,7 +3149,7 @@ function gerarPalpiteInteligente() {
         (apostasNuvem || []).forEach(remota => {
           const idStr = String(remota.bilhete_id);
           if (!mapExistentes.has(idStr)) {
-            local.push({
+            const doServidor = sanearBilhete({
               id: remota.bilhete_id,
               modalidade: remota.modalidade,
               nome: remota.nome,
@@ -3121,6 +3163,8 @@ function gerarPalpiteInteligente() {
               registradoComoJogado: remota.registrado_como_jogado,
               dataRegistro: remota.data_registro
             });
+            if (!doServidor) return;
+            local.push(doServidor);
             mapExistentes.set(idStr, local[local.length - 1]);
             novasDaNuvem++;
           }
@@ -3265,9 +3309,9 @@ function gerarPalpiteInteligente() {
       reader.onload = (e) => {
         try {
           const importado = JSON.parse(e.target.result);
-          if (importado.carteiraJogos) carteiraJogos = importado.carteiraJogos;
-          if (importado.baseConcursosMega) baseConcursosMega = importado.baseConcursosMega;
-          if (importado.baseConcursosLoto) baseConcursosLoto = importado.baseConcursosLoto;
+          if (importado.carteiraJogos) carteiraJogos = sanearListaDeBilhetes(importado.carteiraJogos);
+          if (Array.isArray(importado.baseConcursosMega)) baseConcursosMega = limparTextoRecursivo(importado.baseConcursosMega);
+          if (Array.isArray(importado.baseConcursosLoto)) baseConcursosLoto = limparTextoRecursivo(importado.baseConcursosLoto);
           salvarCarteiraStorage();
           renderizarTelaCompleta();
           toast("Backup JSON restaurado com sucesso!", "✅");
