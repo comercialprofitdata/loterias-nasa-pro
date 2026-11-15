@@ -30,7 +30,7 @@ Uso exclusivo para maiores de 18 anos. Jogue com responsabilidade e só com um v
 ## Links
 - **Política de privacidade:** https://loterias.pd.dev.br/privacidade.html
 - **Exclusão de conta:** https://loterias.pd.dev.br/excluir-conta.html
-- **E-mail de suporte:** contato@pd.dev.br
+- **E-mail de suporte:** comercial.profitdata@gmail.com
 
 ## Imagens
 Pasta `marketing/play/`: ícone de 512 px, destaque de 1024 x 500 e 6 capturas de celular (1082 x 1922), refeitas em 15/11/2026 como no app da loja: Gerar, Início, resultado, Carteira, estatísticas e bolão.

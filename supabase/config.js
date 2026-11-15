@@ -7,7 +7,7 @@ window.NASA_SUPABASE_CONFIG = {
   anonKey: 'sb_publishable_afUKxEsidmT7QAWT4OI9Rw_kKAxXyYH',
   googleEnabled: false,
   metaEnabled: false,
-  supportEmail: 'contato@profitdata.com.br',
+  supportEmail: 'comercial.profitdata@gmail.com',
   supportPhone: '',
   googleRedirectUrl: 'https://loterias.pd.dev.br/'
 };
