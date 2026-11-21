@@ -1,8 +1,8 @@
 {
   "id": "/loterias-nasa-pro/",
-  "name": "Meu Volante PRO",
-  "short_name": "Meu Volante",
-  "description": "Gerencie seus jogos de Mega-Sena e Lotofácil: confira resultados e controle seus gastos. Não prevê resultados.",
+  "name": "LotoPRO: Mega e Lotofácil",
+  "short_name": "LotoPRO",
+  "description": "Gerador, conferência e bolão para Mega-Sena e Lotofácil com dados oficiais e controle de gastos. Não prevê resultados.",
   "start_url": "./index.html",
   "display": "standalone",
   "orientation": "portrait",

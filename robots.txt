@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://loterias.pd.dev.br/sitemap.xml

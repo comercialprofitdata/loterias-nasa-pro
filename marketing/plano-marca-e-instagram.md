@@ -1,4 +1,4 @@
-# Meu Volante PRO: estratégia de marca, Instagram e vendas
+# LotoPRO: Mega e Lotofácil — estratégia de marca, ASO, Instagram e vendas
 
 ## Posicionamento
 **Jogue com ciência, não no achismo.**
@@ -15,12 +15,17 @@ A ciência é o nosso diferencial, com um limite claro: ela mostra fatos e ajuda
 | "Controle quanto você gasta" | Depoimento de ganhador ou prêmio como chamada |
 
 ## Perfil
-**Nome:** Meu Volante PRO | Jogue com ciência
+**Nome:** LotoPRO | Mega e Lotofácil 🎯
 
 **Bio:**
 Jogue com ciência, não no achismo 🎯
-Mega-Sena e Lotofácil: chance real, custo, conferência e 500 sorteios analisados.
+Mega-Sena e Lotofácil: gerador, conferência oficial, bolão e 500 sorteios.
 Sem promessa de ganho. +18
+📲 Baixe na Google Play ou acesse na Web 👇
+
+**Link da Bio:**
+- Link direto da Google Play: `https://play.google.com/store/apps/details?id=br.dev.pd.meuvolante`
+- Versão Web (com planos Asaas): `https://loterias.pd.dev.br/`
 
 **Destaques:** Comece aqui | Métodos | Chances | Gastos | Bolão | Jogo responsável
 
@@ -38,12 +43,12 @@ Sem promessa de ganho. +18
 - Publicar também em vídeo curto os posts com melhor desempenho.
 
 ## Crescimento, em ordem
-1. **Indicação:** resumo de jogo e de bolão enviado pelo WhatsApp, com o link do app.
-2. **Testadores VIP:** códigos individuais em troca de opinião sincera.
-3. **Conteúdo compartilhável:** mitos e contas de custo.
-4. **Campanha do lançamento:** 3 meses pelo preço de 1, depois de testada com uma assinatura real.
-5. **Mega da Virada:** organizar bolão e controlar gasto, sem usar o valor do prêmio como chamada.
-6. **Anúncios e influenciadores:** só depois de revisão jurídica e com público 18+.
+1. **Primeiras 15–30 avaliações 5★ na Google Play (Prioridade #1):** Sem avaliações e com `0+ downloads`, o algoritmo da Play Store não ranqueia. Mobilizar testadores VIP, amigos e usuários da web para baixar pela loja e deixar avaliação real após conferir um resultado ou montar um bolão.
+2. **Motor Viral de Indicação (WhatsApp / Bolão):** Resumo de jogo e de bolão enviado pelo WhatsApp com o link direto da Google Play no rodapé.
+3. **Conteúdo compartilhável (Reels, Shorts e Carrosséis):** Mitos e contas de custo (os posts já prontos em `marketing/instagram/`) adaptados para vídeos curtos de 30s com CTA para buscar **LotoPRO** na Google Play.
+4. **Campanha do lançamento (Web):** 3 meses pelo preço de 1 na versão Web (`loterias.pd.dev.br`), depois de testada com uma assinatura real.
+5. **Mega da Virada:** Organizar bolão e controlar gasto, sem usar o valor do prêmio como chamada.
+6. **Anúncios e Google Play Billing:** Só depois de revisão jurídica, público 18+ e validação orgânica dos primeiros 500–1.000 downloads.
 
 ## Funil
 Post → perfil → link → cadastro → gerar e salvar um jogo → ver o resultado → plano.
