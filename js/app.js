@@ -1393,7 +1393,7 @@ function gerarPalpiteInteligente() {
 
         if (elBadge) {
           const ideal = moldura >= 9 && moldura <= 11 && linhasSet.size === 5 && colunasSet.size === 5;
-          elBadge.innerText = ideal ? 'Moldura comum' : 'Moldura incomum';
+          elBadge.innerText = ideal ? 'Moldura calibrada' : 'Moldura fora da curva';
           elBadge.className = ideal 
             ? 'text-[9px] px-2 py-0.5 rounded bg-purple-950 text-purple-300 border border-purple-700 font-bold ml-1'
             : 'text-[9px] px-2 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-800 font-bold ml-1';
@@ -1448,7 +1448,7 @@ function gerarPalpiteInteligente() {
         score += 10;
       }
 
-      let t1_status = 'Na faixa comum', t2_status = 'Na faixa comum', t3_status = 'Na faixa comum', t4_status = 'Na faixa comum', t5_status = 'Na faixa comum', t6_status = 'Na faixa comum';
+      let t1_status = 'Calibrado', t2_status = 'Calibrado', t3_status = 'Calibrado', t4_status = 'Calibrado', t5_status = 'Calibrado', t6_status = 'Calibrado';
       let t1_val = '', t2_val = '', t3_val = '', t4_val = '', t5_val = '', t6_val = '';
       let qCount = { Q1: 0, Q2: 0, Q3: 0, Q4: 0 };
       let zscore = 0, maxSeq = 1, maxRepFinal = 1, finaisCount = {};
@@ -1582,8 +1582,8 @@ function gerarPalpiteInteligente() {
 
     function rotuloIndicadores(analise) {
       if (analise?.testes?.[0]?.s === 'Informativo') return 'indicadores descritivos';
-      const comuns = analise?.aprovadosCount ?? 0;
-      return comuns === 6 ? '6 comuns' : `${comuns} comuns · ${6 - comuns} ${comuns === 5 ? 'incomum' : 'incomuns'}`;
+      const calibrados = analise?.aprovadosCount ?? 0;
+      return calibrados === 6 ? '6/6 calibrados' : `${calibrados} calibrados · ${6 - calibrados} fora da curva`;
     }
     window.rotuloIndicadores = rotuloIndicadores;
 
@@ -1830,7 +1830,7 @@ function gerarPalpiteInteligente() {
         if (badge) {
           // Selo neutro: os indicadores descrevem o jogo, não dizem se ele é bom ou ruim.
           const soInforma = t.s === 'Informativo' || (modalidadeAtual === 'megasena' && n !== 6);
-          badge.innerText = soInforma ? 'Informativo' : (t.s === 'Alerta' ? 'Incomum' : 'Comum');
+          badge.innerText = soInforma ? 'Informativo' : (t.s === 'Alerta' ? 'Fora da curva' : 'Calibrado');
           badge.className = soInforma || t.s !== 'Alerta' 
             ? 'text-[9px] px-1.5 py-0.5 rounded font-mono font-bold bg-slate-900 text-slate-300 border border-slate-700' 
             : 'text-[9px] px-1.5 py-0.5 rounded font-mono font-bold bg-amber-950 text-amber-300 border border-amber-700';
@@ -2145,7 +2145,7 @@ function gerarPalpiteInteligente() {
       { nome: 'Espalhamento no volante', motivo: 'para espalhar o jogo por mais linhas e colunas' },
       { nome: 'Dezenas por linha', motivo: 'para não deixar tantas dezenas na mesma linha' },
       { nome: 'Pares, ímpares e primos', motivo: 'para misturar pares, ímpares e primos' },
-      { nome: 'Soma das dezenas', motivo: 'para aproximar a soma da faixa mais comum' },
+      { nome: 'Soma das dezenas', motivo: 'para aproximar a soma da faixa central' },
       { nome: 'Quadrantes', motivo: 'para tirar o excesso de um quadrante' }
     ];
 
@@ -2215,7 +2215,7 @@ function gerarPalpiteInteligente() {
       }
 
       const nomes = INDICADORES_MEGA.filter((_, i) => sugestao.antes[i]).map(i => i.nome.toLowerCase());
-      const aviso = `Este jogo foge do comum em: ${nomes.join(', ')}. A chance de ganhar é a mesma.`;
+      const aviso = `Desvio de calibragem em: ${nomes.join(', ')}. A chance de ganhar é a mesma.`;
       const dois = (n) => String(n).padStart(2, '0');
 
       if (sugestao.sai === null) {
@@ -4462,7 +4462,7 @@ function abrirModalDialog(msg, callback) {
       
       if (analiseAtual.aprovadosCount === 6) {
         tocarSomNasa('sucesso');
-        toast('Todos os 6 indicadores já estão na faixa comum.', '🌟');
+        toast('Todos os 6 indicadores já estão calibrados.', '🌟');
         return;
       }
 
@@ -4545,7 +4545,7 @@ function abrirModalDialog(msg, callback) {
       container.classList.remove('hidden');
 
       const aprovadas = apostasAuditadasScanner.filter(a => a.analise.aprovadosCount >= 5).length;
-      resumo.innerText = `${apostasAuditadasScanner.length} jogos lidos (${aprovadas} com 5 ou mais indicadores na faixa comum)`;
+      resumo.innerText = `${apostasAuditadasScanner.length} jogos lidos (${aprovadas} com 5 ou mais indicadores calibrados)`;
 
       lista.innerHTML = apostasAuditadasScanner.map(item => {
         const score = Math.round(item.analise.aprovadosCount * 16.6);
@@ -4553,7 +4553,7 @@ function abrirModalDialog(msg, callback) {
         let statusTexto = '🔴 Desperdício / Viciado';
         if (item.analise.aprovadosCount === 6) {
           badgeCor = 'bg-emerald-950 text-emerald-300 border-emerald-800';
-          statusTexto = '🟢 6 de 6 na faixa comum';
+          statusTexto = '🟢 6 de 6 calibrados';
         } else if (item.analise.aprovadosCount >= 4) {
           badgeCor = 'bg-amber-950 text-amber-300 border-amber-800';
           statusTexto = '🟡 Atenção / Leve Risco';

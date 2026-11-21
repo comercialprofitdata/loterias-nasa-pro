@@ -1503,7 +1503,7 @@ function atualizarProvaDosFatosRedesign() {
             <button type="button" onclick="carregarConcursoHistoricoNoVolante(${ultimo.concurso}, '${mod}')" class="px-2 py-0.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 text-[10px] font-bold border border-emerald-500/40 flex items-center gap-1 active:scale-95 transition">
               🎯 Testar no Volante ↗
             </button>
-            <span class="text-[10px] font-bold text-slate-300 font-mono">${mod === 'megasena' && avalUltimo.aprovadosCount !== null ? `${avalUltimo.aprovadosCount}/6 comuns` : ''}</span>
+            <span class="text-[10px] font-bold text-slate-300 font-mono">${mod === 'megasena' && avalUltimo.aprovadosCount !== null ? `${avalUltimo.aprovadosCount}/6 calibrados` : ''}</span>
           </div>
         </div>
         <div class="flex flex-wrap gap-1.5 pt-0.5 justify-start">
@@ -1552,7 +1552,7 @@ function atualizarProvaDosFatosRedesign() {
           </div>
         </div>
         <div class="text-right shrink-0">
-          <span class="text-[9px] font-bold text-slate-500 dark:text-slate-300">${mod === 'megasena' ? `${avaliacao.aprovadosCount}/6 comuns` : ''}</span>
+          <span class="text-[9px] font-bold text-slate-500 dark:text-slate-300">${mod === 'megasena' ? `${avaliacao.aprovadosCount}/6 calibrados` : ''}</span>
         </div>
       </div>
     `;
@@ -1567,7 +1567,7 @@ function atualizarProvaDosFatosRedesign() {
   }
   if (resumoEl) {
     resumoEl.innerText = mega
-      ? `${aprovadosCount} dos últimos ${ultimos50.length} sorteios tiveram os 6 indicadores na faixa comum. Jogos escolhidos ao acaso dão quase o mesmo resultado: os indicadores descrevem o jogo, não preveem sorteio. Toque num sorteio para vê-lo no volante:`
+      ? `${aprovadosCount} dos últimos ${ultimos50.length} sorteios tiveram os 6 indicadores calibrados. Jogos escolhidos ao acaso dão quase o mesmo resultado: os indicadores descrevem o jogo, não preveem sorteio. Toque num sorteio para vê-lo no volante:`
       : 'Toque em qualquer sorteio para vê-lo no volante:';
   }
   if (containerLista) containerLista.innerHTML = cardsHtml;
@@ -1917,8 +1917,8 @@ function renderizarPalpiteExpressHome() {
   `).join('');
 
   if (scoreBadge) {
-    const comuns = palpiteExpressAtual.analise?.aprovadosCount;
-    scoreBadge.innerText = palpiteExpressAtual.modalidade === 'megasena' && typeof comuns === 'number' ? `${comuns}/6 comuns` : '';
+    const calibrados = palpiteExpressAtual.analise?.aprovadosCount;
+    scoreBadge.innerText = palpiteExpressAtual.modalidade === 'megasena' && typeof calibrados === 'number' ? `${calibrados}/6 calibrados` : '';
     scoreBadge.classList.toggle('hidden', !scoreBadge.innerText);
   }
 }
