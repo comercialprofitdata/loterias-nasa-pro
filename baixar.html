@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Baixar LotoLab na Google Play</title>
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at 50% 0%, #0f3a33 0%, #0b1220 60%, #060a12 100%);
+      color: #f8fafc;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .card {
+      max-width: 420px;
+      width: 100%;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(52, 211, 153, 0.3);
+      border-radius: 28px;
+      padding: 32px 24px;
+      text-align: center;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.6);
+    }
+    .icon {
+      width: 96px;
+      height: 96px;
+      border-radius: 24px;
+      margin: 0 auto 18px;
+      display: block;
+      border: 2px solid rgba(52, 211, 153, 0.4);
+    }
+    h1 { font-size: 26px; font-weight: 900; margin-bottom: 8px; }
+    h1 span { color: #34d399; }
+    p { font-size: 14px; color: #cbd5e1; line-height: 1.5; margin-bottom: 24px; }
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 15px 18px;
+      border-radius: 16px;
+      font-weight: 800;
+      font-size: 15px;
+      text-decoration: none;
+      margin-bottom: 12px;
+      transition: transform .15s ease;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary {
+      background: linear-gradient(90deg, #10b981, #34d399);
+      color: #052e16;
+    }
+    .btn-secondary {
+      background: #1e293b;
+      color: #e2e8f0;
+      border: 1px solid #334155;
+    }
+    .note { font-size: 11px; color: #64748b; margin-top: 12px; margin-bottom: 0; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <img class="icon" src="./icon-192.png" alt="LotoLab" />
+    <h1>Loto<span>Lab</span></h1>
+    <p>O laboratório dos seus jogos: gerador, conferência oficial da Caixa, bolão e estatísticas.</p>
+    <a id="btn-play" class="btn btn-primary" href="https://play.google.com/store/apps/details?id=br.dev.pd.meuvolante" target="_top" rel="noopener">
+      📲 Abrir na Google Play Store
+    </a>
+    <a class="btn btn-secondary" href="./index.html">
+      🌐 Abrir versão Web no navegador
+    </a>
+    <p class="note">App independente · Uso para maiores de 18 anos.</p>
+  </div>
+  <script>
+    (function () {
+      var ua = navigator.userAgent || '';
+      var isAndroid = /Android/i.test(ua);
+      var btn = document.getElementById('btn-play');
+      var playUrl = 'https://play.google.com/store/apps/details?id=br.dev.pd.meuvolante';
+      if (isAndroid) {
+        var intentUrl = 'intent://details?id=br.dev.pd.meuvolante#Intent;scheme=market;package=com.android.vending;S.browser_fallback_url=' + encodeURIComponent(playUrl) + ';end';
+        btn.href = intentUrl;
+        setTimeout(function () {
+          try { window.location.href = intentUrl; } catch (_) {}
+        }, 350);
+      }
+    })();
+  </script>
+</body>
+</html>
