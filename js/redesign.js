@@ -88,11 +88,14 @@ function criarTopbarUnificada() {
       </button>
     </div>
 
-    <!-- Ações Rápidas: VIP/Créditos + Menu Drawer -->
+    <!-- Ações Rápidas: VIP/Créditos + Tema + Menu Drawer -->
     <div class="nasa-header-actions">
       <button type="button" id="nasa-top-vip-btn" class="nasa-vip-chip" onclick="abrirModalPaywall('header')" title="Status do Plano e Créditos">
         <span id="nasa-top-vip-icon">⚡</span>
         <span id="nasa-top-vip-label">PRO</span>
+      </button>
+      <button type="button" id="nasa-top-theme-btn" class="nasa-drawer-trigger" onclick="alternarTema(); atualizarDadosDrawer();" title="Alternar Modo Claro / Escuro" aria-label="Alternar Modo Claro / Escuro">
+        <span id="nasa-top-theme-icon" style="font-size: 1rem; line-height: 1;">☀️</span>
       </button>
       <button type="button" id="nasa-top-drawer-btn" class="nasa-drawer-trigger" onclick="abrirDrawerPerfil()" title="Menu (Configurações, Mestres, Termos & LGPD)" aria-label="Abrir menu de configurações, mestres e conta">
         <span id="nasa-top-avatar" style="font-size: 1.25rem; font-weight: 900; line-height: 1; letter-spacing: -1px;">⋯</span>
