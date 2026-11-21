@@ -14,7 +14,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0/dist/umd/supabase.js"></script>
   <!-- Google Identity Services (Google Sign-In) -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
-  <!-- Redesign Meu Volante PRO (Resizable Desktop Sidebar + Clear Typography) -->
+  <!-- Redesign LotoPRO (Resizable Desktop Sidebar + Clear Typography) -->
   <link rel="stylesheet" href="./css/redesign.css?v=20261115.11" />
   <script src="./js/redesign.js?v=20261115.11" defer></script>
   <!-- Upgrade Modal (Elegant Checkout) -->
@@ -160,7 +160,7 @@
         box.innerHTML = `
           <div class="space-y-3">
             <h4 class="text-sm font-bold text-white">Termos e Condições Gerais de Uso</h4>
-            <p><b>1. Objeto do Aplicativo:</b> O Meu Volante PRO é uma plataforma para organização, conferência, armazenamento de jogos e geração de jogos e consulta de indicadores descritivos (frequência, paridade e distribuição no volante), que não alteram a chance de nenhuma combinação.</p>
+            <p><b>1. Objeto do Aplicativo:</b> O LotoPRO é uma plataforma para organização, conferência, armazenamento de jogos e geração de jogos e consulta de indicadores descritivos (frequência, paridade e distribuição no volante), que não alteram a chance de nenhuma combinação.</p>
             <p><b>2. Isenção Total de Garantia de Ganho:</b> O usuário reconhece expressamente que as loterias brasileiras operadas pela Caixa Econômica Federal são eventos puramente aleatórios. Nenhuma ferramenta tecnológica, algoritmo ou modelo matemático é capaz de prever o resultado futuro ou garantir premiações.</p>
             <p><b>3. Ausência de Intermediação de Apostas:</b> O aplicativo não é uma casa lotérica e não comercializa apostas financeiras. A efetivação de qualquer jogo é de responsabilidade estrita do apostador junto aos canais credenciados oficiais.</p>
             <p><b>4. Maioridade Obrigatória:</b> O uso desta aplicação é restrito a indivíduos com idade igual ou superior a 18 anos.</p>
@@ -172,7 +172,7 @@
             <h4 class="text-sm font-bold text-white">Política de Privacidade e Proteção de Dados (LGPD)</h4>
             <p><b>1. O que coletamos:</b> nome, e-mail e celular (conta), os jogos que você salva, registros de uso e de erros do app (para corrigir falhas) e, só na compra pelo site, o CPF.</p>
             <p><b>2. Com quem:</b> usamos fornecedores para operar o serviço (Supabase, que guarda os dados, e Asaas, que processa pagamentos). Não vendemos seus dados nem os passamos a anunciantes. Política completa em loterias.pd.dev.br/privacidade.html.</p>
-            <p><b>3. Pagamentos Seguros:</b> Dados bancários e de cartões de crédito são processados diretamente por instituições financeiras autorizadas pelo Banco Central (PCI-DSS compliant). O Meu Volante PRO não armazena dados de cartão.</p>
+            <p><b>3. Pagamentos Seguros:</b> Dados bancários e de cartões de crédito são processados diretamente por instituições financeiras autorizadas pelo Banco Central (PCI-DSS compliant). O LotoPRO não armazena dados de cartão.</p>
           </div>
         `;
       } else {
@@ -336,7 +336,7 @@
           🎯
         </div>
         <div class="inline-block px-2 py-0.5 rounded-full bg-cyan-950 border border-cyan-800 text-[9px] font-mono font-black text-cyan-300 tracking-wider uppercase">
-          Meu Volante PRO
+          LotoPRO
         </div>
         <h2 id="auth-modal-titulo" class="text-base font-black text-white">Acesse sua Conta</h2>
         <p id="auth-modal-subtitulo" class="text-[11px] text-slate-400">
@@ -413,7 +413,7 @@
       <button type="button" onclick="fecharCadastroVisitante()" class="absolute top-4 right-4 w-7 h-7 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center text-xs font-bold transition" aria-label="Fechar cadastro">✕</button>
       <div class="text-center space-y-1 pt-1">
         <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-cyan-600 via-teal-500 to-emerald-400 mx-auto flex items-center justify-center text-xl shadow-lg shadow-cyan-500/30">🎯</div>
-        <div class="inline-block px-2 py-0.5 rounded-full bg-cyan-950 border border-cyan-800 text-[9px] font-mono font-black text-cyan-300 tracking-wider uppercase">Meu Volante PRO</div>
+        <div class="inline-block px-2 py-0.5 rounded-full bg-cyan-950 border border-cyan-800 text-[9px] font-mono font-black text-cyan-300 tracking-wider uppercase">LotoPRO</div>
         <h2 class="text-base font-black text-white">Ative seu teste gratuito</h2>
         <p class="text-[11px] text-slate-400">Seu contato ajuda a enviar novidades importantes da missão.</p>
       </div>
@@ -432,7 +432,7 @@
         </div>
         <label class="flex items-start gap-2 text-[10px] text-slate-400 leading-relaxed font-sans">
           <input id="check-visitante-consentimento" type="checkbox" required class="mt-0.5 accent-cyan-500" />
-          <span>Aceito receber novidades da Meu Volante PRO por e-mail ou WhatsApp e concordo com a Política de Privacidade.</span>
+          <span>Aceito receber novidades da LotoPRO por e-mail ou WhatsApp e concordo com a Política de Privacidade.</span>
         </label>
         <button type="submit" class="w-full py-2.5 btn-rocket-launch text-slate-950 font-black text-xs rounded-xl shadow active:scale-95 transition flex items-center justify-center gap-1.5 font-sans">
           ATIVAR TESTE GRATUITO
@@ -449,7 +449,7 @@
       <div class="flex items-center gap-1.5 sm:gap-2">
         <div class="flex items-center gap-1.5">
           <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span class="font-black tracking-wider text-white">MEU VOLANTE PRO</span>
+          <span class="font-black tracking-wider text-white">LOTOPRO</span>
           <span class="text-cyan-500 font-bold hidden md:inline"></span>
         </div>
       </div>
@@ -1077,7 +1077,7 @@
         </div>
       </div>
 
-      <!-- CARD CONCIERGE WHATSAPP Meu Volante PRO: ENVIE SEUS NÚMEROS DIRETO -->
+      <!-- CARD CONCIERGE WHATSAPP LotoPRO: ENVIE SEUS NÚMEROS DIRETO -->
       <div class="bg-gradient-to-r from-emerald-950/60 via-slate-900 to-teal-950/40 border border-emerald-500/50 rounded-2xl p-3.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-lg font-sans">
         <div class="space-y-0.5">
           <div class="flex items-center gap-2">
@@ -1085,10 +1085,10 @@
             
           </div>
           <p class="text-[11px] text-slate-300 leading-snug">
-            Tem seus números em mãos? Mande uma mensagem para o Meu Volante PRO e colocamos os jogos na sua carteira.
+            Tem seus números em mãos? Mande uma mensagem para o LotoPRO e colocamos os jogos na sua carteira.
           </p>
         </div>
-        <button type="button" onclick="const t = 'Olá Meu Volante PRO! Gostaria de registrar os seguintes números na minha carteira:\n\n[Digite aqui suas dezenas ou envie a foto do bilhete]:'; if (typeof window.abrirWhatsApp === 'function') { window.abrirWhatsApp({ texto: t }); } else { window.location.href = 'whatsapp://send?text=' + encodeURIComponent(t); }" class="w-full sm:w-auto px-3.5 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 font-black text-xs shadow active:scale-95 transition flex items-center justify-center gap-1.5 whitespace-nowrap">
+        <button type="button" onclick="const t = 'Olá LotoPRO! Gostaria de registrar os seguintes números na minha carteira:\n\n[Digite aqui suas dezenas ou envie a foto do bilhete]:'; if (typeof window.abrirWhatsApp === 'function') { window.abrirWhatsApp({ texto: t }); } else { window.location.href = 'whatsapp://send?text=' + encodeURIComponent(t); }" class="w-full sm:w-auto px-3.5 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 font-black text-xs shadow active:scale-95 transition flex items-center justify-center gap-1.5 whitespace-nowrap">
           <span>Mandar pelo WhatsApp</span>
         </button>
       </div>
@@ -2008,7 +2008,7 @@
             <div>
               <span class="text-[10px] font-bold text-cyan-400 uppercase tracking-widest block font-mono">Documento Estratégico Oficial</span>
               <h3 class="text-lg font-black text-white font-sans mt-1">PARECER DO ESPECIALISTA EM LANÇAMENTO DO PRODUTO</h3>
-              <p class="text-xs text-slate-400 font-sans mt-0.5">Destinatário: <b>Equipe responsável pelo Meu Volante PRO</b></p>
+              <p class="text-xs text-slate-400 font-sans mt-0.5">Destinatário: <b>Equipe responsável pelo LotoPRO</b></p>
             </div>
             <span class="px-3 py-1 bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 rounded-xl text-xs font-bold font-mono">
               VEREDITO: GO FOR LAUNCH (9.8/10)
@@ -2017,7 +2017,7 @@
 
           <div class="space-y-3 text-xs text-slate-300 font-sans leading-relaxed">
             <p>
-                Após análise técnica minuciosa da versão consolidada do <b>Meu Volante PRO</b>, este parecer resume os pontos necessários para uma publicação responsável na <b>Google Play Store</b>.
+                Após análise técnica minuciosa da versão consolidada do <b>LotoPRO</b>, este parecer resume os pontos necessários para uma publicação responsável na <b>Google Play Store</b>.
             </p>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-3 my-3">

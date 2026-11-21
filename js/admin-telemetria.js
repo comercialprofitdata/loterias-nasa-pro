@@ -1,5 +1,5 @@
 // =========================================================================
-// MEU VOLANTE PRO — TELEMETRIA GLOBAL, LOG DE USO & CALIBRAÇÃO (ADMIN CEO)
+// LOTOPRO — TELEMETRIA GLOBAL, LOG DE USO & CALIBRAÇÃO (ADMIN CEO)
 // Monitora palpites gerados, dezenas apostadas, scores e histórico de todos os usuários
 // =========================================================================
 (function () {

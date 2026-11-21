@@ -40,7 +40,7 @@ function abrirPassosDeInstalacao() {
   fundo.setAttribute('aria-modal', 'true');
   fundo.innerHTML = `
     <div class="folha">
-      <h2>Instalar o Meu Volante</h2>
+      <h2>Instalar o LotoPRO</h2>
       <ol class="instalar-passos">${passos.map((p) => `<li>${p}</li>`).join('')}</ol>
       <button type="button">Entendi</button>
     </div>`;

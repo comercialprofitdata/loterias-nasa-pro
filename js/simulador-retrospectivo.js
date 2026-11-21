@@ -1,5 +1,5 @@
 // =========================================================================
-// MEU VOLANTE PRO — SIMULADOR RETROSPECTIVO ("E SE EU TIVESSE JOGADO?")
+// LOTOPRO — SIMULADOR RETROSPECTIVO ("E SE EU TIVESSE JOGADO?")
 // =========================================================================
 (function () {
   'use strict';

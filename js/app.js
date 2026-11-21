@@ -431,14 +431,14 @@
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('./sw.js?v=20261115.11', { scope: './' })
           .then((reg) => {
-            console.log('[Meu Volante PRO] Service Worker registrado. Verificando atualizações...');
+            console.log('[LotoPRO] Service Worker registrado. Verificando atualizações...');
             reg.update(); // força verificação no servidor imediatamente
             reg.onupdatefound = () => {
               const newWorker = reg.installing;
               if (newWorker) {
                 newWorker.onstatechange = () => {
                   if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                    console.log('[Meu Volante PRO] Nova versão instalada pelo navegador.');
+                    console.log('[LotoPRO] Nova versão instalada pelo navegador.');
                     if (typeof toast === 'function') toast('Nova versão instalada! Recarregando...', '🔄');
                     setTimeout(() => window.location.reload(), 800);
                   }
@@ -447,7 +447,7 @@
             };
           })
           .catch((err) => {
-            console.warn('[Meu Volante PRO] Falha ao registrar Service Worker:', err);
+            console.warn('[LotoPRO] Falha ao registrar Service Worker:', err);
           });
       }
     });
@@ -2329,7 +2329,7 @@ function gerarPalpiteInteligente() {
       });
 
       txt += `\n━━━━━━━━━━━━━━━━━━━━\n`;
-      txt += `*Feito no Meu Volante PRO*\n`;
+      txt += `*Feito no LotoPRO*\n`;
       txt += `🔗 *Organize seus jogos:* https://loterias.pd.dev.br/\n`;
 
       window.abrirWhatsApp({ texto: txt });
@@ -3379,12 +3379,12 @@ function gerarPalpiteInteligente() {
 
     function exportarParaWhatsApp() {
       if (carteiraJogos.length === 0) { toast("Carteira vazia!", "⚠️"); tocarBeep('alert'); return; }
-      let txt = `🎰 *Meus Jogos Registrados (Meu Volante PRO)*\n\n`;
+      let txt = `🎰 *Meus Jogos Registrados (LotoPRO)*\n\n`;
       carteiraJogos.forEach((b, idx) => {
         txt += `*Jogo ${idx+1} (${b.modalidade.toUpperCase()}):*\n${b.dezenas.map(d => String(d).padStart(2,'0')).join(' - ')}\n\n`;
       });
       txt += `━━━━━━━━━━━━━━━━━━━━\n`;
-      txt += `*Feito no Meu Volante PRO*\n`;
+      txt += `*Feito no LotoPRO*\n`;
       txt += `🔗 *Organize seus jogos:* https://loterias.pd.dev.br/\n`;
       window.abrirWhatsApp({ texto: txt });
     }
@@ -4422,7 +4422,7 @@ function abrirModalDialog(msg, callback) {
       if (jogosFechamentoGerados.length === 0) return;
       const config = getConfigAtual();
       const custo = formatarReais(jogosFechamentoGerados.length * config.precoBase);
-      let msg = `🎯 *Meu Volante PRO — Fechamento Combinatório*\n`;
+      let msg = `🎯 *LotoPRO — Fechamento Combinatório*\n`;
       msg += `🎯 *Modalidade:* ${modalidadeAtual.toUpperCase()}\n`;
       msg += `📊 *Total de Apostas:* ${jogosFechamentoGerados.length} (${custo})\n`;
       msg += `📐 *Fechamento:* combinações das dezenas escolhidas (não garante prêmio)\n\n`;
@@ -4432,7 +4432,7 @@ function abrirModalDialog(msg, callback) {
       if (jogosFechamentoGerados.length > 10) {
         msg += `... e mais ${jogosFechamentoGerados.length - 10} jogos.\n`;
       }
-      msg += `\nOrganizado no Meu Volante PRO. Nenhum jogo tem mais chance que outro.`;
+      msg += `\nOrganizado no LotoPRO. Nenhum jogo tem mais chance que outro.`;
       window.abrirWhatsApp({ texto: msg });
     }
 
@@ -5644,9 +5644,9 @@ function abrirModalDialog(msg, callback) {
       const linkVip = `${window.location.origin}${window.location.pathname}?vip=${codVip}`;
 
       const texto = 
-        `*Convite Exclusivo — Meu Volante PRO*\n\n` +
+        `*Convite Exclusivo — LotoPRO*\n\n` +
         `Olá, *${u.nome.split(' ')[0]}*! Aqui é o Vitório Bérgamo.\n\n` +
-        `Você foi selecionado como nosso *Testador VIP Pioneiro* no *Meu Volante PRO*! Seu acesso completo com todas as matrizes, filtros orbitais e volante interativo já está 100% liberado.\n\n` +
+        `Você foi selecionado como nosso *Testador VIP Pioneiro* no *LotoPRO*! Seu acesso completo com todas as matrizes, filtros orbitais e volante interativo já está 100% liberado.\n\n` +
         `👉 *Acesse agora com 1 toque no seu celular (sem precisar de senha):*\n` +
         `${linkVip}\n\n` +
         `Se preferir ativar manualmente no app, seu código VIP é: *${codVip}*\n\n` +
@@ -6008,7 +6008,7 @@ function abrirModalDialog(msg, callback) {
     }
 
     // ===================================================================
-    // EXPOSIÇÃO GLOBAL CONTROLADA PARA MÓDULOS E UI (Meu Volante PRO WINDOW BRIDGE)
+    // EXPOSIÇÃO GLOBAL CONTROLADA PARA MÓDULOS E UI (LotoPRO WINDOW BRIDGE)
     // ===================================================================
     window.carteiraJogos = carteiraJogos;
     window.salvarCarteiraStorage = salvarCarteiraStorage;

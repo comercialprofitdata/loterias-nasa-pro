@@ -1,5 +1,5 @@
 // ===================================================================
-// REDESIGN Meu Volante PRO 3.0 — Mobile-First FinTech & Telemetry Experience
+// REDESIGN LotoPRO 3.0 — Mobile-First FinTech & Telemetry Experience
 // ===================================================================
 // Arquitetura inspirada nas 50 melhores referências globais e nacionais
 // (Jackpocket, TuLotero, Loterias CAIXA, 10Dobra, Expert Lotto):
@@ -25,7 +25,7 @@ let subAbaCarteiraAtiva = 'bilhetes'; // 'bilhetes' | 'bolao' | 'ferramentas'
 let volanteModo10Colunas = false;
 
 document.addEventListener('DOMContentLoaded', function () {
-  console.log('🎨 Inicializando Meu Volante PRO Mobile 3.0...');
+  console.log('🎨 Inicializando LotoPRO Mobile 3.0...');
 
   document.documentElement.classList.add('redesign');
 
@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   activateTab('home');
-  console.log('✅ Meu Volante PRO Mobile 3.0 pronto.');
+  console.log('✅ LotoPRO Mobile 3.0 pronto.');
 });
 
 // ===================================================================
@@ -72,7 +72,7 @@ function criarTopbarUnificada() {
     <button type="button" class="nasa-brand-compact" onclick="activateTab('home'); tocarBeep('click');" title="Ir para o Início">
       <div class="nasa-brand-icon"><img src="./icon-192.png" alt="" width="32" height="32" style="border-radius:8px" /></div>
       <div class="nasa-brand-text">
-        <span class="nasa-brand-title">Meu Volante PRO</span>
+        <span class="nasa-brand-title">LotoPRO</span>
         
       </div>
     </button>
@@ -121,7 +121,7 @@ function criarSidebarDesktop() {
     <div class="sidebar-brand-box" onclick="activateTab('home'); tocarBeep('click');" role="button" tabindex="0" title="Ir para o Cockpit Inicial">
       <div class="sidebar-brand-icon">🎯</div>
       <div class="sidebar-brand-text">
-        <span class="sidebar-brand-title">Meu Volante PRO</span>
+        <span class="sidebar-brand-title">LotoPRO</span>
         <span class="sidebar-brand-sub">SEUS JOGOS EM ORDEM</span>
       </div>
       
@@ -1725,7 +1725,7 @@ function abrirModalSeletorPerfil({ onboarding = false } = {}) {
         <div class="flex items-center gap-2">
           <div>
             <h3 class="text-sm sm:text-base font-black text-white uppercase tracking-wide">Modo de Experiência</h3>
-            <p class="text-[11px] text-cyan-400 font-mono">Como você prefere usar o Meu Volante PRO?</p>
+            <p class="text-[11px] text-cyan-400 font-mono">Como você prefere usar o LotoPRO?</p>
           </div>
         </div>
         <button type="button" onclick="fecharModalSeletorPerfil()" class="text-slate-400 hover:text-white text-lg font-bold p-1">✕</button>

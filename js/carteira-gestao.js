@@ -1,5 +1,5 @@
 // =========================================================================
-// MEU VOLANTE PRO — GESTÃO INTELIGENTE DE CARTEIRA (HIGH-CAPACITY UX)
+// LOTOPRO — GESTÃO INTELIGENTE DE CARTEIRA (HIGH-CAPACITY UX)
 // Suporta de 1 a 500+ apostas com agrupamento por concurso, filtros e busca
 // =========================================================================
 (function () {
@@ -293,8 +293,8 @@
     const planejamento = grupo.concurso === 'Mega da Virada 2026';
     const modNome = planejamento ? grupo.concurso : (grupo.modalidade === 'lotofacil' ? 'Lotofácil' : 'Mega-Sena');
     let msg = planejamento
-      ? `*Meu Volante PRO — Palpites planejados*\n`
-      : `*Meu Volante PRO — Lote de Apostas*\n`;
+      ? `*LotoPRO — Palpites planejados*\n`
+      : `*LotoPRO — Lote de Apostas*\n`;
     msg += `Modalidade: *${modNome}*\n`;
     msg += `Concurso: *${grupo.concurso}* (${grupo.data})\n`;
     msg += `Total de Jogos: *${grupo.bilhetes.length}*\n\n`;
@@ -305,7 +305,7 @@
       msg += `*Jogo #${idx + 1}:* ${dezenasFormatadas}\n`;
     });
 
-    msg += `\n*Meu Volante PRO* — Monte e audite seus bolões:\n👉 https://loterias.pd.dev.br/`;
+    msg += `\n*LotoPRO* — Monte e audite seus bolões:\n👉 https://loterias.pd.dev.br/`;
     if (typeof window.abrirWhatsApp === 'function') {
       window.abrirWhatsApp({ texto: msg });
     } else {
@@ -831,7 +831,7 @@
     const total = lista.length;
 
     const texto = 
-      `*Meu Volante PRO — Sincronização de Jogos entre Aparelhos*\n\n` +
+      `*LotoPRO — Sincronização de Jogos entre Aparelhos*\n\n` +
       `👤 *Testador VIP:* ${nome}\n` +
       `📦 *Total de Jogos Salvos:* ${total} bilhete(s)\n\n` +
       `👉 *Abra este link no seu outro celular para carregar todos os seus jogos instantaneamente:*\n` +
