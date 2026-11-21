@@ -151,34 +151,58 @@ function montarBotaoSalvar() {
   botao.removeAttribute('onclick');
   botao.innerHTML = '<span id="txt-btn-joguei-jogo">Salvar jogo</span>';
   let salvo = false;
-  // Vale para o jogo que está na tela; um jogo novo volta ao concurso regular.
   let destinoVirada = false;
+  const blocoVirada = document.getElementById('planejar-mega-virada');
+  const chkVirada = document.getElementById('chk-mega-virada');
+
   window.estaPlanejandoMegaVirada = () => modalidadeAtual === 'megasena' && destinoVirada;
-  window.atualizarModoMegaVirada = () => {
-    if (modalidadeAtual !== 'megasena') destinoVirada = false;
+  const atualizarVisibilidadeVirada = () => {
+    const ehMega = typeof modalidadeAtual !== 'undefined' && modalidadeAtual === 'megasena';
+    if (blocoVirada) blocoVirada.classList.toggle('hidden', !ehMega);
+    if (!ehMega) {
+      destinoVirada = false;
+      if (chkVirada) chkVirada.checked = false;
+    } else if (chkVirada) {
+      destinoVirada = Boolean(chkVirada.checked);
+    }
   };
 
-  // O mesmo jogo (ou lote) não é salvo duas vezes, mesmo depois de trocar de jogo ou de loteria e voltar.
+  // O mesmo jogo (ou lote) não é salvo duas vezes para o mesmo destino.
   const assinaturaDoJogo = () => {
     const lote = typeof loteApostasGeradas !== 'undefined' && loteApostasGeradas.length > 1
       ? loteApostasGeradas.map((a) => a.dezenas.join('-')).join('|')
       : (typeof getJogoAtual === 'function' ? [...getJogoAtual()].sort((a, b) => a - b).join('-') : '');
     return `${modalidadeAtual}:${lote}`;
   };
-  const salvos = new Map();
+  const chaveSalvo = (virada = destinoVirada) => `${assinaturaDoJogo()}:${virada ? 'virada' : 'proximo'}`;
+  const salvos = new Set();
+
+  const atualizarBotaoSalvar = () => {
+    salvo = salvos.has(chaveSalvo());
+    const rotulo = document.getElementById('txt-btn-joguei-jogo');
+    if (rotulo) rotulo.textContent = salvo ? 'Salvo · ver na Carteira' : 'Salvar jogo';
+  };
+
+  window.atualizarModoMegaVirada = () => {
+    atualizarVisibilidadeVirada();
+    atualizarBotaoSalvar();
+  };
+  atualizarVisibilidadeVirada();
 
   const salvarNoDestino = (destino) => {
     const salvar = () => {
       destinoVirada = destino === 'virada';
+      if (chkVirada && modalidadeAtual === 'megasena') chkVirada.checked = destinoVirada;
       const antes = carteiraJogos.length;
       if (destinoVirada) window.salvarJogoAtivoNaCarteira?.();
       else marcarComoJogadoProximoConcurso();
       if (carteiraJogos.length > antes) {
         salvo = true;
-        salvos.set(assinaturaDoJogo(), destino);
-        document.getElementById('txt-btn-joguei-jogo').textContent = 'Salvo · ver na Carteira';
+        salvos.add(chaveSalvo(destinoVirada));
+        const rotulo = document.getElementById('txt-btn-joguei-jogo');
+        if (rotulo) rotulo.textContent = 'Salvo · ver na Carteira';
       } else {
-        destinoVirada = false;
+        destinoVirada = Boolean(chkVirada?.checked);
       }
     };
     // Sem conta, o cadastro abre e o jogo é salvo assim que a conta for criada.
@@ -197,20 +221,25 @@ function montarBotaoSalvar() {
       window.toast?.(`Faltam ${minimo - marcadas} dezenas para completar o jogo.`, '⚠️');
       return;
     }
-    if (modalidadeAtual === 'megasena') abrirDestinoDoJogo(salvarNoDestino);
-    else salvarNoDestino('proximo');
+    if (modalidadeAtual === 'megasena') {
+      if (chkVirada?.checked) salvarNoDestino('virada');
+      else abrirDestinoDoJogo(salvarNoDestino);
+    } else {
+      salvarNoDestino('proximo');
+    }
   });
 
   const display = document.getElementById('display-meu-jogo');
   let ultimaAssinatura = null;
   new MutationObserver(() => {
+    atualizarVisibilidadeVirada();
     const atual = assinaturaDoJogo();
-    if (atual === ultimaAssinatura) return;
+    if (atual === ultimaAssinatura) {
+      atualizarBotaoSalvar();
+      return;
+    }
     ultimaAssinatura = atual;
-    salvo = salvos.has(atual);
-    destinoVirada = salvos.get(atual) === 'virada';
-    const rotulo = document.getElementById('txt-btn-joguei-jogo');
-    if (rotulo) rotulo.textContent = salvo ? 'Salvo · ver na Carteira' : 'Salvar jogo';
+    atualizarBotaoSalvar();
     display.classList.remove('fluxo-pulso');
     void display.offsetWidth;
     display.classList.add('fluxo-pulso');
