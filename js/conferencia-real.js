@@ -185,6 +185,7 @@ async function conferirTodosBilhetesSalvos() {
 
   salvarCarteiraStorage();
   atualizarPainelCarteira();
+  if (typeof window.renderizarBolao === 'function') window.renderizarBolao();
 
   const partes = [];
   if (conferidos) partes.push(`${conferidos} conferido${conferidos > 1 ? 's' : ''}`);

@@ -305,6 +305,29 @@
     }));
   }
 
+  /** Soma os resultados conferidos na Carteira para este bolão e calcula o prêmio por cota. */
+  function resumoConferenciaBolao(bolao, listaCarteira) {
+    const carteira = Array.isArray(listaCarteira)
+      ? listaCarteira
+      : (typeof carteiraJogos !== 'undefined' && Array.isArray(carteiraJogos) ? carteiraJogos : []);
+    const bilhetes = carteira.filter((b) => b && b.bolaoId === bolao.id);
+    const conferidos = bilhetes.filter((b) => b.conferido);
+    const premiados = conferidos.filter((b) => Number(b.premioGanho) > 0 || /SENA|QUINA|QUADRA|PONTOS/i.test(b.status || ''));
+    const premioTotal = conferidos.reduce((s, b) => s + (Number(b.premioGanho) || 0), 0);
+    const cotas = Math.max(1, Number(bolao.cotas) || 1);
+    const minhasCotas = Math.max(0, Number(bolao.minhasCotas) || 0);
+    const premioPorCota = premioTotal / cotas;
+    return {
+      salvos: bilhetes.length,
+      conferidos: conferidos.length,
+      premiados: premiados.length,
+      premioTotal,
+      premioPorCota,
+      minhaParte: premioPorCota * minhasCotas,
+      bilhetes
+    };
+  }
+
   function htmlOpcoes(valores, atual, rotulo) {
     return valores.map((v) => `<option value="${v}" ${String(v) === String(atual) ? 'selected' : ''}>${esc(rotulo(v))}</option>`).join('');
   }
@@ -312,6 +335,7 @@
   function htmlBolao(bolao) {
     const regra = REGRAS_CAIXA[bolao.modalidade];
     const r = calcularRateio(bolao);
+    const conf = resumoConferenciaBolao(bolao);
     const avisos = bolao.modo === 'caixa' ? avisosDaCaixa(bolao) : [];
     const repetidos = jogosRepetidos(bolao);
     const dezenasPossiveis = Array.from({ length: regra.max - regra.min + 1 }, (_, i) => regra.min + i);
@@ -392,6 +416,27 @@
         ${avisos.map((a) => `<p class="revisao-aviso">${esc(a)}</p>`).join('')}
         ${bolao.modo === 'caixa' ? `<p class="gastos-nota">A lotérica pode cobrar tarifa de serviço de até 35% por cota. <a href="${regra.link}" target="_blank" rel="noopener">Regras do Bolão CAIXA</a></p>` : '<p class="gastos-nota">Sem registro na lotérica, o bilhete é de quem o tem em mãos. Combine tudo por escrito e envie a foto do bilhete ao grupo.</p>'}
       </div>
+
+      ${bolao.jogos.length ? `
+      <div class="bolao-card">
+        <div class="bolao-topo">
+          <h2 class="fluxo-titulo">Conferência e prêmio por cota</h2>
+          <span class="gastos-nota">${conf.salvos ? `${conf.conferidos}/${conf.salvos} conferidos` : 'Não salvo'}</span>
+        </div>
+        <div class="bolao-numeros">
+          <div><span>Prêmio total</span><strong>${conf.conferidos ? reais(conf.premioTotal) : '—'}</strong></div>
+          <div><span>Prêmio por cota</span><strong>${conf.conferidos ? reais(conf.premioPorCota) : '—'}</strong></div>
+          <div><span>Sua parte (${Number(bolao.minhasCotas) || 0} cota${Number(bolao.minhasCotas) === 1 ? '' : 's'})</span><strong>${conf.conferidos ? reais(conf.minhaParte) : '—'}</strong></div>
+        </div>
+        <p class="gastos-nota">${conf.salvos === 0
+          ? 'Salve o bolão na Carteira para conferir todos os jogos automaticamente após o sorteio.'
+          : (conf.conferidos === 0
+            ? 'Jogos salvos na Carteira. Toque abaixo para consultar o resultado oficial da CAIXA.'
+            : (conf.premiados > 0
+              ? `🎉 ${conf.premiados} ${conf.premiados === 1 ? 'jogo premiado' : 'jogos premiados'} neste bolão.`
+              : 'Todos os jogos deste bolão foram conferidos contra o resultado oficial.'))}</p>
+        <button type="button" class="fluxo-acao" data-acao="conferir">🔍 Conferir jogos do bolão</button>
+      </div>` : ''}
 
       <div class="bolao-card">
         <h2 class="fluxo-titulo">Jogos do bolão</h2>
@@ -521,6 +566,15 @@
       return;
     }
     if (acao === 'salvar') { salvarNaCarteira(bolao); return; }
+    if (acao === 'conferir') {
+      if (!bolao.jogos.length) { aviso('Gere os jogos do bolão antes de conferir.'); return; }
+      const conf = resumoConferenciaBolao(bolao);
+      if (conf.salvos === 0) salvarNaCarteira(bolao);
+      if (resumoConferenciaBolao(bolao).salvos > 0 && typeof window.conferirTodosBilhetesSalvos === 'function') {
+        window.conferirTodosBilhetesSalvos();
+      }
+      return;
+    }
     if (acao === 'whatsapp') { abrirEnvio(bolao); return; }
     if (acao === 'pdf') {
       if (!bolao.jogos.length) { aviso('Gere os jogos do bolão antes de imprimir.'); return; }
@@ -566,5 +620,5 @@
   });
 
   // Para os testes automatizados.
-  window.bolaoRegras = { REGRAS_CAIXA, calcularRateio, avisosDaCaixa, jogosRepetidos, textoConvite, textoPagamentos, textoJogos };
+  window.bolaoRegras = { REGRAS_CAIXA, calcularRateio, resumoConferencia: resumoConferenciaBolao, avisosDaCaixa, jogosRepetidos, textoConvite, textoPagamentos, textoJogos };
 })();

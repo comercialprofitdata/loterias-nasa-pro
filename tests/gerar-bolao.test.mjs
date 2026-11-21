@@ -118,6 +118,23 @@ test('o rateio do bolão soma só os jogos do próprio bolão', () => {
   assert.equal(calcularRateio(bolaoBase({ dezenas: 7, jogos: [[1, 2, 3, 4, 5, 6, 7]] })).total, 42);
 });
 
+test('a conferência do bolão soma os prêmios dos jogos e divide pelas cotas', () => {
+  const { resumoConferencia } = carregarBolao();
+  const bolao = bolaoBase({ cotas: 4, minhasCotas: 2 });
+  const carteira = [
+    { id: 'a', bolaoId: 1, conferido: true, premioGanho: 1200, status: '🥉 QUADRA' },
+    { id: 'b', bolaoId: 1, conferido: true, premioGanho: 0, status: '3 acertos (Não premiado)' },
+    { id: 'c', bolaoId: 999, conferido: true, premioGanho: 50000, status: '🥈 QUINA' }
+  ];
+  const res = resumoConferencia(bolao, carteira);
+  assert.equal(res.salvos, 2);
+  assert.equal(res.conferidos, 2);
+  assert.equal(res.premiados, 1);
+  assert.equal(res.premioTotal, 1200);
+  assert.equal(res.premioPorCota, 300);
+  assert.equal(res.minhaParte, 600);
+});
+
 test('um bolão dentro das regras da CAIXA não gera aviso', () => {
   const { avisosDaCaixa } = carregarBolao();
   assert.deepEqual(avisosDaCaixa(bolaoBase()), []);
