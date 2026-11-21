@@ -86,6 +86,9 @@ function criarTopbarUnificada() {
       <button type="button" id="nasa-pill-loto" class="nasa-mod-btn" onclick="trocarModalidade('lotofacil')">
         <span>Lotofácil</span>
       </button>
+      <button type="button" id="nasa-pill-quina" class="nasa-mod-btn" onclick="trocarModalidade('quina')">
+        <span>Quina</span>
+      </button>
     </div>
 
     <!-- Ações Rápidas: VIP/Créditos + Tema + Menu Drawer -->
@@ -340,17 +343,14 @@ function sincronizarVisualModalidadeGlobal() {
   const mod = typeof modalidadeAtual !== 'undefined' ? modalidadeAtual : 'megasena';
   const pillMega = document.getElementById('nasa-pill-mega');
   const pillLoto = document.getElementById('nasa-pill-loto');
+  const pillQuina = document.getElementById('nasa-pill-quina');
 
   document.documentElement.classList.toggle('lotofacil-mode', mod === 'lotofacil');
 
   if (pillMega && pillLoto) {
-    if (mod === 'megasena') {
-      pillMega.className = 'nasa-mod-btn active-mega';
-      pillLoto.className = 'nasa-mod-btn';
-    } else {
-      pillMega.className = 'nasa-mod-btn';
-      pillLoto.className = 'nasa-mod-btn active-loto';
-    }
+    pillMega.className = mod === 'megasena' ? 'nasa-mod-btn active-mega' : 'nasa-mod-btn';
+    pillLoto.className = mod === 'lotofacil' ? 'nasa-mod-btn active-loto' : 'nasa-mod-btn';
+    if (pillQuina) pillQuina.className = mod === 'quina' ? 'nasa-mod-btn active-loto' : 'nasa-mod-btn';
   }
 
   // Sincroniza o seletor da Sidebar Desktop
@@ -1079,6 +1079,10 @@ function criarDrawerPerfilConfig() {
           <span>📲 Baixar app na Google Play</span>
           <span class="text-emerald-400 text-[10px]">Instalar →</span>
         </a>
+        <button type="button" id="drawer-btn-notificacoes" onclick="alternarLembreteSorteio();" class="w-full p-2.5 rounded-xl bg-slate-950 hover:bg-slate-900 border border-slate-800 text-xs font-bold text-cyan-300 flex items-center justify-between transition">
+          <span>🔔 Avisos às 20h30 (Dias de sorteio)</span>
+          <span id="drawer-notif-status" class="text-[10px] font-mono text-slate-400">Ativar →</span>
+        </button>
       </div>
 
       <!-- Botão Painel Admin (visível apenas para o fundador/admin) -->
@@ -1185,6 +1189,66 @@ function criarBannerConversaoWeb() {
   `;
 
   home.insertBefore(banner, home.firstChild);
+  verificarAlertaSorteio20h30();
+}
+
+function alternarLembreteSorteio() {
+  const atual = localStorage.getItem('lotolab_aviso_20h30') === '1';
+  if (!atual && typeof Notification !== 'undefined' && Notification.permission === 'default') {
+    Notification.requestPermission().then((perm) => {
+      if (perm === 'granted') {
+        localStorage.setItem('lotolab_aviso_20h30', '1');
+        if (typeof toast === 'function') toast('🔔 Avisos de sorteio às 20h30 ativados!', '✅');
+        try {
+          new Notification('LotoLab · Lembretes ativados', {
+            body: 'Vamos avisar você às 20h30 nos dias de sorteio para conferir seus jogos.',
+            icon: './marketing/brand/lotolab-escuro-192.png?v=2'
+          });
+        } catch (_) {}
+      } else {
+        localStorage.setItem('lotolab_aviso_20h30', '1');
+        if (typeof toast === 'function') toast('🔔 Lembrete interno às 20h30 ativado!', '✅');
+      }
+      atualizarStatusNotifDrawer();
+    }).catch(() => {});
+    return;
+  }
+  localStorage.setItem('lotolab_aviso_20h30', atual ? '0' : '1');
+  if (typeof toast === 'function') toast(atual ? 'Avisos às 20h30 pausados.' : '🔔 Avisos às 20h30 ativados!', '🔔');
+  atualizarStatusNotifDrawer();
+}
+window.alternarLembreteSorteio = alternarLembreteSorteio;
+
+function atualizarStatusNotifDrawer() {
+  const el = document.getElementById('drawer-notif-status');
+  if (!el) return;
+  const ativo = localStorage.getItem('lotolab_aviso_20h30') === '1';
+  el.innerText = ativo ? 'Ativo ✓' : 'Ativar →';
+  el.className = ativo ? 'text-[10px] font-mono text-emerald-400 font-bold' : 'text-[10px] font-mono text-slate-400';
+}
+
+function verificarAlertaSorteio20h30() {
+  const agora = new Date();
+  const dia = agora.getDay(); // 0=Dom, 1..6=Seg..Sab
+  const apos2030 = agora.getHours() > 20 || (agora.getHours() === 20 && agora.getMinutes() >= 30);
+  if (dia === 0 || !apos2030) return;
+  const pendentes = (typeof carteiraJogos !== 'undefined' && Array.isArray(carteiraJogos))
+    ? carteiraJogos.filter((b) => b && !b.conferido && !b.planejamento)
+    : [];
+  if (!pendentes.length) return;
+  const home = document.getElementById('view-home');
+  if (!home || document.getElementById('lotolab-alerta-20h30')) return;
+  const card = document.createElement('div');
+  card.id = 'lotolab-alerta-20h30';
+  card.className = 'mb-3 p-3 rounded-2xl bg-amber-950/40 border border-amber-500/40 flex items-center justify-between gap-2';
+  card.innerHTML = `
+    <div class="text-xs text-amber-100">
+      <strong class="block text-amber-300">🔔 Sorteio de hoje após 20h30</strong>
+      <span>Você tem ${pendentes.length} ${pendentes.length === 1 ? 'jogo aguardando conferência' : 'jogos aguardando conferência'}.</span>
+    </div>
+    <button type="button" onclick="if (typeof conferirTodosBilhetesSalvos === 'function') conferirTodosBilhetesSalvos();" class="px-3 py-1.5 rounded-xl bg-amber-400 text-slate-950 font-black text-[11px] shrink-0">Conferir agora</button>
+  `;
+  home.insertBefore(card, home.firstChild);
 }
 
 function abrirModalMestresLoteria() {

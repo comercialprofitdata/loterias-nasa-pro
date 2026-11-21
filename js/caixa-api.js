@@ -18,7 +18,9 @@ const CAIXA_API = {
     // Mega-Sena: 3 sorteios semanais (Terça=2, Quinta=4, Sábado=6)
     megasena: { dias: [2, 4, 6], hora: 20 },
     // Lotofácil: 6 sorteios semanais (Segunda a Sábado)
-    lotofacil: { dias: [1, 2, 3, 4, 5, 6], hora: 20 }
+    lotofacil: { dias: [1, 2, 3, 4, 5, 6], hora: 20 },
+    // Quina: 6 sorteios semanais (Segunda a Sábado)
+    quina: { dias: [1, 2, 3, 4, 5, 6], hora: 20 }
   }
 };
 

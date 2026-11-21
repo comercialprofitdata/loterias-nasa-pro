@@ -142,12 +142,27 @@
       ]
     };
 
+    const QUINA_CONFIG = {
+      nome: 'Quina',
+      totalNumeros: 80,
+      minDezenas: 5,
+      maxDezenas: 15,
+      precoBase: 2.50,
+      totalCombinacoes: combinacao(80, 5),
+      primos: [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79],
+      fechamentos: [
+        { id: 'quina_8_4', nome: '8 Dezenas (combinações reduzidas, sem garantia)', n: 8, k: 5, jogos: 4 },
+        { id: 'quina_10_3', nome: '10 Dezenas (combinações reduzidas, sem garantia)', n: 10, k: 5, jogos: 6 }
+      ]
+    };
+
     // Estado da Aplicação
     let modalidadeAtual = 'megasena';
     let modoToque = 'normal';
     let abaAtual = 'volante';
     let qtdDesejadaMega = 6;
     let qtdDesejadaLoto = 15;
+    let qtdDesejadaQuina = 5;
     let qtdApostasDesejada = 3;
     let loteApostasGeradas = [];
     let loteModalidade = null;
@@ -161,12 +176,15 @@
     // Bilhete padrão de demonstração
     let meuJogoMega = [11, 15, 20, 21, 38, 48];
     let meuJogoLoto = [1, 2, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 22, 24, 25];
+    let meuJogoQuina = [4, 17, 32, 55, 73];
     let fixosMega = [], proibidosMega = [];
     let fixosLoto = [], proibidosLoto = [];
+    let fixosQuina = [], proibidosQuina = [];
     let jogosFechamentoGerados = [];
 
     let baseConcursosMega = [];
     let baseConcursosLoto = [];
+    let baseConcursosQuina = [];
     let carteiraJogos = [];
     let modalCallback = null;
 
@@ -486,29 +504,47 @@
       const labelTopo = document.getElementById('modalidade-label');
 
       if (mod === 'megasena') {
-        btnMega.className = 'px-3 py-1 rounded-lg text-xs font-black transition bg-emerald-600 text-slate-950 shadow';
-        btnLoto.className = 'px-3 py-1 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition';
+        if (btnMega) btnMega.className = 'px-3 py-1 rounded-lg text-xs font-black transition bg-emerald-600 text-slate-950 shadow';
+        if (btnLoto) btnLoto.className = 'px-3 py-1 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition';
         if (labelTopo) labelTopo.className = 'text-xs font-black uppercase tracking-wider text-emerald-400 block font-mono';
         if (labelTopo) labelTopo.innerText = '🎯 Seu jogo';
-      
-      carregarOpcoesFechamento();
-    } else {
-        btnLoto.className = 'px-3 py-1 rounded-lg text-xs font-black transition bg-purple-600 text-white shadow';
-        btnMega.className = 'px-3 py-1 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition';
+      } else if (mod === 'quina') {
+        if (btnMega) btnMega.className = 'px-3 py-1 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition';
+        if (btnLoto) btnLoto.className = 'px-3 py-1 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition';
+        if (labelTopo) labelTopo.className = 'text-xs font-black uppercase tracking-wider text-sky-400 block font-mono';
+        if (labelTopo) labelTopo.innerText = '🔵 Quina · Seu jogo';
+      } else {
+        if (btnLoto) btnLoto.className = 'px-3 py-1 rounded-lg text-xs font-black transition bg-purple-600 text-white shadow';
+        if (btnMega) btnMega.className = 'px-3 py-1 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition';
         if (labelTopo) labelTopo.className = 'text-xs font-black uppercase tracking-wider text-purple-400 block font-mono';
         if (labelTopo) labelTopo.innerText = '🟣 Seu jogo';
       }
+      carregarOpcoesFechamento();
 
       renderizarTelaCompleta();
       // Toast redundante removido
     }
 
-    function getJogoAtual() { return modalidadeAtual === 'megasena' ? meuJogoMega : meuJogoLoto; }
-    function setJogoAtual(novo) { if (modalidadeAtual === 'megasena') meuJogoMega = novo; else meuJogoLoto = novo; }
-    function getFixos() { return modalidadeAtual === 'megasena' ? fixosMega : fixosLoto; }
-    function getProibidos() { return modalidadeAtual === 'megasena' ? proibidosMega : proibidosLoto; }
-    function getConfigAtual() { return modalidadeAtual === 'megasena' ? MEGA_CONFIG : LOTO_CONFIG; }
-    function getBaseAtual() { return modalidadeAtual === 'megasena' ? baseConcursosMega : baseConcursosLoto; }
+    function getJogoAtual() {
+      return modalidadeAtual === 'megasena' ? meuJogoMega : (modalidadeAtual === 'quina' ? meuJogoQuina : meuJogoLoto);
+    }
+    function setJogoAtual(novo) {
+      if (modalidadeAtual === 'megasena') meuJogoMega = novo;
+      else if (modalidadeAtual === 'quina') meuJogoQuina = novo;
+      else meuJogoLoto = novo;
+    }
+    function getFixos() {
+      return modalidadeAtual === 'megasena' ? fixosMega : (modalidadeAtual === 'quina' ? fixosQuina : fixosLoto);
+    }
+    function getProibidos() {
+      return modalidadeAtual === 'megasena' ? proibidosMega : (modalidadeAtual === 'quina' ? proibidosQuina : proibidosLoto);
+    }
+    function getConfigAtual() {
+      return modalidadeAtual === 'megasena' ? MEGA_CONFIG : (modalidadeAtual === 'quina' ? QUINA_CONFIG : LOTO_CONFIG);
+    }
+    function getBaseAtual() {
+      return modalidadeAtual === 'megasena' ? baseConcursosMega : (modalidadeAtual === 'quina' ? baseConcursosQuina : baseConcursosLoto);
+    }
 
     function alternarCard(idConteudo, idSeta) {
       const conteudo = document.getElementById(idConteudo);
@@ -804,6 +840,19 @@
           <div class="legenda-quad-box q4" title="Quadrante 4 (Sudeste): Linhas 4 a 6, Colunas 6 a 10 (15 dezenas)">
             <span class="legenda-quad-title">Q4</span>
             <span class="legenda-quad-count">${qCounts.Q4} no jogo</span>
+          </div>
+        `;
+      } else if (modalidadeAtual === 'quina') {
+        grid.className = 'grid grid-cols-10 gap-1 text-center font-mono';
+        definirTextoSeguro('volante-titulo-tipo', 'Volante Quina (1 a 80)');
+        (document.getElementById('legenda-volante') || {}).innerHTML = `
+          <div class="col-span-2 legenda-quad-box q1">
+            <span class="legenda-quad-title">Dezenas 01 a 40</span>
+            <span class="legenda-quad-count">${jogo.filter((x) => x <= 40).length} no jogo</span>
+          </div>
+          <div class="col-span-2 legenda-quad-box q4">
+            <span class="legenda-quad-title">Dezenas 41 a 80</span>
+            <span class="legenda-quad-count">${jogo.filter((x) => x > 40).length} no jogo</span>
           </div>
         `;
       } else {
@@ -1406,7 +1455,7 @@ function gerarPalpiteInteligente() {
 
     // Avaliador Central e Rigoroso dos 6 Testes Estatísticos
     function avaliarJogo(jogo, modalidade) {
-      const config = modalidade === 'megasena' ? MEGA_CONFIG : LOTO_CONFIG;
+      const config = modalidade === 'megasena' ? MEGA_CONFIG : (modalidade === 'quina' ? QUINA_CONFIG : LOTO_CONFIG);
       const n = jogo.length;
       if (n < config.minDezenas) {
         return {
@@ -1544,6 +1593,17 @@ function gerarPalpiteInteligente() {
         } else {
           score += 7;
         }
+      } else if (modalidade === 'quina') {
+        const metade1 = jogo.filter((x) => x <= 40).length;
+        const metade2 = n - metade1;
+        t1_status = t2_status = t3_status = t4_status = t5_status = t6_status = 'Informativo';
+        t1_val = `${n} dezenas (1–80)`;
+        t2_val = `${metade1} (01–40) / ${metade2} (41–80)`;
+        t3_val = `${new Set(jogo.map((x) => Math.floor((x - 1) / 10) + 1)).size} linhas`;
+        t4_val = `${pares}P / ${impares}I (${jogo.filter((x) => QUINA_CONFIG.primos.includes(x)).length} Primos)`;
+        t5_val = `Soma: ${soma}`;
+        t6_val = `Amplitude: ${Math.max(...jogo) - Math.min(...jogo)}`;
+        score += 25;
       } else {
         const molduraCount = jogo.filter(x => LOTO_CONFIG.moldura.includes(x)).length;
         const mioloCount = n - molduraCount;

@@ -30,6 +30,12 @@ const FAIXAS_PREMIACAO = {
     { acertos: 13, rotulo: '13 Pontos' },
     { acertos: 12, rotulo: '12 Pontos' },
     { acertos: 11, rotulo: '11 Pontos' }
+  ],
+  quina: [
+    { acertos: 5, rotulo: '🏆 QUINA' },
+    { acertos: 4, rotulo: '🥈 QUADRA' },
+    { acertos: 3, rotulo: '🥉 TERNO' },
+    { acertos: 2, rotulo: 'DUQUE' }
   ]
 };
 
@@ -47,7 +53,9 @@ async function obterResultadoOficial(modalidade, dataBR, concursoNum) {
   if (cacheResultados.has(chave)) return cacheResultados.get(chave);
 
   // 1. Tenta achar na baseConcursos em memória primeiro (ultra-rápido, sem rede)
-  const base = modalidade === 'megasena' ? (window.baseConcursosMega || []) : (window.baseConcursosLoto || []);
+  const base = modalidade === 'megasena'
+    ? (window.baseConcursosMega || [])
+    : (modalidade === 'quina' ? (window.baseConcursosQuina || []) : (window.baseConcursosLoto || []));
   let encontrado = null;
   if (concursoNum) {
     const num = Number(String(concursoNum).replace(/\D/g, ''));
@@ -100,7 +108,7 @@ function combinacoes(n, k) {
 
 /** Jogo com mais dezenas equivale a várias apostas simples: soma todas as faixas. */
 function premioTotalDoBilhete(bilhete, resultado, acertos, faixas) {
-  const dezenasPorAposta = bilhete.modalidade === 'lotofacil' ? 15 : 6;
+  const dezenasPorAposta = bilhete.modalidade === 'lotofacil' ? 15 : (bilhete.modalidade === 'quina' ? 5 : 6);
   const n = (bilhete.dezenas || []).length;
   return faixas.reduce((total, f) => {
     const apostas = combinacoes(acertos, f.acertos) * combinacoes(n - acertos, dezenasPorAposta - f.acertos);
@@ -233,6 +241,10 @@ function montarRegistroConcurso(resultado) {
     registro.premioSena = premio(6);
     registro.premioQuina = premio(5);
     registro.premioQuadra = premio(4);
+  } else if (resultado.modalidade === 'quina') {
+    registro.premioQuina = premio(5);
+    registro.premioQuadra = premio(4);
+    registro.premioTerno = premio(3);
   } else {
     registro.premio15 = premio(15);
   }
