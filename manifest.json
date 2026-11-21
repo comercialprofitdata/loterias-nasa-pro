@@ -1,7 +1,7 @@
 {
   "id": "/loterias-nasa-pro/",
-  "name": "LotoPRO: Mega e Lotofácil",
-  "short_name": "LotoPRO",
+  "name": "LotoLab: Gerador e Loterias",
+  "short_name": "LotoLab",
   "description": "Gerador, conferência e bolão para Mega-Sena e Lotofácil com dados oficiais e controle de gastos. Não prevê resultados.",
   "start_url": "./index.html",
   "display": "standalone",

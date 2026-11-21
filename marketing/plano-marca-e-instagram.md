@@ -1,4 +1,4 @@
-# LotoPRO: Mega e Lotofácil — estratégia de marca, ASO, Instagram e vendas
+# LotoLab: Gerador e Loterias — estratégia de marca, ASO, Instagram e vendas
 
 ## Posicionamento
 **Jogue com ciência, não no achismo.**
@@ -15,7 +15,7 @@ A ciência é o nosso diferencial, com um limite claro: ela mostra fatos e ajuda
 | "Controle quanto você gasta" | Depoimento de ganhador ou prêmio como chamada |
 
 ## Perfil
-**Nome:** LotoPRO | Mega e Lotofácil 🎯
+**Nome:** LotoLab | Mega e Lotofácil 🎯
 
 **Bio:**
 Jogue com ciência, não no achismo 🎯
@@ -45,7 +45,7 @@ Sem promessa de ganho. +18
 ## Crescimento, em ordem
 1. **Primeiras 15–30 avaliações 5★ na Google Play (Prioridade #1):** Sem avaliações e com `0+ downloads`, o algoritmo da Play Store não ranqueia. Mobilizar testadores VIP, amigos e usuários da web para baixar pela loja e deixar avaliação real após conferir um resultado ou montar um bolão.
 2. **Motor Viral de Indicação (WhatsApp / Bolão):** Resumo de jogo e de bolão enviado pelo WhatsApp com o link direto da Google Play no rodapé.
-3. **Conteúdo compartilhável (Reels, Shorts e Carrosséis):** Mitos e contas de custo (os posts já prontos em `marketing/instagram/`) adaptados para vídeos curtos de 30s com CTA para buscar **LotoPRO** na Google Play.
+3. **Conteúdo compartilhável (Reels, Shorts e Carrosséis):** Mitos e contas de custo (os posts já prontos em `marketing/instagram/`) adaptados para vídeos curtos de 30s com CTA para buscar **LotoLab** na Google Play.
 4. **Campanha do lançamento (Web):** 3 meses pelo preço de 1 na versão Web (`loterias.pd.dev.br`), depois de testada com uma assinatura real.
 5. **Mega da Virada:** Organizar bolão e controlar gasto, sem usar o valor do prêmio como chamada.
 6. **Anúncios e Google Play Billing:** Só depois de revisão jurídica, público 18+ e validação orgânica dos primeiros 500–1.000 downloads.

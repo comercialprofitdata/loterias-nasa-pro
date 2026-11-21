@@ -14,11 +14,11 @@ function abrirTrocaDoApp() {
   tela.innerHTML = `
     <div class="troca-conteudo">
       <img src="./icon-192.png" alt="" width="88" height="88" />
-      <h1>O app agora é LotoPRO</h1>
+      <h1>O app agora é LotoLab</h1>
       <p>Esta versão foi substituída. Seus jogos deste aparelho continuam guardados no navegador.</p>
       <ol>
         <li>Baixe e instale o app novo.</li>
-        <li>Abra o LotoPRO e confira seus jogos.</li>
+        <li>Abra o LotoLab e confira seus jogos.</li>
         <li>Segure o ícone deste app antigo e toque em Desinstalar.</li>
       </ol>
       <a href="./download/MeuVolantePRO.apk" download>Baixar o app novo</a>

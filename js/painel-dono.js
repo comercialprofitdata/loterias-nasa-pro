@@ -108,7 +108,7 @@ async function renderizarVips(area) {
   }));
   area.querySelectorAll('[data-enviar]').forEach((botao) => botao.addEventListener('click', () => {
     const link = `${window.location.origin}/?vip=${encodeURIComponent(botao.dataset.enviar)}`;
-    const texto = `Seu acesso VIP ao LotoPRO: ${link}`;
+    const texto = `Seu acesso VIP ao LotoLab: ${link}`;
     window.open(`https://wa.me/?text=${encodeURIComponent(texto)}`, '_blank', 'noopener');
   }));
   area.querySelectorAll('[data-alterar]').forEach((botao) => botao.addEventListener('click', async () => {

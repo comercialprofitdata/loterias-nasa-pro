@@ -1,5 +1,5 @@
 // =========================================================================
-// LOTOPRO — PROGRAMA DOS 20 TESTADORES GOOGLE PLAY (CLOSED TEST)
+// LOTOLAB — PROGRAMA DOS 20 TESTADORES GOOGLE PLAY (CLOSED TEST)
 // =========================================================================
 (function () {
   'use strict';
@@ -175,8 +175,8 @@
 
   window.compartilharConviteTestadoresWhatsApp = function () {
     const texto = 
-      `*Convite Exclusivo - LotoPRO*\n\n` +
-      `Fui convidado para o grupo de testadores do *LotoPRO* antes do lançamento na Google Play Store!\n\n` +
+      `*Convite Exclusivo - LotoLab*\n\n` +
+      `Fui convidado para o grupo de testadores do *LotoLab* antes do lançamento na Google Play Store!\n\n` +
       `Se você aposta na Mega-Sena ou Lotofácil e quer testar as matrizes gratuitamente, garanta uma das 20 vagas:\n` +
       `${window.location.origin}${window.location.pathname}?programa=testadores`;
 

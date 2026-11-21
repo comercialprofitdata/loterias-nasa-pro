@@ -1,5 +1,5 @@
 // =========================================================================
-// LOTOPRO — ERROR TRAP & TELEMETRIA SILENCIOSA (OBSERVABILIDADE)
+// LOTOLAB — ERROR TRAP & TELEMETRIA SILENCIOSA (OBSERVABILIDADE)
 // =========================================================================
 (function () {
   'use strict';
@@ -74,7 +74,7 @@
   // API pública de auditoria no console
   window.telemetriaErros = function () {
     const logs = obterLogsSalvos();
-    console.group(`[LotoPRO] Log de Telemetria de Erros (${logs.length} registros)`);
+    console.group(`[LotoLab] Log de Telemetria de Erros (${logs.length} registros)`);
     if (logs.length === 0) {
       console.log('✅ Nenhum erro não tratado registrado nesta sessão/dispositivo.');
     } else {

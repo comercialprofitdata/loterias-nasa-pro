@@ -1,5 +1,5 @@
 // =========================================================================
-// LOTOPRO — SISTEMA DE FEEDBACK & AVALIAÇÃO DE TESTADORES VIP
+// LOTOLAB — SISTEMA DE FEEDBACK & AVALIAÇÃO DE TESTADORES VIP
 // =========================================================================
 (function () {
   'use strict';
@@ -223,7 +223,7 @@
     const rotulo = ROTULOS_NOTAS[notaSelecionada] || `Nota ${notaSelecionada}/5`;
 
     const texto = 
-      `*Feedback LotoPRO*\n\n` +
+      `*Feedback LotoLab*\n\n` +
       `👤 *Testador:* ${nome}\n` +
       `⭐ *Avaliação:* ${rotulo}\n\n` +
       `💡 *Sugestão de Melhoria:*\n"${mensagem || 'App muito bom! Parabéns pelo projeto!'}"\n\n` +
@@ -354,7 +354,7 @@
           </td>
           <td class="p-3.5 text-right">
             ${zapNum ? `
-              <button type="button" onclick="window.abrirWhatsApp ? window.abrirWhatsApp({ fone: '${zapNum}', texto: 'Olá, ${(f.nome || '').replace(/'/g, '')}! Vi sua sugestão no LotoPRO. Muito obrigado pelo feedback!' }) : (window.location.href = 'whatsapp://send?phone=55${zapNum}&text=Olá!')" class="px-2.5 py-1 bg-emerald-950 hover:bg-emerald-900 border border-emerald-800 text-emerald-300 rounded-lg text-[10px] font-bold inline-flex items-center gap-1 transition">
+              <button type="button" onclick="window.abrirWhatsApp ? window.abrirWhatsApp({ fone: '${zapNum}', texto: 'Olá, ${(f.nome || '').replace(/'/g, '')}! Vi sua sugestão no LotoLab. Muito obrigado pelo feedback!' }) : (window.location.href = 'whatsapp://send?phone=55${zapNum}&text=Olá!')" class="px-2.5 py-1 bg-emerald-950 hover:bg-emerald-900 border border-emerald-800 text-emerald-300 rounded-lg text-[10px] font-bold inline-flex items-center gap-1 transition">
                 <span>💬</span> <span>Responder</span>
               </button>
             ` : `

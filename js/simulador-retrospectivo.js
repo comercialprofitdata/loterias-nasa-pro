@@ -1,5 +1,5 @@
 // =========================================================================
-// LOTOPRO — SIMULADOR RETROSPECTIVO ("E SE EU TIVESSE JOGADO?")
+// LOTOLAB — SIMULADOR RETROSPECTIVO ("E SE EU TIVESSE JOGADO?")
 // =========================================================================
 (function () {
   'use strict';

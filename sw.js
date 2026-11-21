@@ -1,10 +1,10 @@
 // =========================================================================
-// LOTOPRO — SERVICE WORKER v1.0
+// LOTOLAB — SERVICE WORKER v1.0
 // Estratégia: Cache-First para assets estáticos, Network-First para dados
 // =========================================================================
 
-const CACHE_NAME = 'loterias-nasa-pro-v20261121.02';
-const CACHE_STATIC = 'nasa-static-v20261121.02';
+const CACHE_NAME = 'loterias-nasa-pro-v20261121.04';
+const CACHE_STATIC = 'nasa-static-v20261121.04';
 
 // Assets críticos para funcionamento offline
 const ASSETS_TO_CACHE = [
@@ -173,7 +173,7 @@ self.addEventListener('fetch', (event) => {
 // =========================================================================
 self.addEventListener('push', (event) => {
   const data = event.data ? event.data.json() : {};
-  const title = data.title || '🎯 LotoPRO';
+  const title = data.title || '🎯 LotoLab';
   const options = {
     body: data.body || 'Novo resultado disponível!',
     icon: './icon-192.png',
@@ -197,4 +197,4 @@ self.addEventListener('notificationclick', (event) => {
   );
 });
 
-console.log('[SW] LotoPRO Service Worker v1.0 — Operacional!');
+console.log('[SW] LotoLab Service Worker v1.0 — Operacional!');

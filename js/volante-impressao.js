@@ -1,5 +1,5 @@
 // =========================================================================
-// LOTOPRO — ESPELHO DE VOLANTE EM PDF / IMPRESSÃO A4 (LOTÉRICA)
+// LOTOLAB — ESPELHO DE VOLANTE EM PDF / IMPRESSÃO A4 (LOTÉRICA)
 // =========================================================================
 (function () {
   'use strict';
@@ -69,7 +69,7 @@
       <html lang="pt-BR">
       <head>
         <meta charset="utf-8">
-        <title>Espelho de Volantes - LotoPRO</title>
+        <title>Espelho de Volantes - LotoLab</title>
         <style>
           @page {
             size: A4 portrait;
@@ -148,7 +148,7 @@
         </div>
 
         <div class="header-doc">
-          <h2 style="margin: 0; font-size: 18px; letter-spacing: 1px;">LOTOPRO — ESPELHO DE VOLANTES</h2>
+          <h2 style="margin: 0; font-size: 18px; letter-spacing: 1px;">LOTOLAB — ESPELHO DE VOLANTES</h2>
           <p style="margin: 3px 0 0; font-size: 11px; color: #444;">
             Modalidade: <strong>${nomeMod}</strong> | Jogos: <strong>${jogos.length} ${contexto.planejamento ? (jogos.length === 1 ? 'palpite' : 'palpites') : (jogos.length === 1 ? 'jogo' : 'jogos')}</strong> | Emissão: ${dataHoje} às ${horaHoje}
           </p>
@@ -171,8 +171,8 @@
 
         <div class="footer-nota">
           ${contexto.planejamento
-            ? 'Palpite de planejamento do LotoPRO. Este documento não é comprovante nem registro de aposta oficial. Confirme a data, o concurso e a disponibilidade das apostas nos canais oficiais da CAIXA.'
-            : 'Espelho dos seus jogos, gerado pelo LotoPRO. Não é aposta nem comprovante: para apostar, marque os jogos nos volantes oficiais da CAIXA ou no terminal da lotérica. Nenhum jogo tem mais chance que outro.'}
+            ? 'Palpite de planejamento do LotoLab. Este documento não é comprovante nem registro de aposta oficial. Confirme a data, o concurso e a disponibilidade das apostas nos canais oficiais da CAIXA.'
+            : 'Espelho dos seus jogos, gerado pelo LotoLab. Não é aposta nem comprovante: para apostar, marque os jogos nos volantes oficiais da CAIXA ou no terminal da lotérica. Nenhum jogo tem mais chance que outro.'}
         </div>
 
         <script>

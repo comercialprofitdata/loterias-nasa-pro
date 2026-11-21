@@ -228,7 +228,7 @@
     aviso(`${novos.length} ${novos.length === 1 ? 'jogo do bolão salvo' : 'jogos do bolão salvos'} na Carteira (${destino.rotulo}).`, '✅');
   }
 
-  const RODAPE = 'Resumo feito no LotoPRO. Não é comprovante da CAIXA. O comprovante oficial é o recibo de cota emitido pela lotérica.';
+  const RODAPE = 'Resumo feito no LotoLab. Não é comprovante da CAIXA. O comprovante oficial é o recibo de cota emitido pela lotérica.';
 
   function cabecalhoTexto(bolao) {
     const regra = REGRAS_CAIXA[bolao.modalidade];

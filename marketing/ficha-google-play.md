@@ -1,17 +1,17 @@
-# Ficha da Google Play: LotoPRO: Mega e Lotofácil
+# Ficha da Google Play: LotoLab: Gerador e Loterias
 
 ## Textos (ASO Otimizado)
-**Nome do app (até 30):** LotoPRO: Mega e Lotofácil
+**Nome do app (até 30):** LotoLab: Gerador e Loterias
 
 **Descrição curta (até 80):** Gerador, conferência e bolão para Mega-Sena e Lotofácil com dados oficiais.
 
 **Descrição completa:**
 
-O LotoPRO é o seu gerador de jogos, conferidor de resultados oficiais e organizador de bolões para Mega-Sena e Lotofácil em um só lugar, com contas exatas e histórico de 500 concursos.
+O LotoLab é o seu gerador de jogos, conferidor de resultados oficiais e organizador de bolões para Mega-Sena e Lotofácil em um só lugar, com contas exatas e histórico de 500 concursos.
 
-Seja para montar seu volante de Mega-Sena, conferir sua aposta da Lotofácil na hora ou organizar um bolão com amigos sem precisar de planilha, o LotoPRO reúne tudo em uma interface rápida e fácil de usar.
+Seja para montar seu volante de Mega-Sena, conferir sua aposta da Lotofácil na hora ou organizar um bolão com amigos sem precisar de planilha, o LotoLab reúne tudo em uma interface rápida e fácil de usar.
 
-O QUE VOCÊ PODE FAZER NO LOTOPRO
+O QUE VOCÊ PODE FAZER NO LOTOLAB
 • Gerador de Mega-Sena e Lotofácil: gere combinações aleatórias, escolha suas dezenas fixas ou proibidas e visualize tudo no volante tradicional.
 • Conferir resultados oficiais: salve seus jogos na carteira e confira os acertos de cada concurso em tempo real com os sorteios oficiais.
 • Organizar Bolão em grupo: controle jogos, cotas, valor por participante e quem já pagou, com resumo pronto para enviar no WhatsApp. O app não recebe nem movimenta dinheiro.

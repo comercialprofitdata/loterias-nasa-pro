@@ -90,7 +90,7 @@ function generateUpgradeModalHTML() {
       <div class="modal-upgrade-topbar">
         <div class="modal-upgrade-badge">
           <span>🔬</span>
-          <span>PLANOS LotoPRO</span>
+          <span>PLANOS LotoLab</span>
         </div>
         <button id="btn-close-upgrade-modal" class="modal-upgrade-close" title="Fechar" type="button" onclick="fecharModalUpgrade(); tocarBeep('click');">
           ✕

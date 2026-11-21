@@ -46,21 +46,21 @@ const PLANOS: Record<string, Plano> = {
     // no sandbox.
     valor: 5.9,
     recorrente: false,
-    descricao: "LotoPRO — passe de 15 dias"
+    descricao: "LotoLab — passe de 15 dias"
   },
   mensal: {
     nome: "PRO Mensal",
     valor: 12.9,
     recorrente: true,
     ciclo: "MONTHLY",
-    descricao: "LotoPRO — assinatura mensal"
+    descricao: "LotoLab — assinatura mensal"
   },
   anual: {
     nome: "PRO Anual",
     valor: 97,
     recorrente: true,
     ciclo: "YEARLY",
-    descricao: "LotoPRO — assinatura anual"
+    descricao: "LotoLab — assinatura anual"
   }
 }
 
@@ -77,7 +77,7 @@ async function chamarAsaas(caminho: string, metodo: string, corpo?: unknown) {
     method: metodo,
     headers: {
       "Content-Type": "application/json",
-      "User-Agent": "LotoPRO",
+      "User-Agent": "LotoLab",
       access_token: ASAAS_API_KEY
     },
     body: corpo ? JSON.stringify(corpo) : undefined

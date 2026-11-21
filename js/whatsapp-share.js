@@ -366,7 +366,7 @@ Sorteios são aleatórios: nenhum jogo tem mais chance que outro.${avisoPlanejam
 
 ${linhasJogos}
 
-*LotoPRO* — Organize e confira seus jogos:
+*LotoLab* — Organize e confira seus jogos:
 👉 https://loterias.pd.dev.br/`;
 
     window.abrirWhatsApp({ texto: textoLote });
@@ -391,7 +391,7 @@ Sorteios são aleatórios: nenhum jogo tem mais chance que outro.${avisoPlanejam
 🎯 *Dezenas:*
 👉 *${dezenasFormatadas}*
 
-*LotoPRO* — Organize e confira seus jogos:
+*LotoLab* — Organize e confira seus jogos:
 👉 https://loterias.pd.dev.br/`;
 
     window.abrirWhatsApp({ texto: textoUnico });
