@@ -1,4 +1,4 @@
-# 📋 Gabarito Oficial de Publicação no Instagram — Meu Volante PRO
+# 📋 Gabarito Oficial de Publicação no Instagram — LotoPRO
 
 Este documento é o nosso padrão oficial para divulgação rápida dos resultados da **Mega-Sena** e **Lotofácil** nas redes sociais (Instagram Feed, Stories e WhatsApp).
 
@@ -28,7 +28,7 @@ Estimativa de Prêmio: R$ [VALOR_ESTIMADO] Milhões!
 📲 Audite suas apostas e gere seus jogos calibrados com matemática:
 👉 https://loterias.pd.dev.br (Link na Bio)
 
-#MeuVolantePRO #MegaSena #ResultadoMegaSena #LoteriasCaixa #Matematica #Probabilidade #JogoResponsavel #Loterias
+#LotoPRO #MegaSena #ResultadoMegaSena #LoteriasCaixa #Matematica #Probabilidade #JogoResponsavel #Loterias
 ```
 
 ---
@@ -61,7 +61,7 @@ Estimativa de Prêmio: R$ [VALOR_ESTIMADO] Milhões!
 📲 Não jogue no achismo: monte e confira seus jogos na nossa plataforma:
 👉 https://loterias.pd.dev.br (Link na Bio)
 
-#MeuVolantePRO #Lotofacil #ResultadoLotofacil #LoteriasCaixa #Matematica #JogoResponsavel #Loterias
+#LotoPRO #Lotofacil #ResultadoLotofacil #LoteriasCaixa #Matematica #JogoResponsavel #Loterias
 ```
 
 ---
@@ -73,4 +73,4 @@ O template padrão em HTML já está em `marketing/instagram/template-gabarito.h
 ```powershell
 Start-Process -FilePath "C:\Program Files\Google\Chrome\Application\chrome.exe" -ArgumentList '--headless=new', '--screenshot="marketing\instagram\resultado-novo.png"', '--window-size=1080,1350', '"file:///C:/Users/vitorio.neto/Documents/Vitório PC/Arquivos BERT/Loterias Nasa/marketing/instagram/template-gabarito.html"' -Wait
 ```
-A imagem sai pronta, formatada e com os gradientes do Meu Volante PRO.
+A imagem sai pronta, formatada e com os gradientes do LotoPRO.

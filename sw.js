@@ -1,5 +1,5 @@
 // =========================================================================
-// MEU VOLANTE PRO — SERVICE WORKER v1.0
+// LOTOPRO — SERVICE WORKER v1.0
 // Estratégia: Cache-First para assets estáticos, Network-First para dados
 // =========================================================================
 
@@ -173,7 +173,7 @@ self.addEventListener('fetch', (event) => {
 // =========================================================================
 self.addEventListener('push', (event) => {
   const data = event.data ? event.data.json() : {};
-  const title = data.title || '🎯 Meu Volante PRO';
+  const title = data.title || '🎯 LotoPRO';
   const options = {
     body: data.body || 'Novo resultado disponível!',
     icon: './icon-192.png',
@@ -197,4 +197,4 @@ self.addEventListener('notificationclick', (event) => {
   );
 });
 
-console.log('[SW] Meu Volante PRO Service Worker v1.0 — Operacional!');
+console.log('[SW] LotoPRO Service Worker v1.0 — Operacional!');

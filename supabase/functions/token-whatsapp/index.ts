@@ -31,7 +31,7 @@ async function enviar(telefone: string) {
   const envio = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ chatId: `55${telefone}@c.us`, message: `Seu código do Meu Volante PRO é ${codigo}. Vale por 10 minutos.` })
+    body: JSON.stringify({ chatId: `55${telefone}@c.us`, message: `Seu código do LotoPRO é ${codigo}. Vale por 10 minutos.` })
   })
   if (!envio.ok) return responder({ erro: "Não foi possível enviar o código." }, 502)
 
