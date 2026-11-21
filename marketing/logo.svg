@@ -1,50 +1,41 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
   <defs>
-    <radialGradient id="bg" cx="50%" cy="50%" r="70%">
-      <stop offset="0%" stop-color="#0f242c"/>
-      <stop offset="70%" stop-color="#0b1220"/>
-      <stop offset="100%" stop-color="#070b14"/>
-    </radialGradient>
-    <radialGradient id="dotOn" cx="35%" cy="30%" r="70%">
-      <stop offset="0%" stop-color="#6ee7b7"/>
-      <stop offset="55%" stop-color="#10b981"/>
+    <linearGradient id="liq" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34D399"/>
       <stop offset="100%" stop-color="#059669"/>
-    </radialGradient>
+    </linearGradient>
+    <linearGradient id="glass" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E2E8F0" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#94A3B8" stop-opacity="0.55"/>
+    </linearGradient>
   </defs>
-  <rect width="512" height="512" rx="96" fill="url(#bg)"/>
-  <rect x="48" y="48" width="416" height="416" rx="52" fill="#0f172a" fill-opacity="0.55" stroke="#34d399" stroke-opacity="0.25" stroke-width="3"/>
-  <line x1="256" y1="66" x2="256" y2="446" stroke="#94a3b8" stroke-opacity="0.18" stroke-width="2"/>
-  <line x1="66" y1="256" x2="446" y2="256" stroke="#94a3b8" stroke-opacity="0.18" stroke-width="2"/>
-  <!-- L (top-left) -->
-  <g transform="translate(88, 76)">
-    <circle cx="24" cy="20" r="14" fill="url(#dotOn)"/><circle cx="68" cy="20" r="14" fill="#162032" stroke="#26354d" stroke-width="2"/><circle cx="112" cy="20" r="14" fill="#162032" stroke="#26354d" stroke-width="2"/>
-    <circle cx="24" cy="56" r="14" fill="url(#dotOn)"/><circle cx="68" cy="56" r="14" fill="#162032" stroke="#26354d" stroke-width="2"/><circle cx="112" cy="56" r="14" fill="#162032" stroke="#26354d" stroke-width="2"/>
-    <circle cx="24" cy="92" r="14" fill="url(#dotOn)"/><circle cx="68" cy="92" r="14" fill="#162032" stroke="#26354d" stroke-width="2"/><circle cx="112" cy="92" r="14" fill="#162032" stroke="#26354d" stroke-width="2"/>
-    <circle cx="24" cy="128" r="14" fill="url(#dotOn)"/><circle cx="68" cy="128" r="14" fill="#162032" stroke="#26354d" stroke-width="2"/><circle cx="112" cy="128" r="14" fill="#162032" stroke="#26354d" stroke-width="2"/>
-    <circle cx="24" cy="164" r="14" fill="url(#dotOn)"/><circle cx="68" cy="164" r="14" fill="url(#dotOn)"/><circle cx="112" cy="164" r="14" fill="url(#dotOn)"/>
+
+  <!-- Volante de Loteria (base esquerda, fundo branco com borda escura para destacar em qualquer tema) -->
+  <g transform="translate(8, 56) rotate(-18 32 32)">
+    <rect x="4" y="6" width="54" height="60" rx="6" fill="#FFFFFF" stroke="#0F172A" stroke-width="3"/>
+    <rect x="4" y="6" width="54" height="15" rx="4" fill="#10B981"/>
+    <rect x="11" y="27" width="10" height="10" rx="2" fill="#E2E8F0" stroke="#334155" stroke-width="1.5"/>
+    <rect x="26" y="27" width="10" height="10" rx="2" fill="#10B981"/>
+    <rect x="41" y="27" width="10" height="10" rx="2" fill="#E2E8F0" stroke="#334155" stroke-width="1.5"/>
+    <rect x="11" y="42" width="10" height="10" rx="2" fill="#E2E8F0" stroke="#334155" stroke-width="1.5"/>
+    <rect x="26" y="42" width="10" height="10" rx="2" fill="#E2E8F0" stroke="#334155" stroke-width="1.5"/>
+    <rect x="41" y="42" width="10" height="10" rx="2" fill="#10B981"/>
   </g>
-  <!-- O (top-right) -->
-  <g transform="translate(288, 76)">
-    <circle cx="24" cy="20" r="14" fill="url(#dotOn)"/><circle cx="68" cy="20" r="14" fill="url(#dotOn)"/><circle cx="112" cy="20" r="14" fill="url(#dotOn)"/>
-    <circle cx="24" cy="56" r="14" fill="url(#dotOn)"/><circle cx="68" cy="56" r="14" fill="#162032" stroke="#26354d" stroke-width="2"/><circle cx="112" cy="56" r="14" fill="url(#dotOn)"/>
-    <circle cx="24" cy="92" r="14" fill="url(#dotOn)"/><circle cx="68" cy="92" r="14" fill="#162032" stroke="#26354d" stroke-width="2"/><circle cx="112" cy="92" r="14" fill="url(#dotOn)"/>
-    <circle cx="24" cy="128" r="14" fill="url(#dotOn)"/><circle cx="68" cy="128" r="14" fill="#162032" stroke="#26354d" stroke-width="2"/><circle cx="112" cy="128" r="14" fill="url(#dotOn)"/>
-    <circle cx="24" cy="164" r="14" fill="url(#dotOn)"/><circle cx="68" cy="164" r="14" fill="url(#dotOn)"/><circle cx="112" cy="164" r="14" fill="url(#dotOn)"/>
+
+  <!-- Gota esmeralda caindo no volante -->
+  <path d="M56 54 C56 54 47 68 47 75 A9 9 0 0 0 65 75 C65 68 56 54 56 54 Z" fill="url(#liq)" stroke="#065F46" stroke-width="2"/>
+
+  <!-- Frasco Erlenmeyer inclinado (topo direita) -->
+  <g transform="translate(68, 42) rotate(-122)">
+    <path d="M-10 -44 L10 -44 L10 -22 L34 26 A8 8 0 0 1 27 38 L-27 38 A8 8 0 0 1 -34 26 L-10 -22 Z" fill="url(#glass)" stroke="#0F172A" stroke-width="3.5" stroke-linejoin="round"/>
+    <rect x="-14" y="-48" width="28" height="6" rx="3" fill="#CBD5E1" stroke="#0F172A" stroke-width="2.5"/>
+    <path d="M-16 0 L24 0 L32 24 A6 6 0 0 1 26 34 L-26 34 A6 6 0 0 1 -32 24 Z" fill="url(#liq)" opacity="0.92"/>
   </g>
-  <!-- T (bottom-left) -->
-  <g transform="translate(88, 272)">
-    <circle cx="24" cy="20" r="14" fill="url(#dotOn)"/><circle cx="68" cy="20" r="14" fill="url(#dotOn)"/><circle cx="112" cy="20" r="14" fill="url(#dotOn)"/>
-    <circle cx="24" cy="56" r="14" fill="#162032" stroke="#26354d" stroke-width="2"/><circle cx="68" cy="56" r="14" fill="url(#dotOn)"/><circle cx="112" cy="56" r="14" fill="#162032" stroke="#26354d" stroke-width="2"/>
-    <circle cx="24" cy="92" r="14" fill="#162032" stroke="#26354d" stroke-width="2"/><circle cx="68" cy="92" r="14" fill="url(#dotOn)"/><circle cx="112" cy="92" r="14" fill="#162032" stroke="#26354d" stroke-width="2"/>
-    <circle cx="24" cy="128" r="14" fill="#162032" stroke="#26354d" stroke-width="2"/><circle cx="68" cy="128" r="14" fill="url(#dotOn)"/><circle cx="112" cy="128" r="14" fill="#162032" stroke="#26354d" stroke-width="2"/>
-    <circle cx="24" cy="164" r="14" fill="#162032" stroke="#26354d" stroke-width="2"/><circle cx="68" cy="164" r="14" fill="url(#dotOn)"/><circle cx="112" cy="164" r="14" fill="#162032" stroke="#26354d" stroke-width="2"/>
-  </g>
-  <!-- O (bottom-right) -->
-  <g transform="translate(288, 272)">
-    <circle cx="24" cy="20" r="14" fill="url(#dotOn)"/><circle cx="68" cy="20" r="14" fill="url(#dotOn)"/><circle cx="112" cy="20" r="14" fill="url(#dotOn)"/>
-    <circle cx="24" cy="56" r="14" fill="url(#dotOn)"/><circle cx="68" cy="56" r="14" fill="#162032" stroke="#26354d" stroke-width="2"/><circle cx="112" cy="56" r="14" fill="url(#dotOn)"/>
-    <circle cx="24" cy="92" r="14" fill="url(#dotOn)"/><circle cx="68" cy="92" r="14" fill="#162032" stroke="#26354d" stroke-width="2"/><circle cx="112" cy="92" r="14" fill="url(#dotOn)"/>
-    <circle cx="24" cy="128" r="14" fill="url(#dotOn)"/><circle cx="68" cy="128" r="14" fill="#162032" stroke="#26354d" stroke-width="2"/><circle cx="112" cy="128" r="14" fill="url(#dotOn)"/>
-    <circle cx="24" cy="164" r="14" fill="url(#dotOn)"/><circle cx="68" cy="164" r="14" fill="url(#dotOn)"/><circle cx="112" cy="164" r="14" fill="url(#dotOn)"/>
-  </g>
+
+  <!-- Bolinhas coloridas de loteria (alto contraste para 16x16) -->
+  <circle cx="88" cy="24" r="10" fill="#F59E0B" stroke="#FFFFFF" stroke-width="2"/>
+  <circle cx="106" cy="36" r="10" fill="#10B981" stroke="#FFFFFF" stroke-width="2"/>
+  <circle cx="84" cy="46" r="10" fill="#2563EB" stroke="#FFFFFF" stroke-width="2"/>
+  <circle cx="104" cy="58" r="10" fill="#8B5CF6" stroke="#FFFFFF" stroke-width="2"/>
+  <circle cx="66" cy="48" r="9" fill="#F97316" stroke="#FFFFFF" stroke-width="2"/>
 </svg>

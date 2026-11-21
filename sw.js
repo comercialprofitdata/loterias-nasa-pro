@@ -3,14 +3,15 @@
 // Estratégia: Cache-First para assets estáticos, Network-First para dados
 // =========================================================================
 
-const CACHE_NAME = 'loterias-nasa-pro-v20261121.05';
-const CACHE_STATIC = 'nasa-static-v20261121.05';
+const CACHE_NAME = 'loterias-nasa-pro-v20261121.06';
+const CACHE_STATIC = 'nasa-static-v20261121.06';
 
 // Assets críticos para funcionamento offline
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
   './manifest.json',
+  './favicon.svg',
   './icon-192.png',
   './icon-512.png',
   './supabase/config.js',
