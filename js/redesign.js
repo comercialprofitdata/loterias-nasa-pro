@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
   createBottomTabBar();
   createSimplifiedHome();
   criarDrawerPerfilConfig();
+  criarBannerConversaoWeb();
 
   configurarSubAbasGerar();
   configurarToggleGradeVolante();
@@ -70,7 +71,7 @@ function criarTopbarUnificada() {
   topbar.innerHTML = `
     <!-- Logo Compacto -->
     <button type="button" class="nasa-brand-compact" onclick="activateTab('home'); tocarBeep('click');" title="Ir para o Início">
-      <div class="nasa-brand-icon"><img src="./icon-192.png" alt="" width="32" height="32" style="border-radius:8px" /></div>
+      <div class="nasa-brand-icon"><img src="./marketing/brand/lotolab-escuro-192.png?v=2" alt="" width="32" height="32" style="border-radius:8px" /></div>
       <div class="nasa-brand-text">
         <span class="nasa-brand-title">LotoLab</span>
         
@@ -1054,19 +1055,28 @@ function criarDrawerPerfilConfig() {
         </button>
               </div>
 
-<!-- Preferências Rápidas: Som, Tema e Atualizar Caixa -->
+<!-- Preferências Rápidas: Tema, Som e Atualizar Caixa -->
       <div class="space-y-2 pt-2 border-t border-slate-800">
         <span class="text-[10px] font-mono uppercase tracking-wider text-slate-400 font-bold block">Ajustes do Aplicativo</span>
-        <div class="grid grid-cols-2 gap-2">
+        <div class="grid grid-cols-3 gap-2">
+          <button type="button" onclick="alternarTema(); atualizarDadosDrawer();" class="p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs font-bold text-slate-200 flex flex-col items-center gap-1">
+            <span id="drawer-theme-icon" class="text-base">☀️</span>
+            <span id="drawer-theme-label">Modo Claro</span>
+          </button>
           <button type="button" onclick="alternarAudio(); atualizarDadosDrawer();" class="p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs font-bold text-slate-200 flex flex-col items-center gap-1">
             <span id="drawer-audio-icon" class="text-base">🔊</span>
             <span>Sons</span>
           </button>
           <button type="button" onclick="fecharDrawerPerfil(); sincronizarConcursos();" class="p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs font-bold text-emerald-400 flex flex-col items-center gap-1">
+            <span class="text-base">🔄</span>
             <span>Sincronizar</span>
           </button>
         </div>
-              </div>
+        <a id="drawer-link-playstore" href="https://loterias.pd.dev.br/baixar.html" target="_blank" rel="noopener" class="w-full p-2.5 rounded-xl bg-emerald-950/40 hover:bg-emerald-950/60 border border-emerald-500/40 text-xs font-bold text-emerald-300 flex items-center justify-between transition">
+          <span>📲 Baixar app na Google Play</span>
+          <span class="text-emerald-400 text-[10px]">Instalar →</span>
+        </a>
+      </div>
 
       <!-- Botão Painel Admin (visível apenas para o fundador/admin) -->
       <div id="drawer-admin-row" class="hidden pt-3">
@@ -1125,6 +1135,53 @@ function criarDrawerPerfilConfig() {
   `;
 
   document.body.appendChild(backdrop);
+}
+
+function criarBannerConversaoWeb() {
+  const home = document.getElementById('view-home');
+  if (!home || document.getElementById('lotolab-conversao-banner')) return;
+
+  try {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('acao') === 'cadastro') {
+      setTimeout(() => {
+        if (typeof window.abrirModalAuth === 'function') window.abrirModalAuth();
+      }, 450);
+    }
+  } catch (_) {}
+
+  const isStandalone = window.matchMedia?.('(display-mode: standalone)').matches || window.navigator.standalone === true;
+  const isVisitante = typeof usuarioSessao === 'undefined' || !usuarioSessao || usuarioSessao.tipo === 'visitante';
+  const dispensado = localStorage.getItem('lotolab_banner_dispensado') === '1';
+
+  const linkDrawerPlay = document.getElementById('drawer-link-playstore');
+  if (linkDrawerPlay && isStandalone) linkDrawerPlay.classList.add('hidden');
+
+  if (dispensado || (isStandalone && !isVisitante)) return;
+
+  const banner = document.createElement('div');
+  banner.id = 'lotolab-conversao-banner';
+  banner.className = 'mb-3 p-3 rounded-2xl bg-gradient-to-r from-emerald-950/70 via-slate-900 to-cyan-950/60 border border-emerald-500/30 flex flex-wrap items-center justify-between gap-2.5 shadow-lg';
+
+  const texto = !isStandalone && isVisitante
+    ? 'Baixe o app na Google Play ou crie sua conta grátis para salvar seus jogos e tokens do Quiz.'
+    : !isStandalone
+      ? 'Tenha o LotoLab direto no seu celular pela Google Play Store.'
+      : 'Crie sua conta grátis para salvar seus jogos, tokens do Quiz e sincronizar tudo.';
+
+  banner.innerHTML = `
+    <div class="flex-1 min-w-[200px]">
+      <div class="text-xs font-black text-white">🎯 LotoLab no celular e na sua conta</div>
+      <div class="text-[11px] text-slate-300 leading-snug mt-0.5">${texto}</div>
+    </div>
+    <div class="flex items-center gap-2 flex-wrap">
+      ${!isStandalone ? '<a href="https://loterias.pd.dev.br/baixar.html" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-[11px] transition">📲 Baixar App</a>' : ''}
+      ${isVisitante ? '<button type="button" onclick="if (typeof abrirModalAuth === \'function\') abrirModalAuth();" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-emerald-500/40 font-bold text-[11px] transition">👤 Criar Conta</button>' : ''}
+      <button type="button" aria-label="Fechar aviso" onclick="localStorage.setItem('lotolab_banner_dispensado','1'); this.closest('#lotolab-conversao-banner')?.remove();" class="w-7 h-7 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white text-xs font-bold flex items-center justify-center">✕</button>
+    </div>
+  `;
+
+  home.insertBefore(banner, home.firstChild);
 }
 
 function abrirModalMestresLoteria() {
@@ -1193,7 +1250,10 @@ function atualizarDadosDrawer() {
   }
 
   if (themeIcon) {
-    themeIcon.innerText = document.documentElement.classList.contains('dark') ? '🌙' : '☀️';
+    const isDark = document.documentElement.classList.contains('dark');
+    themeIcon.innerText = isDark ? '☀️' : '🌙';
+    const themeLabel = document.getElementById('drawer-theme-label');
+    if (themeLabel) themeLabel.innerText = isDark ? 'Modo Claro' : 'Modo Escuro';
   }
   if (audioIcon && typeof audioAtivo !== 'undefined') {
     audioIcon.innerText = audioAtivo ? '🔊' : '🔇';

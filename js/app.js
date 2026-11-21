@@ -300,6 +300,14 @@
 
       const drawerThemeIcon = document.getElementById('drawer-theme-icon');
       if (drawerThemeIcon) drawerThemeIcon.innerText = isDark ? '☀️' : '🌙';
+      const drawerThemeLabel = document.getElementById('drawer-theme-label');
+      if (drawerThemeLabel) drawerThemeLabel.innerText = isDark ? 'Modo Claro' : 'Modo Escuro';
+
+      document.querySelectorAll('.nasa-brand-icon img').forEach((img) => {
+        img.src = isDark
+          ? './marketing/brand/lotolab-escuro-192.png?v=2'
+          : './marketing/brand/lotolab-192.png?v=2';
+      });
     }
 
     function alternarTema() {

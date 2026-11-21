@@ -494,7 +494,6 @@ function ligarEntradaPlanos() {
 function iniciarFluxoJogo() {
   ligarEntradaPlanos();
   ligarTemaDaModalidade();
-  fixarTemaEscuro();
   limparFechar();
   ocultarLoginsIndisponiveis();
   // Começa com um jogo, sem aviso nem som na abertura.
