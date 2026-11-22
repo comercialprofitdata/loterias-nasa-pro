@@ -22,7 +22,7 @@ const UPGRADE_CONFIG = {
     {
       id: 'mensal',
       name: 'Mensal',
-      price: 'R$ 12,90',
+      price: 'R$ 6,90',
       period: '/mês · recorrente',
       badge: '',
       icon: '🎯',
@@ -30,25 +30,25 @@ const UPGRADE_CONFIG = {
       featured: true,
       cta: 'Assinar mensal',
       features: [
-        'Geração sem limite e matriz 4x4',
-        'Todos os indicadores do jogo',
-        'Fechamentos sem limite',
+        'Zero anúncios e geração sem limite',
+        'Todos os indicadores calibrados e matriz 4x4',
+        'Fechamentos e bolões sem limite',
         'Conferência instantânea e carteira em nuvem'
       ]
     },
     {
       id: 'anual',
-      name: 'Anual',
-      price: 'R$ 97',
-      period: '/ano · R$ 8,08/mês',
-      badge: 'ECONOMIZE 37%',
+      name: 'Anual (Lançamento)',
+      price: 'R$ 19,90',
+      period: '/ano · R$ 1,66/mês',
+      badge: 'OFERTA · 76% OFF',
       icon: '👑',
       color: 'amber',
-      cta: 'Assinar anual',
+      cta: 'Aproveitar R$ 19,90/ano',
       features: [
         'Todos os recursos do plano PRO liberados',
-        'Economia de 37% em relação ao mensal',
-        'Carteira e bolões sem limite'
+        'Zero anúncios + jogos e bolões ilimitados',
+        'Alertas automáticos de sorteio'
       ]
     }
   ]

@@ -50,17 +50,17 @@ const PLANOS: Record<string, Plano> = {
   },
   mensal: {
     nome: "PRO Mensal",
-    valor: 12.9,
+    valor: 6.9,
     recorrente: true,
     ciclo: "MONTHLY",
     descricao: "LotoLab — assinatura mensal"
   },
   anual: {
     nome: "PRO Anual",
-    valor: 97,
+    valor: 19.9,
     recorrente: true,
     ciclo: "YEARLY",
-    descricao: "LotoLab — assinatura anual"
+    descricao: "LotoLab — assinatura anual (lançamento)"
   }
 }
 

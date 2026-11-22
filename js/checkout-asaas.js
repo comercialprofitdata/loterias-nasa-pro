@@ -4,8 +4,8 @@
 
 const CHECKOUT_PLANOS = {
   avulso: { nome: 'Passe de 15 dias', preco: 'R$ 5,90', periodo: 'pagamento único', renovacao: 'Pagamento único. Não renova sozinho: o acesso termina depois de 15 dias.' },
-  mensal: { nome: 'Mensal', preco: 'R$ 12,90', periodo: 'por mês', renovacao: 'Renova todo mês até você cancelar. No Pix chega uma nova cobrança a cada mês; no cartão, a cobrança é automática.' },
-  anual: { nome: 'Anual', preco: 'R$ 97', periodo: 'por ano · equivale a R$ 8,08/mês', renovacao: 'Renova todo ano até você cancelar. No Pix chega uma nova cobrança a cada ano; no cartão, a cobrança é automática.' }
+  mensal: { nome: 'Mensal', preco: 'R$ 6,90', periodo: 'por mês', renovacao: 'Renova todo mês até você cancelar. No Pix chega uma nova cobrança a cada mês; no cartão, a cobrança é automática.' },
+  anual: { nome: 'Anual (Oferta de Lançamento)', preco: 'R$ 19,90', periodo: 'por ano · equivale a R$ 1,66/mês', renovacao: 'Renova todo ano até você cancelar. No Pix chega uma nova cobrança a cada ano; no cartão, a cobrança é automática.' }
 };
 
 /** Valida CPF pelos dígitos verificadores, para não criar cliente inválido no gateway. */

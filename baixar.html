@@ -85,11 +85,14 @@
       var btn = document.getElementById('btn-play');
       var playUrl = 'https://play.google.com/store/apps/details?id=br.dev.pd.meuvolante';
       if (isAndroid) {
+        var marketUrl = 'market://details?id=br.dev.pd.meuvolante';
         var intentUrl = 'intent://details?id=br.dev.pd.meuvolante#Intent;scheme=market;package=com.android.vending;S.browser_fallback_url=' + encodeURIComponent(playUrl) + ';end';
         btn.href = intentUrl;
         setTimeout(function () {
-          try { window.location.href = intentUrl; } catch (_) {}
-        }, 350);
+          try { window.location.href = marketUrl; } catch (_) {
+            try { window.location.href = intentUrl; } catch (_) {}
+          }
+        }, 250);
       }
     })();
   </script>
