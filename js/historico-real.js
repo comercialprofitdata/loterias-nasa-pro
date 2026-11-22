@@ -15,11 +15,14 @@ const HISTORICO_CONFIG = {
   validadeCacheMs: 4 * 60 * 60 * 1000 // 4 horas para invalidar rápido após sorteios
 };
 
-// Base publicada com o site, gerada direto da API da Caixa.
+// Base publicada com o site, gerada direto da API da Caixa (todas as 5 loterias).
 const SEED_INICIAL_MEGASENA = window.HISTORICO_OFICIAL?.megasena || [];
 const SEED_INICIAL_LOTOFACIL = window.HISTORICO_OFICIAL?.lotofacil || [];
+const SEED_INICIAL_QUINA = window.HISTORICO_OFICIAL?.quina || [];
+const SEED_INICIAL_LOTOMANIA = window.HISTORICO_OFICIAL?.lotomania || [];
+const SEED_INICIAL_DIADESORTE = window.HISTORICO_OFICIAL?.diadesorte || [];
 
-// Inicialização imediata com os últimos sorteios reais
+// Inicialização imediata com os últimos sorteios reais (funciona 100% offline nas 5 loterias)
 if (typeof baseConcursosMega === 'undefined' || !baseConcursosMega || baseConcursosMega.length < 10) {
   baseConcursosMega = [...SEED_INICIAL_MEGASENA];
 }
@@ -28,18 +31,18 @@ if (typeof baseConcursosLoto === 'undefined' || !baseConcursosLoto || baseConcur
 }
 window.baseConcursosMega = baseConcursosMega;
 window.baseConcursosLoto = baseConcursosLoto;
-if (typeof baseConcursosQuina === 'undefined' || !Array.isArray(baseConcursosQuina)) {
-  window.baseConcursosQuina = [];
+if (typeof baseConcursosQuina === 'undefined' || !Array.isArray(baseConcursosQuina) || baseConcursosQuina.length < 10) {
+  window.baseConcursosQuina = [...SEED_INICIAL_QUINA];
 } else {
   window.baseConcursosQuina = baseConcursosQuina;
 }
-if (typeof baseConcursosLotomania === 'undefined' || !Array.isArray(baseConcursosLotomania)) {
-  window.baseConcursosLotomania = [];
+if (typeof baseConcursosLotomania === 'undefined' || !Array.isArray(baseConcursosLotomania) || baseConcursosLotomania.length < 10) {
+  window.baseConcursosLotomania = [...SEED_INICIAL_LOTOMANIA];
 } else {
   window.baseConcursosLotomania = baseConcursosLotomania;
 }
-if (typeof baseConcursosDiaDeSorte === 'undefined' || !Array.isArray(baseConcursosDiaDeSorte)) {
-  window.baseConcursosDiaDeSorte = [];
+if (typeof baseConcursosDiaDeSorte === 'undefined' || !Array.isArray(baseConcursosDiaDeSorte) || baseConcursosDiaDeSorte.length < 10) {
+  window.baseConcursosDiaDeSorte = [...SEED_INICIAL_DIADESORTE];
 } else {
   window.baseConcursosDiaDeSorte = baseConcursosDiaDeSorte;
 }

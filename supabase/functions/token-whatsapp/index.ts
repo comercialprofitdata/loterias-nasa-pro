@@ -15,7 +15,11 @@ const MAX_TENTATIVAS = 5
 const responder = (corpo: unknown, status = 200) => new Response(JSON.stringify(corpo), { status, headers: CORS })
 
 async function resumo(telefone: string, codigo: string) {
-  const dados = new TextEncoder().encode(`${telefone}:${codigo}:${Deno.env.get("TOKEN_PEPPER")}`)
+  const pepper = Deno.env.get("TOKEN_PEPPER")
+  if (!pepper || pepper.length < 16) {
+    throw new Error("TOKEN_PEPPER ausente ou curto no ambiente")
+  }
+  const dados = new TextEncoder().encode(`${telefone}:${codigo}:${pepper}`)
   const hash = await crypto.subtle.digest("SHA-256", dados)
   return [...new Uint8Array(hash)].map((b) => b.toString(16).padStart(2, "0")).join("")
 }
@@ -61,6 +65,13 @@ async function conferir(telefone: string, codigo: string) {
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: CORS })
   if (req.method !== "POST") return responder({ erro: "Método inválido." }, 405)
+  const origin = req.headers.get("Origin") || ""
+  if (origin && origin !== "https://loterias.pd.dev.br") {
+    return responder({ erro: "Origem não autorizada." }, 403)
+  }
+  if (!Deno.env.get("TOKEN_PEPPER")) {
+    return responder({ erro: "Serviço de verificação indisponível." }, 503)
+  }
   const { acao, telefone, codigo } = await req.json().catch(() => ({}))
   if (!/^\d{2}9\d{8}$/.test(String(telefone))) return responder({ erro: "Celular inválido." }, 400)
   if (acao === "enviar") return enviar(telefone)

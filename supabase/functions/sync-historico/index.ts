@@ -22,7 +22,8 @@ const CORS = {
 }
 
 const BASE = "https://servicebus2.caixa.gov.br/portaldeloterias/api"
-const MODALIDADES = ["megasena", "lotofacil"]
+const MODALIDADES = ["megasena", "lotofacil", "quina", "lotomania", "diadesorte"]
+const CRON_SECRET = Deno.env.get("CRON_SECRET") || Deno.env.get("PUSH_CRON_SECRET") || ""
 
 // Requisições simultâneas ao portal da Caixa. Acima disso o portal começa
 // a recusar conexões.
@@ -176,6 +177,17 @@ async function sincronizar(modalidade: string, quantidade: number, alvo: number)
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: CORS })
+  }
+
+  // Exige autorização de cron ou service_role para evitar abuso externo da API
+  const authHeader = (req.headers.get("Authorization") || "").replace(/^Bearer\s+/i, "").trim()
+  const autorizado = (CRON_SECRET && authHeader === CRON_SECRET)
+    || (SUPABASE_SERVICE_ROLE_KEY && authHeader === SUPABASE_SERVICE_ROLE_KEY)
+  if (!autorizado) {
+    return new Response(JSON.stringify({ erro: "Não autorizado." }), {
+      status: 401,
+      headers: { ...CORS, "Content-Type": "application/json" }
+    })
   }
 
   const url = new URL(req.url)

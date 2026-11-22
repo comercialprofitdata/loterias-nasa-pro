@@ -3,8 +3,8 @@
 // Estratégia: Cache-First para assets estáticos, Network-First para dados
 // =========================================================================
 
-const CACHE_NAME = 'loterias-nasa-pro-v20261122.08';
-const CACHE_STATIC = 'nasa-static-v20261122.08';
+const CACHE_NAME = 'loterias-nasa-pro-v20261122.09';
+const CACHE_STATIC = 'nasa-static-v20261122.09';
 
 // Assets críticos para funcionamento offline
 const ASSETS_TO_CACHE = [
@@ -131,9 +131,29 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Para HTML/CSS/JS locais — Network-First com fallback para cache (garante atualização imediata no celular)
-  const isLocalCode = url.hostname === self.location.hostname || url.hostname.includes('github.io');
-  if (isLocalCode && !url.pathname.endsWith('.png')) {
+  // Para HTML/navegação — Network-First com fallback offline (sempre puxa a versão mais nova do app)
+  const isLocal = url.hostname === self.location.hostname || url.hostname.includes('github.io');
+  const isVersionedAsset = isLocal && url.search.includes('v=') && /\.(js|css)$/i.test(url.pathname);
+  const isStaticMedia = /\.(png|webp|svg|ico|woff2?|jpg|jpeg)$/i.test(url.pathname);
+
+  if (isVersionedAsset || isStaticMedia) {
+    event.respondWith(
+      caches.open(CACHE_STATIC).then((cache) =>
+        cache.match(event.request).then((cachedResponse) => {
+          if (cachedResponse) return cachedResponse;
+          return fetch(event.request).then((networkResponse) => {
+            if (networkResponse && networkResponse.status === 200) {
+              cache.put(event.request, networkResponse.clone());
+            }
+            return networkResponse;
+          });
+        })
+      ).catch(() => caches.match(event.request, { ignoreSearch: true }))
+    );
+    return;
+  }
+
+  if (isLocal) {
     event.respondWith(
       fetch(event.request)
         .then((networkResponse) => {
@@ -177,13 +197,20 @@ self.addEventListener('fetch', (event) => {
 // PUSH NOTIFICATIONS (Preparado para alertas de concurso)
 // =========================================================================
 self.addEventListener('push', (event) => {
-  const data = event.data ? event.data.json() : {};
+  let data = {};
+  if (event.data) {
+    try {
+      data = event.data.json();
+    } catch {
+      data = { body: event.data.text() };
+    }
+  }
   const title = data.title || '🎯 LotoLab';
   const options = {
     body: data.body || 'Novo resultado disponível!',
     icon: './icon-192.png',
     badge: './icon-192.png',
-    tag: 'nasa-loterias-notification',
+    tag: data.tag || 'lotolab-notification',
     requireInteraction: false,
     data: { url: data.url || './' }
   };

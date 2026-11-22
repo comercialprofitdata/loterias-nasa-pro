@@ -232,3 +232,31 @@ test('Onda 0: jornada inicial sem modal zumbi, 5 gerações livres, Mês da Sort
   assert.match(pbFn, /\.from\("subscriptions"\)/);
   assert.match(pbFn, /purchase_token/);
 });
+
+test('Onda 1B-local: VAPID público, SW Cache-First, LGPD completo, Edge Functions blindadas e seeds 5 loterias', () => {
+  const cfg = fs.readFileSync('supabase/config.js', 'utf8');
+  assert.match(cfg, /vapidPublicKey:\s*'B[A-Za-z0-9_-]{80,}'/, 'vapidPublicKey RFC 8292 P-256 deve estar configurada');
+
+  const sw = fs.readFileSync('sw.js', 'utf8');
+  assert.match(sw, /isVersionedAsset/, 'SW deve aplicar Cache-First para JS/CSS versionados');
+  assert.match(sw, /event\.data\.text\(\)/, 'SW push deve suportar fallback texto sem quebrar');
+
+  const syncFn = fs.readFileSync('supabase/functions/sync-historico/index.ts', 'utf8');
+  assert.match(syncFn, /"quina"/);
+  assert.match(syncFn, /"lotomania"/);
+  assert.match(syncFn, /"diadesorte"/);
+  assert.match(syncFn, /status:\s*401/, 'sync-historico deve exigir autorização');
+
+  const zapFn = fs.readFileSync('supabase/functions/token-whatsapp/index.ts', 'utf8');
+  assert.match(zapFn, /TOKEN_PEPPER ausente/, 'token-whatsapp deve falhar fechado sem TOKEN_PEPPER');
+  assert.match(zapFn, /Origem não autorizada/);
+
+  const html = fs.readFileSync('index.html', 'utf8');
+  assert.match(html, /boloesSalvos:\s*lerJson\('meu_volante_boloes'/);
+  assert.match(html, /carteiraJogos:\s*lerJson\('loterias_carteira_db'/);
+
+  const histReal = fs.readFileSync('js/historico-real.js', 'utf8');
+  assert.match(histReal, /SEED_INICIAL_QUINA/);
+  assert.match(histReal, /SEED_INICIAL_LOTOMANIA/);
+  assert.match(histReal, /SEED_INICIAL_DIADESORTE/);
+});

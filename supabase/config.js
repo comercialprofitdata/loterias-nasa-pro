@@ -9,5 +9,6 @@ window.NASA_SUPABASE_CONFIG = {
   metaEnabled: false,
   supportEmail: 'comercial.profitdata@gmail.com',
   supportPhone: '',
-  googleRedirectUrl: 'https://loterias.pd.dev.br/'
+  googleRedirectUrl: 'https://loterias.pd.dev.br/',
+  vapidPublicKey: 'BG4IP_PTVKh2Q8OrRCDQ1i_ju_PTyb9TIN-S7K3OWwkYawWjxn0EzVi8Rea2lTW2TyLF8r-37VtqMooxePEkZCw'
 };
