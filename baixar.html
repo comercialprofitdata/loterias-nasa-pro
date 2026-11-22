@@ -66,14 +66,17 @@
   <div class="card">
     <img class="icon" src="./icon-192.png?v=3" alt="LotoLab" />
     <h1>Loto<span>Lab</span></h1>
-    <p>O laboratório dos seus jogos: gerador, conferência oficial da Caixa, bolão, quiz diário e estatísticas.</p>
+    <p id="subtitulo-baixar">O laboratório dos seus jogos: Mega-Sena, Lotofácil, Quina, Lotomania e Dia de Sorte com conferência oficial da Caixa, bolão e estatísticas.</p>
     <a id="btn-play" class="btn btn-primary" href="https://play.google.com/store/apps/details?id=br.dev.pd.meuvolante" target="_top" rel="noopener">
       📲 Baixar na Google Play Store
     </a>
+    <p id="dica-ios" style="display:none; font-size:12px; color:#94a3b8; margin-top:-4px; margin-bottom:14px;">
+      No Safari, toque em <strong>Compartilhar ↑</strong> → <strong>Adicionar à Tela de Início</strong> para usar como app no iPhone.
+    </p>
     <a class="btn btn-secondary" href="./index.html?acao=cadastro" style="border-color: rgba(52,211,153,0.45); color: #6ee7b7;">
       👤 Criar Conta Grátis (Web / App)
     </a>
-    <a class="btn btn-secondary" href="./index.html">
+    <a id="btn-web" class="btn btn-secondary" href="./index.html">
       🌐 Abrir versão Web no navegador
     </a>
     <p class="note">App independente · Uso para maiores de 18 anos.</p>
@@ -82,9 +85,17 @@
     (function () {
       var ua = navigator.userAgent || '';
       var isAndroid = /Android/i.test(ua);
+      var isIOS = /iPhone|iPad|iPod/i.test(ua);
       var btn = document.getElementById('btn-play');
+      var dicaIos = document.getElementById('dica-ios');
+      var btnWeb = document.getElementById('btn-web');
       var playUrl = 'https://play.google.com/store/apps/details?id=br.dev.pd.meuvolante';
-      if (isAndroid) {
+      if (isIOS) {
+        btn.href = './index.html';
+        btn.textContent = '🍎 Abrir no iPhone (Web App Grátis)';
+        if (dicaIos) dicaIos.style.display = 'block';
+        if (btnWeb) btnWeb.style.display = 'none';
+      } else if (isAndroid) {
         var marketUrl = 'market://details?id=br.dev.pd.meuvolante';
         var intentUrl = 'intent://details?id=br.dev.pd.meuvolante#Intent;scheme=market;package=com.android.vending;S.browser_fallback_url=' + encodeURIComponent(playUrl) + ';end';
         btn.href = intentUrl;

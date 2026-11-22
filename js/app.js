@@ -756,13 +756,11 @@
     }
 
     function limparFixosEProibidos() {
-      if (modalidadeAtual === 'megasena') {
-        fixosMega = [];
-        proibidosMega = [];
-      } else {
-        fixosLoto = [];
-        proibidosLoto = [];
-      }
+      if (modalidadeAtual === 'megasena') { fixosMega = []; proibidosMega = []; }
+      else if (modalidadeAtual === 'quina') { fixosQuina = []; proibidosQuina = []; }
+      else if (modalidadeAtual === 'lotomania') { fixosLotomania = []; proibidosLotomania = []; }
+      else if (modalidadeAtual === 'diadesorte') { fixosDiaDeSorte = []; proibidosDiaDeSorte = []; }
+      else { fixosLoto = []; proibidosLoto = []; }
       tocarBeep('click');
       vibrarHaptico(20);
       renderizarVolante();
@@ -1419,15 +1417,14 @@
     }
 
 function gerarApostaNasaComMatriz4x4() {
+      window.__ultimaGeracaoBloqueada = false;
+      // Gera o palpite calibrado com confinamento 4x4 de equilíbrio
+      gerarMultiplasApostas(qtdApostasDesejada, true);
+      if (window.__ultimaGeracaoBloqueada) return;
       tocarSomNasa('ignicao');
       tocarBeep('success');
       vibrarHaptico(25);
-      const k = getQtdDesejada();
-      
-      // Gera o palpite calibrado com confinamento 4x4 de equilíbrio
-      gerarMultiplasApostas(qtdApostasDesejada, true);
       renderizarAbasJogosGeradosTela1();
-      
       toast(`${qtdApostasDesejada} aposta${qtdApostasDesejada > 1 ? 's' : ''} gerada${qtdApostasDesejada > 1 ? 's' : ''}!`, "🎯");
     }
 
@@ -3861,12 +3858,18 @@ function gerarPalpiteInteligente() {
       grid.innerHTML = '';
       grid.className = modalidadeAtual === 'lotofacil' ? 'grid grid-cols-5 gap-2 max-w-xs mx-auto font-mono' : 'grid grid-cols-6 sm:grid-cols-10 gap-1.5 font-mono';
 
+      const minNum = config.minNumero !== undefined ? config.minNumero : 1;
+      const maxNum = minNum === 0 ? config.totalNumeros - 1 : config.totalNumeros;
+      const numerosGrade = minNum === 0
+        ? [...Array.from({ length: maxNum }, (_, idx) => idx + 1), 0]
+        : Array.from({ length: config.totalNumeros }, (_, idx) => idx + 1);
+
       const freq = {};
       const atraso = {};
-      for (let i = 1; i <= config.totalNumeros; i++) {
-        freq[i] = 0;
-        atraso[i] = base.length; // se não apareceu nos concursos recentes
-      }
+      numerosGrade.forEach((num) => {
+        freq[num] = 0;
+        atraso[num] = base.length; // se não apareceu nos concursos recentes
+      });
 
       base.forEach((c, idxConcurso) => {
         c.dezenas.forEach(d => {
@@ -3912,7 +3915,7 @@ function gerarPalpiteInteligente() {
 
       // Grade Térmica de Todas as Dezenas
       const jogoAtual = getJogoAtual();
-      for (let i = 1; i <= config.totalNumeros; i++) {
+      for (const i of numerosGrade) {
         const count = freq[i];
         const ratio = (count - minFreq) / (maxFreq - minFreq || 1);
         const estaMarcada = jogoAtual.includes(i);
@@ -4039,23 +4042,36 @@ function executarDesdobramento() {
         return;
       }
       if (jogosFechamentoGerados.length === 0) return;
+      const ehPro = (typeof planoUsuario !== 'undefined' && planoUsuario === 'pro') ||
+        (typeof usuarioSessao !== 'undefined' && (usuarioSessao?.tipo === 'master_founder' || usuarioSessao?.tipo === 'vip_convidado' || usuarioSessao?.plano === 'pro'));
+      if (!ehPro && (carteiraJogos.length + jogosFechamentoGerados.length) > 10) {
+        if (typeof abrirModalPaywall === 'function') abrirModalPaywall('carteira_limite');
+        else toast('Limite de 10 jogos do plano grátis atingido. Veja os planos para salvar fechamentos completos.', '⚠️');
+        return;
+      }
       const config = getConfigAtual();
-      jogosFechamentoGerados.forEach(j => {
+      const infoSorteio = typeof window.obterInfoProximoSorteio === 'function'
+        ? window.obterInfoProximoSorteio(modalidadeAtual)
+        : { concurso: 'Próximo Oficial', data: new Date().toLocaleDateString('pt-BR') };
+      jogosFechamentoGerados.forEach((j, idx) => {
         carteiraJogos.unshift({
-          id: Date.now() + Math.random(),
+          id: Date.now() + idx + Math.random(),
           modalidade: modalidadeAtual,
+          nome: `${config.nome} • Fechamento #${idx + 1}`,
           dezenas: j,
-          data: new Date().toLocaleDateString('pt-BR'),
+          concursoAlvo: infoSorteio.concurso,
+          data: infoSorteio.data,
           custo: config.precoBase,
           premioGanho: 0,
           conferido: false,
-          status: 'Pendente'
+          status: 'Aguardando sorteio',
+          dataRegistro: new Date().toISOString()
         });
       });
       salvarCarteiraStorage();
       atualizarPainelCarteira();
       tocarBeep('success');
-      toast(`${jogosFechamentoGerados.length} bilhetes salvos na Carteira!`, "💾");
+      toast(`${jogosFechamentoGerados.length} bilhetes salvos na Carteira (${infoSorteio.concurso})!`, "💾");
     }
 
     // Busca o último concurso REAL da Caixa. A versão anterior sorteava as
@@ -4613,13 +4629,12 @@ function abrirModalDialog(msg, callback) {
         },
         {
           id: 'loto-18-14',
-          nome: '18 Dezenas • Combinações reduzidas',
+          nome: '18 Dezenas • Combinações reduzidas (6 jogos)',
           n: 18,
           k: 15,
-          jogos: 24,
+          jogos: 6,
           garantia: 'Cobertura parcial: não garante prêmio',
-          economia: 'Menos combinações que o jogo completo, com cobertura menor',
-          // Amostragem combinatória otimizada 18-15-14-15
+          economia: '6 apostas simples cobrindo 18 dezenas escolhidas',
           linhas: Array.from({length: 6}, (_, i) => {
             const linha = [];
             const excluidas = [(i * 3) % 18, (i * 3 + 1) % 18, (i * 3 + 2) % 18];
@@ -4642,6 +4657,88 @@ function abrirModalDialog(msg, callback) {
             [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 15, 16, 17, 18, 19],
             [0, 1, 2, 3, 4, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
             [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+          ]
+        }
+      ],
+      quina: [
+        {
+          id: 'quina-8-4',
+          nome: '8 Dezenas • Combinações reduzidas (4 jogos)',
+          n: 8,
+          k: 5,
+          jogos: 4,
+          garantia: 'Cobertura parcial: não garante prêmio',
+          economia: '4 apostas simples de 5 números a partir de 8 dezenas',
+          linhas: [
+            [0, 1, 2, 3, 4],
+            [0, 1, 5, 6, 7],
+            [2, 3, 5, 6, 7],
+            [0, 2, 4, 5, 7]
+          ]
+        },
+        {
+          id: 'quina-10-6',
+          nome: '10 Dezenas • Combinações reduzidas (6 jogos)',
+          n: 10,
+          k: 5,
+          jogos: 6,
+          garantia: 'Cobertura parcial: não garante prêmio',
+          economia: '6 apostas simples cobrindo 10 dezenas na Quina',
+          linhas: [
+            [0, 1, 2, 3, 4],
+            [5, 6, 7, 8, 9],
+            [0, 1, 5, 6, 7],
+            [2, 3, 4, 8, 9],
+            [0, 2, 4, 6, 8],
+            [1, 3, 5, 7, 9]
+          ]
+        }
+      ],
+      lotomania: [
+        {
+          id: 'lotomania-espelho',
+          nome: '50 Dezenas + Jogo Espelho (2 bilhetes)',
+          n: 50,
+          k: 50,
+          jogos: 2,
+          espelho: true,
+          garantia: 'Cobre 100% do volante (00 a 99) entre os 2 bilhetes',
+          economia: 'Jogo principal (50 dez) + espelho exato com as outras 50 dezenas',
+          linhas: [Array.from({ length: 50 }, (_, i) => i)]
+        }
+      ],
+      diadesorte: [
+        {
+          id: 'diadesorte-10-6',
+          nome: '10 Dezenas • Combinações reduzidas (6 jogos)',
+          n: 10,
+          k: 7,
+          jogos: 6,
+          garantia: 'Cobertura parcial: não garante prêmio',
+          economia: '6 apostas de 7 dias distribuídas entre 10 dias escolhidos',
+          linhas: [
+            [0, 1, 2, 3, 4, 5, 6],
+            [0, 1, 2, 3, 7, 8, 9],
+            [0, 1, 4, 5, 7, 8, 9],
+            [2, 3, 4, 5, 6, 7, 8],
+            [0, 2, 4, 6, 7, 8, 9],
+            [1, 3, 5, 6, 7, 8, 9]
+          ]
+        },
+        {
+          id: 'diadesorte-12-5',
+          nome: '12 Dezenas • Combinações reduzidas (5 jogos)',
+          n: 12,
+          k: 7,
+          jogos: 5,
+          garantia: 'Cobertura parcial: não garante prêmio',
+          economia: '5 apostas de 7 dias cobrindo 12 dias do mês',
+          linhas: [
+            [0, 1, 2, 3, 4, 5, 6],
+            [5, 6, 7, 8, 9, 10, 11],
+            [0, 1, 2, 7, 8, 9, 10],
+            [2, 3, 4, 8, 9, 10, 11],
+            [0, 3, 5, 6, 7, 9, 11]
           ]
         }
       ]
@@ -4686,11 +4783,13 @@ function abrirModalDialog(msg, callback) {
       const fixos = getFixos();
       const proibidos = getProibidos();
 
+      const minNumF = config.minNumero !== undefined ? config.minNumero : 1;
+      const maxNumF = minNumF === 0 ? config.totalNumeros - 1 : config.totalNumeros;
+
       if (origem === 'volante') {
         dezenasBase = [...getJogoAtual()];
         if (dezenasBase.length < m.n) {
-          // Completa com dezenas não proibidas até atingir N
-          for (let i = 1; i <= config.totalNumeros; i++) {
+          for (let i = minNumF; i <= maxNumF; i++) {
             if (!dezenasBase.includes(i) && !proibidos.includes(i)) {
               dezenasBase.push(i);
               if (dezenasBase.length >= m.n) break;
@@ -4700,29 +4799,36 @@ function abrirModalDialog(msg, callback) {
           dezenasBase = dezenasBase.slice(0, m.n);
         }
       } else {
-        // Gera o grupo de N dezenas usando a Matriz 4x4 da
         const grupo = new Set(fixos);
         const frequencias = calcularFrequenciaHistorica();
         const ordenadas = Object.keys(frequencias).map(Number).sort((a,b) => frequencias[b] - frequencias[a]);
         
         for (const num of ordenadas) {
-          if (!proibidos.includes(num)) {
+          if (num >= minNumF && num <= maxNumF && !proibidos.includes(num)) {
             grupo.add(num);
             if (grupo.size >= m.n) break;
           }
         }
         while (grupo.size < m.n) {
-          const rand = Math.floor(Math.random() * config.totalNumeros) + 1;
+          const rand = Math.floor(Math.random() * config.totalNumeros) + minNumF;
           if (!proibidos.includes(rand)) grupo.add(rand);
         }
         dezenasBase = Array.from(grupo).sort((a,b)=>a-b);
       }
 
-      // Aplica a matriz combinatória mapeando os índices
-      jogosFechamentoGerados = m.linhas.map(linha => {
-        const jogo = linha.map(idx => dezenasBase[idx % dezenasBase.length]);
-        return Array.from(new Set(jogo)).sort((a,b)=>a-b);
-      });
+      if (m.espelho && modalidadeAtual === 'lotomania') {
+        const setBase = new Set(dezenasBase);
+        const espelho = [];
+        for (let i = 0; i <= 99; i++) {
+          if (!setBase.has(i)) espelho.push(i);
+        }
+        jogosFechamentoGerados = [dezenasBase, espelho];
+      } else {
+        jogosFechamentoGerados = m.linhas.map(linha => {
+          const jogo = linha.map(idx => dezenasBase[idx % dezenasBase.length]);
+          return Array.from(new Set(jogo)).sort((a,b)=>a-b);
+        });
+      }
 
       // Renderiza resultado
       const container = document.getElementById('resultado-fechamento-container');
@@ -4786,7 +4892,7 @@ function abrirModalDialog(msg, callback) {
       if (jogosFechamentoGerados.length > 10) {
         msg += `... e mais ${jogosFechamentoGerados.length - 10} jogos.\n`;
       }
-      msg += `\nOrganizado no LotoLab. Nenhum jogo tem mais chance que outro.`;
+      msg += `\n📲 Organizado no LotoLab (https://loterias.pd.dev.br/baixar.html). Nenhum jogo tem mais chance que outro.`;
       window.abrirWhatsApp({ texto: msg });
     }
 
@@ -4896,13 +5002,13 @@ function abrirModalDialog(msg, callback) {
       lista.innerHTML = apostasAuditadasScanner.map(item => {
         const score = Math.round(item.analise.aprovadosCount * 16.6);
         let badgeCor = 'bg-rose-950 text-rose-300 border-rose-800';
-        let statusTexto = '🔴 Desperdício / Viciado';
+        let statusTexto = '🟠 Fora da curva';
         if (item.analise.aprovadosCount === 6) {
           badgeCor = 'bg-emerald-950 text-emerald-300 border-emerald-800';
           statusTexto = '🟢 6 de 6 calibrados';
         } else if (item.analise.aprovadosCount >= 4) {
           badgeCor = 'bg-amber-950 text-amber-300 border-amber-800';
-          statusTexto = '🟡 Atenção / Leve Risco';
+          statusTexto = '🟡 Parcialmente calibrado';
         }
 
         return `

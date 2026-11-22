@@ -1570,6 +1570,41 @@ html:not(.dark) .nasa-profile-sheet #drawer-admin-row button span {
   color: #78350f !important;
 }
 
+html:not(.dark) .nasa-profile-sheet button[onclick*="abrirModalFeedbackTestador"] {
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%) !important;
+  border: 1.5px solid #f59e0b !important;
+  color: #78350f !important;
+  box-shadow: 0 2px 10px rgba(245, 158, 11, 0.16) !important;
+}
+html:not(.dark) .nasa-profile-sheet button[onclick*="abrirModalFeedbackTestador"] .text-white {
+  color: #78350f !important;
+}
+html:not(.dark) .nasa-profile-sheet button[onclick*="abrirModalFeedbackTestador"] .text-amber-400,
+html:not(.dark) .nasa-profile-sheet button[onclick*="abrirModalFeedbackTestador"] .text-amber-400\/90 {
+  color: #b45309 !important;
+}
+html:not(.dark) .nasa-mod-btn.active-mega {
+  background: #059669 !important;
+  color: #ffffff !important;
+}
+html:not(.dark) .nasa-seg-btn.active {
+  background: linear-gradient(135deg, #059669, #0284c7) !important;
+  color: #ffffff !important;
+}
+html:not(.dark) button[id^="btn-qtd-jogos-"].bg-emerald-600 {
+  background-color: #059669 !important;
+  color: #ffffff !important;
+}
+html:not(.dark) #banner-convite-feedback {
+  background: #ffffff !important;
+  border-color: #0284c7 !important;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.16) !important;
+}
+html:not(.dark) #banner-convite-feedback button.bg-cyan-500 {
+  background-color: #0284c7 !important;
+  color: #ffffff !important;
+}
+
 /* ========== DESKTOP / TABLET GRANDE (ACIMA DE 1024PX - CENTRO DE COMANDO) ========== */
 :root {
   --sidebar-width: 290px;
@@ -2591,11 +2626,26 @@ html:not(.dark) .legenda-quad-box.q4 {
    ========================================================================= */
 
 /* 1. TELA FECHAMENTOS (Planejador de Orçamento, Telemetria & Coberturas) */
-html:not(.dark) #view-fechamentos .bg-gradient-to-r,
-html:not(.dark) #view-fechamentos .bg-gradient-to-br {
+html:not(.dark) #view-fechamentos div.bg-gradient-to-r,
+html:not(.dark) #view-fechamentos div.bg-gradient-to-br {
   background: #ffffff !important;
   border-color: #cbd5e1 !important;
   box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05) !important;
+}
+html:not(.dark) #view-fechamentos button.bg-slate-800 {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+html:not(.dark) #view-fechamentos button.bg-slate-800:hover {
+  background-color: #e2e8f0 !important;
+}
+html:not(.dark) #view-fechamentos button.btn-rocket-launch,
+html:not(.dark) #view-fechamentos button.bg-emerald-600,
+html:not(.dark) #view-fechamentos button.bg-emerald-700 {
+  background: #059669 !important;
+  color: #ffffff !important;
+  border-color: #047857 !important;
 }
 html:not(.dark) #view-fechamentos button[onclick^="aplicarOrcamentoInteligente"] {
   background-color: #f8fafc !important;
@@ -2621,11 +2671,23 @@ html:not(.dark) #resultado-fechamento-container {
 }
 
 /* 2. TELA MINHA CARTEIRA (Calendário Caixa, Status & Portfólio) */
-html:not(.dark) #view-carteira .bg-gradient-to-r,
-html:not(.dark) #view-carteira .bg-gradient-to-br {
+html:not(.dark) #view-carteira div.bg-gradient-to-r,
+html:not(.dark) #view-carteira div.bg-gradient-to-br {
   background: #ffffff !important;
   border-color: #cbd5e1 !important;
   box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05) !important;
+}
+html:not(.dark) #view-carteira button[class*="from-emerald"],
+html:not(.dark) #view-carteira button.bg-emerald-600 {
+  background: #059669 !important;
+  color: #ffffff !important;
+  border-color: #047857 !important;
+}
+html:not(.dark) #view-carteira button.bg-slate-900,
+html:not(.dark) #view-carteira button.bg-slate-800 {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
 }
 html:not(.dark) #view-carteira .bg-slate-950\/90 {
   background-color: #f8fafc !important;

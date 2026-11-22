@@ -60,6 +60,7 @@ window.exigirLeadAntesDeSalvar = function () {
 window.salvarDepoisDoCadastro = (acao) => { acaoAposCadastro = acao; };
 
 window.limitarGeracaoGratuita = function (qtd) {
+  window.__ultimaGeracaoBloqueada = false;
   if (temAcessoSemCadastro()) return qtd;
 
   const bonus = Number(localStorage.getItem('lotolab_bonus_geracoes') || 0);
@@ -70,12 +71,14 @@ window.limitarGeracaoGratuita = function (qtd) {
   }
 
   const amostras = Number(localStorage.getItem('meu_volante_amostras') || 0);
-  if (amostras >= 1) {
-    abrirContaNova('Gostou? Crie sua conta para gerar mais jogos e salvar.');
+  // Permite 5 gerações livres antes de pedir conta (sem bloquear no 1º clique!)
+  if (amostras >= 5) {
+    window.__ultimaGeracaoBloqueada = true;
+    abrirContaNova('Gostou? Crie sua conta grátis para gerar mais jogos e salvar na Carteira.');
     return 0;
   }
 
-  localStorage.setItem('meu_volante_amostras', '1');
+  localStorage.setItem('meu_volante_amostras', String(amostras + 1));
   window.setQtdJogosParaGerar?.(1);
   return 1;
 };

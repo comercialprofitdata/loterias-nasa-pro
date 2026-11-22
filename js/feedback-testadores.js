@@ -6,7 +6,7 @@
 
   const STORAGE_KEY_FEEDBACKS = 'loterias_nasa_feedbacks_v1';
   const STORAGE_KEY_ULTIMO_FEEDBACK = 'loterias_nasa_ultimo_feedback_data';
-  const NUMERO_WHATSAPP_VITORIO = '5511999999999'; // Pode ser atualizado no painel admin
+  const PLAY_STORE_REVIEW_URL = 'https://play.google.com/store/apps/details?id=br.dev.pd.meuvolante';
 
   function obterFeedbacks() {
     try {
@@ -185,10 +185,11 @@
 
     salvarFeedbackLocal(fb);
 
-    // Sincroniza com Supabase se disponível
+    // Sincroniza com Supabase se disponível (usa o cliente oficial obterClienteSupabase)
     try {
-      if (window.supabaseClient && typeof window.supabaseClient.from === 'function') {
-        await window.supabaseClient.from('visitor_leads').insert([{
+      const cli = typeof window.obterClienteSupabase === 'function' ? window.obterClienteSupabase() : window.supabaseClient;
+      if (cli && typeof cli.from === 'function') {
+        await cli.from('visitor_leads').insert([{
           name: nome,
           phone: whatsapp,
           notes: `[FEEDBACK ${notaSelecionada}/5]: ${mensagem}`,
@@ -202,8 +203,10 @@
 
     window.fecharModalFeedbackTestador();
 
-    if (typeof window.toast === 'function') {
-      window.toast(`Obrigado pelo feedback, ${nome.split(' ')[0]}! Juntos fazemos o melhor app! 🎯`, '🙏');
+    if (notaSelecionada >= 4 && typeof window.toast === 'function') {
+      window.toast(`Obrigado pela nota ${notaSelecionada}★, ${nome.split(' ')[0]}! Se puder, avalie na Google Play também ⭐`, '🙏');
+    } else if (typeof window.toast === 'function') {
+      window.toast(`Obrigado pelo feedback, ${nome.split(' ')[0]}! Vamos melhorar com sua sugestão.`, '🙏');
     }
     if (typeof window.tocarSomNasa === 'function') window.tocarSomNasa('sucesso');
 
@@ -249,9 +252,9 @@
         if (dias < 5) return; // Avaliou recentemente
       }
 
-      // Contador de jogos gerados na sessão
+      // Contador de jogos gerados na sessão (só pede avaliação após 5 jogos para não atrapalhar o início)
       const jogosFeitos = Number(sessionStorage.getItem('nasa_jogos_gerados_sessao') || '0');
-      if (jogosFeitos >= 3) {
+      if (jogosFeitos >= 5) {
         exibirBannerDiscretoConviteFeedback();
       }
     } catch (_) {}
@@ -289,7 +292,7 @@
       try {
         const c = Number(sessionStorage.getItem('nasa_jogos_gerados_sessao') || '0') + 1;
         sessionStorage.setItem('nasa_jogos_gerados_sessao', String(c));
-        if (c === 3) {
+        if (c === 5) {
           setTimeout(verificarDisparoPeriodico, 2500);
         }
       } catch (_) {}

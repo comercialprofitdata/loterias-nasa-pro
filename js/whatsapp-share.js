@@ -381,7 +381,7 @@ Sorteios são aleatórios: nenhum jogo tem mais chance que outro.${avisoPlanejam
 ${linhasJogos}
 
 *LotoLab* — Organize e confira seus jogos:
-👉 https://loterias.pd.dev.br/`;
+👉 https://loterias.pd.dev.br/baixar.html`;
 
     window.abrirWhatsApp({ texto: textoLote });
     if (typeof toast === 'function') toast(`Enviando ${totalJogos} jogos no WhatsApp...`, '📱');
@@ -406,7 +406,7 @@ Sorteios são aleatórios: nenhum jogo tem mais chance que outro.${avisoPlanejam
 👉 *${dezenasFormatadas}*
 
 *LotoLab* — Organize e confira seus jogos:
-👉 https://loterias.pd.dev.br/`;
+👉 https://loterias.pd.dev.br/baixar.html`;
 
     window.abrirWhatsApp({ texto: textoUnico });
     if (typeof toast === 'function') toast('Abrindo WhatsApp...', '📱');

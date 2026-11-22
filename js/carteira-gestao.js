@@ -350,7 +350,7 @@
       msg += `*Jogo #${idx + 1}:* ${dezenasFormatadas}\n`;
     });
 
-    msg += `\n*LotoLab* — Monte e audite seus bolões:\n👉 https://loterias.pd.dev.br/`;
+    msg += `\n*LotoLab* — Monte e audite seus bolões:\n👉 https://loterias.pd.dev.br/baixar.html`;
     if (typeof window.abrirWhatsApp === 'function') {
       window.abrirWhatsApp({ texto: msg });
     } else {
@@ -585,7 +585,7 @@
               </p>
             </div>
             <div class="flex flex-wrap justify-center gap-2 pt-2">
-              <button type="button" onclick="mudarAba('gerador')" class="px-4 py-2.5 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-400 text-slate-950 font-black text-xs rounded-xl shadow-lg active:scale-95 transition flex items-center gap-1.5 font-mono">
+              <button type="button" onclick="mudarAba('volante')" class="px-4 py-2.5 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-400 text-slate-950 font-black text-xs rounded-xl shadow-lg active:scale-95 transition flex items-center gap-1.5 font-mono">
                 Gerar jogo
               </button>
               <button type="button" onclick="alternarSubAbaCarteira('ferramentas')" class="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-cyan-300 font-bold text-xs rounded-xl border border-slate-700 active:scale-95 transition flex items-center gap-1.5">

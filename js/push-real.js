@@ -41,15 +41,12 @@
       ? 'android_twa'
       : 'web';
 
-    const { error } = await cliente.from('push_subscriptions').upsert({
-      endpoint,
-      p256dh,
-      auth,
-      user_id: userId,
-      plataforma,
-      ativo: true,
-      updated_at: new Date().toISOString()
-    }, { onConflict: 'endpoint' });
+    const { error } = await cliente.rpc('registrar_push_subscription', {
+      p_endpoint: endpoint,
+      p_p256dh: p256dh,
+      p_auth: auth,
+      p_plataforma: plataforma
+    });
 
     return !error;
   }
@@ -89,7 +86,7 @@
         await sub.unsubscribe();
         const cliente = typeof window.obterClienteSupabase === 'function' ? window.obterClienteSupabase() : null;
         if (cliente && endpoint) {
-          await cliente.from('push_subscriptions').update({ ativo: false }).eq('endpoint', endpoint);
+          await cliente.rpc('desativar_push_subscription', { p_endpoint: endpoint });
         }
       }
     } catch {}

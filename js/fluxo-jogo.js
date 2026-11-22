@@ -574,6 +574,11 @@ function ligarBotaoVoltar() {
   const fecharAberto = () => {
     const folha = document.querySelector('.folha-fundo');
     if (folha) { folha.remove(); return true; }
+    const upgrade = document.getElementById('modal-upgrade-nasa');
+    if (upgrade?.classList.contains('modal-upgrade-active')) {
+      window.fecharModalUpgrade?.();
+      return true;
+    }
     const menu = document.getElementById('nasa-profile-drawer-backdrop');
     if (menu?.classList.contains('open')) { window.fecharDrawerPerfil?.(); return 'menu'; }
     const modal = [...document.querySelectorAll('.fixed.inset-0')]

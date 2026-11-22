@@ -652,9 +652,9 @@ function createSimplifiedHome() {
           <span id="home-hero-btn-label">GERAR JOGO</span>
         </button>
 
-        <!-- Botões Secundários: Caminho A ("Já tenho meus números") + Volante Manual -->
+        <!-- Botões Secundários: Caminho A ("Já tenho meus números") -->
         <div class="nasa-secondary-cta-row">
-          <button type="button" class="nasa-sec-btn" onclick="irParaVolanteManual()">
+          <button type="button" class="nasa-sec-btn" onclick="if (typeof abrirModalAnalisarNumeros === 'function') abrirModalAnalisarNumeros(); else irParaVolanteManual();">
             <span>Já tenho meus números</span>
           </button>
         </div>
@@ -1022,7 +1022,7 @@ function configurarSubAbasCarteiraEBolao() {
       <span>Bolão & Cotas</span>
     </button>
     <button type="button" id="seg-cart-ferramentas" class="nasa-seg-btn" onclick="alternarSubAbaCarteira('ferramentas')">
-      <span>Scanner</span>
+      <span>Colar Jogos</span>
     </button>
   `;
 
@@ -1181,8 +1181,9 @@ function criarDrawerPerfilConfig() {
         </button>
       </div>
 
-      <!-- Suporte<div class="space-y-1.5 pt-3 mt-3 border-t border-slate-800">
-        <span class="text-[10px] font-mono uppercase tracking-wider text-cyan-400 font-bold block">Canal dos Testadores & Suporte</span>
+      <!-- Suporte -->
+      <div class="space-y-1.5 pt-3 mt-3 border-t border-slate-800">
+        <span class="text-[10px] font-mono uppercase tracking-wider text-cyan-400 font-bold block">Suporte & Avaliação</span>
 
         <button type="button" onclick="fecharDrawerPerfil(); if (typeof window.abrirModalFeedbackTestador === 'function') { window.abrirModalFeedbackTestador(); } else { toast('Abrindo...', '⭐'); }" class="w-full p-2.5 rounded-xl bg-gradient-to-r from-amber-950/40 via-slate-950 to-amber-950/30 hover:bg-slate-900 border border-amber-500/40 text-xs font-bold text-amber-300 flex items-center justify-between text-left transition shadow">
           <div class="flex items-center gap-2">
@@ -1896,17 +1897,10 @@ function inicializarPerfilExperiencia() {
   const salvo = obterPerfilExperienciaSalvo();
   aplicarPerfilModo(salvo, { silencioso: true });
 
-  // Gera o primeiro palpite express do dia na Home
+  // Gera o primeiro palpite express do dia na Home (sem modal zumbi atropelando boas-vindas)
   setTimeout(() => {
     gerarPalpiteExpressHome({ silencioso: true });
   }, 350);
-
-  // Se nunca definiu seu perfil, convida com modal sutil após 1.5s
-  if (!localStorage.getItem('nasa_perfil_experiencia_definido')) {
-    setTimeout(() => {
-      abrirModalSeletorPerfil({ onboarding: true });
-    }, 1500);
-  }
 }
 
 function aplicarPerfilModo(modoId, { silencioso = false } = {}) {

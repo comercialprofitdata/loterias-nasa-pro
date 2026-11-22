@@ -141,21 +141,43 @@ function premioTotalDoBilhete(bilhete, resultado, acertos, faixas) {
   }, 0);
 }
 
+function normalizarMesSorte(m) {
+  return String(m || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim().toLowerCase();
+}
+
 function avaliarBilhete(bilhete, resultado) {
   const sorteadas = (resultado.dezenas || []).map(Number);
   const acertos = sorteadas.filter((d) => (bilhete.dezenas || []).map(Number).includes(d)).length;
   const faixas = FAIXAS_PREMIACAO[bilhete.modalidade] || [];
   const faixa = faixas.find((f) => f.acertos === acertos);
 
+  let premio = faixa ? premioTotalDoBilhete(bilhete, resultado, acertos, faixas) : 0;
+  let acertouMes = false;
+  if (bilhete.modalidade === 'diadesorte' && bilhete.mesDaSorte) {
+    const mesRes = resultado.mesDaSorte || resultado.nomeTimeCoracaoMesSorte || '';
+    if (mesRes && normalizarMesSorte(bilhete.mesDaSorte) === normalizarMesSorte(mesRes)) {
+      acertouMes = true;
+      premio += 2.5;
+    }
+  }
+
+  let status = `${acertos} acertos (Não premiado)`;
+  if (faixa && acertouMes) {
+    status = `${faixa.rotulo} + Mês da Sorte!`;
+  } else if (faixa) {
+    status = premio > 0 ? faixa.rotulo : `${faixa.rotulo} · prêmio a confirmar na CAIXA`;
+  } else if (acertouMes) {
+    status = `${acertos} acertos + Mês da Sorte (R$ 2,50)`;
+  }
+
   return {
     acertos,
+    acertouMes,
     dezenasSorteadas: sorteadas,
     concursoConferido: resultado.concurso,
-    premioGanho: faixa ? premioTotalDoBilhete(bilhete, resultado, acertos, faixas) : 0,
-    status: faixa
-      ? (premioTotalDoBilhete(bilhete, resultado, acertos, faixas) > 0 ? faixa.rotulo : `${faixa.rotulo} · prêmio a confirmar na CAIXA`)
-      : `${acertos} acertos (Não premiado)`,
-    premiado: Boolean(faixa)
+    premioGanho: premio,
+    status,
+    premiado: Boolean(faixa || acertouMes)
   };
 }
 

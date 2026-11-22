@@ -192,3 +192,43 @@ test('carteira, impressão, ciência MIT e push real suportam todas as 5 loteria
   assert.ok(fs.existsSync('supabase/functions/enviar-push/index.ts'));
   assert.ok(fs.existsSync('.github/workflows/push-diario.yml'));
 });
+
+test('Onda 0: jornada inicial sem modal zumbi, 5 gerações livres, Mês da Sorte, Fechamentos 5 loterias, Modo Claro e segurança SQL/Play Billing', () => {
+  const redesignSrc = fs.readFileSync('js/redesign.js', 'utf8');
+  assert.doesNotMatch(redesignSrc, /abrirModalSeletorPerfil\(\{\s*onboarding:\s*true\s*\}\)/);
+  assert.match(redesignSrc, /<!-- Suporte -->/);
+  assert.match(redesignSrc, /abrirModalAnalisarNumeros/);
+
+  const cadastroSrc = fs.readFileSync('js/cadastro.js', 'utf8');
+  assert.match(cadastroSrc, /if \(amostras >= 5\)/);
+
+  const confSrc = fs.readFileSync('js/conferencia-real.js', 'utf8');
+  const { avaliarBilhete } = new Function('window', 'document', `${confSrc}; return { avaliarBilhete };`)({}, { addEventListener() {} });
+  const resMes = avaliarBilhete(
+    { modalidade: 'diadesorte', dezenas: [1, 2, 3, 4, 5, 6, 7], mesDaSorte: 'Novembro' },
+    { concurso: 1050, dezenas: [20, 21, 22, 23, 24, 25, 26], mesDaSorte: 'NOVEMBRO', rateio: [] }
+  );
+  assert.equal(resMes.acertouMes, true);
+  assert.equal(resMes.premiado, true);
+  assert.equal(resMes.premioGanho, 2.5);
+
+  const appSrc = fs.readFileSync('js/app.js', 'utf8');
+  assert.match(appSrc, /quina-8-4/);
+  assert.match(appSrc, /lotomania-espelho/);
+  assert.match(appSrc, /diadesorte-10-6/);
+  assert.doesNotMatch(appSrc, /Desperdício \/ Viciado/);
+
+  const fluxoCss = fs.readFileSync('css/fluxo-jogo.css', 'utf8');
+  const upgCss = fs.readFileSync('css/upgrade-modal.css', 'utf8');
+  assert.match(fluxoCss, /html:not\(\.dark\) \.bolao-card/);
+  assert.match(upgCss, /html:not\(\.dark\) \.modal-upgrade-content/);
+
+  const pushSql = fs.readFileSync('supabase/schema-push-notifications.sql', 'utf8');
+  assert.doesNotMatch(pushSql, /FOR UPDATE TO anon, authenticated\s+USING \(TRUE\)/);
+  assert.match(pushSql, /registrar_push_subscription/);
+
+  const pbFn = fs.readFileSync('supabase/functions/validar-play-billing/index.ts', 'utf8');
+  assert.match(pbFn, /:acknowledge/);
+  assert.match(pbFn, /\.from\("subscriptions"\)/);
+  assert.match(pbFn, /purchase_token/);
+});

@@ -114,16 +114,58 @@ serve(async (req) => {
     }
 
     const estado = String(playData?.subscriptionState ?? "")
-    const ativo = ESTADOS_ATIVOS.has(estado)
+    const lineItems = Array.isArray(playData?.lineItems) ? playData.lineItems : []
+    const itemCorrespondente = lineItems.find((li: { productId?: string }) => li?.productId === String(sku))
+    const ativo = ESTADOS_ATIVOS.has(estado) && Boolean(itemCorrespondente)
 
-    if (ativo) {
-      await admin
-        .from("profiles")
-        .update({ plano: "pro", atualizado_em: new Date().toISOString() })
-        .eq("id", userData.user.id)
+    if (!ativo) {
+      return responder({ ativo: false, estado, sku, erro: "Assinatura inativa ou SKU divergente" }, 402)
     }
 
-    return responder({ ativo, estado, sku })
+    // Proteção contra replay: impede reutilizar o mesmo purchaseToken em contas diferentes
+    const { data: existente } = await admin
+      .from("subscriptions")
+      .select("user_id")
+      .eq("purchase_token", String(purchaseToken))
+      .maybeSingle()
+
+    if (existente && existente.user_id && existente.user_id !== userData.user.id) {
+      return responder({ ativo: false, erro: "Compra já vinculada a outra conta" }, 409)
+    }
+
+    // Acknowledge obrigatório na Google Play (sem isso o Google estorna automaticamente em 3 dias)
+    if (String(playData?.acknowledgementState ?? "") !== "ACKNOWLEDGEMENT_STATE_ACKNOWLEDGED") {
+      const ackUrl = `https://androidpublisher.googleapis.com/androidpublisher/v3/applications/${PACKAGE_NAME}/purchases/subscriptions/${encodeURIComponent(String(sku))}/tokens/${encodeURIComponent(String(purchaseToken))}:acknowledge`
+      const ackRes = await fetch(ackUrl, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+        body: JSON.stringify({})
+      })
+      if (!ackRes.ok) {
+        return responder({ ativo: false, erro: "Falha ao confirmar (acknowledge) compra na Google Play" }, 502)
+      }
+    }
+
+    const planCode = sku === "lotolab_pro_anual" ? "anual" : "mensal"
+    const validUntil = itemCorrespondente?.expiryTime
+      || new Date(Date.now() + (planCode === "anual" ? 366 : 32) * 86400000).toISOString()
+
+    const { error: dbErr } = await admin
+      .from("subscriptions")
+      .upsert({
+        user_id: userData.user.id,
+        plan_code: planCode,
+        status: "active",
+        valid_until: validUntil,
+        purchase_token: String(purchaseToken),
+        updated_at: new Date().toISOString()
+      }, { onConflict: "user_id" })
+
+    if (dbErr) {
+      return responder({ ativo: false, erro: `Erro ao salvar assinatura: ${dbErr.message}` }, 500)
+    }
+
+    return responder({ ativo: true, estado, sku, plan_code: planCode, valid_until: validUntil })
   } catch (err) {
     return responder({ ativo: false, erro: err instanceof Error ? err.message : "Erro interno" }, 500)
   }

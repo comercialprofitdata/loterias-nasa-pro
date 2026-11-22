@@ -27,13 +27,11 @@ const UPGRADE_CONFIG = {
       badge: '',
       icon: '🎯',
       color: 'cyan',
-      featured: true,
       cta: 'Assinar mensal',
       features: [
-        'Zero anúncios e geração sem limite',
-        'Todos os indicadores calibrados e matriz 4x4',
-        'Fechamentos e bolões sem limite',
-        'Conferência instantânea e carteira em nuvem'
+        'Geração em lote (2, 3 e 5 jogos) nas 5 loterias',
+        'Fechamentos combinatórios e bolões sem limite',
+        'Carteira ilimitada com conferência automática'
       ]
     },
     {
@@ -41,14 +39,15 @@ const UPGRADE_CONFIG = {
       name: 'Anual (Lançamento)',
       price: 'R$ 19,90',
       period: '/ano · R$ 1,66/mês',
-      badge: 'OFERTA · 76% OFF',
+      badge: 'MAIS VANTAJOSO · 76% OFF',
       icon: '👑',
       color: 'amber',
+      featured: true,
       cta: 'Aproveitar R$ 19,90/ano',
       features: [
-        'Todos os recursos do plano PRO liberados',
-        'Zero anúncios + jogos e bolões ilimitados',
-        'Alertas automáticos de sorteio'
+        'Todos os recursos PRO nas 5 loterias liberados',
+        'Jogos em lote, fechamentos e bolões sem limite',
+        'Carteira em nuvem + conferência oficial CAIXA'
       ]
     }
   ]

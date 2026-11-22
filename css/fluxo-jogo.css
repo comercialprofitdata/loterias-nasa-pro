@@ -294,3 +294,72 @@ main [class*="text-[8px]"], main [class*="text-[9px]"], main [class*="text-[10px
 .fluxo-card-volante #legenda-volante { padding-top: 10px; }
 .bolao-duas select, .bolao-tres select, .bolao-tres input { font-size: 14px; padding: 0 8px; }
 #toast { pointer-events: none !important; }
+
+/* ===================================================================
+   MODO CLARO COMPLETO PARA FLUXO DE JOGO, BOLÃO, FOLHAS E RITUAL
+   =================================================================== */
+html:not(.dark) .gerar-abas { background: #f1f5f9; border-color: #cbd5e1; }
+html:not(.dark) .gerar-abas button { color: #475569; }
+html:not(.dark) .gerar-abas button.ativa { background: #059669; color: #ffffff; }
+html:not(.dark).tema-lotofacil .gerar-abas button.ativa { background: #9333ea; color: #ffffff; }
+html:not(.dark) .fluxo-titulo,
+html:not(.dark) .fluxo-passo,
+html:not(.dark) #tabela-chances h3,
+html:not(.dark) .revisao-linha strong,
+html:not(.dark) .pix-valor { color: #0f172a; }
+html:not(.dark) .fluxo-card-acoes,
+html:not(.dark) .bolao-card,
+html:not(.dark) .fluxo-gaveta { background: #ffffff; border-color: #cbd5e1; color: #0f172a; box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04); }
+html:not(.dark) .fluxo-gaveta > summary { color: #0f172a; }
+html:not(.dark) .fluxo-preferencias,
+html:not(.dark) #fluxo-espelho-jogo { background: #f8fafc; border-color: #cbd5e1; }
+html:not(.dark) .fluxo-preferencias > summary { color: #1e293b; }
+html:not(.dark) .fluxo-acao,
+html:not(.dark) .fluxo-btn-secundario { background: #f8fafc !important; color: #0f172a !important; border-color: #cbd5e1 !important; }
+html:not(.dark) .fluxo-acao-principal,
+html:not(.dark) .fluxo-btn-principal { background: #059669 !important; color: #ffffff !important; border-color: #059669 !important; }
+html:not(.dark) .fluxo-acao-salvar { background: #ecfdf5 !important; color: #047857 !important; border: 2px solid #059669 !important; }
+html:not(.dark).tema-lotofacil .fluxo-acao-principal { background: #9333ea !important; color: #ffffff !important; border-color: #9333ea !important; }
+html:not(.dark).tema-lotofacil .fluxo-acao-salvar { background: #faf5ff !important; color: #7e22ce !important; border: 2px solid #9333ea !important; }
+html:not(.dark) .ritual-ver,
+html:not(.dark) #drawer-ver-planos { background: #059669 !important; color: #ffffff !important; border: 1px solid #047857 !important; box-shadow: 0 2px 8px rgba(5, 150, 105, 0.22) !important; }
+html:not(.dark) .fluxo-link { color: #475569; }
+html:not(.dark) .bolao-card label,
+html:not(.dark) .bolao-numeros span,
+html:not(.dark) .bolao-jogo-rotulo,
+html:not(.dark) #revisao-jogo { color: #475569; }
+html:not(.dark) .bolao-card input,
+html:not(.dark) .bolao-card select,
+html:not(.dark) .bolao-numeros div,
+html:not(.dark) .bolao-jogo { background: #f8fafc; border-color: #cbd5e1; color: #0f172a; }
+html:not(.dark) .bolao-numeros strong { color: #0f172a; }
+html:not(.dark) .bolao-pessoa { border-color: #e2e8f0; }
+html:not(.dark) .bolao-pagou { border-color: #cbd5e1; color: #b45309; background: #fffbeb; }
+html:not(.dark) .bolao-pagou.sim { background: #059669; border-color: #059669; color: #ffffff; }
+html:not(.dark) .bolao-card a { color: #047857; }
+html:not(.dark) .folha { background: #ffffff; color: #0f172a; border: 1px solid #cbd5e1; }
+html:not(.dark) .folha p,
+html:not(.dark) .folha label { color: #475569; }
+html:not(.dark) .folha input { background: #f8fafc; border-color: #cbd5e1; color: #0f172a; }
+html:not(.dark) .folha button.folha-sair { color: #475569; }
+html:not(.dark) .gastos-rotulo,
+html:not(.dark) .gastos-topo small,
+html:not(.dark) .gastos-tabela th { color: #475569; }
+html:not(.dark) .gastos-editar { border-color: #cbd5e1; color: #0f172a; background: #f8fafc; }
+html:not(.dark) .gastos-barra { background: #e2e8f0; }
+html:not(.dark) .gastos-tabela { color: #0f172a; }
+html:not(.dark) .gastos-tabela td { border-color: #e2e8f0; }
+html:not(.dark) .revisao-aviso { background: #fffbeb; color: #92400e; border: 1px solid #fde68a; }
+html:not(.dark) .ritual-tela { background: #f8fafc; }
+html:not(.dark) .ritual-conteudo { color: #0f172a; }
+html:not(.dark) .ritual-conteudo h3 { color: #475569; }
+html:not(.dark) .ritual-bolas span { background: #e2e8f0; color: #0f172a; }
+html:not(.dark) #ritual-sorteadas span { background: #0f172a; color: #ffffff; }
+html:not(.dark) #ritual-acao { border-color: #cbd5e1; color: #0f172a; }
+html:not(.dark) #boas-vindas { background: #f8fafc; color: #0f172a; }
+html:not(.dark) .bv-conteudo h1 { color: #0f172a; }
+html:not(.dark) .bv-conteudo p,
+html:not(.dark) .bv-idade { color: #334155; }
+html:not(.dark) .bv-icone { background: #ffffff; border-color: #cbd5e1; color: #059669; }
+html:not(.dark) .pagamento-rotulo { color: #334155; }
+html:not(.dark) .pagamento-opcoes span { border-color: #cbd5e1; color: #0f172a; background: #f8fafc; }
