@@ -28,7 +28,7 @@ test('bolão aceita Quina nas regras da CAIXA e no seletor de modalidade', () =>
 
   assert.ok(janela.bolaoRegras.REGRAS_CAIXA.quina);
   assert.equal(janela.bolaoRegras.REGRAS_CAIXA.quina.preco, 2.5);
-  assert.match(bolaoSrc, /\['megasena', 'lotofacil', 'quina'\]/);
+  assert.match(bolaoSrc, /\['megasena', 'lotofacil', 'quina'/);
 
   const rateio = janela.bolaoRegras.calcularRateio({
     id: 10, modalidade: 'quina', dezenas: 5, cotas: 2,
@@ -65,4 +65,60 @@ test('index.html não possui query strings antigas de 20261115 e deploy inclui a
   assert.match(workflow, /baixar\.html/);
   assert.match(workflow, /favicon\.svg/);
   assert.match(workflow, /icon-light-192\.png/);
+});
+
+test('Lotomania (00-99, 50 dez, 0 acertos premia) e Dia de Sorte (01-31) funcionam ponta a ponta', () => {
+  const appSrc = fs.readFileSync('js/app.js', 'utf8');
+  const ini = appSrc.indexOf('function limparTextoRecursivo(');
+  const fim = appSrc.indexOf('window.limparTextoRecursivo = limparTextoRecursivo;');
+  const janela = {};
+  new Function('window', appSrc.slice(ini, fim + 55))(janela);
+
+  const bLoto = janela.sanearBilhete({
+    id: 'lm1',
+    modalidade: 'lotomania',
+    dezenas: Array.from({ length: 50 }, (_, i) => i) // inclui 0 (00)
+  });
+  assert.equal(bLoto.modalidade, 'lotomania');
+  assert.equal(bLoto.dezenas.length, 50);
+  assert.equal(bLoto.dezenas[0], 0);
+
+  const bDia = janela.sanearBilhete({
+    id: 'ds1',
+    modalidade: 'diadesorte',
+    dezenas: [1, 7, 15, 22, 28, 30, 31, 32]
+  });
+  assert.equal(bDia.modalidade, 'diadesorte');
+  assert.deepEqual(bDia.dezenas, [1, 7, 15, 22, 28, 30, 31]);
+
+  const confSrc = fs.readFileSync('js/conferencia-real.js', 'utf8');
+  const { avaliarBilhete } = new Function('window', 'document', `${confSrc}; return { avaliarBilhete };`)({}, { addEventListener() {} });
+
+  // Lotomania 0 acertos premia!
+  const resZero = avaliarBilhete(
+    { modalidade: 'lotomania', dezenas: Array.from({ length: 50 }, (_, i) => i) },
+    { concurso: 3001, dezenas: Array.from({ length: 20 }, (_, i) => 60 + i), rateio: [{ acertos: 0, premio: 120000 }] }
+  );
+  assert.equal(resZero.acertos, 0);
+  assert.equal(resZero.premiado, true);
+  assert.equal(resZero.premioGanho, 120000);
+
+  // Dia de Sorte 7 acertos
+  const resDia = avaliarBilhete(
+    { modalidade: 'diadesorte', dezenas: [1, 7, 15, 22, 28, 30, 31] },
+    { concurso: 1352, dezenas: [1, 7, 15, 22, 28, 30, 31], rateio: [{ acertos: 7, premio: 500000 }] }
+  );
+  assert.equal(resDia.acertos, 7);
+  assert.equal(resDia.premiado, true);
+  assert.equal(resDia.premioGanho, 500000);
+});
+
+test('bolão aceita todas as 5 loterias no seletor e nas regras da CAIXA', () => {
+  const bolaoSrc = fs.readFileSync('js/bolao.js', 'utf8');
+  const janela = {};
+  new Function('window', 'document', 'localStorage', bolaoSrc)(janela, { addEventListener() {}, getElementById: () => null }, { getItem: () => '[]', setItem() {} });
+  ['megasena', 'lotofacil', 'quina', 'lotomania', 'diadesorte'].forEach((m) => {
+    assert.ok(janela.bolaoRegras.REGRAS_CAIXA[m], `falta regra para ${m}`);
+  });
+  assert.match(bolaoSrc, /\['megasena', 'lotofacil', 'quina', 'lotomania', 'diadesorte'\]/);
 });

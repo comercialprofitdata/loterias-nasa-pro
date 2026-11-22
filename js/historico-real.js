@@ -33,27 +33,48 @@ if (typeof baseConcursosQuina === 'undefined' || !Array.isArray(baseConcursosQui
 } else {
   window.baseConcursosQuina = baseConcursosQuina;
 }
+if (typeof baseConcursosLotomania === 'undefined' || !Array.isArray(baseConcursosLotomania)) {
+  window.baseConcursosLotomania = [];
+} else {
+  window.baseConcursosLotomania = baseConcursosLotomania;
+}
+if (typeof baseConcursosDiaDeSorte === 'undefined' || !Array.isArray(baseConcursosDiaDeSorte)) {
+  window.baseConcursosDiaDeSorte = [];
+} else {
+  window.baseConcursosDiaDeSorte = baseConcursosDiaDeSorte;
+}
 
-let historicoQuinaPromise = null;
-async function carregarHistoricoQuina() {
-  if (window.baseConcursosQuina?.length > 0) return window.baseConcursosQuina;
-  if (historicoQuinaPromise) return historicoQuinaPromise;
-  historicoQuinaPromise = buscarUltimosConcursosDiretoCaixa('quina', 15)
+const historicoModPromises = {};
+async function carregarHistoricoModalidade(mod) {
+  const mapaVar = {
+    quina: { win: 'baseConcursosQuina', ref: () => (typeof baseConcursosQuina !== 'undefined' ? baseConcursosQuina : null) },
+    lotomania: { win: 'baseConcursosLotomania', ref: () => (typeof baseConcursosLotomania !== 'undefined' ? baseConcursosLotomania : null) },
+    diadesorte: { win: 'baseConcursosDiaDeSorte', ref: () => (typeof baseConcursosDiaDeSorte !== 'undefined' ? baseConcursosDiaDeSorte : null) }
+  };
+  const cfg = mapaVar[mod];
+  if (!cfg) return [];
+  if (window[cfg.win]?.length > 0) return window[cfg.win];
+  if (historicoModPromises[mod]) return historicoModPromises[mod];
+  historicoModPromises[mod] = buscarUltimosConcursosDiretoCaixa(mod, 15)
     .then((lista) => {
       if (lista.length > 0) {
-        if (typeof baseConcursosQuina !== 'undefined') {
-          baseConcursosQuina.splice(0, baseConcursosQuina.length, ...lista);
+        const arr = cfg.ref();
+        if (Array.isArray(arr)) {
+          arr.splice(0, arr.length, ...lista);
+          window[cfg.win] = arr;
+        } else {
+          window[cfg.win] = lista;
         }
-        window.baseConcursosQuina = typeof baseConcursosQuina !== 'undefined' ? baseConcursosQuina : lista;
         rerenderizarAnalises();
       }
       return lista;
     })
     .catch(() => [])
-    .finally(() => { historicoQuinaPromise = null; });
-  return historicoQuinaPromise;
+    .finally(() => { delete historicoModPromises[mod]; });
+  return historicoModPromises[mod];
 }
-window.carregarHistoricoQuina = carregarHistoricoQuina;
+window.carregarHistoricoModalidade = carregarHistoricoModalidade;
+window.carregarHistoricoQuina = () => carregarHistoricoModalidade('quina');
 
 let historicoCarregandoPromise = null;
 

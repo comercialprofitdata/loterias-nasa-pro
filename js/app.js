@@ -26,10 +26,15 @@
     function sanearBilhete(bilhete) {
       if (!bilhete || typeof bilhete !== 'object' || Array.isArray(bilhete)) return null;
       const limpo = limparTextoRecursivo(bilhete);
-      limpo.modalidade = limpo.modalidade === 'lotofacil' ? 'lotofacil' : (limpo.modalidade === 'quina' ? 'quina' : 'megasena');
-      const maximo = limpo.modalidade === 'lotofacil' ? 25 : (limpo.modalidade === 'quina' ? 80 : 60);
+      const modsValidas = ['megasena', 'lotofacil', 'quina', 'lotomania', 'diadesorte'];
+      limpo.modalidade = modsValidas.includes(limpo.modalidade) ? limpo.modalidade : 'megasena';
+      const minNum = limpo.modalidade === 'lotomania' ? 0 : 1;
+      const maximo = limpo.modalidade === 'lotofacil'
+        ? 25
+        : (limpo.modalidade === 'quina' ? 80 : (limpo.modalidade === 'lotomania' ? 99 : (limpo.modalidade === 'diadesorte' ? 31 : 60)));
+      const maxDez = limpo.modalidade === 'lotomania' ? 50 : 20;
       limpo.dezenas = [...new Set((Array.isArray(limpo.dezenas) ? limpo.dezenas : [])
-        .map(Number).filter((n) => Number.isInteger(n) && n >= 1 && n <= maximo))].slice(0, 20);
+        .map(Number).filter((n) => Number.isInteger(n) && n >= minNum && n <= maximo))].slice(0, maxDez);
       if (!/^[A-Za-z0-9_.-]{1,40}$/.test(String(limpo.id ?? ''))) limpo.id = Date.now() + Math.floor(Math.random() * 100000);
       ['premioGanho', 'custo', 'custoProprio'].forEach((campo) => {
         if (limpo[campo] !== undefined) limpo[campo] = Number(limpo[campo]) || 0;
@@ -156,6 +161,34 @@
       ]
     };
 
+    const LOTOMANIA_CONFIG = {
+      nome: 'Lotomania',
+      totalNumeros: 100,
+      minNumero: 0,
+      minDezenas: 50,
+      maxDezenas: 50,
+      precoBase: 3.00,
+      totalCombinacoes: 11372635,
+      primos: [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97],
+      fechamentos: [
+        { id: 'lotomania_espelho', nome: '50 Dezenas + Jogo Espelho (2 bilhetes)', n: 50, k: 50, jogos: 2 }
+      ]
+    };
+
+    const DIADESORTE_CONFIG = {
+      nome: 'Dia de Sorte',
+      totalNumeros: 31,
+      minDezenas: 7,
+      maxDezenas: 15,
+      precoBase: 2.50,
+      totalCombinacoes: combinacao(31, 7),
+      primos: [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31],
+      fechamentos: [
+        { id: 'diadesorte_10_6', nome: '10 Dezenas (combinações reduzidas, sem garantia)', n: 10, k: 7, jogos: 4 },
+        { id: 'diadesorte_12_5', nome: '12 Dezenas (combinações reduzidas, sem garantia)', n: 12, k: 7, jogos: 6 }
+      ]
+    };
+
     // Estado da Aplicação
     let modalidadeAtual = 'megasena';
     let modoToque = 'normal';
@@ -163,6 +196,8 @@
     let qtdDesejadaMega = 6;
     let qtdDesejadaLoto = 15;
     let qtdDesejadaQuina = 5;
+    let qtdDesejadaLotomania = 50;
+    let qtdDesejadaDiaDeSorte = 7;
     let qtdApostasDesejada = 3;
     let loteApostasGeradas = [];
     let loteModalidade = null;
@@ -177,14 +212,20 @@
     let meuJogoMega = [11, 15, 20, 21, 38, 48];
     let meuJogoLoto = [1, 2, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 22, 24, 25];
     let meuJogoQuina = [4, 17, 32, 55, 73];
+    let meuJogoLotomania = Array.from({ length: 50 }, (_, i) => i * 2);
+    let meuJogoDiaDeSorte = [3, 7, 12, 18, 21, 27, 30];
     let fixosMega = [], proibidosMega = [];
     let fixosLoto = [], proibidosLoto = [];
     let fixosQuina = [], proibidosQuina = [];
+    let fixosLotomania = [], proibidosLotomania = [];
+    let fixosDiaDeSorte = [], proibidosDiaDeSorte = [];
     let jogosFechamentoGerados = [];
 
     let baseConcursosMega = [];
     let baseConcursosLoto = [];
     let baseConcursosQuina = [];
+    let baseConcursosLotomania = [];
+    let baseConcursosDiaDeSorte = [];
     let carteiraJogos = [];
     let modalCallback = null;
 
@@ -513,6 +554,16 @@
         if (btnLoto) btnLoto.className = 'px-3 py-1 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition';
         if (labelTopo) labelTopo.className = 'text-xs font-black uppercase tracking-wider text-sky-400 block font-mono';
         if (labelTopo) labelTopo.innerText = '🔵 Quina · Seu jogo';
+      } else if (mod === 'lotomania') {
+        if (btnMega) btnMega.className = 'px-3 py-1 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition';
+        if (btnLoto) btnLoto.className = 'px-3 py-1 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition';
+        if (labelTopo) labelTopo.className = 'text-xs font-black uppercase tracking-wider text-orange-400 block font-mono';
+        if (labelTopo) labelTopo.innerText = '🟠 Lotomania · Seu jogo';
+      } else if (mod === 'diadesorte') {
+        if (btnMega) btnMega.className = 'px-3 py-1 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition';
+        if (btnLoto) btnLoto.className = 'px-3 py-1 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition';
+        if (labelTopo) labelTopo.className = 'text-xs font-black uppercase tracking-wider text-amber-400 block font-mono';
+        if (labelTopo) labelTopo.innerText = '🍀 Dia de Sorte · Seu jogo';
       } else {
         if (btnLoto) btnLoto.className = 'px-3 py-1 rounded-lg text-xs font-black transition bg-purple-600 text-white shadow';
         if (btnMega) btnMega.className = 'px-3 py-1 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition';
@@ -526,31 +577,47 @@
     }
 
     function getJogoAtual() {
-      return modalidadeAtual === 'megasena' ? meuJogoMega : (modalidadeAtual === 'quina' ? meuJogoQuina : meuJogoLoto);
+      const m = { megasena: meuJogoMega, lotofacil: meuJogoLoto, quina: meuJogoQuina, lotomania: meuJogoLotomania, diadesorte: meuJogoDiaDeSorte };
+      return m[modalidadeAtual] || meuJogoMega;
     }
     function setJogoAtual(novo) {
       if (modalidadeAtual === 'megasena') meuJogoMega = novo;
       else if (modalidadeAtual === 'quina') meuJogoQuina = novo;
+      else if (modalidadeAtual === 'lotomania') meuJogoLotomania = novo;
+      else if (modalidadeAtual === 'diadesorte') meuJogoDiaDeSorte = novo;
       else meuJogoLoto = novo;
     }
-    function getFixos() {
-      return modalidadeAtual === 'megasena' ? fixosMega : (modalidadeAtual === 'quina' ? fixosQuina : fixosLoto);
+    function getFixos(mod = modalidadeAtual) {
+      const m = { megasena: fixosMega, lotofacil: fixosLoto, quina: fixosQuina, lotomania: fixosLotomania, diadesorte: fixosDiaDeSorte };
+      return m[mod] || fixosMega;
     }
-    function getProibidos() {
-      return modalidadeAtual === 'megasena' ? proibidosMega : (modalidadeAtual === 'quina' ? proibidosQuina : proibidosLoto);
+    function getProibidos(mod = modalidadeAtual) {
+      const m = { megasena: proibidosMega, lotofacil: proibidosLoto, quina: proibidosQuina, lotomania: proibidosLotomania, diadesorte: proibidosDiaDeSorte };
+      return m[mod] || proibidosMega;
     }
-    function getConfigAtual() {
-      return modalidadeAtual === 'megasena' ? MEGA_CONFIG : (modalidadeAtual === 'quina' ? QUINA_CONFIG : LOTO_CONFIG);
+    function getConfigAtual(mod = modalidadeAtual) {
+      const m = { megasena: MEGA_CONFIG, lotofacil: LOTO_CONFIG, quina: QUINA_CONFIG, lotomania: LOTOMANIA_CONFIG, diadesorte: DIADESORTE_CONFIG };
+      return m[mod] || MEGA_CONFIG;
     }
-    function getBaseAtual() {
-      return modalidadeAtual === 'megasena' ? baseConcursosMega : (modalidadeAtual === 'quina' ? baseConcursosQuina : baseConcursosLoto);
+    function getBaseAtual(mod = modalidadeAtual) {
+      const m = {
+        megasena: baseConcursosMega,
+        lotofacil: baseConcursosLoto,
+        quina: window.baseConcursosQuina || baseConcursosQuina,
+        lotomania: window.baseConcursosLotomania || baseConcursosLotomania,
+        diadesorte: window.baseConcursosDiaDeSorte || baseConcursosDiaDeSorte
+      };
+      return m[mod] || baseConcursosMega;
     }
     function getQtdDesejada(mod = modalidadeAtual) {
-      return mod === 'megasena' ? qtdDesejadaMega : (mod === 'quina' ? qtdDesejadaQuina : qtdDesejadaLoto);
+      const m = { megasena: qtdDesejadaMega, lotofacil: qtdDesejadaLoto, quina: qtdDesejadaQuina, lotomania: qtdDesejadaLotomania, diadesorte: qtdDesejadaDiaDeSorte };
+      return m[mod] || qtdDesejadaMega;
     }
     function setQtdDesejada(qtd, mod = modalidadeAtual) {
       if (mod === 'megasena') qtdDesejadaMega = qtd;
       else if (mod === 'quina') qtdDesejadaQuina = qtd;
+      else if (mod === 'lotomania') qtdDesejadaLotomania = qtd;
+      else if (mod === 'diadesorte') qtdDesejadaDiaDeSorte = qtd;
       else qtdDesejadaLoto = qtd;
     }
 
@@ -862,6 +929,32 @@
             <span class="legenda-quad-count">${jogo.filter((x) => x > 40).length} no jogo</span>
           </div>
         `;
+      } else if (modalidadeAtual === 'lotomania') {
+        grid.className = 'grid grid-cols-10 gap-1 text-center font-mono';
+        definirTextoSeguro('volante-titulo-tipo', 'Volante Lotomania (00 a 99 · 50 dezenas)');
+        (document.getElementById('legenda-volante') || {}).innerHTML = `
+          <div class="col-span-2 legenda-quad-box q1">
+            <span class="legenda-quad-title">01 a 50</span>
+            <span class="legenda-quad-count">${jogo.filter((x) => x >= 1 && x <= 50).length} no jogo</span>
+          </div>
+          <div class="col-span-2 legenda-quad-box q4">
+            <span class="legenda-quad-title">51 a 99 + 00</span>
+            <span class="legenda-quad-count">${jogo.filter((x) => x === 0 || x > 50).length} no jogo</span>
+          </div>
+        `;
+      } else if (modalidadeAtual === 'diadesorte') {
+        grid.className = 'grid grid-cols-7 gap-1.5 text-center max-w-sm mx-auto font-mono';
+        definirTextoSeguro('volante-titulo-tipo', 'Volante Dia de Sorte (01 a 31)');
+        (document.getElementById('legenda-volante') || {}).innerHTML = `
+          <div class="col-span-2 legenda-quad-box q1">
+            <span class="legenda-quad-title">Dias 01 a 15</span>
+            <span class="legenda-quad-count">${jogo.filter((x) => x <= 15).length} no jogo</span>
+          </div>
+          <div class="col-span-2 legenda-quad-box q4">
+            <span class="legenda-quad-title">Dias 16 a 31</span>
+            <span class="legenda-quad-count">${jogo.filter((x) => x > 15).length} no jogo</span>
+          </div>
+        `;
       } else {
         let molduraCount = 0, mioloCount = 0;
         jogo.forEach(n => {
@@ -892,12 +985,13 @@
       const numerosBloqueados = new Set();
 
       for (let i = 1; i <= config.totalNumeros; i++) {
+        const numVal = (modalidadeAtual === 'lotomania' && i === 100) ? 0 : i;
         const btn = document.createElement('button');
-        const marcado = jogo.includes(i);
-        const ehFixo = fixos.includes(i);
-        const ehProibido = proibidos.includes(i);
-        const ehNumeroBloqueado = numerosBloqueados.has(i) && marcado;
-        const numStr = String(i).padStart(2, '0');
+        const marcado = jogo.includes(numVal);
+        const ehFixo = fixos.includes(numVal);
+        const ehProibido = proibidos.includes(numVal);
+        const ehNumeroBloqueado = numerosBloqueados.has(numVal) && marcado;
+        const numStr = String(numVal).padStart(2, '0');
 
         const linhaNum = Math.floor((i - 1) / 10) + 1;
         const colNum = ((i - 1) % 10) + 1;
@@ -938,7 +1032,7 @@
             abrirModalPaywall('multi_jogos');
             return;
           }
-          clicarNumeroVolante(i);
+          clicarNumeroVolante(numVal);
         };
         grid.appendChild(btn);
       }
@@ -1058,7 +1152,13 @@
         const ehNumeroBloqueado = numerosBloqueados.has(num);
         const cor = ehFixo
           ? 'bg-emerald-400 text-slate-950 ring-2 ring-emerald-300'
-          : (modalidadeAtual === 'megasena' ? 'bg-emerald-600 text-slate-950 font-black' : (modalidadeAtual === 'quina' ? 'bg-sky-600 text-white font-black' : 'bg-purple-600 text-white'));
+          : (modalidadeAtual === 'megasena'
+            ? 'bg-emerald-600 text-slate-950 font-black'
+            : (modalidadeAtual === 'quina'
+              ? 'bg-sky-600 text-white font-black'
+              : (modalidadeAtual === 'lotomania'
+                ? 'bg-orange-500 text-white font-black'
+                : (modalidadeAtual === 'diadesorte' ? 'bg-amber-400 text-slate-950 font-black' : 'bg-purple-600 text-white'))));
 
         if (ehNumeroBloqueado) {
           const btnVip = document.createElement('button');
@@ -1451,6 +1551,36 @@ function gerarPalpiteInteligente() {
         if (elStatus) {
           elStatus.innerHTML = `<span class="text-sky-300 font-bold">🔵 Quina: ${linhasSet.size} linhas · ${colunasSet.size} colunas</span>`;
         }
+      } else if (modalidadeAtual === 'lotomania') {
+        const linhasSet = new Set(jogo.map((n) => Math.floor(((n === 0 ? 100 : n) - 1) / 10) + 1));
+        const colunasSet = new Set(jogo.map((n) => (((n === 0 ? 100 : n) - 1) % 10) + 1));
+        const metade1 = jogo.filter((x) => x >= 1 && x <= 50).length;
+        const metade2 = jogo.length - metade1;
+        if (elLinhas) elLinhas.innerText = `${linhasSet.size} de 10 Linhas`;
+        if (elColunas) elColunas.innerText = `${colunasSet.size} de 10 Colunas`;
+        if (elArea) elArea.innerText = `${metade1} (01–50) / ${metade2} (51–00)`;
+        if (elVazios) elVazios.innerText = `${jogo.length} dezenas marcadas`;
+        if (elBadge) {
+          elBadge.innerText = 'Volante Lotomania 10×10';
+          elBadge.className = 'text-[9px] px-2 py-0.5 rounded bg-orange-950 text-orange-300 border border-orange-700 font-bold ml-1';
+        }
+        if (elStatus) {
+          elStatus.innerHTML = `<span class="text-orange-300 font-bold">🟠 Lotomania: ${linhasSet.size} linhas · ${colunasSet.size} colunas</span>`;
+        }
+      } else if (modalidadeAtual === 'diadesorte') {
+        const metade1 = jogo.filter((x) => x <= 15).length;
+        const metade2 = jogo.length - metade1;
+        if (elLinhas) elLinhas.innerText = `${metade1} dias (01–15)`;
+        if (elColunas) elColunas.innerText = `${metade2} dias (16–31)`;
+        if (elArea) elArea.innerText = `${jogo.length} dezenas`;
+        if (elVazios) elVazios.innerText = `Amplitude ${Math.max(...jogo) - Math.min(...jogo)}`;
+        if (elBadge) {
+          elBadge.innerText = 'Calendário 01–31';
+          elBadge.className = 'text-[9px] px-2 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-700 font-bold ml-1';
+        }
+        if (elStatus) {
+          elStatus.innerHTML = `<span class="text-amber-300 font-bold">🍀 Dia de Sorte: ${metade1} na 1ª quinzena · ${metade2} na 2ª</span>`;
+        }
       } else {
         // Lotofácil 5x5
         const linhasSet = new Set(jogo.map((n) => Math.floor((n - 1) / 5) + 1));
@@ -1478,7 +1608,13 @@ function gerarPalpiteInteligente() {
 
     // Avaliador Central e Rigoroso dos 6 Testes Estatísticos
     function avaliarJogo(jogo, modalidade) {
-      const config = modalidade === 'megasena' ? MEGA_CONFIG : (modalidade === 'quina' ? QUINA_CONFIG : LOTO_CONFIG);
+      const config = modalidade === 'megasena'
+        ? MEGA_CONFIG
+        : (modalidade === 'quina'
+          ? QUINA_CONFIG
+          : (modalidade === 'lotomania'
+            ? LOTOMANIA_CONFIG
+            : (modalidade === 'diadesorte' ? DIADESORTE_CONFIG : LOTO_CONFIG)));
       const n = jogo.length;
       if (n < config.minDezenas) {
         return {
@@ -1627,6 +1763,28 @@ function gerarPalpiteInteligente() {
         t5_val = `Soma: ${soma}`;
         t6_val = `Amplitude: ${Math.max(...jogo) - Math.min(...jogo)}`;
         score += 25;
+      } else if (modalidade === 'lotomania') {
+        const metade1 = jogo.filter((x) => x >= 1 && x <= 50).length;
+        const metade2 = n - metade1;
+        t1_status = t2_status = t3_status = t4_status = t5_status = t6_status = 'Informativo';
+        t1_val = `${n} dezenas (00–99)`;
+        t2_val = `${metade1} (01–50) / ${metade2} (51–00)`;
+        t3_val = `${new Set(jogo.map((x) => Math.floor(((x === 0 ? 100 : x) - 1) / 10) + 1)).size} linhas`;
+        t4_val = `${pares}P / ${impares}I (${jogo.filter((x) => LOTOMANIA_CONFIG.primos.includes(x)).length} Primos)`;
+        t5_val = `Soma: ${soma}`;
+        t6_val = `Cobertura: ${Math.round((n / 100) * 100)}% do volante`;
+        score += 25;
+      } else if (modalidade === 'diadesorte') {
+        const q1 = jogo.filter((x) => x <= 15).length;
+        const q2 = n - q1;
+        t1_status = t2_status = t3_status = t4_status = t5_status = t6_status = 'Informativo';
+        t1_val = `${n} dias (01–31)`;
+        t2_val = `${q1} (01–15) / ${q2} (16–31)`;
+        t3_val = `${new Set(jogo.map((x) => Math.floor((x - 1) / 7) + 1)).size} semanas`;
+        t4_val = `${pares}P / ${impares}I (${jogo.filter((x) => DIADESORTE_CONFIG.primos.includes(x)).length} Primos)`;
+        t5_val = `Soma: ${soma}`;
+        t6_val = `Amplitude: ${Math.max(...jogo) - Math.min(...jogo)}`;
+        score += 25;
       } else {
         const molduraCount = jogo.filter(x => LOTO_CONFIG.moldura.includes(x)).length;
         const mioloCount = n - molduraCount;
@@ -1672,7 +1830,7 @@ function gerarPalpiteInteligente() {
 
     // SIMULADOR DE DESEMPENHO HISTÓRICO (RETRO-TESTE)
     function simularDesempenhoHistorico(jogo, mod) {
-      const base = mod === 'megasena' ? baseConcursosMega : (mod === 'quina' ? (window.baseConcursosQuina || baseConcursosQuina || []) : baseConcursosLoto);
+      const base = getBaseAtual(mod) || [];
       const gradeEl = document.getElementById('grade-retro-resultados');
       const detalheEl = document.getElementById('detalhe-retro-melhor-sorteio');
       const badgeResumoEl = document.getElementById('badge-retro-resumo');
@@ -1947,10 +2105,11 @@ function gerarPalpiteInteligente() {
 
     // Gerador de Jogo Único de Alta Qualidade
     function gerarJogoCalibradoUnico(modalidade, k, usarVitorio = false) {
-      const config = modalidade === 'megasena' ? MEGA_CONFIG : (modalidade === 'quina' ? QUINA_CONFIG : LOTO_CONFIG);
-      const fixos = modalidade === 'megasena' ? fixosMega : (modalidade === 'quina' ? fixosQuina : fixosLoto);
-      const proibidos = modalidade === 'megasena' ? proibidosMega : (modalidade === 'quina' ? proibidosQuina : proibidosLoto);
-      const disponiveis = Array.from({ length: config.totalNumeros }, (_, index) => index + 1)
+      const config = getConfigAtual(modalidade);
+      const fixos = getFixos(modalidade);
+      const proibidos = getProibidos(modalidade);
+      const minNum = config.minNumero ?? 1;
+      const disponiveis = Array.from({ length: config.totalNumeros }, (_, index) => minNum + index)
         .filter(numero => !proibidos.includes(numero));
 
       if (fixos.length > k || disponiveis.length < k || fixos.some(numero => proibidos.includes(numero))) {
@@ -1976,7 +2135,7 @@ function gerarPalpiteInteligente() {
         }
 
         while (dezenas.size < k) {
-          const n = Math.floor(Math.random() * config.totalNumeros) + 1;
+          const n = minNum + Math.floor(Math.random() * config.totalNumeros);
           if (!proibidos.includes(n)) dezenas.add(n);
         }
 
@@ -2838,12 +2997,14 @@ function gerarPalpiteInteligente() {
     function aceitarSugestaoEImportar() {
       if (!ultimoIncompletoDetectado) return;
       const { sugestao, modalidade, concursoAlvo, data } = ultimoIncompletoDetectado;
-      const precoBase = modalidade === 'lotofacil' ? 3.5 : (modalidade === 'quina' ? 2.5 : 6.0);
+      const precos = { megasena: 6.0, lotofacil: 3.5, quina: 2.5, lotomania: 3.0, diadesorte: 2.5 };
+      const nomes = { megasena: 'Mega-Sena', lotofacil: 'Lotofácil', quina: 'Quina', lotomania: 'Lotomania', diadesorte: 'Dia de Sorte' };
+      const precoBase = precos[modalidade] || 6.0;
 
       carteiraJogos.unshift({
         id: Date.now(),
         modalidade: modalidade,
-        nome: `${modalidade === 'lotofacil' ? 'Lotofácil' : (modalidade === 'quina' ? 'Quina' : 'Mega-Sena')} • Aposta gerada (${sugestao.jogoCompleto.length} dez)`,
+        nome: `${nomes[modalidade] || 'Mega-Sena'} • Aposta gerada (${sugestao.jogoCompleto.length} dez)`,
         dezenas: sugestao.jogoCompleto,
         data: data,
         concursoAlvo: concursoAlvo,
@@ -3067,7 +3228,7 @@ function gerarPalpiteInteligente() {
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div>
                 <div class="flex items-center gap-1.5 mb-1.5 flex-wrap">
-                  <span class="px-1.5 py-0.5 rounded font-black text-[9px] ${b.modalidade === 'megasena' ? 'bg-emerald-950 text-emerald-400 border border-emerald-800' : (b.modalidade === 'quina' ? 'bg-sky-950 text-sky-400 border border-sky-800' : 'bg-purple-950 text-purple-400 border border-purple-800')}">${b.modalidade.toUpperCase()}</span>
+                  <span class="px-1.5 py-0.5 rounded font-black text-[9px] ${b.modalidade === 'megasena' ? 'bg-emerald-950 text-emerald-400 border border-emerald-800' : (b.modalidade === 'quina' ? 'bg-sky-950 text-sky-400 border border-sky-800' : (b.modalidade === 'lotomania' ? 'bg-orange-950 text-orange-400 border border-orange-800' : (b.modalidade === 'diadesorte' ? 'bg-amber-950 text-amber-300 border border-amber-800' : 'bg-purple-950 text-purple-400 border border-purple-800')))}">${b.modalidade.toUpperCase()}</span>
                   <span class="text-cyan-300 text-[10px] font-bold bg-slate-900 px-1.5 py-0.5 rounded border border-slate-800">📅 ${b.data}</span>
                   <span class="text-[9px] px-1.5 py-0.5 rounded font-bold ${analise.aprovadosCount === 6 ? 'bg-emerald-950 text-emerald-300 border border-emerald-800' : 'bg-amber-950 text-amber-300 border border-amber-800'}">
                     ${rotuloIndicadores(analise)}

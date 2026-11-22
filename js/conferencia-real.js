@@ -36,6 +36,21 @@ const FAIXAS_PREMIACAO = {
     { acertos: 4, rotulo: '🥈 QUADRA' },
     { acertos: 3, rotulo: '🥉 TERNO' },
     { acertos: 2, rotulo: 'DUQUE' }
+  ],
+  lotomania: [
+    { acertos: 20, rotulo: '🏆 20 ACERTOS' },
+    { acertos: 19, rotulo: '19 Acertos' },
+    { acertos: 18, rotulo: '18 Acertos' },
+    { acertos: 17, rotulo: '17 Acertos' },
+    { acertos: 16, rotulo: '16 Acertos' },
+    { acertos: 15, rotulo: '15 Acertos' },
+    { acertos: 0, rotulo: '🎯 ZERO ACERTOS' }
+  ],
+  diadesorte: [
+    { acertos: 7, rotulo: '🏆 7 ACERTOS' },
+    { acertos: 6, rotulo: '🥈 6 ACERTOS' },
+    { acertos: 5, rotulo: '🥉 5 ACERTOS' },
+    { acertos: 4, rotulo: '4 Acertos' }
   ]
 };
 
@@ -53,9 +68,14 @@ async function obterResultadoOficial(modalidade, dataBR, concursoNum) {
   if (cacheResultados.has(chave)) return cacheResultados.get(chave);
 
   // 1. Tenta achar na baseConcursos em memória primeiro (ultra-rápido, sem rede)
-  const base = modalidade === 'megasena'
-    ? (window.baseConcursosMega || [])
-    : (modalidade === 'quina' ? (window.baseConcursosQuina || []) : (window.baseConcursosLoto || []));
+  const bases = {
+    megasena: window.baseConcursosMega || [],
+    lotofacil: window.baseConcursosLoto || [],
+    quina: window.baseConcursosQuina || [],
+    lotomania: window.baseConcursosLotomania || [],
+    diadesorte: window.baseConcursosDiaDeSorte || []
+  };
+  const base = bases[modalidade] || [];
   let encontrado = null;
   if (concursoNum) {
     const num = Number(String(concursoNum).replace(/\D/g, ''));
@@ -108,7 +128,12 @@ function combinacoes(n, k) {
 
 /** Jogo com mais dezenas equivale a várias apostas simples: soma todas as faixas. */
 function premioTotalDoBilhete(bilhete, resultado, acertos, faixas) {
-  const dezenasPorAposta = bilhete.modalidade === 'lotofacil' ? 15 : (bilhete.modalidade === 'quina' ? 5 : 6);
+  if (bilhete.modalidade === 'lotomania') {
+    return premioDaFaixa(resultado, acertos);
+  }
+  const dezenasPorAposta = bilhete.modalidade === 'lotofacil'
+    ? 15
+    : (bilhete.modalidade === 'quina' ? 5 : (bilhete.modalidade === 'diadesorte' ? 7 : 6));
   const n = (bilhete.dezenas || []).length;
   return faixas.reduce((total, f) => {
     const apostas = combinacoes(acertos, f.acertos) * combinacoes(n - acertos, dezenasPorAposta - f.acertos);
@@ -245,6 +270,12 @@ function montarRegistroConcurso(resultado) {
     registro.premioQuina = premio(5);
     registro.premioQuadra = premio(4);
     registro.premioTerno = premio(3);
+  } else if (resultado.modalidade === 'lotomania') {
+    registro.premio20 = premio(20);
+    registro.premio0 = premio(0);
+  } else if (resultado.modalidade === 'diadesorte') {
+    registro.premio7 = premio(7);
+    if (resultado.mesSorte) registro.mesSorte = resultado.mesSorte;
   } else {
     registro.premio15 = premio(15);
   }

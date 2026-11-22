@@ -23,7 +23,11 @@ const SORTEIOS_CALENDARIO = {
   // Lotofácil: 6 sorteios semanais (Segunda a Sábado)
   lotofacil: { dias: [1, 2, 3, 4, 5, 6], hora: 20 },
   // Quina: 6 sorteios semanais (Segunda a Sábado)
-  quina: { dias: [1, 2, 3, 4, 5, 6], hora: 20 }
+  quina: { dias: [1, 2, 3, 4, 5, 6], hora: 20 },
+  // Lotomania: Segunda, Quarta, Sexta
+  lotomania: { dias: [1, 3, 5], hora: 20 },
+  // Dia de Sorte: Terça, Quinta, Sábado
+  diadesorte: { dias: [2, 4, 6], hora: 20 }
 };
 
 const NOMES_DIAS = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
@@ -215,11 +219,15 @@ function montarCalendarioLocal(agora = new Date()) {
   const mega = calcularProximoSorteio('megasena', agora);
   const loto = calcularProximoSorteio('lotofacil', agora);
   const quina = calcularProximoSorteio('quina', agora);
+  const lotomania = calcularProximoSorteio('lotomania', agora);
+  const diadesorte = calcularProximoSorteio('diadesorte', agora);
 
   return {
     megasena: { ...mega, premio: null, concurso: null },
     lotofacil: { ...loto, premio: null, concurso: null },
     quina: { ...quina, premio: null, concurso: null },
+    lotomania: { ...lotomania, premio: null, concurso: null },
+    diadesorte: { ...diadesorte, premio: null, concurso: null },
     atualizadoEm: agora.toISOString()
   };
 }

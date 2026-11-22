@@ -89,6 +89,12 @@ function criarTopbarUnificada() {
       <button type="button" id="nasa-pill-quina" class="nasa-mod-btn" onclick="trocarModalidade('quina')">
         <span>Quina</span>
       </button>
+      <button type="button" id="nasa-pill-lotomania" class="nasa-mod-btn" onclick="trocarModalidade('lotomania')">
+        <span>Lotomania</span>
+      </button>
+      <button type="button" id="nasa-pill-diadesorte" class="nasa-mod-btn" onclick="trocarModalidade('diadesorte')">
+        <span>Dia de Sorte</span>
+      </button>
     </div>
 
     <!-- Ações Rápidas: VIP/Créditos + Tema + Menu Drawer -->
@@ -147,7 +153,7 @@ function criarSidebarDesktop() {
       </div>
     </div>
 
-    <!-- Seletor de Modalidade (Mega-Sena / Lotofácil / Quina) -->
+    <!-- Seletor de Modalidade (5 Loterias) -->
     <div class="sidebar-mod-selector">
       <div class="sidebar-mod-pill" role="tablist" aria-label="Escolha a loteria">
         <button type="button" id="sidebar-pill-mega" class="sidebar-mod-btn active-mega" onclick="trocarModalidade('megasena'); tocarBeep('click');">
@@ -158,6 +164,12 @@ function criarSidebarDesktop() {
         </button>
         <button type="button" id="sidebar-pill-quina" class="sidebar-mod-btn" onclick="trocarModalidade('quina'); tocarBeep('click');">
           <span>Quina</span>
+        </button>
+        <button type="button" id="sidebar-pill-lotomania" class="sidebar-mod-btn" onclick="trocarModalidade('lotomania'); tocarBeep('click');">
+          <span>Lotomania</span>
+        </button>
+        <button type="button" id="sidebar-pill-diadesorte" class="sidebar-mod-btn col-span-2" onclick="trocarModalidade('diadesorte'); tocarBeep('click');">
+          <span>Dia de Sorte</span>
         </button>
       </div>
     </div>
@@ -347,35 +359,43 @@ function sincronizarVisualModalidadeGlobal() {
   const pillMega = document.getElementById('nasa-pill-mega');
   const pillLoto = document.getElementById('nasa-pill-loto');
   const pillQuina = document.getElementById('nasa-pill-quina');
+  const pillLotomania = document.getElementById('nasa-pill-lotomania');
+  const pillDia = document.getElementById('nasa-pill-diadesorte');
 
   document.documentElement.classList.toggle('lotofacil-mode', mod === 'lotofacil');
 
   if (pillMega && pillLoto) {
     pillMega.className = mod === 'megasena' ? 'nasa-mod-btn active-mega' : 'nasa-mod-btn';
     pillLoto.className = mod === 'lotofacil' ? 'nasa-mod-btn active-loto' : 'nasa-mod-btn';
-    if (pillQuina) pillQuina.className = mod === 'quina' ? 'nasa-mod-btn active-loto' : 'nasa-mod-btn';
+    if (pillQuina) pillQuina.className = mod === 'quina' ? 'nasa-mod-btn active-quina' : 'nasa-mod-btn';
+    if (pillLotomania) pillLotomania.className = mod === 'lotomania' ? 'nasa-mod-btn active-lotomania' : 'nasa-mod-btn';
+    if (pillDia) pillDia.className = mod === 'diadesorte' ? 'nasa-mod-btn active-diadesorte' : 'nasa-mod-btn';
   }
 
   // Sincroniza o seletor da Sidebar Desktop
   const sidePillMega = document.getElementById('sidebar-pill-mega');
   const sidePillLoto = document.getElementById('sidebar-pill-loto');
   const sidePillQuina = document.getElementById('sidebar-pill-quina');
+  const sidePillLotomania = document.getElementById('sidebar-pill-lotomania');
+  const sidePillDia = document.getElementById('sidebar-pill-diadesorte');
   const sideLotteryName = document.getElementById('sidebar-lottery-name');
   if (sidePillMega && sidePillLoto) {
     sidePillMega.className = mod === 'megasena' ? 'sidebar-mod-btn active-mega' : 'sidebar-mod-btn';
     sidePillLoto.className = mod === 'lotofacil' ? 'sidebar-mod-btn active-loto' : 'sidebar-mod-btn';
-    if (sidePillQuina) sidePillQuina.className = mod === 'quina' ? 'sidebar-mod-btn active-loto' : 'sidebar-mod-btn';
+    if (sidePillQuina) sidePillQuina.className = mod === 'quina' ? 'sidebar-mod-btn active-quina' : 'sidebar-mod-btn';
+    if (sidePillLotomania) sidePillLotomania.className = mod === 'lotomania' ? 'sidebar-mod-btn active-lotomania' : 'sidebar-mod-btn';
+    if (sidePillDia) sidePillDia.className = mod === 'diadesorte' ? 'sidebar-mod-btn col-span-2 active-diadesorte' : 'sidebar-mod-btn col-span-2';
     if (sideLotteryName) {
-      if (mod === 'megasena') {
-        sideLotteryName.innerText = 'MEGA-SENA';
-        sideLotteryName.className = 'font-bold text-[11px] text-emerald-400';
-      } else if (mod === 'quina') {
-        sideLotteryName.innerText = 'QUINA';
-        sideLotteryName.className = 'font-bold text-[11px] text-sky-400';
-      } else {
-        sideLotteryName.innerText = 'LOTOFÁCIL';
-        sideLotteryName.className = 'font-bold text-[11px] text-purple-400';
-      }
+      const rotulos = {
+        megasena: ['MEGA-SENA', 'text-emerald-400'],
+        lotofacil: ['LOTOFÁCIL', 'text-purple-400'],
+        quina: ['QUINA', 'text-sky-400'],
+        lotomania: ['LOTOMANIA', 'text-orange-400'],
+        diadesorte: ['DIA DE SORTE', 'text-amber-400']
+      };
+      const [nome, cor] = rotulos[mod] || rotulos.megasena;
+      sideLotteryName.innerText = nome;
+      sideLotteryName.className = `font-bold text-[11px] ${cor}`;
     }
   }
 
@@ -706,7 +726,14 @@ async function atualizarUltimoResultadoHome() {
   const mod = typeof modalidadeAtual !== 'undefined' ? modalidadeAtual : 'megasena';
   const badgeMod = document.getElementById('home-active-mod-badge');
   if (badgeMod) {
-    badgeMod.innerText = mod === 'megasena' ? '🍀 MEGA-SENA ATIVA' : (mod === 'quina' ? '🔵 QUINA ATIVA' : '🟣 LOTOFÁCIL ATIVA');
+    const badges = {
+      megasena: '🍀 MEGA-SENA ATIVA',
+      lotofacil: '🟣 LOTOFÁCIL ATIVA',
+      quina: '🔵 QUINA ATIVA',
+      lotomania: '🟠 LOTOMANIA ATIVA',
+      diadesorte: '🍀 DIA DE SORTE ATIVA'
+    };
+    badgeMod.innerText = badges[mod] || badges.megasena;
   }
 
   // Atualiza a auditoria consolidada com o destaque saliente do último resultado
@@ -1529,16 +1556,23 @@ function navigateTo(tabId) {
 
 
 
+function obterBaseConcursosPorModalidade(mod) {
+  const mapa = {
+    megasena: window.baseConcursosMega || (typeof baseConcursosMega !== 'undefined' ? baseConcursosMega : []),
+    lotofacil: window.baseConcursosLoto || (typeof baseConcursosLoto !== 'undefined' ? baseConcursosLoto : []),
+    quina: window.baseConcursosQuina || (typeof baseConcursosQuina !== 'undefined' ? baseConcursosQuina : []),
+    lotomania: window.baseConcursosLotomania || (typeof baseConcursosLotomania !== 'undefined' ? baseConcursosLotomania : []),
+    diadesorte: window.baseConcursosDiaDeSorte || (typeof baseConcursosDiaDeSorte !== 'undefined' ? baseConcursosDiaDeSorte : [])
+  };
+  return mapa[mod] || [];
+}
+
 function atualizarProvaDosFatosRedesign() {
   const mod = typeof modalidadeAtual !== 'undefined' ? modalidadeAtual : 'megasena';
-  const base = mod === 'megasena'
-    ? (typeof baseConcursosMega !== 'undefined' ? baseConcursosMega : [])
-    : (mod === 'quina'
-      ? (window.baseConcursosQuina || (typeof baseConcursosQuina !== 'undefined' ? baseConcursosQuina : []))
-      : (typeof baseConcursosLoto !== 'undefined' ? baseConcursosLoto : []));
+  const base = obterBaseConcursosPorModalidade(mod);
 
-  if (mod === 'quina' && base.length === 0 && typeof window.carregarHistoricoQuina === 'function') {
-    window.carregarHistoricoQuina();
+  if (['quina', 'lotomania', 'diadesorte'].includes(mod) && base.length === 0 && typeof window.carregarHistoricoModalidade === 'function') {
+    window.carregarHistoricoModalidade(mod);
   }
 
   const containerLista = document.getElementById('home-lista-ultimos-sorteios-avaliados');
@@ -1659,11 +1693,7 @@ function carregarConcursoHistoricoNoVolante(numConcurso, modDesejada) {
     trocarModalidade(mod);
   }
 
-  const base = mod === 'megasena'
-    ? (window.baseConcursosMega || (typeof baseConcursosMega !== 'undefined' ? baseConcursosMega : []))
-    : (mod === 'quina'
-      ? (window.baseConcursosQuina || (typeof baseConcursosQuina !== 'undefined' ? baseConcursosQuina : []))
-      : (window.baseConcursosLoto || (typeof baseConcursosLoto !== 'undefined' ? baseConcursosLoto : [])));
+  const base = obterBaseConcursosPorModalidade(mod);
 
   const conc = base.find((c) => Number(c.concurso) === Number(numConcurso));
   if (!conc) {
@@ -1948,7 +1978,8 @@ function executarAcaoPrincipalPorModo() {
 // Geração de Palpites Express (Modo Rápido)
 function gerarPalpiteExpressHome({ silencioso = false } = {}) {
   const mod = typeof modalidadeAtual !== 'undefined' ? modalidadeAtual : 'megasena';
-  const k = mod === 'megasena' ? 6 : (mod === 'quina' ? 5 : 15);
+  const ks = { megasena: 6, lotofacil: 15, quina: 5, lotomania: 50, diadesorte: 7 };
+  const k = ks[mod] || 6;
   let jogoObj = null;
 
   if (typeof window.gerarJogoCalibradoUnico === 'function') {
@@ -1956,11 +1987,15 @@ function gerarPalpiteExpressHome({ silencioso = false } = {}) {
   }
 
   if (!jogoObj || !jogoObj.dezenas || jogoObj.dezenas.length < k) {
-    const dezenasPadrao = mod === 'megasena'
-      ? [2, 14, 23, 31, 40, 58]
-      : (mod === 'quina' ? [4, 17, 32, 55, 73] : [1, 3, 4, 6, 8, 9, 11, 13, 15, 17, 18, 20, 22, 23, 25]);
+    const padroes = {
+      megasena: [2, 14, 23, 31, 40, 58],
+      lotofacil: [1, 3, 4, 6, 8, 9, 11, 13, 15, 17, 18, 20, 22, 23, 25],
+      quina: [4, 17, 32, 55, 73],
+      lotomania: Array.from({ length: 50 }, (_, i) => i * 2),
+      diadesorte: [3, 7, 12, 18, 21, 27, 30]
+    };
     jogoObj = {
-      dezenas: dezenasPadrao,
+      dezenas: padroes[mod] || padroes.megasena,
       analise: null
     };
   }
@@ -1985,9 +2020,14 @@ function renderizarPalpiteExpressHome() {
   }
 
   const mod = palpiteExpressAtual.modalidade;
-  const corBola = mod === 'megasena'
-    ? 'bg-emerald-600 text-slate-950 border-emerald-400'
-    : (mod === 'quina' ? 'bg-sky-600 text-white border-sky-400' : 'bg-purple-600 text-white border-purple-400');
+  const cores = {
+    megasena: 'bg-emerald-600 text-slate-950 border-emerald-400',
+    lotofacil: 'bg-purple-600 text-white border-purple-400',
+    quina: 'bg-sky-600 text-white border-sky-400',
+    lotomania: 'bg-orange-500 text-white border-orange-400',
+    diadesorte: 'bg-amber-400 text-slate-950 border-amber-300'
+  };
+  const corBola = cores[mod] || cores.megasena;
 
   container.innerHTML = palpiteExpressAtual.dezenas.map((d) => `
     <span class="w-8 h-8 rounded-xl ${corBola} border font-mono font-black text-xs flex items-center justify-center shadow-md">
@@ -2022,11 +2062,7 @@ function salvarPalpiteExpressHome() {
   const id = Date.now().toString(36) + Math.random().toString(36).substr(2, 4);
 
   let concAlvo = null, dataAlvo = null;
-  const base = mod === 'megasena'
-    ? (window.baseConcursosMega || (typeof baseConcursosMega !== 'undefined' ? baseConcursosMega : []))
-    : (mod === 'quina'
-      ? (window.baseConcursosQuina || (typeof baseConcursosQuina !== 'undefined' ? baseConcursosQuina : []))
-      : (window.baseConcursosLoto || (typeof baseConcursosLoto !== 'undefined' ? baseConcursosLoto : [])));
+  const base = obterBaseConcursosPorModalidade(mod);
   if (base && base.length > 0) {
     concAlvo = base[0].proximoConcurso || (base[0].concurso + 1);
     dataAlvo = base[0].dataProximo || '';

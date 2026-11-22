@@ -62,6 +62,13 @@ window.salvarDepoisDoCadastro = (acao) => { acaoAposCadastro = acao; };
 window.limitarGeracaoGratuita = function (qtd) {
   if (temAcessoSemCadastro()) return qtd;
 
+  const bonus = Number(localStorage.getItem('lotolab_bonus_geracoes') || 0);
+  if (bonus > 0) {
+    localStorage.setItem('lotolab_bonus_geracoes', String(bonus - 1));
+    if (typeof toast === 'function') toast(`🪙 Geração bônus do Quiz usada! Restam ${bonus - 1}.`, '🎁');
+    return qtd;
+  }
+
   const amostras = Number(localStorage.getItem('meu_volante_amostras') || 0);
   if (amostras >= 1) {
     abrirContaNova('Gostou? Crie sua conta para gerar mais jogos e salvar.');

@@ -42,6 +42,22 @@
         11: [23.1, 1155, 10, 100], 12: [39.6, 1980, 10, 100], 13: [64.35, 3217.5, 10, 100],
         14: [100.1, 5005, 10, 100], 15: [150.15, 7507.5, 10, 100]
       }
+    },
+    lotomania: {
+      nome: 'Lotomania', sorteadas: 50, preco: 3.0, min: 50, max: 50,
+      link: 'https://loterias.caixa.gov.br/Paginas/Lotomania.aspx',
+      tabela: {
+        50: [3, 6, 10, 50]
+      }
+    },
+    diadesorte: {
+      nome: 'Dia de Sorte', sorteadas: 7, preco: 2.5, min: 7, max: 15,
+      link: 'https://loterias.caixa.gov.br/Paginas/Dia-de-Sorte.aspx',
+      tabela: {
+        7: [4, 12, 10, 50], 8: [4, 20, 10, 50], 9: [5, 90, 10, 50],
+        10: [6, 300, 10, 50], 11: [16.5, 825, 10, 50], 12: [39.6, 1980, 10, 50],
+        13: [85.8, 4290, 10, 50], 14: [171.6, 8580, 10, 50], 15: [321.75, 16087.5, 10, 50]
+      }
     }
   };
   const LIMITE_GRATIS = { boloes: 1, jogos: 3 };
@@ -322,7 +338,7 @@
       : (typeof carteiraJogos !== 'undefined' && Array.isArray(carteiraJogos) ? carteiraJogos : []);
     const bilhetes = carteira.filter((b) => b && b.bolaoId === bolao.id);
     const conferidos = bilhetes.filter((b) => b.conferido);
-    const premiados = conferidos.filter((b) => Number(b.premioGanho) > 0 || /SENA|QUINA|QUADRA|PONTOS/i.test(b.status || ''));
+    const premiados = conferidos.filter((b) => Number(b.premioGanho) > 0 || (!/Não premiado/i.test(b.status || '') && /SENA|QUINA|QUADRA|TERNO|DUQUE|PONTOS|ACERTOS/i.test(b.status || '')));
     const premioTotal = conferidos.reduce((s, b) => s + (Number(b.premioGanho) || 0), 0);
     const cotas = Math.max(1, Number(bolao.cotas) || 1);
     const minhasCotas = Math.max(0, Number(bolao.minhasCotas) || 0);
@@ -367,7 +383,7 @@
         </label>
         <div class="bolao-duas">
           <label>Loteria
-            <select data-campo="modalidade">${htmlOpcoes(['megasena', 'lotofacil', 'quina'], bolao.modalidade, (v) => REGRAS_CAIXA[v].nome)}</select>
+            <select data-campo="modalidade">${htmlOpcoes(['megasena', 'lotofacil', 'quina', 'lotomania', 'diadesorte'], bolao.modalidade, (v) => REGRAS_CAIXA[v].nome)}</select>
           </label>
           <label>Sorteio
             <select data-campo="destino" ${bolao.modalidade === 'megasena' ? '' : 'disabled'}>

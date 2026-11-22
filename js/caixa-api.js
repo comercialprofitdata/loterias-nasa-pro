@@ -20,7 +20,11 @@ const CAIXA_API = {
     // Lotofácil: 6 sorteios semanais (Segunda a Sábado)
     lotofacil: { dias: [1, 2, 3, 4, 5, 6], hora: 20 },
     // Quina: 6 sorteios semanais (Segunda a Sábado)
-    quina: { dias: [1, 2, 3, 4, 5, 6], hora: 20 }
+    quina: { dias: [1, 2, 3, 4, 5, 6], hora: 20 },
+    // Lotomania: 3 sorteios semanais (Segunda=1, Quarta=3, Sexta=5)
+    lotomania: { dias: [1, 3, 5], hora: 20 },
+    // Dia de Sorte: 3 sorteios semanais (Terça=2, Quinta=4, Sábado=6)
+    diadesorte: { dias: [2, 4, 6], hora: 20 }
   }
 };
 
@@ -50,6 +54,7 @@ function normalizarConcurso(dados, modalidade) {
     proximoConcurso: Number(dados?.numeroConcursoProximo) || null,
     dataProximo: String(dados?.dataProximoConcurso ?? ''),
     premioProximo: Number(dados?.valorEstimadoProximoConcurso) || null,
+    mesSorte: String(dados?.nomeTimeCoracaoMesSorte ?? '').trim(),
     rateio: (dados?.listaRateioPremio ?? []).map((f) => ({
       acertos: Number(String(f?.descricaoFaixa ?? '').replace(/\D/g, '')) || 0,
       ganhadores: Number(f?.numeroDeGanhadores) || 0,
