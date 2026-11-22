@@ -28,6 +28,32 @@ if (typeof baseConcursosLoto === 'undefined' || !baseConcursosLoto || baseConcur
 }
 window.baseConcursosMega = baseConcursosMega;
 window.baseConcursosLoto = baseConcursosLoto;
+if (typeof baseConcursosQuina === 'undefined' || !Array.isArray(baseConcursosQuina)) {
+  window.baseConcursosQuina = [];
+} else {
+  window.baseConcursosQuina = baseConcursosQuina;
+}
+
+let historicoQuinaPromise = null;
+async function carregarHistoricoQuina() {
+  if (window.baseConcursosQuina?.length > 0) return window.baseConcursosQuina;
+  if (historicoQuinaPromise) return historicoQuinaPromise;
+  historicoQuinaPromise = buscarUltimosConcursosDiretoCaixa('quina', 15)
+    .then((lista) => {
+      if (lista.length > 0) {
+        if (typeof baseConcursosQuina !== 'undefined') {
+          baseConcursosQuina.splice(0, baseConcursosQuina.length, ...lista);
+        }
+        window.baseConcursosQuina = typeof baseConcursosQuina !== 'undefined' ? baseConcursosQuina : lista;
+        rerenderizarAnalises();
+      }
+      return lista;
+    })
+    .catch(() => [])
+    .finally(() => { historicoQuinaPromise = null; });
+  return historicoQuinaPromise;
+}
+window.carregarHistoricoQuina = carregarHistoricoQuina;
 
 let historicoCarregandoPromise = null;
 

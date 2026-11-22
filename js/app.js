@@ -26,8 +26,8 @@
     function sanearBilhete(bilhete) {
       if (!bilhete || typeof bilhete !== 'object' || Array.isArray(bilhete)) return null;
       const limpo = limparTextoRecursivo(bilhete);
-      limpo.modalidade = limpo.modalidade === 'lotofacil' ? 'lotofacil' : 'megasena';
-      const maximo = limpo.modalidade === 'lotofacil' ? 25 : 60;
+      limpo.modalidade = limpo.modalidade === 'lotofacil' ? 'lotofacil' : (limpo.modalidade === 'quina' ? 'quina' : 'megasena');
+      const maximo = limpo.modalidade === 'lotofacil' ? 25 : (limpo.modalidade === 'quina' ? 80 : 60);
       limpo.dezenas = [...new Set((Array.isArray(limpo.dezenas) ? limpo.dezenas : [])
         .map(Number).filter((n) => Number.isInteger(n) && n >= 1 && n <= maximo))].slice(0, 20);
       if (!/^[A-Za-z0-9_.-]{1,40}$/.test(String(limpo.id ?? ''))) limpo.id = Date.now() + Math.floor(Math.random() * 100000);
@@ -545,6 +545,14 @@
     function getBaseAtual() {
       return modalidadeAtual === 'megasena' ? baseConcursosMega : (modalidadeAtual === 'quina' ? baseConcursosQuina : baseConcursosLoto);
     }
+    function getQtdDesejada(mod = modalidadeAtual) {
+      return mod === 'megasena' ? qtdDesejadaMega : (mod === 'quina' ? qtdDesejadaQuina : qtdDesejadaLoto);
+    }
+    function setQtdDesejada(qtd, mod = modalidadeAtual) {
+      if (mod === 'megasena') qtdDesejadaMega = qtd;
+      else if (mod === 'quina') qtdDesejadaQuina = qtd;
+      else qtdDesejadaLoto = qtd;
+    }
 
     function alternarCard(idConteudo, idSeta) {
       const conteudo = document.getElementById(idConteudo);
@@ -743,7 +751,7 @@
       const labelAtiva = document.getElementById('label-qtd-ativa');
       container.innerHTML = '';
 
-      const qtdAtiva = modalidadeAtual === 'megasena' ? qtdDesejadaMega : qtdDesejadaLoto;
+      const qtdAtiva = getQtdDesejada();
       if (labelAtiva) labelAtiva.innerText = `${qtdAtiva} números`;
 
       const select = document.createElement('select');
@@ -753,7 +761,7 @@
       for (let q = config.minDezenas; q <= config.maxDezenas; q++) {
         const option = document.createElement('option');
         option.value = String(q);
-        const apostasDaOpcao = combinacao(q, modalidadeAtual === 'megasena' ? 6 : 15);
+        const apostasDaOpcao = combinacao(q, config.minDezenas);
         option.textContent = `${q} números · ${formatarReais(apostasDaOpcao * config.precoBase)}`;
         option.selected = q === qtdAtiva;
         select.appendChild(option);
@@ -761,8 +769,7 @@
       select.addEventListener('change', () => {
         const qtd = Number(select.value);
         tocarBeep('click');
-        if (modalidadeAtual === 'megasena') qtdDesejadaMega = qtd;
-        else qtdDesejadaLoto = qtd;
+        setQtdDesejada(qtd);
         renderizarSeletoresQtd();
         atualizarControlesQtdApostas();
         gerarMultiplasApostas(qtdApostasDesejada, false);
@@ -1051,7 +1058,7 @@
         const ehNumeroBloqueado = numerosBloqueados.has(num);
         const cor = ehFixo
           ? 'bg-emerald-400 text-slate-950 ring-2 ring-emerald-300'
-          : (modalidadeAtual === 'megasena' ? 'bg-emerald-600 text-slate-950 font-black' : 'bg-purple-600 text-white');
+          : (modalidadeAtual === 'megasena' ? 'bg-emerald-600 text-slate-950 font-black' : (modalidadeAtual === 'quina' ? 'bg-sky-600 text-white font-black' : 'bg-purple-600 text-white'));
 
         if (ehNumeroBloqueado) {
           const btnVip = document.createElement('button');
@@ -1091,7 +1098,7 @@
       }
 
       if (jogo.length >= config.minDezenas) {
-        const k = modalidadeAtual === 'megasena' ? 6 : 15;
+        const k = config.minDezenas;
         const totalApostas = combinacao(jogo.length, k);
         const custo = totalApostas * config.precoBase;
         definirTextoSeguro('custo-jogo-selecionado', `${formatarReais(custo)} (${totalApostas} aposta${totalApostas > 1 ? 's' : ''})`);
@@ -1226,8 +1233,8 @@
       }
 
       const config = getConfigAtual();
-      const k = modalidadeAtual === 'megasena' ? qtdDesejadaMega : qtdDesejadaLoto;
-      const kMin = modalidadeAtual === 'megasena' ? 6 : 15;
+      const k = getQtdDesejada();
+      const kMin = config.minDezenas;
       const combinacoes = combinacao(k, kMin);
       const custoUnitario = combinacoes * config.precoBase;
       const custoTotal = qtdApostasDesejada * custoUnitario;
@@ -1315,7 +1322,7 @@ function gerarApostaNasaComMatriz4x4() {
       tocarSomNasa('ignicao');
       tocarBeep('success');
       vibrarHaptico(25);
-      const k = modalidadeAtual === 'megasena' ? qtdDesejadaMega : qtdDesejadaLoto;
+      const k = getQtdDesejada();
       
       // Gera o palpite calibrado com confinamento 4x4 de equilíbrio
       gerarMultiplasApostas(qtdApostasDesejada, true);
@@ -1341,7 +1348,7 @@ function gerarPalpiteInteligente() {
       const elBadge = document.getElementById('vit-badge-matriz');
       const elStatus = document.getElementById('vit-status-calibracao');
 
-      if (!jogo || jogo.length < (modalidadeAtual === 'megasena' ? 6 : 15)) {
+      if (!jogo || jogo.length < getConfigAtual().minDezenas) {
         if (elLinhas) elLinhas.innerText = '-';
         if (elColunas) elColunas.innerText = '-';
         if (elArea) elArea.innerText = '-';
@@ -1427,6 +1434,22 @@ function gerarPalpiteInteligente() {
           } else {
             elStatus.innerHTML = `<span class="text-amber-300 font-bold">⚖️ Dispersão máxima (1 dezena por linha/coluna)</span>`;
           }
+        }
+      } else if (modalidadeAtual === 'quina') {
+        const linhasSet = new Set(jogo.map((n) => Math.floor((n - 1) / 10) + 1));
+        const colunasSet = new Set(jogo.map((n) => ((n - 1) % 10) + 1));
+        const metade1 = jogo.filter((x) => x <= 40).length;
+        const metade2 = jogo.length - metade1;
+        if (elLinhas) elLinhas.innerText = `${linhasSet.size} de 8 Linhas`;
+        if (elColunas) elColunas.innerText = `${colunasSet.size} de 10 Colunas`;
+        if (elArea) elArea.innerText = `${metade1} (01–40) / ${metade2} (41–80)`;
+        if (elVazios) elVazios.innerText = `Amplitude ${Math.max(...jogo) - Math.min(...jogo)}`;
+        if (elBadge) {
+          elBadge.innerText = 'Volante Quina 8×10';
+          elBadge.className = 'text-[9px] px-2 py-0.5 rounded bg-sky-950 text-sky-300 border border-sky-700 font-bold ml-1';
+        }
+        if (elStatus) {
+          elStatus.innerHTML = `<span class="text-sky-300 font-bold">🔵 Quina: ${linhasSet.size} linhas · ${colunasSet.size} colunas</span>`;
         }
       } else {
         // Lotofácil 5x5
@@ -1649,7 +1672,7 @@ function gerarPalpiteInteligente() {
 
     // SIMULADOR DE DESEMPENHO HISTÓRICO (RETRO-TESTE)
     function simularDesempenhoHistorico(jogo, mod) {
-      const base = mod === 'megasena' ? baseConcursosMega : baseConcursosLoto;
+      const base = mod === 'megasena' ? baseConcursosMega : (mod === 'quina' ? (window.baseConcursosQuina || baseConcursosQuina || []) : baseConcursosLoto);
       const gradeEl = document.getElementById('grade-retro-resultados');
       const detalheEl = document.getElementById('detalhe-retro-melhor-sorteio');
       const badgeResumoEl = document.getElementById('badge-retro-resumo');
@@ -1912,7 +1935,7 @@ function gerarPalpiteInteligente() {
 
       if (modalidadeAtual === 'megasena') {
         gerarRecomendacaoTrocaMega(jogo, analise.qCount, analise.zscore, analise.maxSeq, analise.maxRepFinal, analise.finaisCount, analise.dezenasEmDatas, analise);
-      } else {
+      } else if (modalidadeAtual === 'lotofacil') {
         const molduraCount = jogo.filter(x => LOTO_CONFIG.moldura.includes(x)).length;
         gerarRecomendacaoTrocaLoto(jogo, molduraCount);
       }
@@ -1924,9 +1947,9 @@ function gerarPalpiteInteligente() {
 
     // Gerador de Jogo Único de Alta Qualidade
     function gerarJogoCalibradoUnico(modalidade, k, usarVitorio = false) {
-      const config = modalidade === 'megasena' ? MEGA_CONFIG : LOTO_CONFIG;
-      const fixos = modalidade === 'megasena' ? fixosMega : fixosLoto;
-      const proibidos = modalidade === 'megasena' ? proibidosMega : proibidosLoto;
+      const config = modalidade === 'megasena' ? MEGA_CONFIG : (modalidade === 'quina' ? QUINA_CONFIG : LOTO_CONFIG);
+      const fixos = modalidade === 'megasena' ? fixosMega : (modalidade === 'quina' ? fixosQuina : fixosLoto);
+      const proibidos = modalidade === 'megasena' ? proibidosMega : (modalidade === 'quina' ? proibidosQuina : proibidosLoto);
       const disponiveis = Array.from({ length: config.totalNumeros }, (_, index) => index + 1)
         .filter(numero => !proibidos.includes(numero));
 
@@ -1980,7 +2003,7 @@ function gerarPalpiteInteligente() {
       }
       tocarBeep('success');
       vibrarHaptico(25);
-      const k = modalidadeAtual === 'megasena' ? qtdDesejadaMega : qtdDesejadaLoto;
+      const k = getQtdDesejada();
       const apostas = [];
       const hashSet = new Set();
 
@@ -2047,7 +2070,7 @@ function gerarPalpiteInteligente() {
         return;
       }
 
-      const k = modalidadeAtual === 'megasena' ? qtdDesejadaMega : qtdDesejadaLoto;
+      const k = getQtdDesejada();
       if (titulo) titulo.innerText = `${loteApostasGeradas.length} Aposta${loteApostasGeradas.length > 1 ? 's' : ''} de ${k} Números`;
       container.classList.remove('hidden');
 
@@ -2494,7 +2517,7 @@ function gerarPalpiteInteligente() {
     // AUDITORIA E CALIBRAÇÃO DO PORTFÓLIO DE APOSTAS
     function atualizarCalibracaoPortfolio() {
       const jogosMod = carteiraJogos.filter(b => b.modalidade === modalidadeAtual);
-      const totalDezenasConfig = modalidadeAtual === 'megasena' ? 60 : 25;
+      const totalDezenasConfig = getConfigAtual().totalNumeros;
 
       const todasDezenas = [];
       const dezenasSet = new Set();
@@ -2561,7 +2584,7 @@ function gerarPalpiteInteligente() {
       vibrarHaptico(25);
       const jogosMod = carteiraJogos.filter(b => b.modalidade === modalidadeAtual);
       const config = getConfigAtual();
-      const k = modalidadeAtual === 'megasena' ? qtdDesejadaMega : qtdDesejadaLoto;
+      const k = getQtdDesejada();
 
       const freqUsuario = {};
       for (let i = 1; i <= config.totalNumeros; i++) freqUsuario[i] = 0;
@@ -2591,9 +2614,9 @@ function gerarPalpiteInteligente() {
     }
 
     function sugerirDezenasFaltantes(dezenasAtuais, modalidade = 'megasena', qtdFaltam = 1, freqHistorica = null) {
-      const max = modalidade === 'lotofacil' ? 25 : 60;
+      const max = modalidade === 'lotofacil' ? 25 : (modalidade === 'quina' ? 80 : 60);
       const atuaisSet = new Set(dezenasAtuais.map(Number));
-      const metadeCorte = modalidade === 'lotofacil' ? 13 : 30;
+      const metadeCorte = modalidade === 'lotofacil' ? 13 : (modalidade === 'quina' ? 40 : 30);
 
       const paresAtuais = dezenasAtuais.filter(n => n % 2 === 0).length;
       const imparesAtuais = dezenasAtuais.length - paresAtuais;
@@ -2815,12 +2838,12 @@ function gerarPalpiteInteligente() {
     function aceitarSugestaoEImportar() {
       if (!ultimoIncompletoDetectado) return;
       const { sugestao, modalidade, concursoAlvo, data } = ultimoIncompletoDetectado;
-      const precoBase = modalidade === 'lotofacil' ? 3.5 : 6.0;
+      const precoBase = modalidade === 'lotofacil' ? 3.5 : (modalidade === 'quina' ? 2.5 : 6.0);
 
       carteiraJogos.unshift({
         id: Date.now(),
         modalidade: modalidade,
-        nome: `${modalidade === 'lotofacil' ? 'Lotofácil' : 'Mega-Sena'} • Aposta gerada (${sugestao.jogoCompleto.length} dez)`,
+        nome: `${modalidade === 'lotofacil' ? 'Lotofácil' : (modalidade === 'quina' ? 'Quina' : 'Mega-Sena')} • Aposta gerada (${sugestao.jogoCompleto.length} dez)`,
         dezenas: sugestao.jogoCompleto,
         data: data,
         concursoAlvo: concursoAlvo,
@@ -3044,7 +3067,7 @@ function gerarPalpiteInteligente() {
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div>
                 <div class="flex items-center gap-1.5 mb-1.5 flex-wrap">
-                  <span class="px-1.5 py-0.5 rounded font-black text-[9px] ${b.modalidade === 'megasena' ? 'bg-emerald-950 text-emerald-400 border border-emerald-800' : 'bg-purple-950 text-purple-400 border border-purple-800'}">${b.modalidade.toUpperCase()}</span>
+                  <span class="px-1.5 py-0.5 rounded font-black text-[9px] ${b.modalidade === 'megasena' ? 'bg-emerald-950 text-emerald-400 border border-emerald-800' : (b.modalidade === 'quina' ? 'bg-sky-950 text-sky-400 border border-sky-800' : 'bg-purple-950 text-purple-400 border border-purple-800')}">${b.modalidade.toUpperCase()}</span>
                   <span class="text-cyan-300 text-[10px] font-bold bg-slate-900 px-1.5 py-0.5 rounded border border-slate-800">📅 ${b.data}</span>
                   <span class="text-[9px] px-1.5 py-0.5 rounded font-bold ${analise.aprovadosCount === 6 ? 'bg-emerald-950 text-emerald-300 border border-emerald-800' : 'bg-amber-950 text-amber-300 border border-amber-800'}">
                     ${rotuloIndicadores(analise)}
@@ -3573,7 +3596,7 @@ function gerarPalpiteInteligente() {
       renderizarCicloDezenas();
 
       grid.innerHTML = '';
-      grid.className = modalidadeAtual === 'megasena' ? 'grid grid-cols-6 sm:grid-cols-10 gap-1.5 font-mono' : 'grid grid-cols-5 gap-2 max-w-xs mx-auto font-mono';
+      grid.className = modalidadeAtual === 'lotofacil' ? 'grid grid-cols-5 gap-2 max-w-xs mx-auto font-mono' : 'grid grid-cols-6 sm:grid-cols-10 gap-1.5 font-mono';
 
       const freq = {};
       const atraso = {};
@@ -3691,7 +3714,7 @@ function gerarPalpiteInteligente() {
         });
       });
       const ordenados = Object.keys(freq).map(Number).sort((a, b) => freq[b] - freq[a]);
-      const k = modalidadeAtual === 'megasena' ? qtdDesejadaMega : qtdDesejadaLoto;
+      const k = getQtdDesejada();
       const topK = ordenados.slice(0, k).sort((a, b) => a - b);
 
       setJogoAtual([...topK]);
@@ -3719,7 +3742,7 @@ function executarDesdobramento() {
       const dezenasGrupo = Array.from(grupo).sort((a,b)=>a-b);
 
       jogosFechamentoGerados = [];
-      const k = modalidadeAtual === 'megasena' ? 6 : 15;
+      const k = config.minDezenas;
 
       for (let i = 0; i < fechamento.jogos; i++) {
         const jogoCartao = new Set(fixos);
@@ -4811,8 +4834,8 @@ function abrirModalDialog(msg, callback) {
 
     function calcularFrequenciaHistorica() {
       const freq = {};
-      const historico = modalidadeAtual === 'megasena' ? (baseConcursosMega || []) : (baseConcursosLoto || []);
-      const total = modalidadeAtual === 'megasena' ? 60 : 25;
+      const historico = getBaseAtual() || [];
+      const total = getConfigAtual().totalNumeros;
       for (let i = 1; i <= total; i++) freq[i] = 0;
       if (Array.isArray(historico)) {
         historico.forEach(c => {

@@ -21,7 +21,9 @@ const SORTEIOS_CALENDARIO = {
   // Mega-Sena: 3 sorteios regulares (Terça=2, Quinta=4, Sábado=6), além de semanas especiais com Sexta
   megasena: { dias: [2, 4, 5, 6], hora: 20 },
   // Lotofácil: 6 sorteios semanais (Segunda a Sábado)
-  lotofacil: { dias: [1, 2, 3, 4, 5, 6], hora: 20 }
+  lotofacil: { dias: [1, 2, 3, 4, 5, 6], hora: 20 },
+  // Quina: 6 sorteios semanais (Segunda a Sábado)
+  quina: { dias: [1, 2, 3, 4, 5, 6], hora: 20 }
 };
 
 const NOMES_DIAS = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
@@ -212,10 +214,12 @@ function atualizarSorteiosUI(dados, origem = 'calculado') {
 function montarCalendarioLocal(agora = new Date()) {
   const mega = calcularProximoSorteio('megasena', agora);
   const loto = calcularProximoSorteio('lotofacil', agora);
+  const quina = calcularProximoSorteio('quina', agora);
 
   return {
     megasena: { ...mega, premio: null, concurso: null },
     lotofacil: { ...loto, premio: null, concurso: null },
+    quina: { ...quina, premio: null, concurso: null },
     atualizadoEm: agora.toISOString()
   };
 }
@@ -276,12 +280,13 @@ async function sincronizarSorteiosReais({ silencioso = false } = {}) {
   // usuário (a Caixa libera CORS); o servidor do Supabase é que não alcança.
   try {
     if (typeof buscarConcursoCaixa === 'function') {
-      const [mega, loto] = await Promise.all([
+      const [mega, loto, quina] = await Promise.all([
         buscarConcursoCaixa('megasena'),
-        buscarConcursoCaixa('lotofacil')
+        buscarConcursoCaixa('lotofacil'),
+        buscarConcursoCaixa('quina').catch(() => null)
       ]);
 
-      if (mega?.premioProximo || loto?.premioProximo) {
+      if (mega?.premioProximo || loto?.premioProximo || quina?.premioProximo) {
         const dados = montarCalendarioLocal(agora);
 
         if (mega) {
@@ -302,6 +307,16 @@ async function sincronizarSorteiosReais({ silencioso = false } = {}) {
             dados.lotofacil.dataOficial = true;
             const rotulo = formatarDataProximoCaixa(loto.dataProximo, 'lotofacil');
             if (rotulo) dados.lotofacil.dia = rotulo;
+          }
+        }
+        if (quina) {
+          dados.quina.premio = quina.premioProximo;
+          dados.quina.concurso = quina.proximoConcurso;
+          if (quina.dataProximo) {
+            dados.quina.dataBR = quina.dataProximo;
+            dados.quina.dataOficial = true;
+            const rotulo = formatarDataProximoCaixa(quina.dataProximo, 'quina');
+            if (rotulo) dados.quina.dia = rotulo;
           }
         }
 

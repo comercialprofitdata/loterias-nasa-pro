@@ -367,7 +367,7 @@
         </label>
         <div class="bolao-duas">
           <label>Loteria
-            <select data-campo="modalidade">${htmlOpcoes(['megasena', 'lotofacil'], bolao.modalidade, (v) => REGRAS_CAIXA[v].nome)}</select>
+            <select data-campo="modalidade">${htmlOpcoes(['megasena', 'lotofacil', 'quina'], bolao.modalidade, (v) => REGRAS_CAIXA[v].nome)}</select>
           </label>
           <label>Sorteio
             <select data-campo="destino" ${bolao.modalidade === 'megasena' ? '' : 'disabled'}>

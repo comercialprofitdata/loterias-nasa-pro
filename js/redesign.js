@@ -706,7 +706,7 @@ async function atualizarUltimoResultadoHome() {
   const mod = typeof modalidadeAtual !== 'undefined' ? modalidadeAtual : 'megasena';
   const badgeMod = document.getElementById('home-active-mod-badge');
   if (badgeMod) {
-    badgeMod.innerText = mod === 'megasena' ? '🍀 MEGA-SENA ATIVA' : '🟣 LOTOFÁCIL ATIVA';
+    badgeMod.innerText = mod === 'megasena' ? '🍀 MEGA-SENA ATIVA' : (mod === 'quina' ? '🔵 QUINA ATIVA' : '🟣 LOTOFÁCIL ATIVA');
   }
 
   // Atualiza a auditoria consolidada com o destaque saliente do último resultado
@@ -1329,6 +1329,7 @@ function atualizarDadosDrawer() {
   if (audioIcon && typeof audioAtivo !== 'undefined') {
     audioIcon.innerText = audioAtivo ? '🔊' : '🔇';
   }
+  atualizarStatusNotifDrawer();
 }
 
 // ===================================================================
@@ -1532,7 +1533,13 @@ function atualizarProvaDosFatosRedesign() {
   const mod = typeof modalidadeAtual !== 'undefined' ? modalidadeAtual : 'megasena';
   const base = mod === 'megasena'
     ? (typeof baseConcursosMega !== 'undefined' ? baseConcursosMega : [])
-    : (typeof baseConcursosLoto !== 'undefined' ? baseConcursosLoto : []);
+    : (mod === 'quina'
+      ? (window.baseConcursosQuina || (typeof baseConcursosQuina !== 'undefined' ? baseConcursosQuina : []))
+      : (typeof baseConcursosLoto !== 'undefined' ? baseConcursosLoto : []));
+
+  if (mod === 'quina' && base.length === 0 && typeof window.carregarHistoricoQuina === 'function') {
+    window.carregarHistoricoQuina();
+  }
 
   const containerLista = document.getElementById('home-lista-ultimos-sorteios-avaliados');
   const destaqueCard = document.getElementById('home-ultimo-destaque-card');
@@ -1555,7 +1562,9 @@ function atualizarProvaDosFatosRedesign() {
     const avalUltimo = typeof avaliarJogo === 'function' ? avaliarJogo(ordenadoUltimo, mod) : { aprovadosCount: null };
     const corBolaDestaque = mod === 'megasena'
       ? 'bg-gradient-to-br from-emerald-400 to-teal-500 text-slate-950 border-emerald-300 shadow-emerald-500/30'
-      : 'bg-gradient-to-br from-purple-400 to-fuchsia-500 text-white border-purple-300 shadow-purple-500/30';
+      : (mod === 'quina'
+        ? 'bg-gradient-to-br from-sky-400 to-blue-500 text-white border-sky-300 shadow-sky-500/30'
+        : 'bg-gradient-to-br from-purple-400 to-fuchsia-500 text-white border-purple-300 shadow-purple-500/30');
 
     destaqueCard.innerHTML = `
       <div class="relative overflow-hidden p-3.5 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-900 to-emerald-950/40 border-2 border-emerald-500/60 shadow-lg shadow-emerald-950/50 space-y-2.5">
@@ -1652,7 +1661,9 @@ function carregarConcursoHistoricoNoVolante(numConcurso, modDesejada) {
 
   const base = mod === 'megasena'
     ? (window.baseConcursosMega || (typeof baseConcursosMega !== 'undefined' ? baseConcursosMega : []))
-    : (window.baseConcursosLoto || (typeof baseConcursosLoto !== 'undefined' ? baseConcursosLoto : []));
+    : (mod === 'quina'
+      ? (window.baseConcursosQuina || (typeof baseConcursosQuina !== 'undefined' ? baseConcursosQuina : []))
+      : (window.baseConcursosLoto || (typeof baseConcursosLoto !== 'undefined' ? baseConcursosLoto : [])));
 
   const conc = base.find((c) => Number(c.concurso) === Number(numConcurso));
   if (!conc) {
@@ -1937,7 +1948,7 @@ function executarAcaoPrincipalPorModo() {
 // Geração de Palpites Express (Modo Rápido)
 function gerarPalpiteExpressHome({ silencioso = false } = {}) {
   const mod = typeof modalidadeAtual !== 'undefined' ? modalidadeAtual : 'megasena';
-  const k = mod === 'megasena' ? 6 : 15;
+  const k = mod === 'megasena' ? 6 : (mod === 'quina' ? 5 : 15);
   let jogoObj = null;
 
   if (typeof window.gerarJogoCalibradoUnico === 'function') {
@@ -1947,7 +1958,7 @@ function gerarPalpiteExpressHome({ silencioso = false } = {}) {
   if (!jogoObj || !jogoObj.dezenas || jogoObj.dezenas.length < k) {
     const dezenasPadrao = mod === 'megasena'
       ? [2, 14, 23, 31, 40, 58]
-      : [1, 3, 4, 6, 8, 9, 11, 13, 15, 17, 18, 20, 22, 23, 25];
+      : (mod === 'quina' ? [4, 17, 32, 55, 73] : [1, 3, 4, 6, 8, 9, 11, 13, 15, 17, 18, 20, 22, 23, 25]);
     jogoObj = {
       dezenas: dezenasPadrao,
       analise: null
@@ -1976,7 +1987,7 @@ function renderizarPalpiteExpressHome() {
   const mod = palpiteExpressAtual.modalidade;
   const corBola = mod === 'megasena'
     ? 'bg-emerald-600 text-slate-950 border-emerald-400'
-    : 'bg-purple-600 text-white border-purple-400';
+    : (mod === 'quina' ? 'bg-sky-600 text-white border-sky-400' : 'bg-purple-600 text-white border-purple-400');
 
   container.innerHTML = palpiteExpressAtual.dezenas.map((d) => `
     <span class="w-8 h-8 rounded-xl ${corBola} border font-mono font-black text-xs flex items-center justify-center shadow-md">
@@ -2013,7 +2024,9 @@ function salvarPalpiteExpressHome() {
   let concAlvo = null, dataAlvo = null;
   const base = mod === 'megasena'
     ? (window.baseConcursosMega || (typeof baseConcursosMega !== 'undefined' ? baseConcursosMega : []))
-    : (window.baseConcursosLoto || (typeof baseConcursosLoto !== 'undefined' ? baseConcursosLoto : []));
+    : (mod === 'quina'
+      ? (window.baseConcursosQuina || (typeof baseConcursosQuina !== 'undefined' ? baseConcursosQuina : []))
+      : (window.baseConcursosLoto || (typeof baseConcursosLoto !== 'undefined' ? baseConcursosLoto : [])));
   if (base && base.length > 0) {
     concAlvo = base[0].proximoConcurso || (base[0].concurso + 1);
     dataAlvo = base[0].dataProximo || '';

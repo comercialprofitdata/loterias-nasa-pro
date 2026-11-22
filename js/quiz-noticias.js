@@ -271,10 +271,15 @@ function renderizarCardQuizENoticias() {
             🧪 Quiz LotoLab · ${q.categoria}
           </span>
         </div>
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2 flex-wrap">
           <span class="px-3 py-1 rounded-full text-xs font-black bg-amber-500/15 text-amber-300 border border-amber-500/30" id="lotolab-tokens-badge">
             🪙 ${estado.tokens} Tokens
           </span>
+          ${estado.tokens >= 20 ? `
+            <button type="button" id="btn-quiz-resgatar" class="px-2.5 py-1 rounded-xl text-xs font-black bg-amber-400 hover:bg-amber-300 text-slate-950">
+              🎁 Trocar 20 Tokens (+1 geração)
+            </button>
+          ` : ''}
           <button type="button" id="btn-quiz-proxima" class="px-2.5 py-1 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700">
             Próxima →
           </button>
@@ -346,6 +351,19 @@ function renderizarCardQuizENoticias() {
 
   container.querySelector('#btn-quiz-proxima')?.addEventListener('click', () => {
     window.__lotolabQuizIdx = (idxAtual + 1) % QUIZ_PERGUNTAS.length;
+    renderizarCardQuizENoticias();
+  });
+
+  container.querySelector('#btn-quiz-resgatar')?.addEventListener('click', () => {
+    const atual = lerEstadoQuiz();
+    if (atual.tokens < 20) return;
+    atual.tokens -= 20;
+    salvarEstadoQuiz(atual);
+    try {
+      const bonus = Number(localStorage.getItem('lotolab_bonus_geracoes') || 0) + 1;
+      localStorage.setItem('lotolab_bonus_geracoes', String(bonus));
+    } catch {}
+    if (typeof toast === 'function') toast('🎁 20 Tokens trocados! +1 geração extra liberada no app.', '🪙');
     renderizarCardQuizENoticias();
   });
 }
