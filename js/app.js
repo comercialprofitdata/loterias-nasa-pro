@@ -323,8 +323,8 @@
 
       document.querySelectorAll('.nasa-brand-icon img').forEach((img) => {
         img.src = isDark
-          ? './marketing/brand/lotolab-escuro-192.png?v=2'
-          : './marketing/brand/lotolab-192.png?v=2';
+          ? './icon-192.png?v=3'
+          : './icon-light-192.png?v=3';
       });
     }
 

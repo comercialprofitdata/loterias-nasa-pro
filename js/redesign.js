@@ -71,7 +71,7 @@ function criarTopbarUnificada() {
   topbar.innerHTML = `
     <!-- Logo Compacto -->
     <button type="button" class="nasa-brand-compact" onclick="activateTab('home'); tocarBeep('click');" title="Ir para o Início">
-      <div class="nasa-brand-icon"><img src="./marketing/brand/lotolab-escuro-192.png?v=2" alt="" width="32" height="32" style="border-radius:8px" /></div>
+      <div class="nasa-brand-icon"><img src="./icon-192.png?v=3" alt="" width="32" height="32" style="border-radius:8px" /></div>
       <div class="nasa-brand-text">
         <span class="nasa-brand-title">LotoLab</span>
         
@@ -1202,7 +1202,7 @@ function alternarLembreteSorteio() {
         try {
           new Notification('LotoLab · Lembretes ativados', {
             body: 'Vamos avisar você às 20h30 nos dias de sorteio para conferir seus jogos.',
-            icon: './marketing/brand/lotolab-escuro-192.png?v=2'
+            icon: './icon-192.png?v=3'
           });
         } catch (_) {}
       } else {
