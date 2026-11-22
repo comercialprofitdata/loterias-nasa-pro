@@ -126,7 +126,7 @@ function criarSidebarDesktop() {
 
     <!-- Topo da Barra Lateral: Logo & Status -->
     <div class="sidebar-brand-box" onclick="activateTab('home'); tocarBeep('click');" role="button" tabindex="0" title="Ir para o Cockpit Inicial">
-      <div class="sidebar-brand-icon">🎯</div>
+      <div class="nasa-brand-icon"><img src="./icon-192.png?v=3" alt="" width="32" height="32" style="border-radius:8px" /></div>
       <div class="sidebar-brand-text">
         <span class="sidebar-brand-title">LotoLab</span>
         <span class="sidebar-brand-sub">SEUS JOGOS EM ORDEM</span>
@@ -147,14 +147,17 @@ function criarSidebarDesktop() {
       </div>
     </div>
 
-    <!-- Seletor de Modalidade (Mega-Sena / Lotofácil) -->
+    <!-- Seletor de Modalidade (Mega-Sena / Lotofácil / Quina) -->
     <div class="sidebar-mod-selector">
       <div class="sidebar-mod-pill" role="tablist" aria-label="Escolha a loteria">
         <button type="button" id="sidebar-pill-mega" class="sidebar-mod-btn active-mega" onclick="trocarModalidade('megasena'); tocarBeep('click');">
-          <span>Mega-Sena</span>
+          <span>Mega</span>
         </button>
         <button type="button" id="sidebar-pill-loto" class="sidebar-mod-btn" onclick="trocarModalidade('lotofacil'); tocarBeep('click');">
           <span>Lotofácil</span>
+        </button>
+        <button type="button" id="sidebar-pill-quina" class="sidebar-mod-btn" onclick="trocarModalidade('quina'); tocarBeep('click');">
+          <span>Quina</span>
         </button>
       </div>
     </div>
@@ -356,19 +359,20 @@ function sincronizarVisualModalidadeGlobal() {
   // Sincroniza o seletor da Sidebar Desktop
   const sidePillMega = document.getElementById('sidebar-pill-mega');
   const sidePillLoto = document.getElementById('sidebar-pill-loto');
+  const sidePillQuina = document.getElementById('sidebar-pill-quina');
   const sideLotteryName = document.getElementById('sidebar-lottery-name');
   if (sidePillMega && sidePillLoto) {
-    if (mod === 'megasena') {
-      sidePillMega.className = 'sidebar-mod-btn active-mega';
-      sidePillLoto.className = 'sidebar-mod-btn';
-      if (sideLotteryName) {
+    sidePillMega.className = mod === 'megasena' ? 'sidebar-mod-btn active-mega' : 'sidebar-mod-btn';
+    sidePillLoto.className = mod === 'lotofacil' ? 'sidebar-mod-btn active-loto' : 'sidebar-mod-btn';
+    if (sidePillQuina) sidePillQuina.className = mod === 'quina' ? 'sidebar-mod-btn active-loto' : 'sidebar-mod-btn';
+    if (sideLotteryName) {
+      if (mod === 'megasena') {
         sideLotteryName.innerText = 'MEGA-SENA';
         sideLotteryName.className = 'font-bold text-[11px] text-emerald-400';
-      }
-    } else {
-      sidePillMega.className = 'sidebar-mod-btn';
-      sidePillLoto.className = 'sidebar-mod-btn active-loto';
-      if (sideLotteryName) {
+      } else if (mod === 'quina') {
+        sideLotteryName.innerText = 'QUINA';
+        sideLotteryName.className = 'font-bold text-[11px] text-sky-400';
+      } else {
         sideLotteryName.innerText = 'LOTOFÁCIL';
         sideLotteryName.className = 'font-bold text-[11px] text-purple-400';
       }
