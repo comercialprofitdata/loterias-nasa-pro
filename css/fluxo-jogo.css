@@ -293,7 +293,26 @@ main [class*="text-[8px]"], main [class*="text-[9px]"], main [class*="text-[10px
 .fluxo-card-volante #revisao-jogo { padding: 0; }
 .fluxo-card-volante #legenda-volante { padding-top: 10px; }
 .bolao-duas select, .bolao-tres select, .bolao-tres input { font-size: 14px; padding: 0 8px; }
-#toast { pointer-events: none !important; }
+#toast { pointer-events: none !important; top: calc(env(safe-area-inset-top, 0px) + 64px) !important; }
+html:not(.dark) #toast { background: rgba(15, 23, 42, 0.94) !important; color: #f8fafc !important; border-color: #059669 !important; box-shadow: 0 10px 28px rgba(15, 23, 42, 0.22) !important; }
+.resumo-conferencia-folha { max-height: 86vh; overflow-y: auto; }
+.resumo-conf-lista { display: flex; flex-direction: column; gap: 8px; max-height: 46vh; overflow-y: auto; padding-right: 2px; }
+.resumo-conf-item { padding: 10px 12px; border-radius: 12px; background: #020617; border: 1px solid #1e293b; display: flex; flex-direction: column; gap: 6px; }
+.resumo-conf-item.premiado { border-color: #10b981; background: rgba(6, 78, 59, 0.25); }
+.resumo-conf-topo { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 12px; }
+.resumo-conf-topo strong { color: #f1f5f9; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.resumo-conf-topo span { color: #94a3b8; font-weight: 800; white-space: nowrap; }
+.resumo-conf-item.premiado .resumo-conf-topo span { color: #34d399; }
+.resumo-conf-bolas { display: flex; flex-wrap: wrap; gap: 5px; }
+.resumo-conf-bolas span { min-width: 26px; height: 26px; border-radius: 999px; background: #1e293b; color: #cbd5e1; font-size: 11px; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; }
+.resumo-conf-bolas span.acertou { background: #10b981; color: #022c22; }
+html:not(.dark) .resumo-conf-item { background: #f8fafc; border-color: #cbd5e1; }
+html:not(.dark) .resumo-conf-item.premiado { background: #ecfdf5; border-color: #059669; }
+html:not(.dark) .resumo-conf-topo strong { color: #0f172a; }
+html:not(.dark) .resumo-conf-topo span { color: #64748b; }
+html:not(.dark) .resumo-conf-item.premiado .resumo-conf-topo span { color: #047857; }
+html:not(.dark) .resumo-conf-bolas span { background: #e2e8f0; color: #0f172a; }
+html:not(.dark) .resumo-conf-bolas span.acertou { background: #059669; color: #ffffff; }
 
 /* ===================================================================
    MODO CLARO COMPLETO PARA FLUXO DE JOGO, BOLÃO, FOLHAS E RITUAL
@@ -319,10 +338,13 @@ html:not(.dark) .fluxo-btn-secundario { background: #f8fafc !important; color: #
 html:not(.dark) .fluxo-acao-principal,
 html:not(.dark) .fluxo-btn-principal { background: #059669 !important; color: #ffffff !important; border-color: #059669 !important; }
 html:not(.dark) .fluxo-acao-salvar { background: #ecfdf5 !important; color: #047857 !important; border: 2px solid #059669 !important; }
+.bolao-btn-cobrar { background: rgba(245, 158, 11, 0.16) !important; border-color: #f59e0b !important; color: #fcd34d !important; }
+html:not(.dark) .bolao-btn-cobrar { background: #fffbeb !important; border: 1.5px solid #f59e0b !important; color: #92400e !important; }
 html:not(.dark).tema-lotofacil .fluxo-acao-principal { background: #9333ea !important; color: #ffffff !important; border-color: #9333ea !important; }
 html:not(.dark).tema-lotofacil .fluxo-acao-salvar { background: #faf5ff !important; color: #7e22ce !important; border: 2px solid #9333ea !important; }
 html:not(.dark) .ritual-ver,
 html:not(.dark) #drawer-ver-planos { background: #059669 !important; color: #ffffff !important; border: 1px solid #047857 !important; box-shadow: 0 2px 8px rgba(5, 150, 105, 0.22) !important; }
+html:not(.dark) .folha button:not(.folha-sair):not(.folha-opcao-virada) { background: #059669; color: #ffffff; }
 html:not(.dark) .fluxo-link { color: #475569; }
 html:not(.dark) .bolao-card label,
 html:not(.dark) .bolao-numeros span,

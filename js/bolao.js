@@ -61,6 +61,7 @@
     }
   };
   const LIMITE_GRATIS = { boloes: 1, jogos: 3 };
+  const LIMITE_PRO_JOGOS = 50;
 
   let boloes = [];
   let ativoId = null;
@@ -147,7 +148,7 @@
     const bolao = {
       id: Date.now(), nome: '', modalidade, destino: 'proximo', modo: 'caixa',
       dezenas: REGRAS_CAIXA[modalidade].min, cotas: 2, minhasCotas: 1, jogos: [], participantes: [],
-      prazo: '', guardiao: '', premioPequeno: 'dividir'
+      prazo: '', guardiao: '', chavePix: '', premioPequeno: 'dividir'
     };
     boloes.unshift(bolao);
     ativoId = bolao.id;
@@ -170,7 +171,7 @@
   }
 
   function limiteDeJogos() {
-    return ehPro() ? 10 : LIMITE_GRATIS.jogos;
+    return ehPro() ? LIMITE_PRO_JOGOS : LIMITE_GRATIS.jogos;
   }
 
   function gerarJogos(bolao, quantidade, manter = false) {
@@ -269,8 +270,9 @@
 
   function textoConvite(bolao) {
     const linhas = cabecalhoTexto(bolao);
+    if (bolao.chavePix && bolao.chavePix.trim()) linhas.push(`Chave Pix para pagamento: ${bolao.chavePix.trim()}`);
     if (bolao.prazo) linhas.push(`Pagamento até: ${bolao.prazo.split('-').reverse().join('/')}`);
-    if (bolao.guardiao.trim()) linhas.push(`Quem guarda o bilhete: ${bolao.guardiao.trim()}`);
+    if (bolao.guardiao && bolao.guardiao.trim()) linhas.push(`Quem guarda o bilhete: ${bolao.guardiao.trim()}`);
     linhas.push(`Prêmio pequeno: ${bolao.premioPequeno === 'reaplicar' ? 'entra no próximo bolão' : 'é dividido entre as cotas'}`);
     linhas.push(bolao.modo === 'caixa'
       ? 'Aposta: Bolão CAIXA na lotérica, com um recibo para cada cota.'
@@ -292,9 +294,60 @@
     if (!bolao.participantes.length) linhas.push('Ninguém na lista ainda.');
     bolao.participantes.forEach((p) => {
       const cotas = Number(p.cotas) || 0;
-      linhas.push(`${p.pagou ? '✅' : '⏳'} ${p.nome} · ${cotas} ${cotas === 1 ? 'cota' : 'cotas'} · ${reais(cotas * r.valorCota)}`);
+      linhas.push(`${p.pagou ? '✅' : '⏳'} ${p.nome || 'Sem nome'} · ${cotas} ${cotas === 1 ? 'cota' : 'cotas'} · ${reais(cotas * r.valorCota)}`);
     });
-    linhas.push('', `Marcado como pago: ${reais(r.recebido)} de ${reais(r.total)}`, `Cotas distribuídas: ${r.distribuidas} de ${r.cotas}`, '', RODAPE);
+    linhas.push('', `Marcado como pago: ${reais(r.recebido)} de ${reais(r.total)}`, `Cotas distribuídas: ${r.distribuidas} de ${r.cotas}`);
+    if (r.falta > 0 && bolao.chavePix && bolao.chavePix.trim()) {
+      linhas.push(`Chave Pix para quitar sua cota: ${bolao.chavePix.trim()}`);
+    }
+    linhas.push('', RODAPE);
+    return linhas.join('\n');
+  }
+
+  function textoCobrancaPendentes(bolao) {
+    const r = calcularRateio(bolao);
+    const pendentes = (bolao.participantes || []).filter((p) => !p.pagou);
+    const linhas = cabecalhoTexto(bolao);
+    linhas.push('', '*Lembrete de pagamento (cotas pendentes)*');
+    if (!pendentes.length) {
+      linhas.push('✅ Todas as cotas cadastradas já estão marcadas como pagas!');
+    } else {
+      pendentes.forEach((p) => {
+        const cotas = Number(p.cotas) || 1;
+        linhas.push(`⏳ ${p.nome?.trim() || 'Participante'} · ${cotas} ${cotas === 1 ? 'cota' : 'cotas'} · ${reais(cotas * r.valorCota)}`);
+      });
+    }
+    if (bolao.prazo) linhas.push('', `Prazo limite: ${bolao.prazo.split('-').reverse().join('/')}`);
+    if (bolao.chavePix && bolao.chavePix.trim()) {
+      linhas.push(`💳 Chave Pix: ${bolao.chavePix.trim()}`);
+      linhas.push('Assim que fizer o Pix, manda o comprovante aqui no grupo para confirmar sua cota.');
+    } else {
+      linhas.push('Envie o comprovante aqui no grupo assim que confirmar sua cota.');
+    }
+    linhas.push('', RODAPE);
+    return linhas.join('\n');
+  }
+
+  function textoResultadoBolao(bolao, listaCarteira) {
+    const conf = resumoConferenciaBolao(bolao, listaCarteira);
+    const linhas = cabecalhoTexto(bolao);
+    linhas.push('', '*Resultado da conferência oficial*');
+    linhas.push(`Jogos conferidos: ${conf.conferidos} de ${bolao.jogos.length}`);
+    if (conf.premiados > 0) {
+      linhas.push(`🎉 Jogos premiados: ${conf.premiados}`);
+      linhas.push(`Prêmio total estimado: ${reais(conf.premioTotal)}`);
+      linhas.push(`Valor por cota: ${reais(conf.premioPorCota)}`);
+      if ((bolao.participantes || []).length) {
+        linhas.push('', '*Rateio do prêmio*');
+        bolao.participantes.filter((p) => p.pagou).forEach((p) => {
+          const cotas = Number(p.cotas) || 0;
+          linhas.push(`• ${p.nome?.trim() || 'Participante'} (${cotas} ${cotas === 1 ? 'cota' : 'cotas'}): ${reais(cotas * conf.premioPorCota)}`);
+        });
+      }
+    } else {
+      linhas.push('Nenhum jogo premiado neste concurso. Seguimos para o próximo!');
+    }
+    linhas.push('', RODAPE);
     return linhas.join('\n');
   }
 
@@ -308,6 +361,8 @@
 
   function abrirEnvio(bolao) {
     if (!bolao.jogos.length) { aviso('Gere os jogos do bolão antes de enviar.'); return; }
+    const pendentesCount = (bolao.participantes || []).filter((p) => !p.pagou).length;
+    const conf = resumoConferenciaBolao(bolao);
     const fundo = document.createElement('div');
     fundo.className = 'folha-fundo';
     fundo.setAttribute('role', 'dialog');
@@ -315,16 +370,24 @@
     fundo.innerHTML = `
       <div class="folha">
         <h2>O que enviar para o grupo?</h2>
-        <button type="button" data-texto="convite">Convite com valor da cota e combinados</button>
+        <button type="button" data-texto="convite">Convite com cota, Pix e combinados</button>
         <button type="button" data-texto="pagamentos">Lista de quem já pagou</button>
+        ${pendentesCount > 0 ? `<button type="button" data-texto="cobranca">Cobrar ${pendentesCount} ${pendentesCount === 1 ? 'pendente' : 'pendentes'} (com Pix)</button>` : ''}
         <button type="button" data-texto="jogos">Jogos do bolão</button>
+        ${conf.conferidos > 0 ? `<button type="button" data-texto="resultado">Resultado oficial e prêmio por cota</button>` : ''}
         <button type="button" class="folha-sair">Cancelar</button>
       </div>`;
     document.body.appendChild(fundo);
     const fechar = () => fundo.remove();
     fundo.querySelector('.folha-sair').addEventListener('click', fechar);
     fundo.addEventListener('click', (e) => { if (e.target === fundo) fechar(); });
-    const textos = { convite: textoConvite, pagamentos: textoPagamentos, jogos: textoJogos };
+    const textos = {
+      convite: textoConvite,
+      pagamentos: textoPagamentos,
+      cobranca: textoCobrancaPendentes,
+      jogos: textoJogos,
+      resultado: textoResultadoBolao
+    };
     fundo.querySelectorAll('[data-texto]').forEach((botao) => botao.addEventListener('click', () => {
       fechar();
       window.abrirWhatsApp?.({ texto: textos[botao.dataset.texto](bolao) });
@@ -394,12 +457,18 @@
         <label>Como vai ser a aposta
           <select data-campo="modo">${htmlOpcoes(['caixa', 'grupo'], bolao.modo, (v) => (v === 'caixa' ? 'Bolão CAIXA na lotérica' : 'Uma pessoa aposta por todos'))}</select>
         </label>
+        <label>Chave Pix do organizador (opcional — vai no convite e na cobrança)
+          <input type="text" data-campo="chavePix" value="${esc(bolao.chavePix || '')}" placeholder="CPF, celular, e-mail ou chave aleatória" maxlength="120" />
+        </label>
         <div class="bolao-tres">
           <label>Dezenas por jogo
             <select data-campo="dezenas">${htmlOpcoes(dezenasPossiveis, bolao.dezenas, (v) => `${v} · ${reais(combinacoes(v, regra.sorteadas) * regra.preco)}`)}</select>
           </label>
           <label>Jogos
-            <select data-campo-geral="qtd-jogos">${htmlOpcoes(Array.from({ length: maxJogos }, (_, i) => i + 1), qtdJogos, (v) => String(v))}</select>
+            <select data-campo-geral="qtd-jogos">
+              ${htmlOpcoes(Array.from({ length: maxJogos }, (_, i) => i + 1), qtdJogos, (v) => String(v))}
+              ${ehPro() ? '' : '<option value="pro_mais">4 a 50 jogos · PRO</option>'}
+            </select>
           </label>
           <label>Cotas
             <input type="number" inputmode="numeric" min="2" max="100" data-campo="cotas" value="${esc(bolao.cotas)}" />
@@ -461,7 +530,14 @@
             : (conf.premiados > 0
               ? `🎉 ${conf.premiados} ${conf.premiados === 1 ? 'jogo premiado' : 'jogos premiados'} neste bolão.`
               : 'Todos os jogos deste bolão foram conferidos contra o resultado oficial.'))}</p>
-        <button type="button" class="fluxo-acao" data-acao="conferir">🔍 Conferir jogos do bolão</button>
+        <div class="bolao-duas">
+          <button type="button" class="fluxo-acao" data-acao="conferir">🔍 Conferir jogos</button>
+          ${conf.conferidos > 0
+            ? '<button type="button" class="fluxo-acao fluxo-acao-salvar" data-acao="enviar-resultado">📲 Enviar resultado</button>'
+            : (bolao.chavePix && bolao.chavePix.trim()
+              ? '<button type="button" class="fluxo-acao" data-acao="copiar-pix">📋 Copiar Pix</button>'
+              : '<button type="button" class="fluxo-acao" data-acao="whatsapp">📲 Enviar grupo</button>')}
+        </div>
       </div>` : ''}
 
       <div class="bolao-card">
@@ -492,7 +568,12 @@
             <button type="button" class="bolao-pagou ${p.pagou ? 'sim' : ''}" data-acao="pagou" data-indice="${i}" aria-pressed="${p.pagou ? 'true' : 'false'}">${p.pagou ? 'Pagou' : 'Falta pagar'}</button>
             <button type="button" class="fluxo-link" data-acao="remover-pessoa" data-indice="${i}" aria-label="Remover ${esc(p.nome)}">Remover</button>
           </div>`).join('')}
-        <button type="button" class="fluxo-acao" data-acao="nova-pessoa">Adicionar participante</button>
+        <div class="bolao-duas">
+          <button type="button" class="fluxo-acao" data-acao="nova-pessoa">+ Participante</button>
+          ${bolao.participantes.some((p) => !p.pagou)
+            ? `<button type="button" class="fluxo-acao bolao-btn-cobrar" data-acao="cobrar-pendentes">💬 Cobrar (${bolao.participantes.filter((p) => !p.pagou).length})</button>`
+            : '<button type="button" class="fluxo-acao" data-acao="enviar-pagamentos">✅ Enviar lista</button>'}
+        </div>
         ${bolao.participantes.length ? `<p class="gastos-nota">Faltam ${reais(r.falta)} marcados como pagos para cobrir os jogos.</p>` : ''}
       </div>
 
@@ -547,6 +628,11 @@
     if (alvo.dataset.campoGeral === 'ativo') {
       ativoId = Number(alvo.value);
     } else if (alvo.dataset.campoGeral === 'qtd-jogos') {
+      if (alvo.value === 'pro_mais') {
+        window.abrirModalPaywall?.('multi_jogos');
+        renderizar();
+        return;
+      }
       gerarJogos(bolao, Number(alvo.value), true);
       return;
     } else if (alvo.dataset.campo) {
@@ -602,6 +688,30 @@
       return;
     }
     if (acao === 'whatsapp') { abrirEnvio(bolao); return; }
+    if (acao === 'cobrar-pendentes') {
+      if (!bolao.jogos.length) { aviso('Gere os jogos do bolão antes de cobrar os pendentes.'); return; }
+      window.abrirWhatsApp?.({ texto: textoCobrancaPendentes(bolao) });
+      return;
+    }
+    if (acao === 'enviar-pagamentos') {
+      if (!bolao.jogos.length) { aviso('Gere os jogos do bolão antes de enviar a lista.'); return; }
+      window.abrirWhatsApp?.({ texto: textoPagamentos(bolao) });
+      return;
+    }
+    if (acao === 'enviar-resultado') {
+      window.abrirWhatsApp?.({ texto: textoResultadoBolao(bolao) });
+      return;
+    }
+    if (acao === 'copiar-pix') {
+      const chave = (bolao.chavePix || '').trim();
+      if (!chave) { aviso('Informe sua Chave Pix acima primeiro.'); return; }
+      if (navigator.clipboard?.writeText) {
+        navigator.clipboard.writeText(chave).then(() => aviso('Chave Pix copiada!', '✅')).catch(() => aviso('Não foi possível copiar o Pix.'));
+      } else {
+        aviso(`Chave Pix: ${chave}`, '💳');
+      }
+      return;
+    }
     if (acao === 'pdf') {
       if (!bolao.jogos.length) { aviso('Gere os jogos do bolão antes de imprimir.'); return; }
       const virada = infoDestino(bolao).virada;
@@ -646,5 +756,17 @@
   });
 
   // Para os testes automatizados.
-  window.bolaoRegras = { REGRAS_CAIXA, calcularRateio, resumoConferencia: resumoConferenciaBolao, avisosDaCaixa, jogosRepetidos, textoConvite, textoPagamentos, textoJogos };
+  window.bolaoRegras = {
+    REGRAS_CAIXA,
+    LIMITE_PRO_JOGOS,
+    calcularRateio,
+    resumoConferencia: resumoConferenciaBolao,
+    avisosDaCaixa,
+    jogosRepetidos,
+    textoConvite,
+    textoPagamentos,
+    textoCobrancaPendentes,
+    textoResultadoBolao,
+    textoJogos
+  };
 })();

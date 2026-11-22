@@ -92,7 +92,7 @@ function toast(message, icon = '✓') {
     toastContainer.id = 'toast-container';
     toastContainer.style.cssText = `
       position: fixed;
-      top: 14px;
+      top: calc(env(safe-area-inset-top, 0px) + 64px);
       left: 50%;
       transform: translateX(-50%);
       z-index: 99999;

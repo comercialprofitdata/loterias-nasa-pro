@@ -38,7 +38,7 @@ function renderizarNaProxima() {
   if (revelar.length) {
     const txtJogos = `${revelar.length} ${revelar.length === 1 ? 'jogo' : 'jogos'}`;
     cartao.innerHTML = `
-      <div class="flex items-center justify-between gap-2.5">
+      <div class="flex items-center justify-between gap-2.5 flex-wrap">
         <div class="flex items-center gap-2 min-w-0">
           <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
           <div class="truncate">
@@ -47,8 +47,8 @@ function renderizarNaProxima() {
           </div>
         </div>
         <div class="flex items-center gap-1.5 shrink-0">
-          <button type="button" class="py-2 px-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-slate-950 font-black text-xs font-mono shadow-md shadow-emerald-500/20 active:scale-95 transition flex items-center gap-1 ritual-ver" onclick="revelarProximoResultado()">
-            Ver resultado
+          <button type="button" class="py-2 px-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-slate-950 font-black text-xs font-mono shadow-md shadow-emerald-500/20 active:scale-95 transition flex items-center gap-1 ritual-ver" onclick="${revelar.length > 1 ? 'abrirResumoConferencia()' : 'revelarProximoResultado()'}">
+            ${revelar.length > 1 ? 'Ver resumo' : 'Ver resultado'}
           </button>
           <button type="button" class="py-2 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-xs font-mono active:scale-95 transition" onclick="typeof irParaCarteiraSubAba === 'function' ? irParaCarteiraSubAba('bilhetes') : mudarAba('carteira')">
             Carteira
@@ -133,7 +133,20 @@ function revelarProximoResultado() {
       : `<strong>${acertos} ${acertos === 1 ? 'acerto' : 'acertos'}</strong><p class="gastos-nota">Não foi desta vez. Seu jogo já está conferido.</p>`;
     bilhete.revelado = true;
     if (typeof salvarCarteiraStorage === 'function') salvarCarteiraStorage();
-    botao.textContent = bilhetesParaRevelar().length ? 'Ver próximo' : 'Fechar';
+    const restantes = bilhetesParaRevelar().length;
+    botao.textContent = restantes ? `Ver próximo (${restantes})` : 'Fechar';
+    if (restantes > 1 && !tela.querySelector('#ritual-ver-resumo')) {
+      const btnResumo = document.createElement('button');
+      btnResumo.type = 'button';
+      btnResumo.id = 'ritual-ver-resumo';
+      btnResumo.className = 'fluxo-link';
+      btnResumo.textContent = `Ver resumo consolidado de todos (${restantes + 1})`;
+      btnResumo.onclick = () => {
+        tela.remove();
+        abrirResumoConferencia([bilhete, ...bilhetesParaRevelar()]);
+      };
+      botao.after(btnResumo);
+    }
     botao.onclick = () => {
       tela.remove();
       renderizarNaProxima();
@@ -152,6 +165,60 @@ function revelarProximoResultado() {
   }, sorteadas.length > 6 ? 250 : 650);
 }
 window.revelarProximoResultado = revelarProximoResultado;
+
+/** Resumo consolidado de todos os jogos conferidos de uma só vez (sem precisar clicar 1 a 1). */
+function abrirResumoConferencia(listaCustom) {
+  const lista = Array.isArray(listaCustom) && listaCustom.length ? listaCustom : bilhetesParaRevelar();
+  if (!lista.length) return;
+  const nomesMod = { megasena: 'Mega-Sena', lotofacil: 'Lotofácil', quina: 'Quina', lotomania: 'Lotomania', diadesorte: 'Dia de Sorte' };
+  const escHtml = (t) => String(t ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const totalPremio = lista.reduce((s, b) => s + (Number(b.premioGanho) || 0), 0);
+  const premiados = lista.filter((b) => Number(b.premioGanho) > 0 || (b.status && !/Não premiado/i.test(b.status) && /SENA|QUINA|QUADRA|TERNO|DUQUE|PONTOS|ACERTOS|MÊS DA SORTE/i.test(b.status))).length;
+  const brl = (v) => typeof formatarBRL === 'function' ? formatarBRL(v) : Number(v || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+  const fundo = document.createElement('div');
+  fundo.className = 'folha-fundo';
+  fundo.setAttribute('role', 'dialog');
+  fundo.setAttribute('aria-modal', 'true');
+  fundo.innerHTML = `
+    <div class="folha resumo-conferencia-folha">
+      <h2>Resumo da conferência (${lista.length} ${lista.length === 1 ? 'jogo' : 'jogos'})</h2>
+      <p>${premiados > 0
+        ? `🎉 ${premiados} ${premiados === 1 ? 'jogo premiado' : 'jogos premiados'} · Total estimado: ${brl(totalPremio)}`
+        : 'Todos os jogos abaixo foram conferidos contra o resultado oficial da CAIXA.'}</p>
+      <div class="resumo-conf-lista">
+        ${lista.map((b, i) => {
+          const sorteadasSet = new Set((b.dezenasSorteadas || []).map(Number));
+          const jogadas = (b.dezenas || []).map(Number);
+          const acertos = jogadas.filter((d) => sorteadasSet.has(d)).length;
+          const premio = Number(b.premioGanho || 0);
+          return `
+            <div class="resumo-conf-item ${premio > 0 ? 'premiado' : ''}">
+              <div class="resumo-conf-topo">
+                <strong>${escHtml(b.nome || `Jogo ${i + 1}`)} · ${escHtml(nomesMod[b.modalidade] || 'Loteria')}</strong>
+                <span>${premio > 0 ? `🎉 ${brl(premio)}` : `${acertos} ${acertos === 1 ? 'acerto' : 'acertos'}`}</span>
+              </div>
+              <div class="resumo-conf-bolas">
+                ${jogadas.map((d) => `<span class="${sorteadasSet.has(d) ? 'acertou' : ''}">${String(d).padStart(2, '0')}</span>`).join('')}
+              </div>
+            </div>`;
+        }).join('')}
+      </div>
+      <p>Confirme valores e prêmios sempre nos canais oficiais da CAIXA.</p>
+      <button type="button" id="btn-fechar-resumo-conf">Marcar todos como vistos</button>
+    </div>`;
+  document.body.appendChild(fundo);
+
+  const concluirResumo = () => {
+    lista.forEach((b) => { b.revelado = true; });
+    if (typeof salvarCarteiraStorage === 'function') salvarCarteiraStorage();
+    fundo.remove();
+    renderizarNaProxima();
+  };
+  fundo.querySelector('#btn-fechar-resumo-conf')?.addEventListener('click', concluirResumo);
+  fundo.addEventListener('click', (e) => { if (e.target === fundo) concluirResumo(); });
+}
+window.abrirResumoConferencia = abrirResumoConferencia;
 
 const renderizarGastosBase = window.renderizarGastos;
 window.renderizarGastos = function () {

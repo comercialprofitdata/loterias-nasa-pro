@@ -69,30 +69,26 @@ function solicitarEmailGoogleDireto() {
 // ===================================================================
 let googleTokenClient = null;
 
-function loginComGoogle() {
-  // 1. Tenta inicializar e abrir o popup do Google Identity Services
-  if (typeof google !== 'undefined' && google.accounts && google.accounts.oauth2) {
+async function loginComGoogle() {
+  // 1. Fluxo oficial Supabase Auth OAuth (JWT real + sync de carteira + assinaturas)
+  const cfg = window.NASA_SUPABASE_CONFIG || {};
+  const cliente = typeof window.obterClienteSupabase === 'function' ? window.obterClienteSupabase() : null;
+  if (cfg.googleEnabled && cliente?.auth?.signInWithOAuth) {
     try {
-      if (!googleTokenClient) {
-        googleTokenClient = google.accounts.oauth2.initTokenClient({
-          client_id: OAUTH_CONFIG.google.clientId,
-          scope: OAUTH_CONFIG.google.scope,
-          error_callback: (err) => {
-            console.warn('Erro OAuth Google:', err);
-            solicitarEmailGoogleDireto(err);
-          },
-          callback: handleGoogleToken
-        });
-      }
-
-      googleTokenClient.requestAccessToken({ prompt: 'select_account' });
-      return;
+      const { error } = await cliente.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: cfg.googleRedirectUrl || `${window.location.origin}/`
+        }
+      });
+      if (!error) return;
+      console.warn('Erro Supabase Google OAuth:', error.message);
     } catch (err) {
-      console.warn('Falha no Google Token Client:', err);
+      console.warn('Exceção Supabase Google OAuth:', err);
     }
   }
 
-  // 2. Fallback imediato: solicita e-mail Google direto sem travar o usuário
+  // 2. Fallback: e-mail e senha (nunca simula login sem sessão real no servidor)
   solicitarEmailGoogleDireto();
 }
 

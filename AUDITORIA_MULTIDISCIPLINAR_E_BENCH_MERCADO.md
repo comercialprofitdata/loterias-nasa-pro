@@ -23,10 +23,15 @@
 - [x] Adicionar link `https://loterias.pd.dev.br/baixar.html` no rodapé do Bolão (`js/bolao.js`), Fechamentos e WhatsApp + suporte iOS em `baixar.html`.
 
 ### Onda 1 — P1 (Monetização, Retenção & Bolão Turbo)
-- [ ] Ativar Google Play Billing real no Android (`androidbrowserhelper:billing` + `DelegationService` + reescrever `validar-play-billing` com `subscriptions` + `acknowledge` + desligar PRO grátis em `contexto-loja.js`).
-- [ ] Ativar Push Real em segundo plano (`enableNotifications: true`, `POST_NOTIFICATIONS`, `vapidPublicKey`, otimizar 4,22 MB de `splash.png`, corrigir race de `In-App Updates`).
-- [ ] Evoluir Bolão (Chave Pix do organizador, cobrar pendentes no WhatsApp, sync na nuvem Supabase, limite até 50 jogos no PRO, resumo consolidado de conferência) + ativar Google Sign-In 1-toque.
-- [ ] Atualizar ASO da Play Store (5 loterias, sem promessa de simulador oculto, CTAs em todas as legendas do Instagram).
+- [x] **Onda 1A (Concluída e Validada em 22/11/2026 — `82/82` CI + Gradle Android v10 `BUILD SUCCESSFUL`):**
+  - Bolão Turbo: Chave Pix do organizador, botão **"Cobrar pendentes no WhatsApp"**, botão **"Enviar resultado e prêmio por cota"**, e limite ampliado para **50 jogos no PRO**.
+  - Resumo consolidado de conferência (`abrirResumoConferencia`) sem obrigar ritual 1 a 1.
+  - Toast real (`#toast-container`) reposicionado abaixo do header (`64px`, zero sobreposição), OAuth Google preparado para `supabase.auth.signInWithOAuth`, e script Google GSI removido do carregamento ocioso.
+  - Android v10 (`2.4.0`, `versionCode 10`) compilado e validado com `enableNotifications: true`, `POST_NOTIFICATIONS`, `com.google.androidbrowserhelper:billing:1.2.0` + `DigitalGoodsRequestHandler`, `LauncherActivity` sem race de In-App Updates, `mavenCentral()`, e `splash.webp` reduzida em **-95,1%** (`4,32 MB → 213 KB`).
+- [ ] **Onda 1B (Caixa Registradora + Push Real no Ar — próximo passo guiado):**
+  - Rodar migrações SQL + deploy das Edge Functions (`validar-play-billing`, `enviar-push`, `criar-cobranca`) e gerar chaves VAPID no Supabase.
+  - Criar SKUs `lotolab_pro_mensal` (R$ 6,90) e `lotolab_pro_anual` (R$ 19,90) no Google Play Console, gerar o AAB v10 assinado e subir na Play Store.
+  - Assim que os SKUs responderem na Play Store, desligar o bypass gratuito em `js/contexto-loja.js` e atualizar ASO da loja + Instagram.
 
 ### Onda 2 — P2 (Arquitetura & Liderança)
 - [ ] Empacotar com Vite + ES Modules, remover 630 linhas de Admin legado + `Chart.js`, histórico offline das 5 loterias em IndexedDB, reescrever `sw.js` (Cache-First) e remover 8 `MutationObservers`.

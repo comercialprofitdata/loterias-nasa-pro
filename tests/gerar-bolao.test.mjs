@@ -191,3 +191,62 @@ test('a tela Gerar tem as abas Jogo e Bolão e carrega os dois arquivos novos', 
     assert.match(sw, new RegExp(`'\\./js/${arquivo.replace('.', '\\.')}'`));
   }
 });
+
+test('Onda 1A: Bolão Turbo (Chave Pix, cobrança pendentes, resultado e 50 jogos PRO)', () => {
+  const {
+    LIMITE_PRO_JOGOS,
+    textoConvite,
+    textoPagamentos,
+    textoCobrancaPendentes,
+    textoResultadoBolao
+  } = carregarBolao();
+
+  assert.equal(LIMITE_PRO_JOGOS, 50, 'PRO deve liberar até 50 jogos no bolão');
+
+  const bolaoPix = bolaoBase({ chavePix: 'vitorio@pix.com.br' });
+  const convite = textoConvite(bolaoPix);
+  assert.match(convite, /Chave Pix para pagamento: vitorio@pix\.com\.br/);
+  assert.match(convite, /loterias\.pd\.dev\.br\/baixar\.html/);
+
+  const pagamentos = textoPagamentos(bolaoPix);
+  assert.match(pagamentos, /Chave Pix para quitar sua cota: vitorio@pix\.com\.br/);
+
+  const cobranca = textoCobrancaPendentes(bolaoPix);
+  assert.match(cobranca, /Bruno/);
+  assert.doesNotMatch(cobranca, /Ana · 1 cota/, 'quem já pagou não entra na cobrança');
+  assert.match(cobranca, /Chave Pix: vitorio@pix\.com\.br/);
+  assert.match(cobranca, /Não é comprovante da CAIXA/);
+
+  const carteira = [
+    { id: 'a', bolaoId: 1, conferido: true, premioGanho: 1200, status: '🥉 QUADRA' },
+    { id: 'b', bolaoId: 1, conferido: true, premioGanho: 0, status: 'Não premiado' }
+  ];
+  const resTxt = textoResultadoBolao(bolaoPix, carteira);
+  assert.match(resTxt, /Jogos premiados: 1/);
+  assert.match(resTxt, /Valor por cota: R\$\s600,00/);
+  assert.match(resTxt, /Ana \(1 cota\): R\$\s600,00/);
+  assert.match(resTxt, /Não é comprovante da CAIXA/);
+});
+
+test('Onda 1A: Toast abaixo do header, Resumo Consolidado, OAuth Supabase e Android v10', () => {
+  const html = fs.readFileSync('index.html', 'utf8');
+  const fluxoCss = fs.readFileSync('css/fluxo-jogo.css', 'utf8');
+  const ritualJs = fs.readFileSync('js/ritual.js', 'utf8');
+  const oauthJs = fs.readFileSync('js/oauth-login.js', 'utf8');
+  const gradle = fs.readFileSync('android/app/build.gradle', 'utf8');
+  const manifest = fs.readFileSync('android/app/src/main/AndroidManifest.xml', 'utf8');
+  const delegation = fs.readFileSync('android/app/src/main/java/br/dev/pd/meuvolante/DelegationService.java', 'utf8');
+
+  assert.match(html, /id="toast"[^>]*top-16/, 'toast não pode ficar em top-4 sobre o seletor');
+  assert.match(fluxoCss, /#toast[\s\S]*64px/);
+  assert.match(ritualJs, /function abrirResumoConferencia/);
+  assert.match(oauthJs, /signInWithOAuth/);
+  assert.doesNotMatch(html, /accounts\.google\.com\/gsi\/client/, 'não carregar script Google GSI sem estar habilitado');
+
+  assert.match(gradle, /enableNotifications:\s*true/);
+  assert.match(gradle, /versionCode\s+10/);
+  assert.match(gradle, /com\.google\.androidbrowserhelper:billing:1\.2\.0/);
+  assert.match(manifest, /android\.permission\.POST_NOTIFICATIONS/);
+  assert.match(manifest, /com\.android\.vending\.BILLING/);
+  assert.match(delegation, /DigitalGoodsRequestHandler/);
+});
