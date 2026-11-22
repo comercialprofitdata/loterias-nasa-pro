@@ -140,7 +140,12 @@ function renderizarCardQuizENoticias() {
     container = document.createElement('section');
     container.id = 'lotolab-quiz-noticias';
     container.className = 'mt-4 space-y-4';
-    homeView.appendChild(container);
+    const provaFatos = document.getElementById('home-prova-fatos-section');
+    if (provaFatos && provaFatos.parentElement === homeView) {
+      homeView.insertBefore(container, provaFatos);
+    } else {
+      homeView.appendChild(container);
+    }
   }
 
   const estado = lerEstadoQuiz();
