@@ -78,7 +78,7 @@ function criarTopbarUnificada() {
       </div>
     </button>
 
-    <!-- Seletor Global de Loteria (1 toque em qualquer tela) -->
+    <!-- Seletor Global de Loteria (Mega | Lotofácil + Menu Mais) -->
     <div class="nasa-modality-pill" role="tablist" aria-label="Escolher loteria">
       <button type="button" id="nasa-pill-mega" class="nasa-mod-btn active-mega" onclick="trocarModalidade('megasena')">
         <span>Mega</span>
@@ -86,14 +86,8 @@ function criarTopbarUnificada() {
       <button type="button" id="nasa-pill-loto" class="nasa-mod-btn" onclick="trocarModalidade('lotofacil')">
         <span>Lotofácil</span>
       </button>
-      <button type="button" id="nasa-pill-quina" class="nasa-mod-btn" onclick="trocarModalidade('quina')">
-        <span>Quina</span>
-      </button>
-      <button type="button" id="nasa-pill-lotomania" class="nasa-mod-btn" onclick="trocarModalidade('lotomania')">
-        <span>Lotomania</span>
-      </button>
-      <button type="button" id="nasa-pill-diadesorte" class="nasa-mod-btn" onclick="trocarModalidade('diadesorte')">
-        <span>Dia de Sorte</span>
+      <button type="button" id="nasa-pill-mais" class="nasa-mod-btn" onclick="abrirMenuOutrasLoterias(event)" aria-haspopup="menu" aria-expanded="false" title="Outras loterias (Quina, Lotomania, Dia de Sorte)">
+        <span id="nasa-pill-mais-label">Mais ▾</span>
       </button>
     </div>
 
@@ -153,25 +147,33 @@ function criarSidebarDesktop() {
       </div>
     </div>
 
-    <!-- Seletor de Modalidade (5 Loterias) -->
+    <!-- Seletor de Modalidade (Mega-Sena / Lotofácil + Menu Outras) -->
     <div class="sidebar-mod-selector">
       <div class="sidebar-mod-pill" role="tablist" aria-label="Escolha a loteria">
         <button type="button" id="sidebar-pill-mega" class="sidebar-mod-btn active-mega" onclick="trocarModalidade('megasena'); tocarBeep('click');">
-          <span>Mega</span>
+          <span>Mega-Sena</span>
         </button>
         <button type="button" id="sidebar-pill-loto" class="sidebar-mod-btn" onclick="trocarModalidade('lotofacil'); tocarBeep('click');">
           <span>Lotofácil</span>
         </button>
-        <button type="button" id="sidebar-pill-quina" class="sidebar-mod-btn" onclick="trocarModalidade('quina'); tocarBeep('click');">
-          <span>Quina</span>
-        </button>
-        <button type="button" id="sidebar-pill-lotomania" class="sidebar-mod-btn" onclick="trocarModalidade('lotomania'); tocarBeep('click');">
-          <span>Lotomania</span>
-        </button>
-        <button type="button" id="sidebar-pill-diadesorte" class="sidebar-mod-btn col-span-2" onclick="trocarModalidade('diadesorte'); tocarBeep('click');">
-          <span>Dia de Sorte</span>
-        </button>
       </div>
+      <details id="sidebar-outras-loterias" class="mt-1.5 rounded-xl border border-slate-800 bg-slate-950/70 px-2.5 py-1.5 text-xs">
+        <summary id="sidebar-outras-label" class="cursor-pointer font-bold text-slate-300 select-none flex items-center justify-between">
+          <span>Outras loterias</span>
+          <span class="text-[10px] text-slate-500">Quina · Lotomania · Dia</span>
+        </summary>
+        <div class="grid grid-cols-1 gap-1 pt-2">
+          <button type="button" id="sidebar-pill-quina" class="sidebar-mod-btn justify-start px-2.5" onclick="trocarModalidade('quina'); tocarBeep('click');">
+            <span>🔵 Quina</span>
+          </button>
+          <button type="button" id="sidebar-pill-lotomania" class="sidebar-mod-btn justify-start px-2.5" onclick="trocarModalidade('lotomania'); tocarBeep('click');">
+            <span>🟠 Lotomania</span>
+          </button>
+          <button type="button" id="sidebar-pill-diadesorte" class="sidebar-mod-btn justify-start px-2.5" onclick="trocarModalidade('diadesorte'); tocarBeep('click');">
+            <span>🍀 Dia de Sorte</span>
+          </button>
+        </div>
+      </details>
     </div>
 
     <!-- Seletor de Modo Desktop -->
@@ -354,22 +356,68 @@ function iniciarResizerSidebar() {
   });
 }
 
+function abrirMenuOutrasLoterias(ev) {
+  if (ev) ev.stopPropagation();
+  const existente = document.getElementById('lotolab-menu-outras-loterias');
+  if (existente) {
+    existente.remove();
+    return;
+  }
+  const menu = document.createElement('div');
+  menu.id = 'lotolab-menu-outras-loterias';
+  menu.className = 'fixed top-14 left-1/2 -translate-x-1/2 z-[9999] w-56 rounded-2xl bg-slate-900 border border-slate-700 shadow-2xl p-1.5 space-y-1';
+  const mod = typeof modalidadeAtual !== 'undefined' ? modalidadeAtual : 'megasena';
+  const itens = [
+    { id: 'quina', nome: '🔵 Quina', sub: '1 a 80 · 6x/semana' },
+    { id: 'lotomania', nome: '🟠 Lotomania', sub: '00 a 99 · 50 números' },
+    { id: 'diadesorte', nome: '🍀 Dia de Sorte', sub: '01 a 31 · Mês da Sorte' }
+  ];
+  menu.innerHTML = itens.map((it) => `
+    <button type="button" data-outra-mod="${it.id}" class="w-full text-left px-3 py-2 rounded-xl flex items-center justify-between transition ${mod === it.id ? 'bg-emerald-500/20 border border-emerald-500/40 text-white' : 'hover:bg-slate-800 text-slate-200'}">
+      <span class="text-xs font-black">${it.nome}</span>
+      <span class="text-[10px] text-slate-400">${it.sub}</span>
+    </button>
+  `).join('');
+  menu.querySelectorAll('[data-outra-mod]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      menu.remove();
+      if (typeof trocarModalidade === 'function') trocarModalidade(btn.dataset.outraMod);
+    });
+  });
+  document.body.appendChild(menu);
+  const fechar = (e) => {
+    if (!menu.contains(e.target)) {
+      menu.remove();
+      document.removeEventListener('click', fechar);
+    }
+  };
+  setTimeout(() => document.addEventListener('click', fechar), 0);
+}
+window.abrirMenuOutrasLoterias = abrirMenuOutrasLoterias;
+
 function sincronizarVisualModalidadeGlobal() {
   const mod = typeof modalidadeAtual !== 'undefined' ? modalidadeAtual : 'megasena';
   const pillMega = document.getElementById('nasa-pill-mega');
   const pillLoto = document.getElementById('nasa-pill-loto');
-  const pillQuina = document.getElementById('nasa-pill-quina');
-  const pillLotomania = document.getElementById('nasa-pill-lotomania');
-  const pillDia = document.getElementById('nasa-pill-diadesorte');
+  const pillMais = document.getElementById('nasa-pill-mais');
+  const pillMaisLbl = document.getElementById('nasa-pill-mais-label');
 
   document.documentElement.classList.toggle('lotofacil-mode', mod === 'lotofacil');
+
+  const secundarias = {
+    quina: { lbl: 'Quina ▾', cls: 'active-quina' },
+    lotomania: { lbl: 'Lotomania ▾', cls: 'active-lotomania' },
+    diadesorte: { lbl: 'Dia ▾', cls: 'active-diadesorte' }
+  };
 
   if (pillMega && pillLoto) {
     pillMega.className = mod === 'megasena' ? 'nasa-mod-btn active-mega' : 'nasa-mod-btn';
     pillLoto.className = mod === 'lotofacil' ? 'nasa-mod-btn active-loto' : 'nasa-mod-btn';
-    if (pillQuina) pillQuina.className = mod === 'quina' ? 'nasa-mod-btn active-quina' : 'nasa-mod-btn';
-    if (pillLotomania) pillLotomania.className = mod === 'lotomania' ? 'nasa-mod-btn active-lotomania' : 'nasa-mod-btn';
-    if (pillDia) pillDia.className = mod === 'diadesorte' ? 'nasa-mod-btn active-diadesorte' : 'nasa-mod-btn';
+    if (pillMais) {
+      const sec = secundarias[mod];
+      pillMais.className = sec ? `nasa-mod-btn ${sec.cls}` : 'nasa-mod-btn';
+      if (pillMaisLbl) pillMaisLbl.innerText = sec ? sec.lbl : 'Mais ▾';
+    }
   }
 
   // Sincroniza o seletor da Sidebar Desktop
@@ -382,9 +430,9 @@ function sincronizarVisualModalidadeGlobal() {
   if (sidePillMega && sidePillLoto) {
     sidePillMega.className = mod === 'megasena' ? 'sidebar-mod-btn active-mega' : 'sidebar-mod-btn';
     sidePillLoto.className = mod === 'lotofacil' ? 'sidebar-mod-btn active-loto' : 'sidebar-mod-btn';
-    if (sidePillQuina) sidePillQuina.className = mod === 'quina' ? 'sidebar-mod-btn active-quina' : 'sidebar-mod-btn';
-    if (sidePillLotomania) sidePillLotomania.className = mod === 'lotomania' ? 'sidebar-mod-btn active-lotomania' : 'sidebar-mod-btn';
-    if (sidePillDia) sidePillDia.className = mod === 'diadesorte' ? 'sidebar-mod-btn col-span-2 active-diadesorte' : 'sidebar-mod-btn col-span-2';
+    if (sidePillQuina) sidePillQuina.className = mod === 'quina' ? 'sidebar-mod-btn justify-start px-2.5 active-quina' : 'sidebar-mod-btn justify-start px-2.5';
+    if (sidePillLotomania) sidePillLotomania.className = mod === 'lotomania' ? 'sidebar-mod-btn justify-start px-2.5 active-lotomania' : 'sidebar-mod-btn justify-start px-2.5';
+    if (sidePillDia) sidePillDia.className = mod === 'diadesorte' ? 'sidebar-mod-btn justify-start px-2.5 active-diadesorte' : 'sidebar-mod-btn justify-start px-2.5';
     if (sideLotteryName) {
       const rotulos = {
         megasena: ['MEGA-SENA', 'text-emerald-400'],
