@@ -64,7 +64,7 @@ jobs:
       - name: Build site folder
         run: |
           mkdir -p dist/supabase
-          cp -r download google37f87419eb6687ca.html index.html privacidade.html excluir-conta.html termos-de-compra.html termos.html manifest.json sw.js CNAME icon-192.png icon-512.png icon-maskable-512.png css js .well-known dist/
+          cp -r download google37f87419eb6687ca.html index.html baixar.html privacidade.html excluir-conta.html termos-de-compra.html termos.html manifest.json sw.js CNAME favicon.svg icon-192.png icon-light-192.png icon-512.png icon-maskable-512.png css js .well-known dist/
           cp supabase/config.js dist/supabase/
           touch dist/.nojekyll
 
@@ -82,4 +82,6 @@ jobs:
           sleep 30
           curl -fsS -o /dev/null https://loterias.pd.dev.br/.well-known/assetlinks.json
           curl -fsS -o /dev/null https://loterias.pd.dev.br/privacidade.html
+          curl -fsS -o /dev/null https://loterias.pd.dev.br/baixar.html
+          curl -fsS -o /dev/null https://loterias.pd.dev.br/icon-light-192.png
           test "$(curl -s -o /dev/null -w '%{http_code}' https://loterias.pd.dev.br/BACKEND_SETUP.md)" = "404"
