@@ -5,8 +5,11 @@
 // Nada aqui sugere que uma combinação tem mais chance que outra.
 
 const JOGOS_REGRAS = {
-  megasena: { universo: 60, sorteadas: 6, preco: 6, faixas: [[6, 'Sena'], [5, 'Quina'], [4, 'Quadra']] },
-  lotofacil: { universo: 25, sorteadas: 15, preco: 3.5, faixas: [[15, '15 pontos'], [14, '14 pontos'], [13, '13 pontos'], [12, '12 pontos'], [11, '11 pontos']] }
+  megasena: { universo: 60, sorteadas: 6, apostaMin: 6, preco: 6, faixas: [[6, 'Sena'], [5, 'Quina'], [4, 'Quadra']] },
+  lotofacil: { universo: 25, sorteadas: 15, apostaMin: 15, preco: 3.5, faixas: [[15, '15 pontos'], [14, '14 pontos'], [13, '13 pontos'], [12, '12 pontos'], [11, '11 pontos']] },
+  quina: { universo: 80, sorteadas: 5, apostaMin: 5, preco: 2.5, faixas: [[5, 'Quina'], [4, 'Quadra'], [3, 'Terno'], [2, 'Duque']] },
+  lotomania: { universo: 100, sorteadas: 20, apostaMin: 50, apostaUnica: true, preco: 3, faixas: [[20, '20 acertos'], [19, '19 acertos'], [18, '18 acertos'], [17, '17 acertos'], [16, '16 acertos'], [15, '15 acertos'], [0, '0 acertos']] },
+  diadesorte: { universo: 31, sorteadas: 7, apostaMin: 7, preco: 2.5, faixas: [[7, '7 acertos'], [6, '6 acertos'], [5, '5 acertos'], [4, '4 acertos']] }
 };
 const ORCAMENTO_CHAVE = 'meu_volante_orcamento_mensal';
 
@@ -23,6 +26,7 @@ function formatarBRL(valor) {
 
 function custoDoJogo(modalidade, qtdDezenas) {
   const regra = JOGOS_REGRAS[modalidade] || JOGOS_REGRAS.megasena;
+  if (regra.apostaUnica) return regra.preco;
   return combinacoesExatas(qtdDezenas, regra.sorteadas) * regra.preco;
 }
 
@@ -37,7 +41,7 @@ window.custoDoBilhete = custoDoBilhete;
 
 /** Chance de um jogo acertar exatamente cada faixa em um concurso. */
 function chancesDoJogo(modalidade, qtdDezenas) {
-  const { universo, sorteadas, faixas } = JOGOS_REGRAS[modalidade];
+  const { universo, sorteadas, faixas } = JOGOS_REGRAS[modalidade] || JOGOS_REGRAS.megasena;
   const total = combinacoesExatas(universo, sorteadas);
   return faixas.map(([acertos, nome]) => {
     const casos = combinacoesExatas(qtdDezenas, acertos) * combinacoesExatas(universo - qtdDezenas, sorteadas - acertos);
@@ -175,11 +179,12 @@ function renderizarRevisaoDoJogo() {
   }
 
   const modalidade = typeof modalidadeAtual !== 'undefined' ? modalidadeAtual : 'megasena';
-  const regra = JOGOS_REGRAS[modalidade];
+  const regra = JOGOS_REGRAS[modalidade] || JOGOS_REGRAS.megasena;
+  const minimo = regra.apostaMin || regra.sorteadas;
   const dezenas = dezenasAtuais();
-  if (dezenas.length < regra.sorteadas) {
+  if (dezenas.length < minimo) {
     revisao.hidden = false;
-    revisao.innerHTML = `<p>Marque pelo menos ${regra.sorteadas} dezenas.</p>`;
+    revisao.innerHTML = `<p>Marque pelo menos ${minimo} dezenas.</p>`;
     return;
   }
 
@@ -198,7 +203,7 @@ ${avisos.map((a) => `<p class="revisao-aviso">${a}</p>`).join('')}`;
   if (tabela) {
     tabela.innerHTML = `
       <h3>Suas chances reais em um concurso</h3>
-      <table class="gastos-tabela"><tbody>${chancesDoJogo(modalidade, dezenas.length).map((c) => `<tr><td>${c.nome}</td><td>1 em ${c.umEm.toLocaleString('pt-BR')}</td></tr>`).join('')}</tbody></table>
+      <table class="gastos-tabela"><tbody>${chancesDoJogo(modalidade, dezenas.length).map((c) => `<tr><td>${c.nome}</td><td>${c.umEm ? '1 em ' + c.umEm.toLocaleString('pt-BR') : '—'}</td></tr>`).join('')}</tbody></table>
       <p class="gastos-nota">Cálculo exato de combinatória. Todas as combinações com a mesma quantidade de dezenas têm a mesma chance.</p>`;
   }
 }

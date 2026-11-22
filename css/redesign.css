@@ -126,7 +126,7 @@ nav.nasa-desktop-nav {
   }
 }
 
-/* Pill Switcher Global: Mega-Sena | Lotofácil */
+/* Pill Switcher Global: Mega | Lotofácil | Mais ▾ */
 .nasa-modality-pill {
   display: inline-flex;
   align-items: center;
@@ -134,12 +134,6 @@ nav.nasa-desktop-nav {
   border: 1px solid #1e293b;
   border-radius: 9999px;
   padding: 3px;
-  overflow-x: auto;
-  max-width: calc(100vw - 148px);
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-}
-.nasa-modality-pill::-webkit-scrollbar { display: none; }
   gap: 2px;
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
   flex-shrink: 1;
@@ -150,19 +144,83 @@ nav.nasa-desktop-nav {
   border: none;
   background: transparent;
   color: #94a3b8;
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 800;
-  padding: 0.34rem 0.62rem !important;
+  padding: 0.3rem 0.54rem !important;
   flex-shrink: 0;
   white-space: nowrap;
-  min-height: 32px !important;
+  min-height: 30px !important;
   border-radius: 9999px;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   display: inline-flex;
   align-items: center;
-  gap: 0.28rem;
-  white-space: nowrap;
+  justify-content: center;
+  gap: 0.2rem;
+}
+
+.lotolab-outras-menu {
+  position: fixed;
+  top: 58px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  width: 240px;
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 16px;
+  padding: 6px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.lotolab-outras-item {
+  width: 100%;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #e2e8f0;
+  border-radius: 12px;
+  padding: 9px 11px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.lotolab-outras-item:hover {
+  background: #1e293b;
+}
+
+.lotolab-outras-item.is-active {
+  background: rgba(16, 185, 129, 0.14);
+  border-color: rgba(16, 185, 129, 0.45);
+  color: #ffffff;
+}
+
+.lotolab-outras-left {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.lotolab-outras-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 9999px;
+  flex-shrink: 0;
+}
+
+.lotolab-outras-sub {
+  font-size: 0.66rem;
+  font-weight: 600;
+  color: #94a3b8;
 }
 
 .nasa-mod-btn.active-mega {
@@ -1781,6 +1839,51 @@ html:not(.dark) .nasa-theme-chip {
   box-shadow: 0 2px 10px rgba(234, 179, 8, 0.35);
 }
 
+.sidebar-outras-box {
+  margin-top: 6px;
+  background: rgba(2, 6, 23, 0.75);
+  border: 1px solid #1e293b;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.sidebar-outras-trigger {
+  list-style: none;
+  cursor: pointer;
+  padding: 8px 11px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #94a3b8;
+  user-select: none;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+.sidebar-outras-trigger::-webkit-details-marker { display: none; }
+.sidebar-outras-trigger:hover {
+  color: #f8fafc;
+  background: rgba(30, 41, 59, 0.5);
+}
+.sidebar-outras-caret {
+  font-size: 0.7rem;
+  transition: transform 0.2s ease;
+}
+.sidebar-outras-box[open] .sidebar-outras-caret {
+  transform: rotate(180deg);
+}
+.sidebar-outras-list {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 0 6px 6px;
+}
+.sidebar-outras-list .sidebar-mod-btn {
+  justify-content: space-between;
+  padding: 7px 10px;
+  font-size: 0.75rem;
+}
+
 .sidebar-nav-list {
   display: flex;
   flex-direction: column;
@@ -2061,11 +2164,49 @@ html:not(.dark) #sidebar-outras-loterias {
   border-color: #cbd5e1 !important;
 }
 html:not(.dark) #sidebar-outras-loterias summary {
-  color: #1e293b !important;
+  color: #334155 !important;
+}
+html:not(.dark) .lotolab-outras-menu {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.18) !important;
+}
+html:not(.dark) .lotolab-outras-item {
+  color: #0f172a !important;
+}
+html:not(.dark) .lotolab-outras-item:hover {
+  background: #f1f5f9 !important;
+}
+html:not(.dark) .lotolab-outras-sub {
+  color: #64748b !important;
 }
 html:not(.dark) #lotolab-conversao-banner {
   background: linear-gradient(135deg, #ecfdf5, #f0f9ff) !important;
   border-color: #6ee7b7 !important;
+}
+html:not(.dark) #lotolab-conversao-banner button[aria-label="Fechar aviso"] {
+  background: #ffffff !important;
+  color: #475569 !important;
+  border: 1px solid #cbd5e1 !important;
+}
+html:not(.dark) #lotolab-conversao-banner button[aria-label="Fechar aviso"]:hover {
+  background: #f1f5f9 !important;
+  color: #0f172a !important;
+}
+html:not(.dark) .gastos-painel {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04) !important;
+}
+html:not(.dark) .gastos-painel .instalar-titulo,
+html:not(.dark) .gastos-painel strong {
+  color: #0f172a !important;
+}
+html:not(.dark) .gastos-painel .gastos-nota {
+  color: #475569 !important;
+}
+html:not(.dark) .gastos-painel .fluxo-link {
+  color: #475569 !important;
 }
 html:not(.dark) #lotolab-conversao-banner .text-white,
 html:not(.dark) #lotolab-quiz-noticias .text-white,
@@ -2095,6 +2236,11 @@ html:not(.dark) #lotolab-menu-outras-loterias,
 html:not(.dark) #modal-noticia-lotolab > div {
   background: #ffffff !important;
   border-color: #cbd5e1 !important;
+}
+html:not(.dark) #modal-noticia-lotolab button.bg-slate-800 {
+  background: #f1f5f9 !important;
+  color: #334155 !important;
+  border: 1px solid #cbd5e1 !important;
 }
 html:not(.dark) .sidebar-nav-btn {
   color: #334155 !important;

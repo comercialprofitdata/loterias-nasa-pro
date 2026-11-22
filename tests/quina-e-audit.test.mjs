@@ -122,3 +122,40 @@ test('bolão aceita todas as 5 loterias no seletor e nas regras da CAIXA', () =>
   });
   assert.match(bolaoSrc, /\['megasena', 'lotofacil', 'quina', 'lotomania', 'diadesorte'\]/);
 });
+
+test('Quiz, Avisos e Banner da Home montam no container real (#view-inicio-new) e não no inexistente #view-home', () => {
+  const quizSrc = fs.readFileSync('js/quiz-noticias.js', 'utf8');
+  const redesignSrc = fs.readFileSync('js/redesign.js', 'utf8');
+  assert.doesNotMatch(quizSrc, /getElementById\('view-home'\)/);
+  assert.doesNotMatch(redesignSrc, /getElementById\('view-home'\)/);
+  assert.match(quizSrc, /view-inicio-new/);
+  assert.match(quizSrc, /home-secao-auditoria-caixa/);
+});
+
+test('css/redesign.css tem chaves balanceadas sem } solto que quebre seletores', () => {
+  const css = fs.readFileSync('css/redesign.css', 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
+  let depth = 0;
+  for (let i = 0; i < css.length; i++) {
+    if (css[i] === '{') depth++;
+    else if (css[i] === '}') {
+      depth--;
+      assert.ok(depth >= 0, `chave } sobrando na posição ${i} de css/redesign.css`);
+    }
+  }
+  assert.equal(depth, 0, 'chaves { e } desbalanceadas em css/redesign.css');
+});
+
+test('js/gastos.js calcula custo e chances para todas as 5 loterias sem erro', () => {
+  const src = fs.readFileSync('js/gastos.js', 'utf8');
+  const { custoDoJogo, chancesDoJogo } = new Function('window', 'document', 'localStorage', `${src}; return { custoDoJogo, chancesDoJogo };`)({}, { addEventListener() {}, getElementById: () => null }, { getItem: () => '0' });
+  assert.equal(custoDoJogo('megasena', 6), 6);
+  assert.equal(custoDoJogo('lotofacil', 15), 3.5);
+  assert.equal(custoDoJogo('quina', 5), 2.5);
+  assert.equal(custoDoJogo('lotomania', 50), 3);
+  assert.equal(custoDoJogo('diadesorte', 7), 2.5);
+  for (const [m, qtd] of [['megasena', 6], ['lotofacil', 15], ['quina', 5], ['lotomania', 50], ['diadesorte', 7]]) {
+    const ch = chancesDoJogo(m, qtd);
+    assert.ok(Array.isArray(ch) && ch.length >= 3, `chances inválidas para ${m}`);
+    assert.ok(ch.every((c) => Number.isFinite(c.umEm) && c.umEm > 0), `umEm inválido em ${m}`);
+  }
+});

@@ -157,20 +157,23 @@ function criarSidebarDesktop() {
           <span>Lotofácil</span>
         </button>
       </div>
-      <details id="sidebar-outras-loterias" class="mt-1.5 rounded-xl border border-slate-800 bg-slate-950/70 px-2.5 py-1.5 text-xs">
-        <summary id="sidebar-outras-label" class="cursor-pointer font-bold text-slate-300 select-none flex items-center justify-between">
-          <span>Outras loterias</span>
-          <span class="text-[10px] text-slate-500">Quina · Lotomania · Dia</span>
+      <details id="sidebar-outras-loterias" class="sidebar-outras-box">
+        <summary id="sidebar-outras-label" class="sidebar-outras-trigger">
+          <span id="sidebar-outras-titulo">Outras loterias</span>
+          <span class="sidebar-outras-caret">▾</span>
         </summary>
-        <div class="grid grid-cols-1 gap-1 pt-2">
-          <button type="button" id="sidebar-pill-quina" class="sidebar-mod-btn justify-start px-2.5" onclick="trocarModalidade('quina'); tocarBeep('click');">
-            <span>🔵 Quina</span>
+        <div class="sidebar-outras-list">
+          <button type="button" id="sidebar-pill-quina" class="sidebar-mod-btn" onclick="trocarModalidade('quina'); tocarBeep('click');">
+            <span class="lotolab-outras-left"><span class="lotolab-outras-dot" style="background:#0ea5e9"></span>Quina</span>
+            <span class="lotolab-outras-sub">6x/sem</span>
           </button>
-          <button type="button" id="sidebar-pill-lotomania" class="sidebar-mod-btn justify-start px-2.5" onclick="trocarModalidade('lotomania'); tocarBeep('click');">
-            <span>🟠 Lotomania</span>
+          <button type="button" id="sidebar-pill-lotomania" class="sidebar-mod-btn" onclick="trocarModalidade('lotomania'); tocarBeep('click');">
+            <span class="lotolab-outras-left"><span class="lotolab-outras-dot" style="background:#f97316"></span>Lotomania</span>
+            <span class="lotolab-outras-sub">00–99</span>
           </button>
-          <button type="button" id="sidebar-pill-diadesorte" class="sidebar-mod-btn justify-start px-2.5" onclick="trocarModalidade('diadesorte'); tocarBeep('click');">
-            <span>🍀 Dia de Sorte</span>
+          <button type="button" id="sidebar-pill-diadesorte" class="sidebar-mod-btn" onclick="trocarModalidade('diadesorte'); tocarBeep('click');">
+            <span class="lotolab-outras-left"><span class="lotolab-outras-dot" style="background:#eab308"></span>Dia de Sorte</span>
+            <span class="lotolab-outras-sub">01–31</span>
           </button>
         </div>
       </details>
@@ -365,17 +368,17 @@ function abrirMenuOutrasLoterias(ev) {
   }
   const menu = document.createElement('div');
   menu.id = 'lotolab-menu-outras-loterias';
-  menu.className = 'fixed top-14 left-1/2 -translate-x-1/2 z-[9999] w-56 rounded-2xl bg-slate-900 border border-slate-700 shadow-2xl p-1.5 space-y-1';
+  menu.className = 'lotolab-outras-menu';
   const mod = typeof modalidadeAtual !== 'undefined' ? modalidadeAtual : 'megasena';
   const itens = [
-    { id: 'quina', nome: '🔵 Quina', sub: '1 a 80 · 6x/semana' },
-    { id: 'lotomania', nome: '🟠 Lotomania', sub: '00 a 99 · 50 números' },
-    { id: 'diadesorte', nome: '🍀 Dia de Sorte', sub: '01 a 31 · Mês da Sorte' }
+    { id: 'quina', nome: 'Quina', cor: '#0ea5e9', sub: '1 a 80 · 6x/sem' },
+    { id: 'lotomania', nome: 'Lotomania', cor: '#f97316', sub: '00 a 99 · 50 dez' },
+    { id: 'diadesorte', nome: 'Dia de Sorte', cor: '#eab308', sub: '01 a 31 · Mês' }
   ];
   menu.innerHTML = itens.map((it) => `
-    <button type="button" data-outra-mod="${it.id}" class="w-full text-left px-3 py-2 rounded-xl flex items-center justify-between transition ${mod === it.id ? 'bg-emerald-500/20 border border-emerald-500/40 text-white' : 'hover:bg-slate-800 text-slate-200'}">
-      <span class="text-xs font-black">${it.nome}</span>
-      <span class="text-[10px] text-slate-400">${it.sub}</span>
+    <button type="button" data-outra-mod="${it.id}" class="lotolab-outras-item ${mod === it.id ? 'is-active' : ''}">
+      <span class="lotolab-outras-left"><span class="lotolab-outras-dot" style="background:${it.cor}"></span>${it.nome}</span>
+      <span class="lotolab-outras-sub">${it.sub}</span>
     </button>
   `).join('');
   menu.querySelectorAll('[data-outra-mod]').forEach((btn) => {
@@ -430,9 +433,14 @@ function sincronizarVisualModalidadeGlobal() {
   if (sidePillMega && sidePillLoto) {
     sidePillMega.className = mod === 'megasena' ? 'sidebar-mod-btn active-mega' : 'sidebar-mod-btn';
     sidePillLoto.className = mod === 'lotofacil' ? 'sidebar-mod-btn active-loto' : 'sidebar-mod-btn';
-    if (sidePillQuina) sidePillQuina.className = mod === 'quina' ? 'sidebar-mod-btn justify-start px-2.5 active-quina' : 'sidebar-mod-btn justify-start px-2.5';
-    if (sidePillLotomania) sidePillLotomania.className = mod === 'lotomania' ? 'sidebar-mod-btn justify-start px-2.5 active-lotomania' : 'sidebar-mod-btn justify-start px-2.5';
-    if (sidePillDia) sidePillDia.className = mod === 'diadesorte' ? 'sidebar-mod-btn justify-start px-2.5 active-diadesorte' : 'sidebar-mod-btn justify-start px-2.5';
+    if (sidePillQuina) sidePillQuina.className = mod === 'quina' ? 'sidebar-mod-btn active-quina' : 'sidebar-mod-btn';
+    if (sidePillLotomania) sidePillLotomania.className = mod === 'lotomania' ? 'sidebar-mod-btn active-lotomania' : 'sidebar-mod-btn';
+    if (sidePillDia) sidePillDia.className = mod === 'diadesorte' ? 'sidebar-mod-btn active-diadesorte' : 'sidebar-mod-btn';
+    const sideOutrasTit = document.getElementById('sidebar-outras-titulo');
+    if (sideOutrasTit) {
+      const nomesSec = { quina: 'Outras · Quina', lotomania: 'Outras · Lotomania', diadesorte: 'Outras · Dia de Sorte' };
+      sideOutrasTit.innerText = nomesSec[mod] || 'Outras loterias';
+    }
     if (sideLotteryName) {
       const rotulos = {
         megasena: ['MEGA-SENA', 'text-emerald-400'],
@@ -484,7 +492,7 @@ function sincronizarHeaderStatusUsuario() {
   const topAvatar = document.getElementById('nasa-top-avatar');
 
   const ehPro = (typeof planoUsuario !== 'undefined' && planoUsuario === 'pro') ||
-                (typeof usuarioSessao !== 'undefined' && usuarioSessao?.tipo === 'master_founder');
+    (typeof usuarioSessao !== 'undefined' && usuarioSessao?.tipo === 'master_founder');
 
   const creditos = typeof window.creditosGratisRestantes === 'function'
     ? window.creditosGratisRestantes()
@@ -1226,7 +1234,7 @@ function criarDrawerPerfilConfig() {
 }
 
 function criarBannerConversaoWeb() {
-  const home = document.getElementById('view-home');
+  const home = document.querySelector('#view-inicio-new .nasa-home-grid') || document.getElementById('view-inicio-new');
   if (!home || document.getElementById('lotolab-conversao-banner')) return;
 
   try {
@@ -1236,7 +1244,7 @@ function criarBannerConversaoWeb() {
         if (typeof window.abrirModalAuth === 'function') window.abrirModalAuth();
       }, 450);
     }
-  } catch (_) {}
+  } catch (_) { }
 
   const isStandalone = window.matchMedia?.('(display-mode: standalone)').matches || window.navigator.standalone === true;
   const isVisitante = typeof usuarioSessao === 'undefined' || !usuarioSessao || usuarioSessao.tipo === 'visitante';
@@ -1298,13 +1306,13 @@ function alternarLembreteSorteio() {
             body: 'Vamos avisar você às 20h30 nos dias de sorteio para conferir seus jogos.',
             icon: './icon-192.png?v=3'
           });
-        } catch (_) {}
+        } catch (_) { }
       } else {
         localStorage.setItem('lotolab_aviso_20h30', '1');
         if (typeof toast === 'function') toast('🔔 Lembrete interno às 20h30 ativado!', '✅');
       }
       atualizarStatusNotifDrawer();
-    }).catch(() => {});
+    }).catch(() => { });
     return;
   }
   localStorage.setItem('lotolab_aviso_20h30', atual ? '0' : '1');
@@ -1330,7 +1338,7 @@ function verificarAlertaSorteio20h30() {
     ? carteiraJogos.filter((b) => b && !b.conferido && !b.planejamento)
     : [];
   if (!pendentes.length) return;
-  const home = document.getElementById('view-home');
+  const home = document.querySelector('#view-inicio-new .nasa-home-grid') || document.getElementById('view-inicio-new');
   if (!home || document.getElementById('lotolab-alerta-20h30')) return;
   const card = document.createElement('div');
   card.id = 'lotolab-alerta-20h30';
@@ -1481,7 +1489,7 @@ function interceptarFuncoesLegadas() {
       const promoHome = document.getElementById('home-promo-pro-card');
       if (promoHome) {
         const ehPro = (typeof planoUsuario !== 'undefined' && planoUsuario === 'pro') ||
-                      (typeof usuarioSessao !== 'undefined' && usuarioSessao?.tipo === 'master_founder');
+          (typeof usuarioSessao !== 'undefined' && usuarioSessao?.tipo === 'master_founder');
         promoHome.style.display = ehPro ? 'none' : 'flex';
       }
     };
@@ -1694,12 +1702,12 @@ function atualizarProvaDosFatosRedesign() {
   // 2. Lista dos outros 49 sorteios oficiais (iniciando a partir do penúltimo para não repetir o destaque)
   let aprovadosCount = 0;
   // O último (índice 0) já é computado na nota média geral
-  const avaliacaoPrimeiro = typeof avaliarJogo === 'function' ? avaliarJogo([...ultimos50[0].dezenas].sort((a,b)=>a-b), mod) : { aprovadosCount: 0 };
+  const avaliacaoPrimeiro = typeof avaliarJogo === 'function' ? avaliarJogo([...ultimos50[0].dezenas].sort((a, b) => a - b), mod) : { aprovadosCount: 0 };
   if (avaliacaoPrimeiro.aprovadosCount === 6) aprovadosCount++;
 
   const sorteiosAnteriores = ultimos50.slice(1);
   const cardsHtml = sorteiosAnteriores.map((c) => {
-    const ordenado = [...c.dezenas].sort((a,b) => a - b);
+    const ordenado = [...c.dezenas].sort((a, b) => a - b);
     const avaliacao = typeof avaliarJogo === 'function' ? avaliarJogo(ordenado, mod) : { score: null, aprovadosCount: 0 };
     if (avaliacao.aprovadosCount === 6) aprovadosCount++;
 
@@ -1883,7 +1891,7 @@ function aplicarPerfilModo(modoId, { silencioso = false } = {}) {
   try {
     localStorage.setItem('nasa_perfil_experiencia', config.id);
     localStorage.setItem('nasa_perfil_experiencia_definido', 'true');
-  } catch (_) {}
+  } catch (_) { }
 
   document.documentElement.setAttribute('data-modo-perfil', config.id);
   document.body.setAttribute('data-modo-perfil', config.id);

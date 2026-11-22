@@ -275,8 +275,12 @@ function abrirModalNoticiaLotoLab(noticiaId) {
 }
 window.abrirModalNoticiaLotoLab = abrirModalNoticiaLotoLab;
 
+function obterContainerHomeLotoLab() {
+  return document.querySelector('#view-inicio-new .nasa-home-grid') || document.getElementById('view-inicio-new');
+}
+
 function renderizarAvisosQuizENoticias() {
-  const homeView = document.getElementById('view-home');
+  const homeView = obterContainerHomeLotoLab();
   if (!homeView) return;
   const estado = lerEstadoQuiz();
   const qHoje = QUIZ_PERGUNTAS[perguntaDoDiaIndex()];
@@ -328,7 +332,7 @@ function renderizarAvisosQuizENoticias() {
 }
 
 function renderizarCardQuizENoticias() {
-  const homeView = document.getElementById('view-home');
+  const homeView = obterContainerHomeLotoLab();
   if (!homeView) return;
   renderizarAvisosQuizENoticias();
 
@@ -336,10 +340,10 @@ function renderizarCardQuizENoticias() {
   if (!container) {
     container = document.createElement('section');
     container.id = 'lotolab-quiz-noticias';
-    container.className = 'mt-4 space-y-4';
-    const provaFatos = document.getElementById('home-prova-fatos-section');
-    if (provaFatos && provaFatos.parentElement === homeView) {
-      homeView.insertBefore(container, provaFatos);
+    container.className = 'space-y-3';
+    const secaoSorteios = document.getElementById('home-secao-auditoria-caixa');
+    if (secaoSorteios && secaoSorteios.parentElement === homeView) {
+      homeView.insertBefore(container, secaoSorteios);
     } else {
       homeView.appendChild(container);
     }
@@ -408,7 +412,7 @@ function renderizarCardQuizENoticias() {
         <span class="text-xs font-black tracking-wider uppercase text-cyan-400">📰 Radar & Curiosidades LotoLab</span>
         <a href="https://www.instagram.com/lotolab.app/" target="_blank" rel="noopener" class="text-[11px] font-bold text-emerald-400 hover:underline">@lotolab.app</a>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
         ${LOTOLAB_NOTICIAS.map((n) => `
           <button type="button" onclick="abrirModalNoticiaLotoLab('${n.id}')" class="text-left rounded-2xl border border-slate-800 hover:border-cyan-500/50 bg-slate-950/70 hover:bg-slate-900 p-3 space-y-1.5 transition cursor-pointer">
             <div class="flex items-center justify-between gap-2">
