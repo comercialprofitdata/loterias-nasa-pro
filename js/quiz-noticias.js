@@ -91,19 +91,31 @@ const QUIZ_PERGUNTAS = [
 
 const LOTOLAB_NOTICIAS = [
   {
+    id: 'n1',
     tag: 'BRASIL',
     titulo: 'Mega da Virada 2026: organize seu planejamento separado',
-    resumo: 'No LotoLab você marca "Planejar para a Mega da Virada 2026" na tela Gerar e mantém seus palpites separados dos concursos normais.'
+    resumo: 'No LotoLab você marca "Planejar para a Mega da Virada 2026" na tela Gerar e mantém seus palpites separados dos concursos normais.',
+    detalhe: 'A Mega da Virada tem regra própria: o prêmio principal não acumula. No LotoLab, você pode montar seus palpites e bolões marcados como planejamento da Virada 2026 sem misturar com os sorteios regulares de terça, quinta e sábado.',
+    acaoTexto: 'Planejar na tela Gerar →',
+    acaoAba: 'volante'
   },
   {
+    id: 'n2',
     tag: 'MUNDO',
     titulo: 'Powerball x Mega-Sena: por que os prêmios nos EUA passam de US$ 1 bi?',
-    resumo: 'Nos EUA, a chance da Powerball é de 1 em 292 milhões (quase 6x mais difícil que a Mega-Sena), o que faz o prêmio acumular por meses.'
+    resumo: 'Nos EUA, a chance da Powerball é de 1 em 292 milhões (quase 6x mais difícil que a Mega-Sena), o que faz o prêmio acumular por meses.',
+    detalhe: 'Enquanto a Mega-Sena tem 50.063.860 combinações simples de 6 dezenas, a Powerball americana exige acertar 5 bolas de 69 + 1 Powerball de 26 (1 em 292.201.338). Quanto menor a probabilidade de acerto, mais concursos acumulam em sequência.',
+    acaoTexto: 'Abrir Quiz de hoje →',
+    acaoQuiz: true
   },
   {
-    tag: 'DICA DE BOLÃO',
+    id: 'n3',
+    tag: 'BOLÃO',
     titulo: 'Bolão com amigos sem dor de cabeça no WhatsApp',
-    resumo: 'Use a aba Bolão na tela Gerar para dividir cotas pelas regras da CAIXA, marcar quem já pagou e enviar o resumo pronto para o grupo.'
+    resumo: 'Use a aba Bolão na tela Gerar para dividir cotas pelas regras da CAIXA, marcar quem já pagou e enviar o resumo pronto para o grupo.',
+    detalhe: 'Na aba Bolão do LotoLab você confere o valor mínimo oficial da CAIXA para Mega-Sena, Lotofácil e Quina, controla quem já pagou e ainda calcula automaticamente o prêmio por cota após o sorteio.',
+    acaoTexto: 'Abrir aba Bolão →',
+    acaoAba: 'bolao'
   }
 ];
 
@@ -131,9 +143,105 @@ function perguntaDoDiaIndex() {
   return diaAno % QUIZ_PERGUNTAS.length;
 }
 
+function abrirModalNoticiaLotoLab(noticiaId) {
+  const n = LOTOLAB_NOTICIAS.find((item) => item.id === noticiaId);
+  if (!n) return;
+  try {
+    const lidas = JSON.parse(localStorage.getItem('lotolab_noticias_lidas') || '[]');
+    if (!lidas.includes(n.id)) {
+      lidas.push(n.id);
+      localStorage.setItem('lotolab_noticias_lidas', JSON.stringify(lidas));
+    }
+  } catch {}
+  document.getElementById('modal-noticia-lotolab')?.remove();
+  const modal = document.createElement('div');
+  modal.id = 'modal-noticia-lotolab';
+  modal.className = 'fixed inset-0 z-[9999] bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4';
+  modal.innerHTML = `
+    <div class="max-w-md w-full rounded-3xl bg-slate-900 border border-cyan-500/40 p-5 space-y-3 shadow-2xl">
+      <div class="flex items-center justify-between">
+        <span class="text-[10px] font-black tracking-wider px-2.5 py-1 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">${n.tag}</span>
+        <button type="button" onclick="this.closest('#modal-noticia-lotolab')?.remove()" class="w-8 h-8 rounded-full bg-slate-800 text-slate-300 font-bold text-xs">✕</button>
+      </div>
+      <h3 class="text-base font-black text-white leading-snug">${n.titulo}</h3>
+      <p class="text-xs text-slate-300 leading-relaxed">${n.detalhe || n.resumo}</p>
+      <div class="flex items-center justify-end gap-2 pt-2">
+        <button type="button" id="btn-noticia-acao" class="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs">${n.acaoTexto || 'Fechar'}</button>
+      </div>
+    </div>
+  `;
+  modal.addEventListener('click', (e) => { if (e.target === modal) modal.remove(); });
+  document.body.appendChild(modal);
+  modal.querySelector('#btn-noticia-acao')?.addEventListener('click', () => {
+    modal.remove();
+    if (n.acaoQuiz) {
+      document.getElementById('lotolab-quiz-noticias')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else if (n.acaoAba === 'bolao' && typeof window.irParaCarteiraSubAba === 'function') {
+      window.activateTab?.('gerar');
+    } else if (n.acaoAba && typeof window.activateTab === 'function') {
+      window.activateTab('gerar');
+    }
+  });
+  renderizarAvisosQuizENoticias();
+}
+window.abrirModalNoticiaLotoLab = abrirModalNoticiaLotoLab;
+
+function renderizarAvisosQuizENoticias() {
+  const homeView = document.getElementById('view-home');
+  if (!homeView) return;
+  const estado = lerEstadoQuiz();
+  const qHoje = QUIZ_PERGUNTAS[perguntaDoDiaIndex()];
+  const quizPendente = typeof estado.respondidas[qHoje.id] !== 'number';
+  let lidas = [];
+  try { lidas = JSON.parse(localStorage.getItem('lotolab_noticias_lidas') || '[]'); } catch {}
+  const naoLidas = LOTOLAB_NOTICIAS.filter((n) => !lidas.includes(n.id)).length;
+
+  let barra = document.getElementById('lotolab-avisos-topo');
+  if (!quizPendente && naoLidas === 0) {
+    barra?.remove();
+    return;
+  }
+  if (!barra) {
+    barra = document.createElement('div');
+    barra.id = 'lotolab-avisos-topo';
+    barra.className = 'mb-3 flex flex-wrap gap-2';
+    homeView.insertBefore(barra, homeView.firstChild);
+  }
+  barra.innerHTML = `
+    ${quizPendente ? `
+      <button type="button" onclick="document.getElementById('lotolab-quiz-noticias')?.scrollIntoView({behavior:'smooth',block:'center'});" class="flex-1 min-w-[200px] px-3 py-2 rounded-2xl bg-emerald-950/70 hover:bg-emerald-900/70 border border-emerald-500/40 text-left flex items-center justify-between gap-2 transition">
+        <span class="text-xs font-bold text-emerald-200">🔔 Novo Quiz disponível (+10 Tokens)</span>
+        <span class="text-[11px] font-black text-emerald-400 shrink-0">Responder →</span>
+      </button>
+    ` : ''}
+    ${naoLidas > 0 ? `
+      <button type="button" onclick="abrirModalNoticiaLotoLab('${LOTOLAB_NOTICIAS.find((n) => !lidas.includes(n.id))?.id || 'n1'}');" class="flex-1 min-w-[180px] px-3 py-2 rounded-2xl bg-cyan-950/70 hover:bg-cyan-900/70 border border-cyan-500/40 text-left flex items-center justify-between gap-2 transition">
+        <span class="text-xs font-bold text-cyan-200">📰 ${naoLidas} ${naoLidas === 1 ? 'notícia nova' : 'notícias novas'} no Radar</span>
+        <span class="text-[11px] font-black text-cyan-400 shrink-0">Ler →</span>
+      </button>
+    ` : ''}
+  `;
+
+  // Dispara notificação local se o usuário ativou os avisos no menu
+  const diaHoje = new Date().toISOString().slice(0, 10);
+  if (localStorage.getItem('lotolab_aviso_20h30') === '1'
+      && localStorage.getItem('lotolab_notif_quiz_dia') !== diaHoje
+      && typeof Notification !== 'undefined' && Notification.permission === 'granted'
+      && quizPendente) {
+    localStorage.setItem('lotolab_notif_quiz_dia', diaHoje);
+    try {
+      new Notification('🧪 Novo Quiz LotoLab disponível!', {
+        body: `${qHoje.pergunta} (+10 Tokens)`,
+        icon: './icon-192.png?v=3'
+      });
+    } catch (_) {}
+  }
+}
+
 function renderizarCardQuizENoticias() {
   const homeView = document.getElementById('view-home');
   if (!homeView) return;
+  renderizarAvisosQuizENoticias();
 
   let container = document.getElementById('lotolab-quiz-noticias');
   if (!container) {
@@ -208,11 +316,14 @@ function renderizarCardQuizENoticias() {
       </div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5">
         ${LOTOLAB_NOTICIAS.map((n) => `
-          <article class="rounded-2xl border border-slate-800 bg-slate-950/70 p-3 space-y-1.5">
-            <span class="inline-block text-[10px] font-black tracking-wider px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/25">${n.tag}</span>
+          <button type="button" onclick="abrirModalNoticiaLotoLab('${n.id}')" class="text-left rounded-2xl border border-slate-800 hover:border-cyan-500/50 bg-slate-950/70 hover:bg-slate-900 p-3 space-y-1.5 transition cursor-pointer">
+            <div class="flex items-center justify-between gap-2">
+              <span class="inline-block text-[10px] font-black tracking-wider px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/25">${n.tag}</span>
+              <span class="text-[10px] font-bold text-cyan-400">Ler →</span>
+            </div>
             <h4 class="text-xs font-bold text-white leading-snug">${n.titulo}</h4>
             <p class="text-[11px] text-slate-400 leading-relaxed">${n.resumo}</p>
-          </article>
+          </button>
         `).join('')}
       </div>
     </div>
