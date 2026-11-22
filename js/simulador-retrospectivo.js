@@ -5,10 +5,15 @@
   'use strict';
 
   function obterBaseConcursos(modalidade) {
-    if (modalidade === 'lotofacil') {
-      return Array.isArray(window.baseConcursosLoto) ? window.baseConcursosLoto : [];
-    }
-    return Array.isArray(window.baseConcursosMega) ? window.baseConcursosMega : [];
+    const mapa = {
+      megasena: window.baseConcursosMega,
+      lotofacil: window.baseConcursosLoto,
+      quina: window.baseConcursosQuina,
+      lotomania: window.baseConcursosLotomania,
+      diadesorte: window.baseConcursosDiaDeSorte
+    };
+    const arr = mapa[modalidade] || window.baseConcursosMega;
+    return Array.isArray(arr) ? arr : [];
   }
 
   function avaliarJogoContraConcurso(dezenasJogo, concurso, modalidade) {
@@ -22,11 +27,29 @@
     let estimativaPremio = 0;
 
     if (modalidade === 'lotofacil') {
-      if (qtdAcertos === 11) { premiado = true; faixa = '11 Pontos'; estimativaPremio = 6.00; }
-      else if (qtdAcertos === 12) { premiado = true; faixa = '12 Pontos'; estimativaPremio = 12.00; }
-      else if (qtdAcertos === 13) { premiado = true; faixa = '13 Pontos'; estimativaPremio = 30.00; }
+      if (qtdAcertos === 11) { premiado = true; faixa = '11 Pontos'; estimativaPremio = 7.00; }
+      else if (qtdAcertos === 12) { premiado = true; faixa = '12 Pontos'; estimativaPremio = 14.00; }
+      else if (qtdAcertos === 13) { premiado = true; faixa = '13 Pontos'; estimativaPremio = 35.00; }
       else if (qtdAcertos === 14) { premiado = true; faixa = '14 Pontos'; estimativaPremio = concurso.premio14 || 1800.00; }
       else if (qtdAcertos === 15) { premiado = true; faixa = '15 Pontos (MÁXIMO)'; estimativaPremio = concurso.premio15 || 1700000.00; }
+    } else if (modalidade === 'quina') {
+      if (qtdAcertos === 2) { premiado = true; faixa = 'Duque'; estimativaPremio = 4.00; }
+      else if (qtdAcertos === 3) { premiado = true; faixa = 'Terno'; estimativaPremio = 120.00; }
+      else if (qtdAcertos === 4) { premiado = true; faixa = 'Quadra'; estimativaPremio = 8500.00; }
+      else if (qtdAcertos === 5) { premiado = true; faixa = 'Quina (MÁXIMO)'; estimativaPremio = 3500000.00; }
+    } else if (modalidade === 'lotomania') {
+      if (qtdAcertos === 0) { premiado = true; faixa = '0 Acertos (Espelho)'; estimativaPremio = 120000.00; }
+      else if (qtdAcertos === 15) { premiado = true; faixa = '15 Acertos'; estimativaPremio = 10.00; }
+      else if (qtdAcertos === 16) { premiado = true; faixa = '16 Acertos'; estimativaPremio = 40.00; }
+      else if (qtdAcertos === 17) { premiado = true; faixa = '17 Acertos'; estimativaPremio = 250.00; }
+      else if (qtdAcertos === 18) { premiado = true; faixa = '18 Acertos'; estimativaPremio = 2000.00; }
+      else if (qtdAcertos === 19) { premiado = true; faixa = '19 Acertos'; estimativaPremio = 35000.00; }
+      else if (qtdAcertos === 20) { premiado = true; faixa = '20 Acertos (MÁXIMO)'; estimativaPremio = 2500000.00; }
+    } else if (modalidade === 'diadesorte') {
+      if (qtdAcertos === 4) { premiado = true; faixa = '4 Acertos'; estimativaPremio = 5.00; }
+      else if (qtdAcertos === 5) { premiado = true; faixa = '5 Acertos'; estimativaPremio = 25.00; }
+      else if (qtdAcertos === 6) { premiado = true; faixa = '6 Acertos'; estimativaPremio = 2200.00; }
+      else if (qtdAcertos === 7) { premiado = true; faixa = '7 Acertos (MÁXIMO)'; estimativaPremio = 800000.00; }
     } else {
       // Mega-Sena
       if (qtdAcertos === 4) { premiado = true; faixa = 'Quadra'; estimativaPremio = concurso.premioQuadra || 1100.00; }
@@ -54,7 +77,8 @@
       return { erro: 'Sem histórico de concursos carregado. Sincronize com a Caixa primeiro.' };
     }
 
-    const precoUnitario = modalidade === 'lotofacil' ? 3.00 : 5.00;
+    const precos = { megasena: 6.00, lotofacil: 3.50, quina: 2.50, lotomania: 3.00, diadesorte: 2.50 };
+    const precoUnitario = precos[modalidade] || 6.00;
     let totalInvestido = 0;
     let totalPremios = 0;
     let totalBilhetesPremiados = 0;

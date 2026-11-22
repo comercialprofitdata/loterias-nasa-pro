@@ -4,14 +4,23 @@
 (function () {
   'use strict';
 
+  const CONFIG_VOLANTE_PRINT = {
+    megasena: { nome: 'MEGA-SENA', colunas: 10, numeros: Array.from({ length: 60 }, (_, i) => i + 1) },
+    lotofacil: { nome: 'LOTOFÁCIL', colunas: 5, numeros: Array.from({ length: 25 }, (_, i) => i + 1) },
+    quina: { nome: 'QUINA', colunas: 10, numeros: Array.from({ length: 80 }, (_, i) => i + 1) },
+    lotomania: { nome: 'LOTOMANIA', colunas: 10, numeros: [...Array.from({ length: 99 }, (_, i) => i + 1), 0] },
+    diadesorte: { nome: 'DIA DE SORTE', colunas: 7, numeros: Array.from({ length: 31 }, (_, i) => i + 1) }
+  };
+
   function formatarGridVolante(dezenas, modalidade) {
     const marcadas = (dezenas || []).map(Number);
-    const total = modalidade === 'lotofacil' ? 25 : 60;
-    const colunas = modalidade === 'lotofacil' ? 5 : 10;
+    const cfg = CONFIG_VOLANTE_PRINT[modalidade] || CONFIG_VOLANTE_PRINT.megasena;
+    const altura = cfg.numeros.length >= 80 ? '20px' : '24px';
+    const fonte = cfg.numeros.length >= 80 ? '10px' : '11px';
 
-    let html = `<div style="display: grid; grid-template-columns: repeat(${colunas}, 1fr); gap: 3px; max-width: 320px; margin: 4px auto;">`;
+    let html = `<div style="display: grid; grid-template-columns: repeat(${cfg.colunas}, 1fr); gap: 3px; max-width: 340px; margin: 4px auto;">`;
 
-    for (let i = 1; i <= total; i++) {
+    for (const i of cfg.numeros) {
       const isMarcado = marcadas.includes(i);
       const bg = isMarcado ? '#000000' : '#ffffff';
       const color = isMarcado ? '#ffffff' : '#333333';
@@ -19,7 +28,7 @@
       const weight = isMarcado ? '900' : '500';
 
       html += `
-        <div style="height: 24px; border: ${border}; background-color: ${bg}; color: ${color}; font-weight: ${weight}; font-size: 11px; display: flex; align-items: center; justify-content: center; border-radius: 3px; font-family: monospace;">
+        <div style="height: ${altura}; border: ${border}; background-color: ${bg}; color: ${color}; font-weight: ${weight}; font-size: ${fonte}; display: flex; align-items: center; justify-content: center; border-radius: 3px; font-family: monospace;">
           ${String(i).padStart(2, '0')}
         </div>
       `;
@@ -37,7 +46,7 @@
         jogos = window.jogosFechamentoGerados;
       } else if (Array.isArray(window.loteApostasGeradas) && window.loteApostasGeradas.length > 0) {
         jogos = window.loteApostasGeradas.map(a => a.dezenas);
-      } else if (typeof window.getJogoAtual === 'function' && window.getJogoAtual().length >= 6) {
+      } else if (typeof window.getJogoAtual === 'function' && window.getJogoAtual().length >= 5) {
         jogos = [window.getJogoAtual()];
       }
     }
@@ -51,9 +60,10 @@
       return;
     }
 
+    const cfgMod = CONFIG_VOLANTE_PRINT[modalidade] || CONFIG_VOLANTE_PRINT.megasena;
     const nomeMod = contexto.planejamento
       ? String(contexto.titulo || 'Palpite planejado').toUpperCase()
-      : (modalidade === 'lotofacil' ? 'LOTOFÁCIL' : 'MEGA-SENA');
+      : cfgMod.nome;
     const dataHoje = new Date().toLocaleDateString('pt-BR');
     const horaHoje = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
 

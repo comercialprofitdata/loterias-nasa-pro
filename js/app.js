@@ -1753,38 +1753,140 @@ function gerarPalpiteInteligente() {
           score += 7;
         }
       } else if (modalidade === 'quina') {
-        const metade1 = jogo.filter((x) => x <= 40).length;
-        const metade2 = n - metade1;
-        t1_status = t2_status = t3_status = t4_status = t5_status = t6_status = 'Informativo';
-        t1_val = `${n} dezenas (1–80)`;
-        t2_val = `${metade1} (01–40) / ${metade2} (41–80)`;
-        t3_val = `${new Set(jogo.map((x) => Math.floor((x - 1) / 10) + 1)).size} linhas`;
-        t4_val = `${pares}P / ${impares}I (${jogo.filter((x) => QUINA_CONFIG.primos.includes(x)).length} Primos)`;
-        t5_val = `Soma: ${soma}`;
-        t6_val = `Amplitude: ${Math.max(...jogo) - Math.min(...jogo)}`;
-        score += 25;
+        const lMap = {}, cMap = {};
+        jogo.forEach((num) => {
+          const l = Math.floor((num - 1) / 10);
+          const c = (num - 1) % 10;
+          lMap[l] = (lMap[l] || 0) + 1;
+          cMap[c] = (cMap[c] || 0) + 1;
+          qCount[l <= 3 ? (c <= 4 ? 'Q1' : 'Q2') : (c <= 4 ? 'Q3' : 'Q4')]++;
+        });
+        let seq = 1;
+        for (let i = 1; i < jogo.length; i++) {
+          if (jogo[i] === jogo[i - 1] + 1) { seq++; if (seq > maxSeq) maxSeq = seq; } else seq = 1;
+        }
+        jogo.forEach((x) => { const f = x % 10; finaisCount[f] = (finaisCount[f] || 0) + 1; });
+        maxRepFinal = Math.max(...Object.values(finaisCount));
+        t1_val = `Max Seq: ${maxSeq} | Finais: ${Object.keys(finaisCount).length}`;
+        if (maxSeq >= 3 || maxRepFinal >= 3) { t1_status = 'Alerta'; score -= 18; } else { score += 12; }
+
+        let H_lin = 0, H_col = 0;
+        Object.values(lMap).forEach((q) => { const p = q / n; H_lin -= p * Math.log2(p); });
+        Object.values(cMap).forEach((q) => { const p = q / n; H_col -= p * Math.log2(p); });
+        const hMax = Math.log2(Math.min(n, 8));
+        const H_total = (H_lin + H_col) / 2;
+        const pctDisp = Math.min(99, Math.round((H_total / Math.max(hMax, 1)) * 100));
+        t2_val = `${H_total.toFixed(2)} bits (${pctDisp}% disp)`;
+        if (Object.keys(lMap).length <= 2 || H_total < 1.35) { t2_status = 'Alerta'; score -= 14; } else { score += 10; }
+
+        const espLin = n / 8;
+        let chi2 = 0;
+        for (let l = 0; l < 8; l++) { const obs = lMap[l] || 0; chi2 += Math.pow(obs - espLin, 2) / espLin; }
+        t3_val = `χ² = ${chi2.toFixed(2)} (${Object.keys(lMap).length} linhas)`;
+        if (chi2 > 14.07) { t3_status = 'Alerta'; score -= 10; } else { score += 9; }
+
+        const qtdPrimos = jogo.filter((x) => QUINA_CONFIG.primos.includes(x)).length;
+        t4_val = `${pares}P / ${impares}I (${qtdPrimos} Primo${qtdPrimos !== 1 ? 's' : ''})`;
+        if (pares === 0 || pares === n) { t4_status = 'Alerta'; score -= 12; } else { score += 8; }
+
+        const desvio = Math.sqrt(n * ((80 * 80 - 1) / 12) * ((80 - n) / 79));
+        zscore = (soma - n * 40.5) / desvio;
+        t5_val = `Soma: ${soma} (Z: ${zscore.toFixed(2)}σ)`;
+        if (Math.abs(zscore) > 1.7) { t5_status = 'Alerta'; score -= 9; } else { score += 8; }
+
+        const qVals = [qCount.Q1, qCount.Q2, qCount.Q3, qCount.Q4];
+        t6_val = `Quadrantes [Q1:${qVals[0]} Q2:${qVals[1]} Q3:${qVals[2]} Q4:${qVals[3]}]`;
+        if (qVals.some((q) => q >= Math.max(4, Math.ceil(n * 0.7)))) { t6_status = 'Alerta'; score -= 8; } else { score += 7; }
       } else if (modalidade === 'lotomania') {
-        const metade1 = jogo.filter((x) => x >= 1 && x <= 50).length;
-        const metade2 = n - metade1;
-        t1_status = t2_status = t3_status = t4_status = t5_status = t6_status = 'Informativo';
-        t1_val = `${n} dezenas (00–99)`;
-        t2_val = `${metade1} (01–50) / ${metade2} (51–00)`;
-        t3_val = `${new Set(jogo.map((x) => Math.floor(((x === 0 ? 100 : x) - 1) / 10) + 1)).size} linhas`;
-        t4_val = `${pares}P / ${impares}I (${jogo.filter((x) => LOTOMANIA_CONFIG.primos.includes(x)).length} Primos)`;
-        t5_val = `Soma: ${soma}`;
-        t6_val = `Cobertura: ${Math.round((n / 100) * 100)}% do volante`;
-        score += 25;
+        const lMap = {}, cMap = {};
+        jogo.forEach((num) => {
+          const pos = num === 0 ? 99 : num - 1;
+          const l = Math.floor(pos / 10);
+          const c = pos % 10;
+          lMap[l] = (lMap[l] || 0) + 1;
+          cMap[c] = (cMap[c] || 0) + 1;
+          qCount[l <= 4 ? (c <= 4 ? 'Q1' : 'Q2') : (c <= 4 ? 'Q3' : 'Q4')]++;
+        });
+        let seq = 1;
+        for (let i = 1; i < jogo.length; i++) {
+          if (jogo[i] === jogo[i - 1] + 1) { seq++; if (seq > maxSeq) maxSeq = seq; } else seq = 1;
+        }
+        jogo.forEach((x) => { const f = x % 10; finaisCount[f] = (finaisCount[f] || 0) + 1; });
+        maxRepFinal = Math.max(...Object.values(finaisCount));
+        t1_val = `Max Seq: ${maxSeq} | Pico final: ${maxRepFinal}`;
+        if (maxSeq >= 8 || maxRepFinal >= 9) { t1_status = 'Alerta'; score -= 16; } else { score += 12; }
+
+        let H_lin = 0, H_col = 0;
+        Object.values(lMap).forEach((q) => { const p = q / n; H_lin -= p * Math.log2(p); });
+        Object.values(cMap).forEach((q) => { const p = q / n; H_col -= p * Math.log2(p); });
+        const H_total = (H_lin + H_col) / 2;
+        const pctDisp = Math.min(99, Math.round((H_total / 3.322) * 100));
+        t2_val = `${H_total.toFixed(2)} bits (${pctDisp}% disp)`;
+        if (H_total < 3.0) { t2_status = 'Alerta'; score -= 14; } else { score += 10; }
+
+        const espLin = n / 10;
+        let chi2 = 0;
+        for (let l = 0; l < 10; l++) { const obs = lMap[l] || 0; chi2 += Math.pow(obs - espLin, 2) / espLin; }
+        t3_val = `χ² = ${chi2.toFixed(2)} (${chi2 <= 16.92 ? 'p > 0.05' : 'p ≤ 0.05'})`;
+        if (chi2 > 16.92) { t3_status = 'Alerta'; score -= 10; } else { score += 9; }
+
+        const qtdPrimos = jogo.filter((x) => LOTOMANIA_CONFIG.primos.includes(x)).length;
+        t4_val = `${pares}P / ${impares}I (${qtdPrimos} Primos)`;
+        if (pares < 19 || pares > 31) { t4_status = 'Alerta'; score -= 12; } else { score += 8; }
+
+        const desvio = Math.sqrt(n * ((100 * 100 - 1) / 12) * ((100 - n) / 99));
+        zscore = (soma - n * 49.5) / desvio;
+        t5_val = `Soma: ${soma} (Z: ${zscore.toFixed(2)}σ)`;
+        if (Math.abs(zscore) > 1.8) { t5_status = 'Alerta'; score -= 9; } else { score += 8; }
+
+        const qVals = [qCount.Q1, qCount.Q2, qCount.Q3, qCount.Q4];
+        t6_val = `Quadrantes [Q1:${qVals[0]} Q2:${qVals[1]} Q3:${qVals[2]} Q4:${qVals[3]}]`;
+        if (qVals.some((q) => q < 7 || q > 18)) { t6_status = 'Alerta'; score -= 8; } else { score += 7; }
       } else if (modalidade === 'diadesorte') {
+        const lMap = {}, cMap = {};
+        jogo.forEach((num) => {
+          const l = Math.floor((num - 1) / 7);
+          const c = (num - 1) % 7;
+          lMap[l] = (lMap[l] || 0) + 1;
+          cMap[c] = (cMap[c] || 0) + 1;
+          qCount[l <= 1 ? (c <= 3 ? 'Q1' : 'Q2') : (c <= 3 ? 'Q3' : 'Q4')]++;
+        });
+        let seq = 1;
+        for (let i = 1; i < jogo.length; i++) {
+          if (jogo[i] === jogo[i - 1] + 1) { seq++; if (seq > maxSeq) maxSeq = seq; } else seq = 1;
+        }
+        jogo.forEach((x) => { const f = x % 10; finaisCount[f] = (finaisCount[f] || 0) + 1; });
+        maxRepFinal = Math.max(...Object.values(finaisCount));
+        t1_val = `Max Seq: ${maxSeq} | Finais: ${Object.keys(finaisCount).length}`;
+        if (maxSeq >= 4 || maxRepFinal >= 3) { t1_status = 'Alerta'; score -= 16; } else { score += 12; }
+
+        let H_lin = 0, H_col = 0;
+        Object.values(lMap).forEach((q) => { const p = q / n; H_lin -= p * Math.log2(p); });
+        Object.values(cMap).forEach((q) => { const p = q / n; H_col -= p * Math.log2(p); });
+        const H_total = (H_lin + H_col) / 2;
+        const pctDisp = Math.min(99, Math.round((H_total / 2.322) * 100));
+        t2_val = `${H_total.toFixed(2)} bits (${pctDisp}% disp)`;
+        if (Object.keys(lMap).length <= 2 || H_total < 1.55) { t2_status = 'Alerta'; score -= 14; } else { score += 10; }
+
+        const espSem = n / 5;
+        let chi2 = 0;
+        for (let l = 0; l < 5; l++) { const obs = lMap[l] || 0; chi2 += Math.pow(obs - espSem, 2) / espSem; }
+        t3_val = `χ² = ${chi2.toFixed(2)} (${Object.keys(lMap).length} semanas)`;
+        if (chi2 > 9.49) { t3_status = 'Alerta'; score -= 10; } else { score += 9; }
+
+        const qtdPrimos = jogo.filter((x) => DIADESORTE_CONFIG.primos.includes(x)).length;
+        t4_val = `${pares}P / ${impares}I (${qtdPrimos} Primo${qtdPrimos !== 1 ? 's' : ''})`;
+        if (pares <= 1 || pares >= n - 1) { t4_status = 'Alerta'; score -= 12; } else { score += 8; }
+
+        const desvio = Math.sqrt(n * ((31 * 31 - 1) / 12) * ((31 - n) / 30));
+        zscore = (soma - n * 16) / desvio;
+        t5_val = `Soma: ${soma} (Z: ${zscore.toFixed(2)}σ)`;
+        if (Math.abs(zscore) > 1.7) { t5_status = 'Alerta'; score -= 9; } else { score += 8; }
+
         const q1 = jogo.filter((x) => x <= 15).length;
         const q2 = n - q1;
-        t1_status = t2_status = t3_status = t4_status = t5_status = t6_status = 'Informativo';
-        t1_val = `${n} dias (01–31)`;
-        t2_val = `${q1} (01–15) / ${q2} (16–31)`;
-        t3_val = `${new Set(jogo.map((x) => Math.floor((x - 1) / 7) + 1)).size} semanas`;
-        t4_val = `${pares}P / ${impares}I (${jogo.filter((x) => DIADESORTE_CONFIG.primos.includes(x)).length} Primos)`;
-        t5_val = `Soma: ${soma}`;
-        t6_val = `Amplitude: ${Math.max(...jogo) - Math.min(...jogo)}`;
-        score += 25;
+        t6_val = `Quinzenas: ${q1} (01–15) / ${q2} (16–31)`;
+        if (q1 <= 1 || q2 <= 1) { t6_status = 'Alerta'; score -= 8; } else { score += 7; }
       } else {
         const molduraCount = jogo.filter(x => LOTO_CONFIG.moldura.includes(x)).length;
         const mioloCount = n - molduraCount;

@@ -40,7 +40,7 @@ function abrirModalAnalisarNumeros() {
         <textarea id="input-analisar-numeros" rows="3" placeholder="Ex: 04 12 23 31 45 58"
                   class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 font-mono text-sm"></textarea>
         <p id="analisar-numeros-contagem" class="text-[11px] text-slate-400 mt-1">
-          Digite 6 dezenas (Mega) ou 15 (Lotofácil).
+          5 (Quina), 6 (Mega), 7 (Dia de Sorte), 15 (Lotofácil) ou 50 (Lotomania).
         </p>
       </div>
 
@@ -59,12 +59,12 @@ function abrirModalAnalisarNumeros() {
   textarea.addEventListener('input', () => {
     const dezenas = extrairDezenasDoTexto(textarea.value);
     if (dezenas.length === 0) {
-      contagem.innerText = 'Digite 6 dezenas (Mega) ou 15 (Lotofácil).';
+      contagem.innerText = '5 (Quina), 6 (Mega), 7 (Dia de Sorte), 15 (Lotofácil) ou 50 (Lotomania).';
       contagem.className = 'text-[11px] text-slate-400 mt-1';
     } else {
-      const valido = dezenas.length === 6 || dezenas.length === 15;
-      contagem.innerText = `${dezenas.length} dezena${dezenas.length > 1 ? 's' : ''} reconhecida${dezenas.length > 1 ? 's' : ''}${valido ? ' ✓' : ' — precisa ser 6 ou 15'}`;
-      contagem.className = valido
+      const detectada = detectarModalidadePelosNumeros(dezenas);
+      contagem.innerText = `${dezenas.length} dezena${dezenas.length > 1 ? 's' : ''} reconhecida${dezenas.length > 1 ? 's' : ''}${detectada ? ` ✓ (${detectada.nome})` : ' — use 5, 6, 7, 15 ou 50 dezenas'}`;
+      contagem.className = detectada
         ? 'text-[11px] text-emerald-400 mt-1 font-bold'
         : 'text-[11px] text-amber-400 mt-1';
     }
@@ -81,26 +81,40 @@ function fecharModalAnalisarNumeros() {
   document.getElementById('modal-analisar-numeros')?.remove();
 }
 
-/** Mesma regra de importarBilheteTexto(): números 1-60, únicos, em ordem. */
+/** Extrai números 0-99, únicos e ordenados, suportando todas as 5 loterias. */
 function extrairDezenasDoTexto(texto) {
   const nums = String(texto || '').match(/\d+/g);
   if (!nums) return [];
   return Array.from(new Set(nums.map(Number)))
-    .filter((n) => n >= 1 && n <= 60)
+    .filter((n) => n >= 0 && n <= 99)
     .sort((a, b) => a - b);
+}
+
+function detectarModalidadePelosNumeros(dezenas) {
+  if (!dezenas || !dezenas.length) return null;
+  const max = Math.max(...dezenas);
+  const min = Math.min(...dezenas);
+  const len = dezenas.length;
+  if (len === 50 && min >= 0 && max <= 99) return { id: 'lotomania', nome: 'Lotomania' };
+  if (len === 15 && min >= 1 && max <= 25) return { id: 'lotofacil', nome: 'Lotofácil' };
+  if (len === 7 && min >= 1 && max <= 31) return { id: 'diadesorte', nome: 'Dia de Sorte' };
+  if (len === 6 && min >= 1 && max <= 60) return { id: 'megasena', nome: 'Mega-Sena' };
+  if (len === 5 && min >= 1 && max <= 80) return { id: 'quina', nome: 'Quina' };
+  return null;
 }
 
 function confirmarAnaliseDeNumeros() {
   const textarea = document.getElementById('input-analisar-numeros');
   const dezenas = extrairDezenasDoTexto(textarea?.value);
+  const detectada = detectarModalidadePelosNumeros(dezenas);
 
-  if (dezenas.length !== 6 && dezenas.length !== 15) {
-    toast('Digite exatamente 6 dezenas (Mega-Sena) ou 15 (Lotofácil).', '⚠️');
+  if (!detectada) {
+    toast('Digite 5 (Quina), 6 (Mega), 7 (Dia de Sorte), 15 (Lotofácil) ou 50 dezenas (Lotomania).', '⚠️');
     tocarBeep('alert');
     return;
   }
 
-  const modalidade = dezenas.length === 15 ? 'lotofacil' : 'megasena';
+  const modalidade = detectada.id;
   if (typeof modalidadeAtual !== 'undefined' && modalidadeAtual !== modalidade && typeof trocarModalidade === 'function') {
     trocarModalidade(modalidade);
   }

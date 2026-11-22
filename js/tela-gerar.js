@@ -65,6 +65,68 @@ function abrirNotaIndicador(numero) {
 }
 window.abrirNotaIndicador = abrirNotaIndicador;
 
+// ===================================================================
+// MÊS DA SORTE (DIA DE SORTE) — Seletor automático na tela Gerar
+// ===================================================================
+const MESES_DA_SORTE = [
+  'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+  'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+];
+window.mesDaSorteAtual = MESES_DA_SORTE[new Date().getMonth()];
+
+function atualizarSeletorMesDaSorte() {
+  const mod = typeof modalidadeAtual !== 'undefined' ? modalidadeAtual : 'megasena';
+  const ancora = document.getElementById('select-qtd-dezenas')?.closest('div') || document.getElementById('display-meu-jogo');
+  if (!ancora) return;
+  let box = document.getElementById('lotolab-mes-da-sorte-box');
+  if (mod !== 'diadesorte') {
+    if (box) box.style.display = 'none';
+    return;
+  }
+  if (!box) {
+    box = document.createElement('div');
+    box.id = 'lotolab-mes-da-sorte-box';
+    box.className = 'mt-3 p-3 rounded-2xl border border-amber-500/35 bg-amber-950/20 flex items-center justify-between gap-2 flex-wrap';
+    box.innerHTML = `
+      <label for="select-mes-sorte" class="text-xs font-extrabold text-amber-300">🗓️ Mês da Sorte</label>
+      <div class="flex items-center gap-2">
+        <select id="select-mes-sorte" class="rounded-xl bg-slate-950 border border-amber-500/40 text-xs font-bold text-white px-2.5 py-1.5">
+          ${MESES_DA_SORTE.map((m) => `<option value="${m}" ${m === window.mesDaSorteAtual ? 'selected' : ''}>${m}</option>`).join('')}
+        </select>
+        <button type="button" id="btn-sortear-mes-sorte" class="px-2.5 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-[11px]">🎲 Sortear</button>
+      </div>
+    `;
+    ancora.after(box);
+    box.querySelector('#select-mes-sorte')?.addEventListener('change', (e) => {
+      window.mesDaSorteAtual = e.target.value;
+    });
+    box.querySelector('#btn-sortear-mes-sorte')?.addEventListener('click', () => {
+      const idx = Math.floor(Math.random() * MESES_DA_SORTE.length);
+      window.mesDaSorteAtual = MESES_DA_SORTE[idx];
+      const sel = document.getElementById('select-mes-sorte');
+      if (sel) sel.value = window.mesDaSorteAtual;
+    });
+  }
+  box.style.display = 'flex';
+}
+window.atualizarSeletorMesDaSorte = atualizarSeletorMesDaSorte;
+
+if (typeof document !== 'undefined') {
+  document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+      atualizarSeletorMesDaSorte();
+      const origTrocar = window.trocarModalidade;
+      if (typeof origTrocar === 'function') {
+        window.trocarModalidade = function (...args) {
+          const r = origTrocar.apply(this, args);
+          setTimeout(atualizarSeletorMesDaSorte, 30);
+          return r;
+        };
+      }
+    }, 350);
+  });
+}
+
 document.addEventListener('keydown', (evento) => {
   if (evento.key === 'Escape') {
     const folhas = document.querySelectorAll('.folha-fundo');

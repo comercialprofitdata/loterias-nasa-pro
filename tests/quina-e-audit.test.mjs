@@ -159,3 +159,36 @@ test('js/gastos.js calcula custo e chances para todas as 5 loterias sem erro', (
     assert.ok(ch.every((c) => Number.isFinite(c.umEm) && c.umEm > 0), `umEm inválido em ${m}`);
   }
 });
+
+test('carteira, impressão, ciência MIT e push real suportam todas as 5 loterias', () => {
+  const carteiraSrc = fs.readFileSync('js/carteira-gestao.js', 'utf8');
+  const janela = { carteiraJogos: [] };
+  new Function('window', 'document', 'localStorage', carteiraSrc)(janela, { getElementById: () => null, addEventListener() {} }, { getItem: () => '[]', setItem() {} });
+  assert.equal(janela.obterMetaModalidade('quina').nome, 'Quina');
+  assert.equal(janela.obterMetaModalidade('lotomania').nome, 'Lotomania');
+  assert.equal(janela.obterMetaModalidade('diadesorte').nome, 'Dia de Sorte');
+
+  const compact = janela.compactarCarteiraBase64([
+    { id: 1, modalidade: 'quina', dezenas: [4, 17, 32, 55, 73], concursoAlvo: '#6600' },
+    { id: 2, modalidade: 'lotomania', dezenas: Array.from({ length: 50 }, (_, i) => i), concursoAlvo: '#2700' },
+    { id: 3, modalidade: 'diadesorte', dezenas: [2, 7, 11, 16, 21, 27, 30], mesDaSorte: 'Novembro', concursoAlvo: '#1000' }
+  ]);
+  const restored = janela.descompactarCarteiraBase64(compact);
+  assert.deepEqual(restored.map((b) => b.modalidade), ['quina', 'lotomania', 'diadesorte']);
+  assert.equal(restored[2].mesDaSorte, 'Novembro');
+
+  const printSrc = fs.readFileSync('js/volante-impressao.js', 'utf8');
+  assert.match(printSrc, /QUINA/);
+  assert.match(printSrc, /LOTOMANIA/);
+  assert.match(printSrc, /DIA DE SORTE/);
+
+  const appSrc = fs.readFileSync('js/app.js', 'utf8');
+  assert.match(appSrc, /desvio = Math\.sqrt\(n \* \(\(80 \* 80 - 1\) \/ 12\)/);
+  assert.match(appSrc, /desvio = Math\.sqrt\(n \* \(\(100 \* 100 - 1\) \/ 12\)/);
+  assert.match(appSrc, /desvio = Math\.sqrt\(n \* \(\(31 \* 31 - 1\) \/ 12\)/);
+
+  assert.ok(fs.existsSync('js/push-real.js'));
+  assert.ok(fs.existsSync('supabase/schema-push-notifications.sql'));
+  assert.ok(fs.existsSync('supabase/functions/enviar-push/index.ts'));
+  assert.ok(fs.existsSync('.github/workflows/push-diario.yml'));
+});

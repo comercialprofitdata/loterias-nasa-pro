@@ -5,8 +5,51 @@
 (function () {
   'use strict';
 
+  const META_MODALIDADE = {
+    megasena: {
+      nome: 'Mega-Sena', sigla: 'm', icone: '🍀', custoPadrao: 6.0,
+      topo: 'from-emerald-500 via-teal-400 to-cyan-500',
+      iconeCls: 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400',
+      badgeCls: 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30',
+      base: () => window.baseConcursosMega || []
+    },
+    lotofacil: {
+      nome: 'Lotofácil', sigla: 'l', icone: '🟣', custoPadrao: 3.5,
+      topo: 'from-purple-500 via-fuchsia-400 to-pink-500',
+      iconeCls: 'bg-purple-500/10 border-purple-500/30 text-purple-400',
+      badgeCls: 'bg-purple-500/20 text-purple-400 border border-purple-500/30',
+      base: () => window.baseConcursosLoto || []
+    },
+    quina: {
+      nome: 'Quina', sigla: 'q', icone: '🔵', custoPadrao: 2.5,
+      topo: 'from-sky-500 via-blue-400 to-indigo-500',
+      iconeCls: 'bg-sky-500/10 border-sky-500/30 text-sky-400',
+      badgeCls: 'bg-sky-500/20 text-sky-400 border border-sky-500/30',
+      base: () => window.baseConcursosQuina || []
+    },
+    lotomania: {
+      nome: 'Lotomania', sigla: 'lm', icone: '🟠', custoPadrao: 3.0,
+      topo: 'from-orange-500 via-amber-400 to-red-500',
+      iconeCls: 'bg-orange-500/10 border-orange-500/30 text-orange-400',
+      badgeCls: 'bg-orange-500/20 text-orange-400 border border-orange-500/30',
+      base: () => window.baseConcursosLotomania || []
+    },
+    diadesorte: {
+      nome: 'Dia de Sorte', sigla: 'ds', icone: '🟡', custoPadrao: 2.5,
+      topo: 'from-amber-400 via-yellow-400 to-orange-400',
+      iconeCls: 'bg-amber-500/10 border-amber-500/30 text-amber-400',
+      badgeCls: 'bg-amber-500/20 text-amber-400 border border-amber-500/30',
+      base: () => window.baseConcursosDiaDeSorte || []
+    }
+  };
+  const SIGLA_PARA_MOD = { m: 'megasena', l: 'lotofacil', q: 'quina', lm: 'lotomania', ds: 'diadesorte' };
+  function obterMetaModalidade(mod) {
+    return META_MODALIDADE[mod] || META_MODALIDADE.megasena;
+  }
+  window.obterMetaModalidade = obterMetaModalidade;
+
   window.carteiraFiltros = {
-    modalidade: 'todas', // 'todas', 'megasena', 'lotofacil'
+    modalidade: 'todas', // 'todas', 'megasena', 'lotofacil', 'quina', 'lotomania', 'diadesorte'
     status: 'todos',     // 'todos', 'pendente', 'premiado'
     modo: 'agrupado',    // 'agrupado' (por concurso) ou 'lista' (plano)
     tempo: 'todos',      // 'todos', 'proximo', 'historico'
@@ -19,7 +62,9 @@
     if (mod === 'megasena' && String(concurso || '').trim().toLowerCase() === 'mega da virada 2026') {
       return false;
     }
-    const base = mod === 'megasena' ? (window.baseConcursosMega || []) : (window.baseConcursosLoto || []);
+    const base = typeof obterMetaModalidade === 'function'
+      ? obterMetaModalidade(mod).base()
+      : (mod === 'megasena' ? (window.baseConcursosMega || []) : (window.baseConcursosLoto || []));
     const numConc = concurso ? Number(String(concurso).replace(/\D/g, '')) : null;
     
     // 1. Se concurso existe na base ou é menor/igual ao último apurado conhecido
@@ -200,7 +245,7 @@
       // Se o concurso existe na base oficial (ex: #3077 é 28/10/2026),
       // a data de qualquer aposta desse concurso DEVE ser a data oficial dele!
       const numConc = Number(String(conc).replace(/\D/g, ''));
-      const base = mod === 'megasena' ? (window.baseConcursosMega || []) : (window.baseConcursosLoto || []);
+      const base = obterMetaModalidade(mod).base();
       const enc = !ehPlanoMegaVirada && numConc > 0 ? base.find(c => Number(c.concurso) === numConc) : null;
       if (enc && enc.data) {
         if (data !== enc.data || b.data !== enc.data) {
@@ -291,7 +336,7 @@
     if (!grupo || !grupo.bilhetes.length) return;
 
     const planejamento = grupo.concurso === 'Mega da Virada 2026';
-    const modNome = planejamento ? grupo.concurso : (grupo.modalidade === 'lotofacil' ? 'Lotofácil' : 'Mega-Sena');
+    const modNome = planejamento ? grupo.concurso : obterMetaModalidade(grupo.modalidade).nome;
     let msg = planejamento
       ? `*LotoLab — Palpites planejados*\n`
       : `*LotoLab — Lote de Apostas*\n`;
@@ -394,7 +439,7 @@
       return;
     }
 
-    const base = grupo.modalidade === 'megasena' ? (window.baseConcursosMega || []) : (window.baseConcursosLoto || []);
+    const base = obterMetaModalidade(grupo.modalidade).base();
     let concursoDestino = concursoAlvoDesejado;
 
     if (!concursoDestino) {
@@ -451,7 +496,7 @@
     let totalGasto = 0;
     let totalGanho = 0;
     listaOriginal.forEach(b => {
-      const custoPadrao = b.modalidade === 'lotofacil' ? 3.5 : 6.0;
+      const custoPadrao = obterMetaModalidade(b.modalidade).custoPadrao;
       totalGasto += typeof window.custoDoBilhete === 'function' ? window.custoDoBilhete(b) : Number(b.custo || custoPadrao);
       totalGanho += Number(b.premioGanho || 0);
     });
@@ -568,7 +613,7 @@
 
       container.innerHTML = grupos.map((g) => {
         const aberto = window.carteiraFiltros.gruposAbertos[g.id] !== false;
-        const isMega = g.modalidade === 'megasena';
+        const meta = obterMetaModalidade(g.modalidade);
         const todosConferidos = g.bilhetes.every(b => b.conferido);
         const algumConferido = g.bilhetes.some(b => b.conferido);
         const ehPlanoMegaVirada = g.concurso === 'Mega da Virada 2026';
@@ -586,7 +631,7 @@
         } else if (ehPassado) {
           statusBadge = `<button type="button" onclick="event.stopPropagation(); conferirTodosBilhetesSalvos()" class="px-2.5 py-1 rounded-full bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/50 text-[10px] font-black transition flex items-center gap-1 shadow">⚡ Concurso Apurado • Conferir</button>`;
         } else {
-          const modBase = g.modalidade === 'megasena' ? (window.baseConcursosMega || []) : (window.baseConcursosLoto || []);
+          const modBase = meta.base();
           const ultimoNum = modBase.length > 0 ? `#${modBase[0].concurso}` : '#3077';
           statusBadge = `
             <div class="flex items-center gap-1.5 flex-wrap">
@@ -598,18 +643,18 @@
         return `
           <div class="card-concurso-grupo rounded-2xl border overflow-hidden shadow-sm transition">
             <!-- Barra Colorida de Topo (Identidade da Modalidade) -->
-            <div class="h-1 bg-gradient-to-r ${isMega ? 'from-emerald-500 via-teal-400 to-cyan-500' : 'from-purple-500 via-fuchsia-400 to-pink-500'}"></div>
+            <div class="h-1 bg-gradient-to-r ${meta.topo}"></div>
 
             <!-- Cabeçalho do Concurso (Estilo Bilhete Oficial Coeso) -->
             <div class="header-concurso-grupo p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 border-b border-dashed cursor-pointer select-none" onclick="alternarGrupoCarteira('${g.id}')">
               <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-xl ${isMega ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400' : 'bg-purple-500/10 border-purple-500/30 text-purple-400'} border flex items-center justify-center text-base flex-shrink-0">
-                  ${isMega ? '🍀' : '🟣'}
+                <div class="w-9 h-9 rounded-xl ${meta.iconeCls} border flex items-center justify-center text-base flex-shrink-0">
+                  ${meta.icone}
                 </div>
                 <div>
                   <div class="flex items-center gap-2 flex-wrap">
                     <h4 class="text-xs sm:text-sm font-black font-mono whitespace-nowrap">
-                      ${ehPlanoMegaVirada ? g.concurso : `${isMega ? 'Mega-Sena' : 'Lotofácil'} ${g.concurso.startsWith('#') ? g.concurso : `#${g.concurso}`}`}
+                      ${ehPlanoMegaVirada ? g.concurso : `${meta.nome} ${g.concurso.startsWith('#') ? g.concurso : `#${g.concurso}`}`}
                     </h4>
                     <span class="data-pill-concurso text-[10px] font-mono px-2 py-0.5 rounded border whitespace-nowrap">📅 ${g.data}</span>
                   </div>
@@ -718,7 +763,7 @@
 
     // MODO 2: LISTA PLANA INDIVIDUAL
     container.innerHTML = filtrados.map((b, idx) => {
-      const isMega = (b.modalidade || 'megasena') === 'megasena';
+      const meta = obterMetaModalidade(b.modalidade || 'megasena');
       const dezenasSorteadas = (b.dezenasSorteadas || []).map(Number);
       const foiConferido = Boolean(b.conferido || b.acertos !== undefined);
       const acertos = b.acertos !== undefined ? b.acertos : (dezenasSorteadas.length > 0 ? (b.dezenas || []).filter(d => dezenasSorteadas.includes(Number(d))).length : null);
@@ -726,7 +771,8 @@
         <div class="card-bilhete-individual p-3 rounded-2xl border shadow-sm flex items-center justify-between gap-2 text-xs font-mono">
           <div class="space-y-1.5 min-w-0">
             <div class="flex items-center gap-1.5 flex-wrap">
-              <span class="px-1.5 py-0.5 rounded text-[9px] font-black ${isMega ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-purple-500/20 text-purple-400 border border-purple-500/30'}">${(b.modalidade || 'megasena').toUpperCase()}</span>
+              <span class="px-1.5 py-0.5 rounded text-[9px] font-black ${meta.badgeCls}">${meta.icone} ${meta.nome.toUpperCase()}</span>
+              ${b.mesDaSorte ? `<span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-amber-500/15 text-amber-300 border border-amber-500/30">📅 ${b.mesDaSorte}</span>` : ''}
               ${b.concursoAlvo ? `<span class="linha-acertos-rotulo text-[10px] font-bold">${b.concursoAlvo}</span>` : ''}
               <span class="linha-sem-acerto text-[10px]">📅 ${b.data || 'Oficial'}</span>
               ${b.concursoAlvo === 'Mega da Virada 2026' ? '<span class="text-amber-200 text-[9px] font-bold">Palpite, não aposta oficial</span>' : b.premioGanho > 0 ? `<span class="status-badge-premiado text-[10px] px-1.5 py-0.5 rounded font-black">🏆 +${fmtBRL(b.premioGanho)}</span>` : foiConferido ? `<span class="linha-sem-acerto text-[10px]">${/a confirmar/.test(b.status || '') ? b.status : `${acertos || 0} acertos`}</span>` : '<span class="linha-sem-acerto text-[9px]">Pendente</span>'}
@@ -763,12 +809,13 @@
       const arr = Array.isArray(lista) ? lista : (window.carteiraJogos || []);
       const compactos = arr.map(b => ({
         id: b.id || Date.now(),
-        m: (b.modalidade === 'lotofacil' ? 'l' : 'm'),
+        m: obterMetaModalidade(b.modalidade).sigla,
         d: (b.dezenas || []).map(Number),
         c: b.concursoAlvo || '',
         dt: b.data || '',
         s: Number(b.score || 98),
-        j: b.registradoComoJogado ? 1 : 0
+        j: b.registradoComoJogado ? 1 : 0,
+        ...(b.mesDaSorte ? { ms: b.mesDaSorte } : {})
       }));
       const json = JSON.stringify(compactos);
       const b64 = btoa(encodeURIComponent(json).replace(/%([0-9A-F]{2})/g, function(match, p1) {
@@ -796,17 +843,22 @@
       const arr = JSON.parse(json);
       if (!Array.isArray(arr)) return [];
       const sanear = typeof window.sanearBilhete === 'function' ? window.sanearBilhete : (b) => b;
-      return arr.slice(0, 200).map(c => sanear({
-        id: c.id || (Date.now() + Math.floor(Math.random() * 1000)),
-        modalidade: c.m === 'l' ? 'lotofacil' : 'megasena',
-        nome: (c.m === 'l' ? 'Lotofácil' : 'Mega-Sena') + ' • ' + ((c.d && c.d.length) || 6) + ' Dezenas',
-        dezenas: Array.isArray(c.d) ? c.d.map(Number) : [],
-        concursoAlvo: c.c || 'Próximo Oficial',
-        data: c.dt || new Date().toLocaleDateString('pt-BR'),
-        score: Number(c.s || 98),
-        registradoComoJogado: Boolean(c.j),
-        dataRegistro: new Date().toISOString()
-      })).filter(Boolean);
+      return arr.slice(0, 200).map(c => {
+        const modRec = SIGLA_PARA_MOD[c.m] || 'megasena';
+        const nomeRec = obterMetaModalidade(modRec).nome;
+        return sanear({
+          id: c.id || (Date.now() + Math.floor(Math.random() * 1000)),
+          modalidade: modRec,
+          nome: nomeRec + ' • ' + ((c.d && c.d.length) || 6) + ' Dezenas',
+          dezenas: Array.isArray(c.d) ? c.d.map(Number) : [],
+          concursoAlvo: c.c || 'Próximo Oficial',
+          data: c.dt || new Date().toLocaleDateString('pt-BR'),
+          score: Number(c.s || 98),
+          registradoComoJogado: Boolean(c.j),
+          ...(c.ms ? { mesDaSorte: c.ms } : {}),
+          dataRegistro: new Date().toISOString()
+        });
+      }).filter(Boolean);
     } catch (e) {
       console.error('[Sync] Erro ao descompactar carteira:', e);
       return [];

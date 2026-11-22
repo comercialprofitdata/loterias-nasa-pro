@@ -82,9 +82,15 @@ function obterInfoProximoSorteio(modalidade) {
 
   // 2. Sem sincronização: o último concurso conhecido aponta o seguinte.
   if (!proximoNumero) {
-    const base = mod === 'megasena'
-      ? (typeof baseConcursosMega !== 'undefined' ? baseConcursosMega : [])
-      : (typeof baseConcursosLoto !== 'undefined' ? baseConcursosLoto : []);
+    const w = typeof window !== 'undefined' ? window : {};
+    const mapaBases = {
+      megasena: typeof baseConcursosMega !== 'undefined' ? baseConcursosMega : (w.baseConcursosMega || []),
+      lotofacil: typeof baseConcursosLoto !== 'undefined' ? baseConcursosLoto : (w.baseConcursosLoto || []),
+      quina: typeof baseConcursosQuina !== 'undefined' ? baseConcursosQuina : (w.baseConcursosQuina || []),
+      lotomania: typeof baseConcursosLotomania !== 'undefined' ? baseConcursosLotomania : (w.baseConcursosLotomania || []),
+      diadesorte: typeof baseConcursosDiaDeSorte !== 'undefined' ? baseConcursosDiaDeSorte : (w.baseConcursosDiaDeSorte || [])
+    };
+    const base = mapaBases[mod] || mapaBases.megasena;
     const ultimo = base?.[0];
     const partesUltimo = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(String(ultimo?.data || '').trim());
     const diasDesdeUltimo = partesUltimo
@@ -178,8 +184,10 @@ function marcarComoJogadoProximoConcurso() {
   if (typeof window.exigirLeadAntesDeSalvar === 'function' && !window.exigirLeadAntesDeSalvar()) {
     return;
   }
+  const NOMES_MOD = { megasena: 'Mega-Sena', lotofacil: 'Lotofácil', quina: 'Quina', lotomania: 'Lotomania', diadesorte: 'Dia de Sorte' };
   const mod = typeof modalidadeAtual !== 'undefined' ? modalidadeAtual : 'megasena';
-  const nomeMod = mod === 'megasena' ? 'Mega-Sena' : 'Lotofácil';
+  const nomeMod = NOMES_MOD[mod] || 'Mega-Sena';
+  const mesDaSorte = mod === 'diadesorte' ? (window.mesDaSorteAtual || document.getElementById('select-mes-sorte')?.value || '') : '';
   const score = document.getElementById('score-numero')?.innerText || '98';
   const infoSorteio = obterInfoProximoSorteio(mod);
 
@@ -236,8 +244,9 @@ function marcarComoJogadoProximoConcurso() {
   const novoBilhete = {
     id: Date.now(),
     modalidade: mod,
-    nome: `${nomeMod} • ${jogo.length} Dezenas`,
+    nome: `${nomeMod} • ${jogo.length} Dezenas${mesDaSorte ? ' · ' + mesDaSorte : ''}`,
     dezenas: [...jogo],
+    ...(mesDaSorte ? { mesDaSorte } : {}),
     data: infoSorteio.data,
     concursoAlvo: infoSorteio.concurso,
     score: score,
@@ -260,8 +269,10 @@ function salvarJogoAtivoNaCarteira() {
   if (typeof window.exigirLeadAntesDeSalvar === 'function' && !window.exigirLeadAntesDeSalvar()) {
     return;
   }
+  const NOMES_MOD = { megasena: 'Mega-Sena', lotofacil: 'Lotofácil', quina: 'Quina', lotomania: 'Lotomania', diadesorte: 'Dia de Sorte' };
   const mod = typeof modalidadeAtual !== 'undefined' ? modalidadeAtual : 'megasena';
-  const nomeMod = mod === 'megasena' ? 'Mega-Sena' : 'Lotofácil';
+  const nomeMod = NOMES_MOD[mod] || 'Mega-Sena';
+  const mesDaSorte = mod === 'diadesorte' ? (window.mesDaSorteAtual || document.getElementById('select-mes-sorte')?.value || '') : '';
   const score = document.getElementById('score-numero')?.innerText || '98';
   const destinoJogo = obterDestinoJogo(mod);
   const infoSorteio = destinoJogo;
@@ -320,8 +331,9 @@ function salvarJogoAtivoNaCarteira() {
     modalidade: mod,
     nome: destinoJogo.tipo === 'mega_virada_2026'
       ? `Mega da Virada 2026 • ${jogo.length} dezenas`
-      : `${nomeMod} • ${jogo.length} Dezenas`,
+      : `${nomeMod} • ${jogo.length} Dezenas${mesDaSorte ? ' · ' + mesDaSorte : ''}`,
     dezenas: [...jogo],
+    ...(mesDaSorte ? { mesDaSorte } : {}),
     data: infoSorteio.data,
     score: score,
     concursoAlvo: infoSorteio.concurso,
@@ -341,8 +353,10 @@ function salvarJogoAtivoNaCarteira() {
 }
 
 function compartilharJogoGeradoWhatsapp() {
+  const NOMES_MOD = { megasena: 'Mega-Sena', lotofacil: 'Lotofácil', quina: 'Quina', lotomania: 'Lotomania', diadesorte: 'Dia de Sorte' };
   const mod = typeof modalidadeAtual !== 'undefined' ? modalidadeAtual : 'megasena';
-  const nomeMod = mod === 'megasena' ? 'Mega-Sena' : 'Lotofácil';
+  const nomeMod = NOMES_MOD[mod] || 'Mega-Sena';
+  const mesDaSorte = mod === 'diadesorte' ? (window.mesDaSorteAtual || document.getElementById('select-mes-sorte')?.value || '') : '';
   const score = document.getElementById('score-numero')?.innerText || '98';
   const infoSorteio = obterDestinoJogo(mod);
   const nomeDestino = infoSorteio.tipo === 'mega_virada_2026' ? 'Mega da Virada 2026' : nomeMod;

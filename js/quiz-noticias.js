@@ -279,41 +279,39 @@ function obterContainerHomeLotoLab() {
   return document.querySelector('#view-inicio-new .nasa-home-grid') || document.getElementById('view-inicio-new');
 }
 
+function obterMancheteDinamicaCaixa() {
+  try {
+    const salvos = typeof window.obterSorteiosSalvos === 'function' ? window.obterSorteiosSalvos() : null;
+    const mega = salvos?.megasena;
+    if (mega && mega.premioTexto) {
+      return {
+        id: 'caixa_dinamica',
+        tag: mega.acumulado ? 'ACUMULOU' : 'PRÓXIMO SORTEIO',
+        titulo: `Mega-Sena #${mega.concurso || ''} em ${mega.premioTexto}${mega.dataBR ? ` · sorteio ${mega.dataBR}` : ''}`.trim(),
+        resumo: 'Valor oficial sincronizado da CAIXA. Gere seu jogo calibrado ou monte um bolão com amigos.'
+      };
+    }
+    const premioDom = document.querySelector('.js-mega-premio, #home-mega-prize')?.textContent?.trim();
+    const concDom = document.querySelector('.js-mega-concurso, #home-mega-concurso')?.textContent?.trim();
+    if (premioDom && /R\$/.test(premioDom)) {
+      return {
+        id: 'caixa_dinamica',
+        tag: 'PRÓXIMO SORTEIO',
+        titulo: `Mega-Sena ${concDom || ''} em ${premioDom}`.replace(/\s+/g, ' ').trim(),
+        resumo: 'Acompanhe os prêmios ao vivo da CAIXA e ative os alertas para não perder o fechamento.'
+      };
+    }
+  } catch {}
+  return LOTOLAB_NOTICIAS[0];
+}
+
 function renderizarAvisosQuizENoticias() {
-  const homeView = obterContainerHomeLotoLab();
-  if (!homeView) return;
+  // Foco 100% em JOGAR no topo da Home: remove qualquer barra que empurre o Hero para baixo
+  document.getElementById('lotolab-avisos-topo')?.remove();
+
   const estado = lerEstadoQuiz();
   const qHoje = QUIZ_PERGUNTAS[perguntaDoDiaIndex()];
   const quizPendente = typeof estado.respondidas[qHoje.id] !== 'number';
-  let lidas = [];
-  try { lidas = JSON.parse(localStorage.getItem('lotolab_noticias_lidas') || '[]'); } catch {}
-  const naoLidas = LOTOLAB_NOTICIAS.filter((n) => !lidas.includes(n.id)).length;
-
-  let barra = document.getElementById('lotolab-avisos-topo');
-  if (!quizPendente && naoLidas === 0) {
-    barra?.remove();
-    return;
-  }
-  if (!barra) {
-    barra = document.createElement('div');
-    barra.id = 'lotolab-avisos-topo';
-    barra.className = 'mb-3 flex flex-wrap gap-2';
-    homeView.insertBefore(barra, homeView.firstChild);
-  }
-  barra.innerHTML = `
-    ${quizPendente ? `
-      <button type="button" onclick="document.getElementById('lotolab-quiz-noticias')?.scrollIntoView({behavior:'smooth',block:'center'});" class="flex-1 min-w-[200px] px-3 py-2 rounded-2xl bg-emerald-950/70 hover:bg-emerald-900/70 border border-emerald-500/40 text-left flex items-center justify-between gap-2 transition">
-        <span class="text-xs font-bold text-emerald-200">🔔 Novo Quiz disponível (+10 Tokens)</span>
-        <span class="text-[11px] font-black text-emerald-400 shrink-0">Responder →</span>
-      </button>
-    ` : ''}
-    ${naoLidas > 0 ? `
-      <button type="button" onclick="abrirModalNoticiaLotoLab('${LOTOLAB_NOTICIAS.find((n) => !lidas.includes(n.id))?.id || 'n1'}');" class="flex-1 min-w-[180px] px-3 py-2 rounded-2xl bg-cyan-950/70 hover:bg-cyan-900/70 border border-cyan-500/40 text-left flex items-center justify-between gap-2 transition">
-        <span class="text-xs font-bold text-cyan-200">📰 ${naoLidas} ${naoLidas === 1 ? 'notícia nova' : 'notícias novas'} no Radar</span>
-        <span class="text-[11px] font-black text-cyan-400 shrink-0">Ler →</span>
-      </button>
-    ` : ''}
-  `;
 
   // Dispara notificação local se o usuário ativou os avisos no menu
   const diaHoje = new Date().toISOString().slice(0, 10);
@@ -340,10 +338,11 @@ function renderizarCardQuizENoticias() {
   if (!container) {
     container = document.createElement('section');
     container.id = 'lotolab-quiz-noticias';
-    container.className = 'space-y-3';
+    container.className = 'space-y-2.5';
+    // Fica ABAIXO dos sorteios (#home-secao-auditoria-caixa) para não concorrer com JOGAR no topo
     const secaoSorteios = document.getElementById('home-secao-auditoria-caixa');
     if (secaoSorteios && secaoSorteios.parentElement === homeView) {
-      homeView.insertBefore(container, secaoSorteios);
+      secaoSorteios.after(container);
     } else {
       homeView.appendChild(container);
     }
@@ -355,33 +354,53 @@ function renderizarCardQuizENoticias() {
   const respUsuario = estado.respondidas[q.id];
   const jaRespondeu = typeof respUsuario === 'number';
   const acertou = jaRespondeu && respUsuario === q.correta;
+  const manchete = obterMancheteDinamicaCaixa();
 
   container.innerHTML = `
-    <div class="rounded-3xl border border-emerald-500/30 bg-slate-900/80 p-4 sm:p-5 space-y-3 shadow-lg">
-      <div class="flex flex-wrap items-center justify-between gap-2">
-        <div class="flex items-center gap-2">
-          <span class="px-2.5 py-1 rounded-full text-[11px] font-black tracking-wider uppercase bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
-            🧪 Quiz LotoLab · ${q.categoria}
-          </span>
+    <details id="lotolab-radar-expansivel" class="rounded-2xl border border-slate-800 bg-slate-900/70 overflow-hidden">
+      <summary class="px-3.5 py-2.5 flex items-center justify-between gap-2 cursor-pointer select-none list-none">
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="shrink-0 text-[10px] font-black tracking-wider px-2 py-0.5 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">${manchete.tag}</span>
+          <span class="text-xs font-bold text-white truncate">${manchete.titulo}</span>
         </div>
-        <div class="flex items-center gap-2 flex-wrap">
-          <span class="px-3 py-1 rounded-full text-xs font-black bg-amber-500/15 text-amber-300 border border-amber-500/30" id="lotolab-tokens-badge">
+        <span class="shrink-0 text-[11px] font-bold text-cyan-400">Radar (${LOTOLAB_NOTICIAS.length}) ▾</span>
+      </summary>
+      <div class="px-3.5 pb-3.5 pt-1 border-t border-slate-800/80 grid grid-cols-1 md:grid-cols-2 gap-2">
+        ${LOTOLAB_NOTICIAS.map((n) => `
+          <button type="button" onclick="abrirModalNoticiaLotoLab('${n.id}')" class="text-left rounded-xl border border-slate-800 hover:border-cyan-500/50 bg-slate-950/70 hover:bg-slate-900 p-2.5 space-y-1 transition cursor-pointer">
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-[9px] font-black tracking-wider px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/25">${n.tag}</span>
+              <span class="text-[10px] font-bold text-cyan-400">Ler →</span>
+            </div>
+            <h4 class="text-xs font-bold text-white leading-snug">${n.titulo}</h4>
+          </button>
+        `).join('')}
+      </div>
+    </details>
+
+    <div class="rounded-2xl border border-emerald-500/30 bg-slate-900/75 p-3.5 space-y-2.5 shadow">
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <span class="text-[11px] font-black tracking-wider uppercase text-emerald-400">
+          🧪 Quiz do Dia · ${q.categoria}
+        </span>
+        <div class="flex items-center gap-1.5 flex-wrap">
+          <span class="px-2.5 py-0.5 rounded-full text-[11px] font-black bg-amber-500/15 text-amber-300 border border-amber-500/30" id="lotolab-tokens-badge">
             🪙 ${estado.tokens} Tokens
           </span>
           ${estado.tokens >= 20 ? `
-            <button type="button" id="btn-quiz-resgatar" class="px-2.5 py-1 rounded-xl text-xs font-black bg-amber-400 hover:bg-amber-300 text-slate-950">
-              🎁 Trocar 20 Tokens (+1 geração)
+            <button type="button" id="btn-quiz-resgatar" class="px-2 py-0.5 rounded-lg text-[11px] font-black bg-amber-400 hover:bg-amber-300 text-slate-950">
+              🎁 Trocar 20 (+1 jogo)
             </button>
           ` : ''}
-          <button type="button" id="btn-quiz-proxima" class="px-2.5 py-1 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700">
+          <button type="button" id="btn-quiz-proxima" class="px-2 py-0.5 rounded-lg text-[11px] font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700">
             Próxima →
           </button>
         </div>
       </div>
 
-      <h3 class="text-sm sm:text-base font-extrabold text-white leading-snug">${q.pergunta}</h3>
+      <h3 class="text-xs sm:text-sm font-extrabold text-white leading-snug">${q.pergunta}</h3>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
         ${q.opcoes.map((op, i) => {
           let cls = 'bg-slate-950/80 hover:bg-slate-800 border-slate-700 text-slate-200';
           if (jaRespondeu) {
@@ -389,41 +408,20 @@ function renderizarCardQuizENoticias() {
             else if (i === respUsuario) cls = 'bg-rose-500/20 border-rose-400 text-rose-300';
             else cls = 'bg-slate-950/40 border-slate-800 text-slate-500';
           }
-          return `<button type="button" data-quiz-opcao="${i}" ${jaRespondeu ? 'disabled' : ''} class="text-left px-3.5 py-2.5 rounded-xl border text-xs sm:text-sm font-semibold transition ${cls}">${op}</button>`;
+          return `<button type="button" data-quiz-opcao="${i}" ${jaRespondeu ? 'disabled' : ''} class="text-left px-3 py-2 rounded-xl border text-xs font-semibold transition ${cls}">${op}</button>`;
         }).join('')}
       </div>
 
       ${jaRespondeu ? `
-        <div class="rounded-2xl p-3 text-xs leading-relaxed ${acertou ? 'bg-emerald-950/60 border border-emerald-500/30 text-emerald-200' : 'bg-slate-950/70 border border-slate-700 text-slate-300'}">
-          <strong>${acertou ? '✅ Resposta certa (+10 Tokens)!' : 'ℹ️ Quase lá!'}</strong> ${q.explicacao}
+        <div class="rounded-xl p-2.5 text-[11px] leading-relaxed ${acertou ? 'bg-emerald-950/60 border border-emerald-500/30 text-emerald-200' : 'bg-slate-950/70 border border-slate-700 text-slate-300'}">
+          <strong>${acertou ? '✅ +10 Tokens!' : 'ℹ️ Quase lá!'}</strong> ${q.explicacao}
         </div>
       ` : `
-        <div class="flex flex-wrap items-center justify-between gap-2 pt-1 text-[11px] text-slate-400">
-          <span>Acerte e ganhe <strong>+10 Tokens</strong> no LotoLab.</span>
-          <a href="https://www.instagram.com/lotolab.app/" target="_blank" rel="noopener" class="text-emerald-400 hover:underline font-bold">
-            💡 Ver dica no @lotolab.app →
-          </a>
+        <div class="flex items-center justify-between gap-2 text-[11px] text-slate-400">
+          <span>Acerte e ganhe <strong>+10 Tokens</strong> (20 = +1 geração).</span>
+          <a href="https://www.instagram.com/lotolab.app/" target="_blank" rel="noopener" class="text-emerald-400 hover:underline font-bold shrink-0">@lotolab.app →</a>
         </div>
       `}
-    </div>
-
-    <div class="rounded-3xl border border-slate-800 bg-slate-900/60 p-4 sm:p-5 space-y-3">
-      <div class="flex items-center justify-between">
-        <span class="text-xs font-black tracking-wider uppercase text-cyan-400">📰 Radar & Curiosidades LotoLab</span>
-        <a href="https://www.instagram.com/lotolab.app/" target="_blank" rel="noopener" class="text-[11px] font-bold text-emerald-400 hover:underline">@lotolab.app</a>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
-        ${LOTOLAB_NOTICIAS.map((n) => `
-          <button type="button" onclick="abrirModalNoticiaLotoLab('${n.id}')" class="text-left rounded-2xl border border-slate-800 hover:border-cyan-500/50 bg-slate-950/70 hover:bg-slate-900 p-3 space-y-1.5 transition cursor-pointer">
-            <div class="flex items-center justify-between gap-2">
-              <span class="inline-block text-[10px] font-black tracking-wider px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/25">${n.tag}</span>
-              <span class="text-[10px] font-bold text-cyan-400">Ler →</span>
-            </div>
-            <h4 class="text-xs font-bold text-white leading-snug">${n.titulo}</h4>
-            <p class="text-[11px] text-slate-400 leading-relaxed">${n.resumo}</p>
-          </button>
-        `).join('')}
-      </div>
     </div>
   `;
 

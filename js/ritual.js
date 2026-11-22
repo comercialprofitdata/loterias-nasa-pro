@@ -58,9 +58,10 @@ function renderizarNaProxima() {
     return;
   }
 
+  const NOMES_MOD_RITUAL = { megasena: 'Mega-Sena', lotofacil: 'Lotofácil', quina: 'Quina', lotomania: 'Lotomania', diadesorte: 'Dia de Sorte' };
   const primeiro = aguardando[0];
   const mesmoConcurso = aguardando.filter((b) => b.concursoAlvo === primeiro.concursoAlvo && b.modalidade === primeiro.modalidade).length;
-  const jogo = primeiro.modalidade === 'lotofacil' ? 'Lotofácil' : 'Mega-Sena';
+  const jogo = NOMES_MOD_RITUAL[primeiro.modalidade] || 'Mega-Sena';
   const txtAguardando = `${mesmoConcurso} ${mesmoConcurso === 1 ? 'jogo' : 'jogos'}`;
 
   cartao.className = 'p-3 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-900 to-cyan-950/40 border border-cyan-500/30 shadow-lg font-sans';
@@ -97,9 +98,10 @@ function revelarProximoResultado() {
   tela.className = 'folha-fundo ritual-tela';
   tela.setAttribute('role', 'dialog');
   tela.setAttribute('aria-modal', 'true');
+  const nomesMod = { megasena: 'Mega-Sena', lotofacil: 'Lotofácil', quina: 'Quina', lotomania: 'Lotomania', diadesorte: 'Dia de Sorte' };
   tela.innerHTML = `
     <div class="ritual-conteudo">
-      <p class="gastos-rotulo">${bilhete.modalidade === 'lotofacil' ? 'Lotofácil' : 'Mega-Sena'} • concurso ${texto(bilhete.concursoConferido || String(bilhete.concursoAlvo || '').replace(/\D/g, ''))}</p>
+      <p class="gastos-rotulo">${nomesMod[bilhete.modalidade] || 'Mega-Sena'} • concurso ${texto(bilhete.concursoConferido || String(bilhete.concursoAlvo || '').replace(/\D/g, ''))}</p>
       <h2>Dezenas sorteadas</h2>
       <div class="ritual-bolas" id="ritual-sorteadas"></div>
       <h3>Seu jogo</h3>

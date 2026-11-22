@@ -1,0 +1,53 @@
+name: Push Diário LotoLab (Quiz, Acumulado e Resultados)
+
+on:
+  schedule:
+    # 09:00 BRT (12:00 UTC) — Quiz diário todos os dias
+    - cron: '0 12 * * *'
+    # 18:00 BRT (21:00 UTC) — Alerta de Mega acumulada (Ter, Qui, Sáb)
+    - cron: '0 21 * * 2,4,6'
+    # 21:15 BRT (00:15 UTC dia seguinte) — Resultado oficial (Ter, Qui, Sáb)
+    - cron: '15 0 * * 3,5,0'
+  workflow_dispatch:
+    inputs:
+      tipo:
+        description: 'Tipo do push (quiz, acumulado, resultado, manual)'
+        required: true
+        default: 'quiz'
+      titulo:
+        description: 'Título (apenas se tipo=manual)'
+        required: false
+      corpo:
+        description: 'Mensagem (apenas se tipo=manual)'
+        required: false
+
+jobs:
+  disparar-push:
+    runs-on: ubuntu-latest
+    env:
+      SUPABASE_PUSH_URL: https://kwiagspkzrnculrvtrmp.supabase.co/functions/v1/enviar-push
+      PUSH_ADMIN_SECRET: ${{ secrets.PUSH_ADMIN_SECRET }}
+    steps:
+      - name: Determinar tipo de disparo
+        id: modo
+        run: |
+          if [ -n "${{ github.event.inputs.tipo }}" ]; then
+            echo "tipo=${{ github.event.inputs.tipo }}" >> "$GITHUB_OUTPUT"
+          elif [ "${{ github.event.schedule }}" = "0 21 * * 2,4,6" ]; then
+            echo "tipo=acumulado" >> "$GITHUB_OUTPUT"
+          elif [ "${{ github.event.schedule }}" = "15 0 * * 3,5,0" ]; then
+            echo "tipo=resultado" >> "$GITHUB_OUTPUT"
+          else
+            echo "tipo=quiz" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Disparar Edge Function enviar-push
+        run: |
+          if [ -z "$PUSH_ADMIN_SECRET" ]; then
+            echo "PUSH_ADMIN_SECRET ainda não configurada nos secrets do repositório — pulando disparo."
+            exit 0
+          fi
+          curl -fsS -X POST "$SUPABASE_PUSH_URL" \
+            -H "Content-Type: application/json" \
+            -H "x-push-secret: $PUSH_ADMIN_SECRET" \
+            -d "{\"tipo\":\"${{ steps.modo.outputs.tipo }}\",\"titulo\":\"${{ github.event.inputs.titulo }}\",\"corpo\":\"${{ github.event.inputs.corpo }}\"}"

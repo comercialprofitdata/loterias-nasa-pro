@@ -3,8 +3,8 @@
 // Estratégia: Cache-First para assets estáticos, Network-First para dados
 // =========================================================================
 
-const CACHE_NAME = 'loterias-nasa-pro-v20261122.05';
-const CACHE_STATIC = 'nasa-static-v20261122.05';
+const CACHE_NAME = 'loterias-nasa-pro-v20261122.06';
+const CACHE_STATIC = 'nasa-static-v20261122.06';
 
 // Assets críticos para funcionamento offline
 const ASSETS_TO_CACHE = [
@@ -35,6 +35,7 @@ const ASSETS_TO_CACHE = [
   './js/carteira-gestao.js',
   './js/checkout-asaas.js',
   './js/play-billing.js',
+  './js/push-real.js',
   './js/conferencia-real.js',
   './js/conta.js',
   './js/contexto-loja.js',
@@ -191,12 +192,16 @@ self.addEventListener('push', (event) => {
 
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
+  const alvo = event.notification?.data?.url || './';
   event.waitUntil(
-    clients.matchAll({ type: 'window' }).then((clientList) => {
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
       for (const client of clientList) {
-        if ('focus' in client) return client.focus();
+        if ('focus' in client) {
+          client.focus();
+          return;
+        }
       }
-      if (clients.openWindow) return clients.openWindow('./');
+      if (clients.openWindow) return clients.openWindow(alvo);
     })
   );
 });

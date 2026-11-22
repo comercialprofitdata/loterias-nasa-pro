@@ -1246,38 +1246,43 @@ function criarBannerConversaoWeb() {
     }
   } catch (_) { }
 
-  const isStandalone = window.matchMedia?.('(display-mode: standalone)').matches || window.navigator.standalone === true;
+  const isStandalone = window.matchMedia?.('(display-mode: standalone)').matches
+    || window.navigator.standalone === true
+    || document.referrer.startsWith('android-app://')
+    || Boolean(window.contextoLoja?.ativo?.());
   const isVisitante = typeof usuarioSessao === 'undefined' || !usuarioSessao || usuarioSessao.tipo === 'visitante';
   const dispensado = localStorage.getItem('lotolab_banner_dispensado') === '1';
 
   const linkDrawerPlay = document.getElementById('drawer-link-playstore');
   if (linkDrawerPlay && isStandalone) linkDrawerPlay.classList.add('hidden');
 
-  if (dispensado || (isStandalone && !isVisitante)) return;
+  if (dispensado || isStandalone) {
+    verificarAlertaSorteio20h30();
+    return;
+  }
 
   const banner = document.createElement('div');
   banner.id = 'lotolab-conversao-banner';
-  banner.className = 'mb-3 p-3 rounded-2xl bg-gradient-to-r from-emerald-950/70 via-slate-900 to-cyan-950/60 border border-emerald-500/30 flex flex-wrap items-center justify-between gap-2.5 shadow-lg';
+  banner.className = 'p-3 rounded-2xl bg-gradient-to-r from-emerald-950/70 via-slate-900 to-cyan-950/60 border border-emerald-500/30 flex flex-wrap items-center justify-between gap-2.5 shadow-lg';
 
-  const texto = !isStandalone && isVisitante
-    ? 'Baixe o app na Google Play ou crie sua conta grátis para salvar seus jogos e tokens do Quiz.'
-    : !isStandalone
-      ? 'Tenha o LotoLab direto no seu celular pela Google Play Store.'
-      : 'Crie sua conta grátis para salvar seus jogos, tokens do Quiz e sincronizar tudo.';
+  const texto = isVisitante
+    ? 'Baixe na Google Play ou crie sua conta grátis para salvar seus jogos.'
+    : 'Tenha o LotoLab direto no seu celular pela Google Play Store.';
 
   banner.innerHTML = `
     <div class="flex-1 min-w-[200px]">
-      <div class="text-xs font-black text-white">🎯 LotoLab no celular e na sua conta</div>
+      <div class="text-xs font-black text-white">📲 LotoLab no celular</div>
       <div class="text-[11px] text-slate-300 leading-snug mt-0.5">${texto}</div>
     </div>
     <div class="flex items-center gap-2 flex-wrap">
-      ${!isStandalone ? '<a href="https://loterias.pd.dev.br/baixar.html" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-[11px] transition">📲 Baixar App</a>' : ''}
+      <a href="https://loterias.pd.dev.br/baixar.html" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-[11px] transition">📲 Baixar App</a>
       ${isVisitante ? '<button type="button" onclick="if (typeof abrirModalAuth === \'function\') abrirModalAuth();" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-emerald-500/40 font-bold text-[11px] transition">👤 Criar Conta</button>' : ''}
       <button type="button" aria-label="Fechar aviso" onclick="localStorage.setItem('lotolab_banner_dispensado','1'); this.closest('#lotolab-conversao-banner')?.remove();" class="w-7 h-7 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white text-xs font-bold flex items-center justify-center">✕</button>
     </div>
   `;
 
-  home.insertBefore(banner, home.firstChild);
+  // Foco 100% em JOGAR no topo: o banner fica discreto abaixo dos sorteios, nunca acima do Hero
+  home.appendChild(banner);
   verificarAlertaSorteio20h30();
 }
 
@@ -1296,6 +1301,25 @@ function atualizarBannerConversaoWeb() {
 
 function alternarLembreteSorteio() {
   const atual = localStorage.getItem('lotolab_aviso_20h30') === '1';
+  if (!atual) {
+    if (window.pushReal && typeof window.pushReal.ativar === 'function') {
+      window.pushReal.ativar().then((res) => {
+        if (res.ok) {
+          if (typeof toast === 'function') toast(res.modo === 'push_real' ? '🔔 Push em segundo plano ativado!' : '🔔 Avisos de sorteio e Quiz ativados!', '✅');
+        } else if (typeof toast === 'function') {
+          toast('Ative as notificações nas configurações do celular para receber alertas.', '⚠️');
+        }
+        atualizarDadosDrawer();
+      });
+      return;
+    }
+  } else if (window.pushReal && typeof window.pushReal.desativar === 'function') {
+    window.pushReal.desativar().then(() => {
+      if (typeof toast === 'function') toast('🔕 Avisos desativados.', 'ℹ️');
+      atualizarDadosDrawer();
+    });
+    return;
+  }
   if (!atual && typeof Notification !== 'undefined' && Notification.permission === 'default') {
     Notification.requestPermission().then((perm) => {
       if (perm === 'granted') {

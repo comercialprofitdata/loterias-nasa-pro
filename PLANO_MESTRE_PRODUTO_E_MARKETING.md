@@ -1,32 +1,30 @@
-# Plano Mestre de Produto, ASO, Retenção e Monetização
+# Plano Mestre LotoLab — Engenharia NASA / MIT / Harvard
 
 **Última atualização:** 22/11/2026  
-**Objetivo:** Levar o aplicativo ao topo da busca na Google Play Store Brasil na categoria Ferramentas/Loterias e gerar receita recorrente previsível.
+**Objetivo:** Levar o **LotoLab: Gerador e Loterias** ao topo da Google Play Store Brasil com retenção recorrente (Push real + Quiz) e monetização sustentável (Google Play Billing + AdMob + Web PIX/Cartão).  
+**Regra de Ouro (Flight Readiness):** nenhuma fase fecha sem passar em teste automatizado (`npm run ci`) + auditoria visual real em Chrome CDP (mobile 390px + desktop 1280px, Dark & Light, `0` erros JS).
 
 ---
 
-## 1. Ordem Obrigatória de Execução (Status Atual)
+## FASE 1 — Integridade Total das 5 Loterias + Home Enxuta ("Zero Defeito") ✅
+- [x] **5 Loterias ponta a ponta:** Mega-Sena e Lotofácil em destaque no topo + **Quina (01–80)**, **Lotomania (00–99, 50 dez, 0 acertos)** e **Dia de Sorte (01–31 + Mês da Sorte)** no menu *Mais ▾ / Outras loterias*.
+- [x] **Ciência Estatística Real (MIT) nas 5 loterias:** Entropia 2D de Shannon, Qui-Quadrado ($\chi^2$), Z-score exato sem reposição, Paridade/Primos e Quadrantes calibrados em `js/app.js`, `js/gastos.js`, `js/simulador-retrospectivo.js` e `js/analisar-numeros.js`.
+- [x] **Carteira, WhatsApp, Ritual e Impressão A4/PDF com identidade própria por loteria:** cor, ícone, rótulo, filtro próprio na Carteira e grade real de impressão (`60 / 25 / 80 / 100 / 31`) em `js/carteira-gestao.js`, `js/whatsapp-share.js`, `js/ritual.js` e `js/volante-impressao.js`.
+- [x] **Home ultra-enxuta focada em JOGAR:** removido excesso de avisos acima do Hero (`GERAR JOGO` no topo imediato); banners de instalação ocultos no app Android; manchete dinâmica da CAIXA (expansível) + Quiz compacto de 1 pergunta movidos para **abaixo dos sorteios**.
+- [x] **Bolão Completo:** regras oficiais CAIXA para as 5 loterias, divisão por cotas e conferência automática de prêmios.
 
-1. **Etapa 1 — Identidade Definitiva & Loja Destravada**
-   - [x] Nome definitivo cravado (**LotoLab: Gerador e Loterias**), sem colisão direta.
-   - [x] `excluir-conta.html`, ficha da loja, ícone escuro adaptativo e `.aab` enviados automaticamente via API Google Play (`v9 / 2.3.0` em Produção e Teste Interno com `In-App Updates`).
+## FASE 2 — Infraestrutura de Receita & Backend (Contas Externas)
+- [x] Código de preços (**R\$ 6,90/mês · R\$ 19,90/ano**) e **Google Play Billing** (`js/play-billing.js` + `supabase/functions/validar-play-billing/index.ts`) prontos e testados.
+- [ ] **Supabase:** salvar token em `android/.supabase-token` → publicar `GOOGLE_PLAY_SERVICE_ACCOUNT_JSON`, `criar-cobranca`, `validar-play-billing` e `enviar-push` + rodar `supabase/schema-push-notifications.sql`.
+- [ ] **Google Play Console:** criar assinaturas `lotolab_pro_mensal` e `lotolab_pro_anual` + licença de testador.
+- [ ] **Google AdMob:** criar App ID + bloco discreto (e vídeo recompensado opcional) apenas para plano grátis.
 
-2. **Etapa 2 — Prova Social & Instagram Ativo**
-   - [x] Perfil `@lotolab.app` criado, página ponte `https://loterias.pd.dev.br/baixar.html` (`market://` + Play Store + Criar Conta) no ar e 13 artes + 5 Stories + 5 capas de Destaques prontos em `marketing/instagram/`.
-   - [ ] Colocar `https://loterias.pd.dev.br/baixar.html` na bio do Instagram, agendar os posts e conquistar as primeiras **15 a 30 avaliações 5★ reais** na Google Play.
+## FASE 3 — Motor de Retenção: Push REAL em Segundo Plano + Android v10
+- [x] **Código de Push Real (custo R\$ 0) pronto:** `supabase/schema-push-notifications.sql`, `supabase/functions/enviar-push/index.ts` (Quiz 09h, Mega Acumulada 18h via CAIXA ao vivo, Resultado 21h15 e Broadcast Admin), `js/push-real.js` e `.github/workflows/push-diario.yml`.
+- [ ] **Ativar chaves VAPID** no Supabase (`VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `PUSH_ADMIN_SECRET`) e no GitHub Actions (`PUSH_ADMIN_SECRET`) + colocar `vapidPublicKey` em `supabase/config.js`.
+- [ ] **Android v10 (`2.4.0`):** ativar `enableNotifications: true` em `android/app/build.gradle` (TWA Notification Delegation), ajustar `In-App Updates` e publicar na Play Store via `npm run play:upload`.
 
-3. **Etapa 3 — Evolução do Produto (Diferenciação Real) ✅**
-   - [x] **Linguagem Calibrada:** substituído *"comum / incomum"* por *"Calibrado / Fora da curva"* e *"Desvio de calibragem"*, mantendo 100% o compliance.
-   - [x] **Bolão Completo:** salva na Carteira, confere automaticamente contra a CAIXA e calcula **prêmio total, prêmio por cota e sua parte**.
-   - [x] **5 Loterias:** Mega-Sena e Lotofácil em destaque no topo + **Quina**, **Lotomania** (com 0 acertos!) e **Dia de Sorte** no menu *Mais ▾ / Outras loterias*.
-
-4. **Etapa 4 — Retenção Diária: Quiz + Instagram + Tokens + Avisos ✅**
-   - [x] **Quiz Diário (20 perguntas)** com ganho e resgate real de **Tokens** (20 Tokens = +1 geração bônus).
-   - [x] **Avisos no topo**, **notícias clicáveis com modal** e **lembretes às 20h30** nos dias de sorteio.
-
-5. **Etapa 5 — Monetização Híbrida & Preço Agressivo**
-   - [x] Preços competitivos (**R\$ 6,90/mês** e **R\$ 19,90/ano**) aplicados na UI e no código da Edge Function `criar-cobranca`.
-   - [x] Cliente **Google Play Billing** (`js/play-billing.js`, Digital Goods API) + Edge Function `validar-play-billing` prontos e testados (`lotolab_pro_mensal` / `lotolab_pro_anual`).
-   - [ ] Publicar `criar-cobranca` e `validar-play-billing` no painel do Supabase (com secret `GOOGLE_PLAY_SERVICE_ACCOUNT_JSON`).
-   - [ ] Criar os SKUs `lotolab_pro_mensal` e `lotolab_pro_anual` no Google Play Console e o App ID no Google AdMob.
-   - [ ] Ligar **Google Ads** apenas após 15+ avaliações e monetização ativa.
+## FASE 4 — Growth Loop & Escala (Harvard)
+- [x] Perfil `@lotolab.app`, página ponte `https://loterias.pd.dev.br/baixar.html` e 13 artes + 5 Stories + 5 capas prontas em `marketing/instagram/`.
+- [ ] Colocar `baixar.html` na bio do `@lotolab.app`, publicar 3x/semana e conquistar **20–30 avaliações 5★ reais** na Google Play.
+- [ ] Ligar **Google Ads (App Campaigns)** somente após Gates 2 e 3 validados, controlando **CAC vs LTV**.

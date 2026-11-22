@@ -2237,6 +2237,41 @@ html:not(.dark) #modal-noticia-lotolab > div {
   background: #ffffff !important;
   border-color: #cbd5e1 !important;
 }
+html:not(.dark) #lotolab-radar-expansivel {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+}
+html:not(.dark) #lotolab-radar-expansivel summary {
+  color: #0f172a !important;
+}
+html:not(.dark) #lotolab-quiz-noticias > div {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04) !important;
+}
+html:not(.dark) #lotolab-quiz-noticias .text-emerald-400 {
+  color: #047857 !important;
+}
+html:not(.dark) #lotolab-tokens-badge {
+  background: #fffbeb !important;
+  color: #b45309 !important;
+  border-color: #fde68a !important;
+}
+html:not(.dark) #lotolab-mes-da-sorte-box {
+  background: #fffbeb !important;
+  border-color: #fcd34d !important;
+}
+html:not(.dark) #lotolab-mes-da-sorte-box label {
+  color: #b45309 !important;
+}
+html:not(.dark) #select-mes-sorte {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #f59e0b !important;
+}
+#lotolab-radar-expansivel summary::-webkit-details-marker {
+  display: none;
+}
 html:not(.dark) #modal-noticia-lotolab button.bg-slate-800 {
   background: #f1f5f9 !important;
   color: #334155 !important;
