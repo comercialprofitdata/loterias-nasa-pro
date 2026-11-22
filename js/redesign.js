@@ -516,6 +516,8 @@ function sincronizarHeaderStatusUsuario() {
     }
   }
 
+  atualizarBannerConversaoWeb();
+
   const desktopAdminBtn = document.getElementById('nasa-desktop-nav-admin');
   const sideAdminBtn = document.getElementById('sidebar-nav-admin');
   const ehMaster = usuarioSessao?.tipo === 'master_founder';
@@ -1269,6 +1271,19 @@ function criarBannerConversaoWeb() {
 
   home.insertBefore(banner, home.firstChild);
   verificarAlertaSorteio20h30();
+}
+
+function atualizarBannerConversaoWeb() {
+  const banner = document.getElementById('lotolab-conversao-banner');
+  if (!banner) return;
+  const isStandalone = window.matchMedia?.('(display-mode: standalone)').matches || window.navigator.standalone === true;
+  const isVisitante = typeof usuarioSessao === 'undefined' || !usuarioSessao || usuarioSessao.tipo === 'visitante';
+  if (!isVisitante && isStandalone) {
+    banner.remove();
+    return;
+  }
+  const btnCriar = [...banner.querySelectorAll('button')].find((b) => b.textContent.includes('Criar Conta'));
+  if (btnCriar) btnCriar.classList.toggle('hidden', !isVisitante);
 }
 
 function alternarLembreteSorteio() {

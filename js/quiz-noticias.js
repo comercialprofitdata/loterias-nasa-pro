@@ -86,10 +86,99 @@ const QUIZ_PERGUNTAS = [
     opcoes: ['Aumenta muito', 'Dobra automaticamente', 'Continua exatamente igual', 'Fica garantida'],
     correta: 2,
     explicacao: 'Cada sorteio é um evento independente: as bolas não têm memória dos concursos anteriores.'
+  },
+  {
+    id: 'q11',
+    categoria: 'Lotomania',
+    pergunta: 'Na Lotomania, o que acontece se você errar TODAS as 20 dezenas sorteadas (0 acertos)?',
+    opcoes: ['Não ganha nada', 'Ganha prêmio em faixa própria', 'Recebe o valor do bilhete', 'Só vale em bolão'],
+    correta: 1,
+    explicacao: 'A Lotomania tem uma faixa oficial exclusiva para quem faz 0 acertos entre os 50 números escolhidos!'
+  },
+  {
+    id: 'q12',
+    categoria: 'Quina',
+    pergunta: 'Quantos sorteios por semana a Quina realiza regularmente pela CAIXA?',
+    opcoes: ['2 por semana', '3 por semana', '6 por semana (segunda a sábado)', '1 por mês'],
+    correta: 2,
+    explicacao: 'Assim como a Lotofácil, a Quina tem 6 sorteios semanais de segunda a sábado às 20h.'
+  },
+  {
+    id: 'q13',
+    categoria: 'Dia de Sorte',
+    pergunta: 'Por que o volante do Dia de Sorte vai exatamente de 01 a 31?',
+    opcoes: ['Por sorteio aleatório', 'Representa os dias de um mês', 'Por causa do limite de bolas', 'É igual à Lotofácil'],
+    correta: 1,
+    explicacao: 'O Dia de Sorte foi criado em torno das datas do calendário: você escolhe de 7 a 15 dias (01 a 31) e um Mês da Sorte.'
+  },
+  {
+    id: 'q14',
+    categoria: 'Espanha',
+    pergunta: 'Como é chamada a tradicional loteria de Natal da Espanha que distribui bilhões em prêmios divididos?',
+    opcoes: ['La Roja', 'El Gordo de Navidad', 'EuroLoto', 'SuperEspanha'],
+    correta: 1,
+    explicacao: 'A Lotería de Navidad ("El Gordo") é realizada desde 1812 e é famosa por premiar bairros e cidades inteiras com bilhetes compartilhados.'
+  },
+  {
+    id: 'q15',
+    categoria: 'Mega-Sena',
+    pergunta: 'Qual é o número máximo de dezenas que podem ser marcadas em uma única aposta da Mega-Sena?',
+    opcoes: ['10 dezenas', '15 dezenas', '20 dezenas', '25 dezenas'],
+    correta: 2,
+    explicacao: 'A CAIXA permite marcar de 6 até 20 dezenas em um único volante da Mega-Sena (o que equivale a 38.760 apostas simples!).'
+  },
+  {
+    id: 'q16',
+    categoria: 'Comportamento',
+    pergunta: 'Por que jogos só com números de 01 a 31 costumam gerar prêmios menores quando ganham?',
+    opcoes: ['A CAIXA paga menos', 'Muita gente joga datas de aniversário e divide o prêmio', 'Números altos valem mais', 'É mito, nunca divide'],
+    correta: 1,
+    explicacao: 'A chance de ganhar é igual, mas como muitas pessoas escolhem datas (01–31), há mais chance de dividir o prêmio principal.'
+  },
+  {
+    id: 'q17',
+    categoria: 'Quina',
+    pergunta: 'Na Quina, qual é o mínimo de acertos necessários para receber premiação oficial?',
+    opcoes: ['2 acertos (Duque)', '3 acertos (Terno)', '4 acertos (Quadra)', 'Apenas 5 acertos'],
+    correta: 0,
+    explicacao: 'A Quina premia quem acerta 5 (Quina), 4 (Quadra), 3 (Terno) e até 2 dezenas (Duque).'
+  },
+  {
+    id: 'q18',
+    categoria: 'Bolão CAIXA',
+    pergunta: 'Em um Bolão oficial registrado na lotérica, o que garante o direito de cada participante ao prêmio?',
+    opcoes: ['Print do WhatsApp', 'O recibo individual de cota emitido pela CAIXA', 'Planilha do Excel', 'Apenas o nome na lista'],
+    correta: 1,
+    explicacao: 'No Bolão CAIXA oficial, cada participante recebe um recibo individual de cota e pode resgatar sua parte diretamente na CAIXA.'
+  },
+  {
+    id: 'q19',
+    categoria: 'Lotomania',
+    pergunta: 'Quantas dezenas são marcadas em uma aposta da Lotomania?',
+    opcoes: ['20 dezenas', '25 dezenas', '50 dezenas', '60 dezenas'],
+    correta: 2,
+    explicacao: 'Na Lotomania você marca exatamente 50 números dentre os 100 do volante (00 a 99), e são sorteadas 20 dezenas.'
+  },
+  {
+    id: 'q20',
+    categoria: 'Probabilidade',
+    pergunta: 'Qual destas loterias brasileiras tem a maior probabilidade matemática de acertar a faixa principal em 1 aposta simples?',
+    opcoes: ['Mega-Sena (1 em 50M)', 'Quina (1 em 24M)', 'Dia de Sorte (1 em 2,6M)', 'Lotomania (1 em 11,3M)'],
+    correta: 2,
+    explicacao: 'Com 1 em 2.629.575 combinações possíveis, o Dia de Sorte é matematicamente mais fácil na faixa principal do que a Lotofácil (1 em 3,26M) e a Mega-Sena (1 em 50M).'
   }
 ];
 
 const LOTOLAB_NOTICIAS = [
+  {
+    id: 'n0',
+    tag: 'NOVIDADE',
+    titulo: 'Agora o LotoLab tem 5 loterias: Mega, Lotofácil, Quina, Lotomania e Dia de Sorte',
+    resumo: 'Mega e Lotofácil seguem em destaque no topo, e no menu "Mais ▾" você acessa Quina, Lotomania e Dia de Sorte com conferência oficial.',
+    detalhe: 'Para manter o visual limpo e rápido, Mega-Sena e Lotofácil ficam fixas na barra principal. Tocando em "Mais ▾" no topo (ou "Outras loterias" no computador), você libera Quina, Lotomania (inclusive conferência de 0 acertos!) e Dia de Sorte — todas com bolão e resultados oficiais da CAIXA.',
+    acaoTexto: 'Abrir menu de loterias →',
+    acaoAba: 'volante'
+  },
   {
     id: 'n1',
     tag: 'BRASIL',

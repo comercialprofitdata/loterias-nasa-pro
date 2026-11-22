@@ -1,33 +1,32 @@
 # Plano Mestre de Produto, ASO, Retenção e Monetização
 
-**Última atualização:** 21/11/2026  
+**Última atualização:** 22/11/2026  
 **Objetivo:** Levar o aplicativo ao topo da busca na Google Play Store Brasil na categoria Ferramentas/Loterias e gerar receita recorrente previsível.
 
 ---
 
-## 1. Ordem Obrigatória de Execução (Sem Pular Etapas)
+## 1. Ordem Obrigatória de Execução (Status Atual)
 
-1. **Etapa 1 — Identidade Definitiva & Loja Destravada (AGORA)**
-   - Cravar o nome definitivo do app (sem colisão direta com `Lotto.Pro`, `Loto Smart`, `Acerta Lotofácil` ou `Gerador de loterias`).
-   - Garantir aprovação da **Segurança dos dados** (`excluir-conta.html` já corrigida) e subir o `.aab` atualizado na Google Play.
-   - Atualizar a ficha da loja (Título, Breve descrição, Descrição completa, 5 Tags, Ícone e 6 Capturas).
+1. **Etapa 1 — Identidade Definitiva & Loja Destravada**
+   - [x] Nome definitivo cravado (**LotoLab: Gerador e Loterias**), sem colisão direta.
+   - [x] `excluir-conta.html`, ficha da loja, ícone escuro adaptativo e `.aab` enviados automaticamente via API Google Play (`v9 / 2.3.0` em Produção e Teste Interno com `In-App Updates`).
 
 2. **Etapa 2 — Prova Social & Instagram Ativo**
-   - Criar o perfil oficial do Instagram com o `@` exato do nome escolhido.
-   - Publicar os 13 posts educativos/estatísticos + Reels curtos (20–30s) mostrando o app na prática.
-   - Mobilizar grupos, família e testadores para conquistar as primeiras **15 a 30 avaliações 5★ reais** na Play Store (sair de `0+ downloads`).
+   - [x] Perfil `@lotolab.app` criado, página ponte `https://loterias.pd.dev.br/baixar.html` (`market://` + Play Store + Criar Conta) no ar e 13 artes + 5 Stories + 5 capas de Destaques prontos em `marketing/instagram/`.
+   - [ ] Colocar `https://loterias.pd.dev.br/baixar.html` na bio do Instagram, agendar os posts e conquistar as primeiras **15 a 30 avaliações 5★ reais** na Google Play.
 
-3. **Etapa 3 — Evolução do Produto (Diferenciação Real)**
-   - **Linguagem NASA / Engenharia:** substituir termos como *"4/6 comuns"* por indicadores de precisão (*"Índice de Equilíbrio: 94/100"*, *"Padrão Histórico Ouro"*, *"Calibragem Geométrica"*) mantendo 100% o compliance (sem prometer prêmio).
-   - **Bolão Completo:** permitir salvar o bolão na Carteira e **conferir todos os jogos do bolão automaticamente** após o sorteio, calculando o prêmio por cota.
-   - **Novas Loterias:** adicionar **Quina** (6 sorteios/semana) e depois **Lotomania / Dia de Sorte**, multiplicando o volume de busca orgânica e a frequência de uso.
+3. **Etapa 3 — Evolução do Produto (Diferenciação Real) ✅**
+   - [x] **Linguagem Calibrada:** substituído *"comum / incomum"* por *"Calibrado / Fora da curva"* e *"Desvio de calibragem"*, mantendo 100% o compliance.
+   - [x] **Bolão Completo:** salva na Carteira, confere automaticamente contra a CAIXA e calcula **prêmio total, prêmio por cota e sua parte**.
+   - [x] **5 Loterias:** Mega-Sena e Lotofácil em destaque no topo + **Quina**, **Lotomania** (com 0 acertos!) e **Dia de Sorte** no menu *Mais ▾ / Outras loterias*.
 
-4. **Etapa 4 — Retenção Diária: Quiz + Instagram + Tokens + Push**
-   - **Quiz Diário de Loterias (sem dinheiro real):** perguntas sobre história, estatísticas e curiosidades (ex.: *"Qual estado mais ganhou a Mega-Sena?"*, *"Quantos sorteios a Mega já teve?"*, *"Qual a maior premiação da história?"*, *"Loterias pelo mundo: Powerball vs Mega-Sena"*).
-   - **Integração com o Instagram:** a dica ou resposta é publicada no Instagram; quem acerta ou participa no app ganha **Tokens** para desbloquear gerações de lotes e fechamentos avançados.
-   - **Push Notifications (20h30):** aviso automático nos dias de sorteio (*"Saiu o resultado da Mega-Sena / Lotofácil — confira seus jogos em 1 toque"*).
+4. **Etapa 4 — Retenção Diária: Quiz + Instagram + Tokens + Avisos ✅**
+   - [x] **Quiz Diário (20 perguntas)** com ganho e resgate real de **Tokens** (20 Tokens = +1 geração bônus).
+   - [x] **Avisos no topo**, **notícias clicáveis com modal** e **lembretes às 20h30** nos dias de sorteio.
 
 5. **Etapa 5 — Monetização Híbrida & Preço Agressivo**
-   - **Plano Grátis (95% dos usuários):** acesso às funções principais com **AdMob leve** (1 banner discreto no rodapé + vídeo recompensado opcional para liberar fechamento/lote extra ou dobrar tokens do Quiz).
-   - **Plano PRO (Google Play Billing no Android + Asaas na Web):** preço agressivo para competir com o mercado (**R\$ 6,90/mês** ou **R\$ 29,90/ano**, com oferta de lançamento de **R\$ 19,90/ano**) entregando: *Zero anúncios + Jogos e Bolões ilimitados + Alertas automáticos*.
-   - **Google Ads (Tráfego Pago):** ligar apenas após ter **15+ avaliações** e **monetização ativa** no app.
+   - [x] Preços competitivos (**R\$ 6,90/mês** e **R\$ 19,90/ano**) aplicados na UI e no código da Edge Function `criar-cobranca`.
+   - [x] Cliente **Google Play Billing** (`js/play-billing.js`, Digital Goods API) + Edge Function `validar-play-billing` prontos e testados (`lotolab_pro_mensal` / `lotolab_pro_anual`).
+   - [ ] Publicar `criar-cobranca` e `validar-play-billing` no painel do Supabase (com secret `GOOGLE_PLAY_SERVICE_ACCOUNT_JSON`).
+   - [ ] Criar os SKUs `lotolab_pro_mensal` e `lotolab_pro_anual` no Google Play Console e o App ID no Google AdMob.
+   - [ ] Ligar **Google Ads** apenas após 15+ avaliações e monetização ativa.

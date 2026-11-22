@@ -204,13 +204,31 @@ function fecharModalUpgrade() {
 /**
  * Process upgrade selection
  */
-function processarUpgrade(planId) {
+async function processarUpgrade(planId) {
   console.log(`🎯 Upgrade selected: ${planId}`);
 
   if (planId === 'free') {
     fecharModalUpgrade();
     toast('Você já tem o plano gratuito ativo', '🏠');
     return;
+  }
+
+  // Dentro do app Google Play: usa exclusivamente Google Play Billing (Digital Goods API)
+  if (window.contextoLoja?.ativo?.() && window.playBilling && (planId === 'mensal' || planId === 'anual')) {
+    try {
+      const okPlay = await window.playBilling.disponivel();
+      if (okPlay) {
+        const planosPlay = await window.playBilling.listarPlanos();
+        if (planosPlay.length > 0) {
+          await window.playBilling.assinar(planId);
+          fecharModalUpgrade();
+          return;
+        }
+      }
+    } catch (err) {
+      toast(err?.message || 'Não foi possível concluir pela Google Play.', '⚠️');
+      return;
+    }
   }
 
   if (typeof mostrarCheckoutReal === 'function') {

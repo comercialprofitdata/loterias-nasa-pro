@@ -2041,6 +2041,61 @@ html:not(.dark) .sidebar-mod-btn.active-loto {
   background: #a855f7 !important;
   color: #ffffff !important;
 }
+html:not(.dark) .sidebar-mod-btn.active-quina,
+html:not(.dark) .nasa-mod-btn.active-quina {
+  background: #0284c7 !important;
+  color: #ffffff !important;
+}
+html:not(.dark) .sidebar-mod-btn.active-lotomania,
+html:not(.dark) .nasa-mod-btn.active-lotomania {
+  background: #ea580c !important;
+  color: #ffffff !important;
+}
+html:not(.dark) .sidebar-mod-btn.active-diadesorte,
+html:not(.dark) .nasa-mod-btn.active-diadesorte {
+  background: #eab308 !important;
+  color: #020617 !important;
+}
+html:not(.dark) #sidebar-outras-loterias {
+  background: #f8fafc !important;
+  border-color: #cbd5e1 !important;
+}
+html:not(.dark) #sidebar-outras-loterias summary {
+  color: #1e293b !important;
+}
+html:not(.dark) #lotolab-conversao-banner {
+  background: linear-gradient(135deg, #ecfdf5, #f0f9ff) !important;
+  border-color: #6ee7b7 !important;
+}
+html:not(.dark) #lotolab-conversao-banner .text-white,
+html:not(.dark) #lotolab-quiz-noticias .text-white,
+html:not(.dark) #modal-noticia-lotolab .text-white,
+html:not(.dark) #lotolab-menu-outras-loterias .text-white {
+  color: #0f172a !important;
+}
+html:not(.dark) #lotolab-conversao-banner .text-slate-300,
+html:not(.dark) #lotolab-quiz-noticias .text-slate-200,
+html:not(.dark) #lotolab-quiz-noticias .text-slate-300,
+html:not(.dark) #lotolab-quiz-noticias .text-slate-400,
+html:not(.dark) #modal-noticia-lotolab .text-slate-300,
+html:not(.dark) #lotolab-menu-outras-loterias .text-slate-200 {
+  color: #334155 !important;
+}
+html:not(.dark) #lotolab-avisos-topo button {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+}
+html:not(.dark) #lotolab-avisos-topo .text-emerald-200 {
+  color: #065f46 !important;
+}
+html:not(.dark) #lotolab-avisos-topo .text-cyan-200 {
+  color: #155e75 !important;
+}
+html:not(.dark) #lotolab-menu-outras-loterias,
+html:not(.dark) #modal-noticia-lotolab > div {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+}
 html:not(.dark) .sidebar-nav-btn {
   color: #334155 !important;
 }
