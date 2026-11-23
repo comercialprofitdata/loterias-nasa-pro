@@ -3,8 +3,8 @@
 // Estratégia: Cache-First para assets estáticos, Network-First para dados
 // =========================================================================
 
-const CACHE_NAME = 'loterias-nasa-pro-v20261122.09';
-const CACHE_STATIC = 'nasa-static-v20261122.09';
+const CACHE_NAME = 'loterias-nasa-pro-v20261122.10';
+const CACHE_STATIC = 'nasa-static-v20261122.10';
 
 // Assets críticos para funcionamento offline
 const ASSETS_TO_CACHE = [
@@ -16,16 +16,12 @@ const ASSETS_TO_CACHE = [
   './icon-light-192.png',
   './icon-512.png',
   './supabase/config.js',
-  './css/admin-dashboard.css',
   './css/app.css',
   './css/fluxo-jogo.css',
   './css/gerar-simplificado.css',
   './css/redesign.css',
   './css/tailwind.css',
   './css/upgrade-modal.css',
-  './js/admin-charts.js',
-  './js/admin-dashboard.js',
-  './js/admin-telemetria.js',
   './js/analisar-numeros.js',
   './js/app.js',
   './js/assinatura.js',

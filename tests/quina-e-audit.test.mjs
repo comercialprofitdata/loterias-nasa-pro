@@ -260,3 +260,21 @@ test('Onda 1B-local: VAPID público, SW Cache-First, LGPD completo, Edge Functio
   assert.match(histReal, /SEED_INICIAL_LOTOMANIA/);
   assert.match(histReal, /SEED_INICIAL_DIADESORTE/);
 });
+
+test('Onda 2A: limpeza de Admin legado/Chart.js e sincronização de Bolões na nuvem', () => {
+  const html = fs.readFileSync('index.html', 'utf8');
+  const sw = fs.readFileSync('sw.js', 'utf8');
+  const bolaoJs = fs.readFileSync('js/bolao.js', 'utf8');
+  const boloesSql = fs.readFileSync('supabase/schema-boloes.sql', 'utf8');
+
+  assert.doesNotMatch(html, /chart\.min\.js/i, 'Chart.js CDN ocioso deve permanecer removido');
+  assert.doesNotMatch(html, /modal-simular-webhook/, 'simulador legado de webhook morto deve permanecer removido');
+  assert.doesNotMatch(html, /admin-dashboard\.js/, 'admin legado não deve ser carregado por usuários');
+  assert.doesNotMatch(sw, /admin-dashboard\.js/);
+  assert.match(html, /id="view-admin"/, 'placeholder #view-admin preservado para painel-dono.js');
+
+  assert.match(bolaoJs, /boloes_usuarios/);
+  assert.match(bolaoJs, /puxarBoloesNuvem/);
+  assert.match(boloesSql, /CREATE TABLE IF NOT EXISTS public\.boloes_usuarios/);
+  assert.match(boloesSql, /auth\.uid\(\)\s*=\s*user_id/);
+});

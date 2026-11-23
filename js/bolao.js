@@ -129,8 +129,46 @@
     if (!boloes.some((b) => b.id === ativoId)) ativoId = boloes[0]?.id || null;
   }
 
+  let syncNuvemTimer = null;
+  function sincronizarBoloesNuvem() {
+    clearTimeout(syncNuvemTimer);
+    syncNuvemTimer = setTimeout(async () => {
+      try {
+        const cliente = typeof window.obterClienteSupabase === 'function' ? window.obterClienteSupabase() : null;
+        if (!cliente?.auth) return;
+        const { data } = await cliente.auth.getSession();
+        const uid = data?.session?.user?.id;
+        if (!uid) return;
+        await cliente.from('boloes_usuarios').upsert(
+          { user_id: uid, dados: boloes, atualizado_em: new Date().toISOString() },
+          { onConflict: 'user_id' }
+        );
+      } catch { /* offline ou tabela ainda não migrada — mantém localStorage íntegro */ }
+    }, 800);
+  }
+
+  async function puxarBoloesNuvem() {
+    try {
+      const cliente = typeof window.obterClienteSupabase === 'function' ? window.obterClienteSupabase() : null;
+      if (!cliente?.auth) return;
+      const { data: sess } = await cliente.auth.getSession();
+      const uid = sess?.session?.user?.id;
+      if (!uid) return;
+      const { data, error } = await cliente.from('boloes_usuarios').select('dados').eq('user_id', uid).maybeSingle();
+      if (error || !Array.isArray(data?.dados) || !data.dados.length) return;
+      const mapa = new Map(data.dados.map((b) => [b.id, b]));
+      boloes.forEach((b) => mapa.set(b.id, b));
+      boloes = [...mapa.values()].sort((a, b) => Number(b.id) - Number(a.id));
+      if (!boloes.some((b) => b.id === ativoId)) ativoId = boloes[0]?.id || null;
+      try { localStorage.setItem(CHAVE, JSON.stringify(boloes)); } catch {}
+      renderizar();
+    } catch { /* silencioso se offline ou tabela ainda não criada */ }
+  }
+  window.puxarBoloesNuvem = puxarBoloesNuvem;
+
   function gravar() {
     try { localStorage.setItem(CHAVE, JSON.stringify(boloes)); } catch { aviso('Não foi possível guardar o bolão neste aparelho.'); }
+    sincronizarBoloesNuvem();
   }
 
   function ehPro() {
@@ -753,6 +791,7 @@
     painel.addEventListener('change', aoMudar);
     painel.addEventListener('click', aoClicar);
     carregar();
+    setTimeout(puxarBoloesNuvem, 1500);
   });
 
   // Para os testes automatizados.
